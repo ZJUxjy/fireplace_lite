@@ -1,0 +1,860 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CardDefs build="236529" description="Dredge机制">
+	<Entity CardID="NX2_018" ID="86619" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Rotting Necromancer</enUS>
+			<zhCN>腐烂通灵师</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Dredge.&lt;/b&gt; If it's an Undead, deal 5 damage to the enemy hero.</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;探底&lt;/b&gt;。如果选中的是亡灵牌，对敌方英雄造成5点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>You can't spell dredge without D-E-D.</enUS>
+			<zhCN>探底：特暗，得疫。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">A.J. Nazzaro</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1776" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="11" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_AquaticForm" ID="91389" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Aquatic Form</enUS>
+			<zhCN>水栖形态</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Dredge&lt;/b&gt;. If you have the Mana to play the card this turn, draw it.</enUS>
+			<zhCN>&lt;b&gt;探底&lt;/b&gt;。如果你在本回合中有足够的法力值使用选中的牌，则抽取这张牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>How long can YOU hold your breath underwater?</enUS>
+			<zhCN>你又能在水下憋气多久呢？</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_ExcavationPuzzle" ID="92293" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Excavation Specialist</enUS>
+			<zhCN>挖掘专家</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Dredge&lt;/b&gt;.
+Reduce its Cost by (1).</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;探底&lt;/b&gt;。选中的牌法力值消耗减少（1）点。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>With the jungles of Un’goro mapped out and the ruins of Uldum fully uncovered, explorers have to go a little out of their depth in their search of the great unknown.</enUS>
+			<zhCN>安戈洛的丛林勘探已毕，奥丹姆的遗迹重现人间。探险者们必须更加深入，才能探寻这世上瑰丽的未知。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Maria Trepalina</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_Faelin_001p" ID="79381" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Dredge Depths</enUS>
+			<zhCN>深入探底</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Dredge&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;探底&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="10" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_Faelin_002p" ID="79383" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Dredge Depths Rank 2</enUS>
+			<zhCN>二级深入探底</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Dredge&lt;/b&gt;. If you have the Mana to play the card this turn, draw it.</enUS>
+			<zhCN>&lt;b&gt;探底&lt;/b&gt;。如果你在本回合中有足够的法力值使用选中的牌，则抽取这张牌。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="10" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_Faelin_003p" ID="79384" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Dredge Depths Rank 3</enUS>
+			<zhCN>三级深入探底</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Dredge&lt;/b&gt;. If you have the Mana to play the card this turn, draw it.</enUS>
+			<zhCN>&lt;b&gt;探底&lt;/b&gt;。如果你在本回合中有足够的法力值使用选中的牌，则抽取这张牌。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="10" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_Faelin_005p" ID="79385" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Dredge Depths Rank 4</enUS>
+			<zhCN>四级深入探底</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Dredge&lt;/b&gt;. If it's a spell, reduce its Cost by (2).</enUS>
+			<zhCN>&lt;b&gt;探底&lt;/b&gt;。
+如果选中的是法术牌，使其法力值消耗减少（2）点。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="10" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_GoneFishinPuzzle" ID="92371" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Gone Fishin'</enUS>
+			<zhCN>垂钓时光</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Dredge&lt;/b&gt;.
+&lt;b&gt;Combo:&lt;/b&gt; Draw a card.</enUS>
+			<zhCN>&lt;b&gt;探底&lt;/b&gt;。&lt;b&gt;连击：&lt;/b&gt;抽一张牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Rogues want me
+Fish fear me</enUS>
+			<zhCN>潜行者好爱我
+小鱼儿好怕我</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Steven Prescott</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="7" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="220" name="COMBO" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_ScaldingPuzzle" ID="92297" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Scalding Geyser</enUS>
+			<zhCN>间歇热泉</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Deal $2 damage.
+&lt;b&gt;Dredge&lt;/b&gt;.</enUS>
+			<zhCN>造成$2点伤害。&lt;b&gt;探底&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>”Wow, what’s that land formation called?”
+“It s’cald a Geyser.”</enUS>
+			<zhCN>“哇哦，这种地貌叫什么？”“再靠近些，它就叫溅血热泉。”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="2" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_SeafloorSaviorPuzzle" ID="92375" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Seafloor Savior</enUS>
+			<zhCN>海床救生员</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Dredge&lt;/b&gt;.
+If it's a minion, give it
+this minion's Attack
+and Health.</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;探底&lt;/b&gt;。如果选中的是随从牌，使其获得本随从的攻击力和生命值。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"TURTLE PROCURED. ADMINISTRATING BANDAGES AND KISSES. BOO BOO MUST BE ELIMINATED."</enUS>
+			<zhCN>“龟龟已找到。正在执行绷带贴贴与亲亲。痛痛即将清除。”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Daniil Kudriavtsev</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="17" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_SunkenHopese" ID="90421" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Sinking Hopes</enUS>
+			<zhCN>沉没的希望</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst&lt;/b&gt;: Dredge for your opponent. If it's a spell, increase its Cost to 10.</enUS>
+			<zhCN>&lt;b&gt;法术迸发&lt;/b&gt;：为你的对手&lt;b&gt;探底&lt;/b&gt;。如果选中的是法术牌，则将其法力值消耗增加到10点。</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="6" />
+		<Tag enumID="330" name="ENCHANTMENT_BIRTH_VISUAL" type="Int" value="3" />
+		<Tag enumID="331" name="ENCHANTMENT_IDLE_VISUAL" type="Int" value="3" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_SunkenSword" ID="90858" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Sunken Sword</enUS>
+			<zhCN>沉没的剑</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Battlecry:&lt;/b&gt; Add a Sunken Sword to the bottom of your deck.
+&lt;b&gt;Deathrattle:&lt;/b&gt; &lt;b&gt;Dredge&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;将一张沉没的剑置入你的牌库底。&lt;b&gt;亡语：&lt;/b&gt;&lt;b&gt;探底&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="7" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+		<ReferencedTag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_TrenchSurveyorPuzzle" ID="92190" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Trench Surveyor</enUS>
+			<zhCN>海沟勘测机</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Dredge&lt;/b&gt;.
+If it's a Mech, draw it.</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;探底&lt;/b&gt;。如果选中的是机械牌，抽取这张牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Liquid cooled.</enUS>
+			<zhCN>装有液冷系统。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Ivan Fomin</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="17" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_TuskarrPuzzle" ID="92298" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Tuskarrrr Trawler</enUS>
+			<zhCN>拖网海象人</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Dredge&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;探底&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"Fish scales? Junk. A gravestone? Junk. This weird looking puzzle box? Junk. AHA! An Ancharrr!"</enUS>
+			<zhCN>“鱼鳞？垃圾。墓碑？垃圾。怪模怪样的谜之匣？垃圾。啊哈！海盗之锚！”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">James Ryman</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="23" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TID_003" ID="75586" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Tidelost Burrower</enUS>
+			<zhCN>迷潮挖掘者</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Dredge&lt;/b&gt;.
+If it's a Murloc, summon a 2/2 copy of it.</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;探底&lt;/b&gt;。如果选中的是鱼人牌，召唤一个它的2/2的复制。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Burrowing may not be for everyone, but I dig it.</enUS>
+			<zhCN>挖掘工作或许不适合所有人，但我选择深入挖掘这项工作。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Adam Byrne</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="14" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TID_099" ID="76223" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>K9-0tron</enUS>
+			<zhCN>K9-0型机械狗</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Dredge&lt;/b&gt;.
+If it's a 1-Cost minion,
+summon it.</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;
+&lt;b&gt;探底&lt;/b&gt;。如果选中的是法力值消耗为（1）的随从牌，则召唤它。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>You merely adopted the Battlegrounds. I was born in it. Molded by it.</enUS>
+			<zhCN>你还是不适应战棋酒馆。我就生在那里，长在那里。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Zoltan Boros</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="17" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+		<Tag enumID="2542" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TID_700" ID="74988" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Disarming Elemental</enUS>
+			<zhCN>缴械元素</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Dredge&lt;/b&gt; for
+your opponent. Set its
+Cost to (6).</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;
+为你的对手&lt;b&gt;探底&lt;/b&gt;。将选中的牌法力值消耗变为（6）点。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"You can have these back when you learn to play nice."</enUS>
+			<zhCN>“等你态度好一点就还给你。”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Todd Harris</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="18" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TID_703" ID="75070" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Topple the Idol</enUS>
+			<zhCN>损毁神像</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Dredge&lt;/b&gt;. Reveal it and
+deal damage equal to
+_its Cost to all minions.</enUS>
+			<zhCN>&lt;b&gt;探底&lt;/b&gt;。揭示选中的牌，对所有随从造成等同于其法力值消耗的伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>No Old Gods or Kings, only Naga.</enUS>
+			<zhCN>什么上古之神，什么国王，只有纳迦！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Konstantin Turovec</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="14" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="370" name="AFFECTED_BY_SPELL_POWER" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TID_714" ID="75631" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Igneous Lavagorger</enUS>
+			<zhCN>火成熔岩吞食者</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Taunt&lt;/b&gt;
+ &lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Dredge&lt;/b&gt;. Gain
+_Armor equal to its Cost.</enUS>
+			<zhCN>&lt;b&gt;嘲讽&lt;/b&gt;，&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;探底&lt;/b&gt;。获得等同于选中的牌的法力值消耗的护甲值。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Lava shark, doo doo doo doo doo doo.</enUS>
+			<zhCN>熔岩鲨，嘟嘟嘟嘟嘟嘟。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Studio Hive</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="18" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+		<Tag enumID="2542" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_030" ID="71984" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>The Leviathan</enUS>
+			<zhCN>海兽号</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Colossal +1&lt;/b&gt;
+&lt;b&gt;Rush&lt;/b&gt;, &lt;b&gt;Divine Shield&lt;/b&gt;
+After this attacks,
+&lt;b&gt;Dredge&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;巨型+1&lt;/b&gt;
+&lt;b&gt;突袭&lt;/b&gt;，&lt;b&gt;圣盾&lt;/b&gt;。在本随从攻击后，&lt;b&gt;探底&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Built by Ini Stormcoil, this massive vessel can withstand almost anything you put it through... although she would prefer you didn't!</enUS>
+			<zhCN>由伊妮·积雷亲手建造。这艘巨舰可以陪你闯过几乎任何恶劣环境……但她真心希望你别去那么险恶的地方！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Paul Mafayon</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="17" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="791" name="RUSH" type="Int" value="1" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="71982" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="71982" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="2247" name="COLOSSAL" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_070" ID="74755" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Harpoon Gun</enUS>
+			<zhCN>鱼叉炮</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>After your hero attacks, &lt;b&gt;Dredge&lt;/b&gt;. If it's a Beast, reduce its Cost by (2).</enUS>
+			<zhCN>在你的英雄攻击后，&lt;b&gt;探底&lt;/b&gt;。如果选中的是野兽牌，使其法力值消耗减少（2）点。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Get ooooover here!</enUS>
+			<zhCN>鱼叉机关炮！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Jason Kang</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="7" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_083" ID="77018" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Seafloor Savior</enUS>
+			<zhCN>海床救生员</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Dredge&lt;/b&gt;.
+If it's a minion, give it
+this minion's Attack
+and Health.</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;探底&lt;/b&gt;。如果选中的是随从牌，使其获得本随从的攻击力和生命值。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"TURTLE PROCURED. ADMINISTRATING BANDAGES AND KISSES. BOO BOO MUST BE ELIMINATED."</enUS>
+			<zhCN>“龟龟已找到。正在执行绷带贴贴与亲亲。痛痛即将清除。”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Daniil Kudriavtsev</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="17" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_086" ID="77210" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Swordfish</enUS>
+			<zhCN>剑鱼</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Dredge&lt;/b&gt;.
+If it's a Pirate, give this weapon and the Pirate +2 Attack.</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;探底&lt;/b&gt;。如果选中的是海盗牌，使这把武器和该海盗获得+2攻击力。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>While you were partying, I studied the fish.</enUS>
+			<zhCN>哪有什么天才，她是把别人开派对的工夫都用在练剑，不，练鱼上的。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Arthur Bozonnet</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="7" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="7" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_210" ID="72482" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Illuminate</enUS>
+			<zhCN>金光闪耀</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Dredge&lt;/b&gt;. If it's a spell,
+reduce its Cost by (3).</enUS>
+			<zhCN>&lt;b&gt;探底&lt;/b&gt;。
+如果选中的是法术牌，使其法力值消耗减少（3）点。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>BEHOLD THE GLORY OF A NEW CUP!</enUS>
+			<zhCN>哇！金色普通杯！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Evgeniy Dlinnov</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_637" ID="72508" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Scalding Geyser</enUS>
+			<zhCN>间歇热泉</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Deal $2 damage.
+&lt;b&gt;Dredge&lt;/b&gt;.</enUS>
+			<zhCN>造成$2点伤害。&lt;b&gt;探底&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>”Wow, what’s that land formation called?”
+“It s’cald a Geyser.”</enUS>
+			<zhCN>“哇哦，这种地貌叫什么？”“再靠近些，它就叫溅血热泉。”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="2" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_642" ID="72925" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Trench Surveyor</enUS>
+			<zhCN>海沟勘测机</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Dredge&lt;/b&gt;.
+If it's a Mech, draw it.</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;探底&lt;/b&gt;。如果选中的是机械牌，抽取这张牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Liquid cooled.</enUS>
+			<zhCN>装有液冷系统。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Ivan Fomin</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="1" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="17" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_654" ID="73774" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Aquatic Form</enUS>
+			<zhCN>水栖形态</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Dredge&lt;/b&gt;. If you have the Mana to play the card this turn, draw it.</enUS>
+			<zhCN>&lt;b&gt;探底&lt;/b&gt;。如果你在本回合中有足够的法力值使用选中的牌，则抽取这张牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>How long can YOU hold your breath underwater?</enUS>
+			<zhCN>你又能在水下憋气多久呢？</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_753" ID="76926" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Bloodscent Vilefin</enUS>
+			<zhCN>血腥恶鳍鱼人</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Dredge&lt;/b&gt;. If it's a
+Murloc, change its Cost to
+_Health instead of Mana.</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;探底&lt;/b&gt;。如果选中的是鱼人牌，则使其改为消耗生命值，而非法力值。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Tired of eating Jellyfish and Peanut Butter fish, it’s moved on to more gruesome meals.</enUS>
+			<zhCN>水母这种水货，早就吃腻了。它要换点荤腥。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Alex Stone</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="14" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_909" ID="72105" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Tuskarrrr Trawler</enUS>
+			<zhCN>拖网海象人</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Dredge&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;探底&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"Fish scales? Junk. A gravestone? Junk. This weird looking puzzle box? Junk. AHA! An Ancharrr!"</enUS>
+			<zhCN>“鱼鳞？垃圾。墓碑？垃圾。怪模怪样的谜之匣？垃圾。啊哈！海盗之锚！”</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked with "Seashells by the Seafloor" Achievement.</enUS>
+			<zhCN>完成成就“海底拾贝”后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">James Ryman</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="23" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_911" ID="72109" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Excavation Specialist</enUS>
+			<zhCN>挖掘专家</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Dredge&lt;/b&gt;.
+Reduce its Cost by (1).</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;探底&lt;/b&gt;。选中的牌法力值消耗减少（1）点。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>With the jungles of Un’goro mapped out and the ruins of Uldum fully uncovered, explorers have to go a little out of their depth in their search of the great unknown.</enUS>
+			<zhCN>安戈洛的丛林勘探已毕，奥丹姆的遗迹重现人间。探险者们必须更加深入，才能探寻这世上瑰丽的未知。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Maria Trepalina</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_915" ID="72117" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Bone Glaive</enUS>
+			<zhCN>骸骨战刃</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Dredge&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;探底&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Resourceful Demon Hunters find a use for every part of the Demon.</enUS>
+			<zhCN>在机智的恶魔猎手眼里，恶魔浑身都是宝。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Studio Hive</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="14" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="7" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_916" ID="72119" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Gone Fishin'</enUS>
+			<zhCN>垂钓时光</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Dredge&lt;/b&gt;.
+&lt;b&gt;Combo:&lt;/b&gt; Draw a card.</enUS>
+			<zhCN>&lt;b&gt;探底&lt;/b&gt;。&lt;b&gt;连击：&lt;/b&gt;抽一张牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Rogues want me
+Fish fear me</enUS>
+			<zhCN>潜行者好爱我
+小鱼儿好怕我</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Steven Prescott</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="7" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="220" name="COMBO" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_925" ID="72320" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Rock Bottom</enUS>
+			<zhCN>岩石海底</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Summon a 1/1
+Murloc, then &lt;b&gt;Dredge&lt;/b&gt;.
+If it's also a Murloc,
+summon one more.</enUS>
+			<zhCN>召唤一个1/1的鱼人，然后&lt;b&gt;探底&lt;/b&gt;。如果选中的是鱼人牌，则再召唤一个。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>I can't... *mrgglrg* understand... *mrgrllrg* your accent. *mrgrlrglr*</enUS>
+			<zhCN>我实在……*姆格拉咕噜*听不懂……*姆格拉咕咕噜*你说什么。*姆格咕噜拉咕噜*</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mauricio Herrera</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="73733" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_942" ID="72592" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Obsidiansmith</enUS>
+			<zhCN>黑曜石铸匠</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Dredge&lt;/b&gt;. If it's
+a minion or a weapon,
+give it +1/+1.</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;探底&lt;/b&gt;。如果选中的是随从牌或武器牌，则使其获得+1/+1。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Was able to produce more effective weapons than his predecessor, Kelpsmith.</enUS>
+			<zhCN>手艺远胜他的前任，海藻铸匠。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Konstantin Turovec</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="23" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+</CardDefs>

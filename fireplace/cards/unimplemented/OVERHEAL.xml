@@ -1,0 +1,295 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CardDefs build="236529" description="过量治疗机制">
+	<Entity CardID="AT_011" ID="2555" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Holy Champion</enUS>
+			<zhCN>神圣勇士</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Overheal:&lt;/b&gt; Gain +2 Attack.</enUS>
+			<zhCN>&lt;b&gt;过量治疗：&lt;/b&gt;获得+2攻击力。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>She really likes seeing people get better.  That's why she hurts them in the first place.</enUS>
+			<zhCN>她最爱做的事就是先把人打个半死，再帮那人慢慢恢复。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Alex Garner</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="15" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="2821" name="OVERHEAL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="CFM_606" ID="40381" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Mana Geode</enUS>
+			<zhCN>法力晶簇</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Overheal:&lt;/b&gt; Summon a
+2/2 Crystal.</enUS>
+			<zhCN>&lt;b&gt;过量治疗：&lt;/b&gt;召唤一个2/2的水晶。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Gadgetzan, where even the pet rocks have pet rocks.</enUS>
+			<zhCN>他真的会气炸，而你也真的会受伤。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">A. J. Nazzaro</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="25" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="18" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="42053" />
+		<Tag enumID="2821" name="OVERHEAL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="CORE_AT_011" ID="102275" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Holy Champion</enUS>
+			<zhCN>神圣勇士</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Overheal:&lt;/b&gt; Gain +2 Attack.</enUS>
+			<zhCN>&lt;b&gt;过量治疗：&lt;/b&gt;获得+2攻击力。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>She really likes seeing people get better.  That's why she hurts them in the first place.</enUS>
+			<zhCN>她最爱做的事就是先把人打个半死，再帮那人慢慢恢复。</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Unlocked with Priest class.</enUS>
+			<zhCN>与牧师职业一同解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked after winning 50 games as Priest.</enUS>
+			<zhCN>使用牧师赢得50场对战后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Alex Garner</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1810" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="2555" type="Int" value="2555" />
+		<Tag enumID="2821" name="OVERHEAL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="CORE_CFM_606" ID="97608" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Mana Geode</enUS>
+			<zhCN>法力晶簇</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Overheal:&lt;/b&gt; Summon a
+2/2 Crystal.</enUS>
+			<zhCN>&lt;b&gt;过量治疗：&lt;/b&gt;召唤一个2/2的水晶。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Gadgetzan, where even the pet rocks have pet rocks.</enUS>
+			<zhCN>他真的会气炸，而你也真的会受伤。</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Unlocked with Priest class.</enUS>
+			<zhCN>与牧师职业一同解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked after winning 250 games as Priest.</enUS>
+			<zhCN>使用牧师赢得250场对战后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">A. J. Nazzaro</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1810" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="18" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="40381" type="Int" value="40381" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="42053" />
+		<Tag enumID="2821" name="OVERHEAL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="CORE_CS3_014" ID="62498" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Crimson Clergy</enUS>
+			<zhCN>赤红教士</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Overheal:&lt;/b&gt; Draw a card.</enUS>
+			<zhCN>&lt;b&gt;过量治疗：&lt;/b&gt;抽一张牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>He won't drop the ball.</enUS>
+			<zhCN>个人生涯一球未失。</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Unlocked with Priest class.</enUS>
+			<zhCN>与牧师职业一同解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked after winning 100 games as Priest.</enUS>
+			<zhCN>使用牧师赢得100场对战后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Konstantin Porubov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1810" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="2821" name="OVERHEAL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="CS3_014" ID="89147" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Crimson Clergy</enUS>
+			<zhCN>赤红教士</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Overheal:&lt;/b&gt; Draw a card.</enUS>
+			<zhCN>&lt;b&gt;过量治疗：&lt;/b&gt;抽一张牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>He won't drop the ball.</enUS>
+			<zhCN>个人生涯一球未失。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Konstantin Porubov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1635" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="62498" type="Int" value="62498" />
+		<Tag enumID="2821" name="OVERHEAL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="ETC_334" ID="90956" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Heartbreaker Hedanis</enUS>
+			<zhCN>碎心歌手赫达尼斯</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Battlecry:&lt;/b&gt; Deal 4 damage
+to this minion.
+&lt;b&gt;Overheal:&lt;/b&gt; Deal 5 damage
+to a random enemy.</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;对本随从造成4点伤害。&lt;b&gt;过量治疗：&lt;/b&gt;随机对一个敌人造成5点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Hedanis has won over the hearts and minds of millions of fans all over Azeroth! Shadow magic had nothing to do with it - not that you asked or anything.</enUS>
+			<zhCN>赫达尼斯征服了艾泽拉斯万千歌迷的心灵！这跟暗影魔法有什么关系——完全不知道你在说什么。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Dez Bencosme</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="8" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1809" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1932" name="HAS_DIAMOND_QUALITY" type="Int" value="1" />
+		<Tag enumID="2821" name="OVERHEAL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="ETC_339" ID="91079" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Heartthrob</enUS>
+			<zhCN>心动歌手</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Overheal:&lt;/b&gt; Summon a random minion with Cost equal to the amount &lt;b&gt;Overhealed&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;过量治疗：&lt;/b&gt;随机召唤一个法力值消耗等同于&lt;b&gt;过量治疗&lt;/b&gt;量的随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Oh no, Harth! Look out! He's here to rob you!</enUS>
+			<zhCN>亡灵不会心动，心动的只有观众。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Valeria Styajkina</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1809" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="11" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+		<Tag enumID="2821" name="OVERHEAL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="JAM_024" ID="97579" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Ambient Lightspawn</enUS>
+			<zhCN>布景光耀之子</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Finale and Overheal:&lt;/b&gt;
+Give another random
+friendly minion +2/+2.</enUS>
+			<zhCN>&lt;b&gt;压轴，过量治疗：&lt;/b&gt;随机使另一个友方随从获得+2/+2。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Make sure it's smaller than your other lightspawns for the best fill lighting.</enUS>
+			<zhCN>一定要让它弱于你的其他光耀之子，这样打光效果才好。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Todd Harris</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1809" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="18" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="2820" name="FINALE" type="Int" value="1" />
+		<Tag enumID="2821" name="OVERHEAL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="WW_381" ID="101481" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Injured Hauler</enUS>
+			<zhCN>受伤的搬运工</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Battlecry:&lt;/b&gt; Deal 4 damage
+to this minion.
+&lt;b&gt;Overheal:&lt;/b&gt; Deal 2 damage
+to all enemy minions.</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;对本随从造成4点伤害。&lt;b&gt;过量治疗：&lt;/b&gt;对所有敌方随从造成2点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>With how many cacti are all over the Badlands, this job has to be some sort of sick joke.</enUS>
+			<zhCN>荒芜之地到处都是仙人掌，这份工作一定很伤人。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Patrik Bjorkstrom</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="7" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1892" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="201" name="FACTION" type="Int" value="1" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="251" name="AttackVisualType" type="Int" value="6" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="2821" name="OVERHEAL" type="Int" value="1" />
+	</Entity>
+</CardDefs>

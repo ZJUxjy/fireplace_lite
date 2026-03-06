@@ -1,0 +1,1764 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CardDefs build="236529" description="可交易机制">
+	<Entity CardID="CORE_DED_009" ID="102192" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Doggie Biscuit</enUS>
+			<zhCN>狗狗饼干</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+Give a minion +2/+3.
+After you &lt;b&gt;Trade&lt;/b&gt; this, give
+a friendly minion &lt;b&gt;Rush&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+使一个随从获得+2/+3。在你&lt;b&gt;交易&lt;/b&gt;此牌后，使一个友方随从获得&lt;b&gt;突袭&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Reserved for Edwin’s favorite lapdogs.</enUS>
+			<zhCN>专供艾德温最爱的狗：走狗。</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Unlocked with Hunter class.</enUS>
+			<zhCN>与猎人职业一同解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked after winning 100 games as Hunter.</enUS>
+			<zhCN>使用猎人赢得100场对战后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Jialuan Li</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1810" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="65603" type="Int" value="65603" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<ReferencedTag enumID="791" name="RUSH" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="CORE_EX1_002" ID="102217" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>The Black Knight</enUS>
+			<zhCN>黑骑士</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+ &lt;b&gt;Battlecry:&lt;/b&gt; Destroy an  enemy minion with &lt;b&gt;Taunt&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;消灭一个具有&lt;b&gt;嘲讽&lt;/b&gt;的敌方随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>He was sent by the Lich King to disrupt the Argent Tournament.   We can pretty much mark that a failure.</enUS>
+			<zhCN>巫妖王派他来阻止银色锦标赛的进行。可以说那是个失败。</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Unlocked by completing the Tutorial.</enUS>
+			<zhCN>完成教学后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked after 5000 total wins.</enUS>
+			<zhCN>总计赢得5000场对战后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Destroy a minion with Taunt.</enUS>
+			<zhCN>消灭一个具有嘲讽的随从。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Alex Horley Orlandelli</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1637" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="11" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="1656" type="Int" value="1656" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+		<ReferencedTag enumID="190" name="TAUNT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="CORE_EX1_005" ID="69652" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Big Game Hunter</enUS>
+			<zhCN>王牌猎人</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Destroy a minion
+with 7 or more Attack.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;消灭一个攻击力大于或等于7的随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Mere devilsaurs no longer excite him.  Soon he'll be trying to catch Onyxia with only a dull Krol Blade.</enUS>
+			<zhCN>魔暴龙之类的猎物已经让他提不起兴趣了。很快，他就会提着一把生锈的“科罗尔之刃”去猎杀奥妮克希亚了。</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Unlocked by completing the Tutorial.</enUS>
+			<zhCN>完成教学后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked after 2500 total wins.</enUS>
+			<zhCN>总计赢得2500场对战后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Destroy a minion with an Attack of 7 or more.</enUS>
+			<zhCN>消灭一个攻击力大于或等于7的随从。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Chris Seaman</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1637" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="1657" type="Int" value="1657" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="CORE_REV_023" ID="115971" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Demolition Renovator</enUS>
+			<zhCN>拆迁修理工</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Destroy 
+an enemy location.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;摧毁一个敌方地标。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"Look, the Sire said he wanted something more open concept..."</enUS>
+			<zhCN>“是大帝亲口说的，他想要开放式设计……”</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Unlocked by completing the Tutorial.</enUS>
+			<zhCN>完成教学后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked after 2500 total wins.</enUS>
+			<zhCN>总计赢得2500场对战后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Destroy an enemy &lt;b&gt;location&lt;/b&gt;.</enUS>
+			<zhCN>摧毁一个敌方&lt;b&gt;地标&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mike Sass</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1637" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="79990" type="Int" value="79990" />
+		<Tag enumID="1413" name="DECK_RULE_COUNT_AS_COPY_OF_CARD_ID" type="Int" value="79990" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="CORE_SW_066" ID="102222" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Royal Librarian</enUS>
+			<zhCN>王室图书管理员</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Silence&lt;/b&gt;
+a minion.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;沉默&lt;/b&gt;一个
+随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Books on how to flip the Auction House are down that way.</enUS>
+			<zhCN>讲拍卖行刷金的书都在那边。</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Unlocked by completing the Tutorial.</enUS>
+			<zhCN>完成教学后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked after 500 total wins.</enUS>
+			<zhCN>总计赢得500场对战后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>&lt;b&gt;Silence&lt;/b&gt; a minion.</enUS>
+			<zhCN>&lt;b&gt;沉默&lt;/b&gt;一个随从。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Jun Yan &amp; Zhefei Hou</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1637" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="64714" type="Int" value="64714" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+		<ReferencedTag enumID="339" name="SILENCE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="CORE_SW_072" ID="102221" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Rustrot Viper</enUS>
+			<zhCN>锈烂蝰蛇</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Destroy your
+opponent's weapon.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;摧毁对手的武器。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Poisonous to weapons.</enUS>
+			<zhCN>这也是剧毒，针对武器的剧毒。</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Unlocked by completing the Tutorial.</enUS>
+			<zhCN>完成教学后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked after 500 total wins.</enUS>
+			<zhCN>总计赢得500场对战后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Zhefei Hou</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1637" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="64720" type="Int" value="64720" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="CORE_SW_114" ID="102207" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Overdraft</enUS>
+			<zhCN>强行透支</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+Unlock your &lt;b&gt;Overloaded&lt;/b&gt;
+Mana Crystals to deal
+that much damage.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+解锁你&lt;b&gt;过载&lt;/b&gt;的法力水晶，并造成等量的
+伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Wait. It costs mana to be out of mana?!</enUS>
+			<zhCN>等等，我透支法力水晶还要花法力水晶？！</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Unlocked with Shaman class.</enUS>
+			<zhCN>与萨满祭司职业一同解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked after winning 250 games as Shaman.</enUS>
+			<zhCN>使用萨满祭司赢得250场对战后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Wayne Wu</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1810" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="370" name="AFFECTED_BY_SPELL_POWER" type="Int" value="1" />
+		<Tag enumID="858" name="64773" type="Int" value="64773" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<ReferencedTag enumID="215" name="OVERLOAD" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="CORE_SW_429" ID="108357" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Best in Shell</enUS>
+			<zhCN>紧壳商品</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+Summon two 2/7
+_Turtles with &lt;b&gt;Taunt&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+召唤两只2/7并具有&lt;b&gt;嘲讽&lt;/b&gt;的龟。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>The agility course takes a while.</enUS>
+			<zhCN>补货速度特别慢。</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Unlocked with Druid class.</enUS>
+			<zhCN>与德鲁伊职业一同解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked after winning 50 games as Druid.</enUS>
+			<zhCN>使用德鲁伊赢得50场对战后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Melvin Chan</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1637" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="64292" type="Int" value="64292" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="70124" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<ReferencedTag enumID="190" name="TAUNT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="CORE_SW_441" ID="102200" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Shard of the Naaru</enUS>
+			<zhCN>纳鲁碎片</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Silence&lt;/b&gt; all enemy minions.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;沉默&lt;/b&gt;所有敌方随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Fell from the sky, huh? I'll give you ten gold.</enUS>
+			<zhCN>呦，从天上掉下来的？我出十金币，不能再多了。</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Unlocked with Priest class.</enUS>
+			<zhCN>与牧师职业一同解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked after winning 50 games as Priest.</enUS>
+			<zhCN>使用牧师赢得50场对战后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Vlad Botos</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1810" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="64391" type="Int" value="64391" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<ReferencedTag enumID="339" name="SILENCE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="DED_004" ID="65597" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Blackwater Cutlass</enUS>
+			<zhCN>黑水弯刀</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+After you &lt;b&gt;Trade&lt;/b&gt; this,
+reduce the Cost of a spell
+in your hand by (1).</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+在你&lt;b&gt;交易&lt;/b&gt;此牌后，使你手牌中的一张法术牌的法力值消耗减少（1）点。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Popular around Stormwind for slashing prices.</enUS>
+			<zhCN>享誉暴风城的砍价利器。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Jason Kang</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1578" />
+		<Tag enumID="199" name="CLASS" type="Int" value="7" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="7" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="DED_009" ID="65603" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Doggie Biscuit</enUS>
+			<zhCN>狗狗饼干</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+Give a minion +2/+3.
+After you &lt;b&gt;Trade&lt;/b&gt; this, give
+a friendly minion &lt;b&gt;Rush&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+使一个随从获得+2/+3。在你&lt;b&gt;交易&lt;/b&gt;此牌后，使一个友方随从获得&lt;b&gt;突袭&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Reserved for Edwin’s favorite lapdogs.</enUS>
+			<zhCN>专供艾德温最爱的狗：走狗。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Jialuan Li</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1578" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<ReferencedTag enumID="791" name="RUSH" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="DED_504" ID="65605" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Wicked Shipment</enUS>
+			<zhCN>邪恶船运</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+Summon @ 1/1 |4(Imp, Imps).
+&lt;i&gt;(Upgrades by 2
+when &lt;b&gt;Traded&lt;/b&gt;!)&lt;/i&gt;</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+召唤@个1/1的小鬼。&lt;i&gt;（被&lt;b&gt;交易&lt;/b&gt;时会升级，增加2个！）&lt;/i&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>All horns on deck!</enUS>
+			<zhCN>如果你在手牌上发现两个小鬼，说明你的牌库里已经住满了小鬼。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Konstantin Turovec</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1578" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="71812" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="DED_506" ID="65608" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Need for Greed</enUS>
+			<zhCN>贪婪需求</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+Draw 3 cards. If drawn this turn, this costs (3).</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+抽三张牌。如果在本回合被抽到，则法力值消耗为（3）点。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Sorry guys, I TOTALLY meant to click greed.</enUS>
+			<zhCN>抱歉各位，我刚刚是真的想点贪婪。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">A.J. Nazzaro</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1578" />
+		<Tag enumID="199" name="CLASS" type="Int" value="14" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="DED_512" ID="65676" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Amulet of Undying</enUS>
+			<zhCN>不朽护符</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+Resurrect @ friendly
+&lt;b&gt;Deathrattle&lt;/b&gt; |4(minion, minions).
+&lt;i&gt;(Upgrades when &lt;b&gt;Traded&lt;/b&gt;!)&lt;/i&gt;</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+复活@个友方&lt;b&gt;亡语&lt;/b&gt;随从。&lt;i&gt;（被&lt;b&gt;交易&lt;/b&gt;时会升级！）&lt;/i&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Didn't seem to work out too well for this guy.</enUS>
+			<zhCN>戴在这家伙身上好像没什么作用。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Ivan Fomin</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1578" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="6" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<ReferencedTag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="DED_527" ID="64197" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Blacksmithing Hammer</enUS>
+			<zhCN>铁匠锤</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+After you &lt;b&gt;Trade&lt;/b&gt; this,
+_gain +2 Durability.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+在你&lt;b&gt;交易&lt;/b&gt;此牌后，获得+2耐久度。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Passed through the hands of countless smiths, and eventually the skulls of their enemies.</enUS>
+			<zhCN>历经无数代铁匠之手。以及无数代铁匠的仇人的头。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Akkapoj T.</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="1" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1578" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="7" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="ETC_099" ID="91659" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Concert Promo-Drake</enUS>
+			<zhCN>公演增强幼龙</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Finale:&lt;/b&gt; Destroy an
+enemy minion.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;压轴：&lt;/b&gt;消灭一个敌方随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>There's a reason why it's promoting the festival instead of playing in it - it's a rhyme-lost protodrake.</enUS>
+			<zhCN>为什么它选择后台增强而不是前台登场？因为这是一条迷诗始祖幼龙。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Destroy an enemy minion.</enUS>
+			<zhCN>消灭一个敌方随从。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">L. Lullabi &amp; K. Turovec</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="8" />
+		<Tag enumID="47" name="ATK" type="Int" value="8" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1809" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="2820" name="FINALE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="ETC_208" ID="97363" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Stranglethorn Heart</enUS>
+			<zhCN>荆棘谷之心</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+Resurrect all friendly
+Beasts that cost (5)
+or more.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+复活所有法力值消耗大于或等于（5）点的友方野兽。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>The Stranglethorn mentality is to be happy with the bare necessities.</enUS>
+			<zhCN>荆棘谷的心灵之诫：知足常乐。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1809" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="ETC_320" ID="90694" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Spotlight</enUS>
+			<zhCN>光芒汇聚</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+Convert a friendly &lt;b&gt;Divine_Shield&lt;/b&gt; into a
+5/5 Elemental.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+将一个友方&lt;b&gt;圣盾&lt;/b&gt;转化为一个5/5的元素。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Everyone's eyes are on you! Well, they're also looking at the giant Elemental that we're using as a spotlight, but mainly at you!</enUS>
+			<zhCN>灯光，眼光，全都汇聚在你身上！嗯，也有一部分观众在看那个聚光灯元素，但主要还是看你！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Hideaki Takamura</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1809" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="94029" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<ReferencedTag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="EX1_002" ID="1656" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>The Black Knight</enUS>
+			<zhCN>黑骑士</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+ &lt;b&gt;Battlecry:&lt;/b&gt; Destroy an  enemy minion with &lt;b&gt;Taunt&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;消灭一个具有&lt;b&gt;嘲讽&lt;/b&gt;的敌方随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>He was sent by the Lich King to disrupt the Argent Tournament.   We can pretty much mark that a failure.</enUS>
+			<zhCN>巫妖王派他来阻止银色锦标赛的进行。可以说那是个失败。</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Unlocked by completing the Tutorial.</enUS>
+			<zhCN>完成教学后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked after 5000 total wins.</enUS>
+			<zhCN>总计赢得5000场对战后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Destroy a minion with Taunt.</enUS>
+			<zhCN>消灭一个具有嘲讽的随从。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Alex Horley Orlandelli</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="3" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="11" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+		<ReferencedTag enumID="190" name="TAUNT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="EX1_005" ID="1657" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Big Game Hunter</enUS>
+			<zhCN>王牌猎人</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Destroy a minion
+with 7 or more Attack.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;消灭一个攻击力大于或等于7的随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Mere devilsaurs no longer excite him.  Soon he'll be trying to catch Onyxia with only a dull Krol Blade.</enUS>
+			<zhCN>魔暴龙之类的猎物已经让他提不起兴趣了。很快，他就会提着一把生锈的“科罗尔之刃”去猎杀奥妮克希亚了。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Destroy a minion with an Attack of 7 or more.</enUS>
+			<zhCN>消灭一个攻击力大于或等于7的随从。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Chris Seaman</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="3" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_125" ID="111177" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Healthstone</enUS>
+			<zhCN>治疗石</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+Restore all damage your hero has taken this turn.@
+&lt;i&gt;(@)&lt;/i&gt;</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+恢复你的英雄在本回合中受到的所有伤害。@&lt;i&gt;（恢复@点）&lt;/i&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>HEARTHSTONE MENTIONED- oh, never mind.</enUS>
+			<zhCN>和炉石一样，都能给你安全感。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Melvin Chan</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="7" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_340" ID="112060" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Star Vulpera</enUS>
+			<zhCN>星际狐人</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+_&lt;b&gt;Battlecry:&lt;/b&gt; Destroy an enemy_
+&lt;b&gt;Starship&lt;/b&gt; or &lt;b&gt;Starship Piece&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;消灭一个敌方&lt;b&gt;星舰&lt;/b&gt;或&lt;b&gt;星舰组件&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>He was a star before he even flew his first ship.</enUS>
+			<zhCN>早在飞上太空之前他就已经是明星了。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Destroy an enemy &lt;b&gt;Starship&lt;/b&gt; or &lt;b&gt;Starship Piece&lt;/b&gt;.</enUS>
+			<zhCN>消灭一个敌方&lt;b&gt;星舰&lt;/b&gt;或&lt;b&gt;星舰组件&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Ivan Fomin</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<ReferencedTag enumID="3555" name="STARSHIP" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="JAM_034" ID="95405" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Speaker Stomper</enUS>
+			<zhCN>音箱践踏者</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Enemy spells
+cost (2) more next turn.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;下个回合敌方法术的法力值消耗增加（2）点。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Just like in Hoofloose.</enUS>
+			<zhCN>知名蹄踏武艺术家。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Luca Zontini</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1809" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="ONY_025" ID="71251" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Shoulder Check</enUS>
+			<zhCN>铁肩冲撞</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+Give a minion +2/+1 and &lt;b&gt;Rush&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+使一个随从获得+2/+1和&lt;b&gt;突袭&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>One... two... yeah, all present and correct.</enUS>
+			<zhCN>一个……两个……呼，肩膀都还在。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Andrew Hou</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1626" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<ReferencedTag enumID="791" name="RUSH" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="ONY_027" ID="71253" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Ring of Courage</enUS>
+			<zhCN>勇气之戒</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+Give a minion +1/+1. Repeat for each enemy minion.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+使一个随从获得+1/+1。每有一个敌方随从，重复一次。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Now to find the Ring of Wisdom and Ring of Power.</enUS>
+			<zhCN>现在去找智慧之戒和力量之戒吧。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Vladimir Kafanov</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1626" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="ONY_029" ID="71290" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Drakefire Amulet</enUS>
+			<zhCN>龙火护符</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Discover&lt;/b&gt; 2 Dragons. Summon them.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;发现&lt;/b&gt;并召唤两条龙。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"...and I only had to climb up the mountains in Winterspring 50 times!"</enUS>
+			<zhCN>“……然后在冬泉谷的山里爬上爬下50次就可以了！”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mark Zug</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="10" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1626" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="415" name="DISCOVER" type="Int" value="1" />
+		<Tag enumID="1342" name="USE_DISCOVER_VISUALS" type="Int" value="1" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="2" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="REV_023" ID="79990" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Demolition Renovator</enUS>
+			<zhCN>拆迁修理工</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Destroy 
+an enemy location.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;摧毁一个敌方地标。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"Look, the Sire said he wanted something more open concept..."</enUS>
+			<zhCN>“是大帝亲口说的，他想要开放式设计……”</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked with "Location, Location, Location!" Achievement.</enUS>
+			<zhCN>完成成就“注意地标”后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Destroy an enemy &lt;b&gt;location&lt;/b&gt;.</enUS>
+			<zhCN>摧毁一个敌方&lt;b&gt;地标&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mike Sass</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1691" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SCH_199t28" ID="75135" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Transfer Student</enUS>
+			<zhCN>转校生</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Give a friendly
+minion &lt;b&gt;Divine Shield&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;使一个友方随从获得&lt;b&gt;圣盾&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Give &lt;b&gt;Divine Shield&lt;/b&gt;.</enUS>
+			<zhCN>使其获得&lt;b&gt;圣盾&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1443" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<ReferencedTag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SW_023" ID="64198" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Provoke</enUS>
+			<zhCN>挑衅</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+Choose a friendly minion.
+Enemy minions attack it.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+选择一个友方随从，使所有敌方随从攻击该随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"Heh, Greetings. Heh, Greetings. Heh, Greetings. I will crush you!"</enUS>
+			<zhCN>“嗬，你好。嗬，你好。嗬，你好。我要粉碎你！”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Zoltan Boros</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1578" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SW_042" ID="64395" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Persistent Peddler</enUS>
+			<zhCN>固执的商贩</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Deathrattle:&lt;/b&gt; Summon a Persistent Peddler from your deck.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;亡语：&lt;/b&gt;从你的牌库中召唤一个固执的商贩。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Loves pyramid schemes and bike rides.</enUS>
+			<zhCN>爱好：多层传销，骑车跑路。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Ivan Fomin</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1578" />
+		<Tag enumID="199" name="CLASS" type="Int" value="14" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SW_046" ID="64523" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>City Tax</enUS>
+			<zhCN>城建税</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Lifesteal&lt;/b&gt;. Deal $1 damage
+to all enemy minions.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;吸血&lt;/b&gt;，对所有敌方随从造成$1点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"Look pal, I don't care what kind of legion you saved the world from, pay up or else."</enUS>
+			<zhCN>一成白银送你手，九成真金皇家藏。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Alex Stone</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1578" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="685" name="LIFESTEAL" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SW_061" ID="64709" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Guild Trader</enUS>
+			<zhCN>公会商人</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Spell Damage +2&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;法术伤害+2&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Somehow, she manages six different professions.</enUS>
+			<zhCN>由于未知原因，她掌握了六种不同的专业技能。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Yoahua Xu &amp; Junru Zhuo</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1578" />
+		<Tag enumID="192" name="SPELLPOWER" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SW_066" ID="64714" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Royal Librarian</enUS>
+			<zhCN>王室图书管理员</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Silence&lt;/b&gt;
+a minion.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;沉默&lt;/b&gt;一个
+随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Books on how to flip the Auction House are down that way.</enUS>
+			<zhCN>讲拍卖行刷金的书都在那边。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>&lt;b&gt;Silence&lt;/b&gt; a minion.</enUS>
+			<zhCN>&lt;b&gt;沉默&lt;/b&gt;一个随从。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Jun Yan &amp; Zhefei Hou</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1578" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+		<ReferencedTag enumID="339" name="SILENCE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SW_072" ID="64720" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Rustrot Viper</enUS>
+			<zhCN>锈烂蝰蛇</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Destroy your
+opponent's weapon.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;摧毁对手的武器。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Poisonous to weapons.</enUS>
+			<zhCN>这也是剧毒，针对武器的剧毒。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked with "Snakes on a Blade" Achievement.</enUS>
+			<zhCN>完成成就“刀剑摧蛇”后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Zhefei Hou</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1578" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SW_086" ID="64895" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Shady Bartender</enUS>
+			<zhCN>阴暗的酒保</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Give your Demons +2/+2.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;使你的所有恶魔获得+2/+2。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>One sin and tonic, coming right up.</enUS>
+			<zhCN>一杯“罪汤力”，马上就来。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Zoltan Boros</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1578" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SW_114" ID="64773" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Overdraft</enUS>
+			<zhCN>强行透支</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+Unlock your &lt;b&gt;Overloaded&lt;/b&gt;
+Mana Crystals to deal
+that much damage.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+解锁你&lt;b&gt;过载&lt;/b&gt;的法力水晶，并造成等量的
+伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Wait. It costs mana to be out of mana?!</enUS>
+			<zhCN>等等，我透支法力水晶还要花法力水晶？！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Wayne Wu</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1578" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="370" name="AFFECTED_BY_SPELL_POWER" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<ReferencedTag enumID="215" name="OVERLOAD" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SW_307" ID="64010" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Traveling Merchant</enUS>
+			<zhCN>旅行商人</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Gain +1/+1
+for each other friendly
+_minion you control.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;你每控制一个其他友方随从，便获得+1/+1。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Northrend's greatest export: funnel cakes.</enUS>
+			<zhCN>诺森德最重要的出口产品：漏斗蛋糕。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mike Sass</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1578" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SW_412" ID="64033" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>SI:7 Extortion</enUS>
+			<zhCN>军情七处的要挟</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+Deal $3 damage to an undamaged character.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+对一个未受伤的角色造成$3点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"It's a dangerous world out there. It'd be a shame if your protection insurance were to suddenly run out…"</enUS>
+			<zhCN>“外面的世界是很危险的。要是一不小心，你的保护费到期了，那可就难办了……”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Cheng Hao</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1578" />
+		<Tag enumID="199" name="CLASS" type="Int" value="7" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1678" name="SI_7" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SW_429" ID="64292" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Best in Shell</enUS>
+			<zhCN>紧壳商品</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+Summon two 2/7
+_Turtles with &lt;b&gt;Taunt&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+召唤两只2/7并具有&lt;b&gt;嘲讽&lt;/b&gt;的龟。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>The agility course takes a while.</enUS>
+			<zhCN>补货速度特别慢。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Melvin Chan</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1578" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="70124" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<ReferencedTag enumID="190" name="TAUNT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SW_441" ID="64391" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Shard of the Naaru</enUS>
+			<zhCN>纳鲁碎片</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Silence&lt;/b&gt; all enemy minions.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;沉默&lt;/b&gt;所有敌方随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Fell from the sky, huh? I'll give you ten gold.</enUS>
+			<zhCN>呦，从天上掉下来的？我出十金币，不能再多了。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Vlad Botos</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1578" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<ReferencedTag enumID="339" name="SILENCE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SW_463" ID="65159" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Imported Tarantula</enUS>
+			<zhCN>进口狼蛛</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+ &lt;b&gt;Deathrattle:&lt;/b&gt; Summon two
+1/1 Spiders with
+&lt;b&gt;Poisonous&lt;/b&gt; and &lt;b&gt;Rush&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;亡语：&lt;/b&gt;召唤两只1/1并具有&lt;b&gt;剧毒&lt;/b&gt;和&lt;b&gt;突袭&lt;/b&gt;的
+蜘蛛。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Which forbidden forest did you get this from?</enUS>
+			<zhCN>你在哪片禁林里抓到的这玩意？</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Patrik Bjorkstrom</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1578" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="66667" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<ReferencedTag enumID="363" name="POISONOUS" type="Int" value="1" />
+		<ReferencedTag enumID="791" name="RUSH" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_009t1" ID="119919" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Gnomish Aura</enUS>
+			<zhCN>侏儒光环</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+At the end of your turn,
+restore #4 Health to all your
+characters. Lasts @ turns.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+在你的回合结束时，为你的所有角色恢复#4点生命值。持续@回合。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Kevin Sidharta</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="535" name="QUEST_PROGRESS_TOTAL" type="Int" value="3" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1724" name="1" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="2311" name="OBJECTIVE" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+		<Tag enumID="3429" name="PALADIN_AURA" type="Int" value="1" />
+		<Tag enumID="4445" name="IS_FABLED_BUNDLE_CARD" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_009t2" ID="119920" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Mekkatorque's Aura</enUS>
+			<zhCN>梅卡托克的光环</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;. At the end
+of your turn, give a random
+friendly minion +4/+4 and
+&lt;b&gt;Divine Shield&lt;/b&gt;. Lasts @ turns.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+在你的回合结束时，随机使一个友方随从获得+4/+4和&lt;b&gt;圣盾&lt;/b&gt;。持续@回合。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Patrik Bjorkstrom</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="535" name="QUEST_PROGRESS_TOTAL" type="Int" value="3" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1724" name="1" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="2311" name="OBJECTIVE" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+		<Tag enumID="3429" name="PALADIN_AURA" type="Int" value="1" />
+		<Tag enumID="4445" name="IS_FABLED_BUNDLE_CARD" type="Int" value="1" />
+		<ReferencedTag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TLC_255" ID="118259" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Crystal Tender</enUS>
+			<zhCN>水晶养护工</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Gain empty Mana
+Crystals until both players
+have the same Mana.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;获得空的法力水晶，直到双方玩家拥有的法力水晶相同。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"Hands off my tendies!"</enUS>
+			<zhCN>“不许摸我的宝贝！”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Edgar Hidalgo</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOT_330" ID="51013" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Bronze Broodmother</enUS>
+			<zhCN>青铜龙巢母</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;. When you draw this,
+summon two 1/1 Whelps.
+ &lt;b&gt;Battlecry:&lt;/b&gt; Give your
+ other Dragons +2/+2.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+当你抽到本牌时，召唤两条1/1的雏龙。&lt;b&gt;战吼：&lt;/b&gt;使你的其他龙获得+2/+2。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1143" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="4583" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOT_334" ID="51127" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Temporal Anomaly</enUS>
+			<zhCN>时空畸体</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;.
+When you draw this,
+get a random spell
+&lt;i&gt;(from your class).&lt;/i&gt;</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+当你抽到本牌时，随机获取一张&lt;i&gt;（你职业的）&lt;/i&gt;法术牌。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1143" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="18" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="4583" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_509" ID="103340" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Wind-Up Musician</enUS>
+			<zhCN>发条演奏家</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Deal @ damage
+to all enemy minions.
+&lt;i&gt;(&lt;b&gt;Trade&lt;/b&gt; to upgrade!)&lt;/i&gt;</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;对所有敌方随从造成@点伤害。&lt;i&gt;（&lt;b&gt;交易&lt;/b&gt;后升级！）&lt;/i&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Sure to wind up your opponents.</enUS>
+			<zhCN>可以帮你把对手奏一顿。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Earnable on the &lt;i&gt;Whizbang's Workshop&lt;/i&gt; Reward Track.</enUS>
+			<zhCN>可以在&lt;i&gt;威兹班的工坊&lt;/i&gt;奖励路线中获得该奖励。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal @ damage.</enUS>
+			<zhCN>造成@点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Jim Nelson</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_802" ID="104594" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Wind-Up Sapling</enUS>
+			<zhCN>发条树苗</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Refresh @
+Mana |4(Crystal, Crystals).
+&lt;i&gt;(&lt;b&gt;Trade&lt;/b&gt; to upgrade!)&lt;/i&gt;</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;复原@个法力水晶。&lt;i&gt;（&lt;b&gt;交易&lt;/b&gt;后升级！）&lt;/i&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>I am Wind-Up Sapling.</enUS>
+			<zhCN>“我是发条树苗。”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Gabriel Lopes</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="1" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_880" ID="104796" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Wind-Up Enforcer</enUS>
+			<zhCN>发条执行者</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Summon @
+|4(copy, copies) of this minion.
+&lt;i&gt;(&lt;b&gt;Trade&lt;/b&gt; to upgrade!)&lt;/i&gt;</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;召唤本随从的@个复制。&lt;i&gt;（&lt;b&gt;交易&lt;/b&gt;后升级！）&lt;/i&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Code 6404.5 clearly states that all Enforcers remain in their packaging until told by authorized personnel.</enUS>
+			<zhCN>6404.5号条例规定，所有执行者必须在包装中休眠，直到受权人员将其唤醒。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Kevin Sidharta</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="VAC_337" ID="107766" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Line Cook</enUS>
+			<zhCN>灶头厨师</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Taunt&lt;/b&gt;. When you draw this,
+get a copy of it.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;嘲讽&lt;/b&gt;。当你抽到本牌时，获取一张它的复制。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Hold up. Let her cook.</enUS>
+			<zhCN>快住手，还是让她来做饭吧。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Nicola Saviori</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1905" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="WON_064" ID="102598" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Shadow Word: Forbid</enUS>
+			<zhCN>暗言术：禁</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+Destroy a 4-Attack minion. &lt;b&gt;Corrupt:&lt;/b&gt; Destroy ALL 4-Attack minions.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+消灭一个攻击力为4的随从。&lt;b&gt;腐蚀：&lt;/b&gt;消灭所有攻击力为4的随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>At last, Priest has no more weaknesses.</enUS>
+			<zhCN>牧师的防守终于再无死角！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Kevin Sidharta</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1898" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="102599" />
+		<Tag enumID="1524" name="CORRUPT" type="Int" value="1" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="6" />
+		<Tag enumID="1719" name="TRANSFORMED_FROM_CARD_VISUAL_TYPE" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="WON_064ts" ID="102599" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Shadow Word: Forbid</enUS>
+			<zhCN>暗言术：禁</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+&lt;b&gt;Corrupted&lt;/b&gt;. Destroy ALL 4-Attack minions.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;。&lt;b&gt;已腐蚀&lt;/b&gt;
+消灭所有攻击力为4的随从。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1898" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="1551" name="CORRUPTED_CARD" type="Int" value="1" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="6" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="WORK_007" ID="110759" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Deadline</enUS>
+			<zhCN>最后期限</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;, &lt;b&gt;Temporary&lt;/b&gt;
+Destroy a minion.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;，&lt;b&gt;临时&lt;/b&gt;
+消灭一个随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>For all you procrastinators out there, don't worry. That's why we added Tradeable.</enUS>
+			<zhCN>各位拖延症患者请不要怕，我们给这张牌加上了“可交易”——还有得商量。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Max Grecke</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1905" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="6" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="WW_331t" ID="100102" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Snake Oil</enUS>
+			<zhCN>蛇油</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+Deal $0 damage.
+&lt;i&gt;This seems useless...&lt;/i&gt;</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+造成$0点伤害。&lt;i&gt;好像没什么用……&lt;/i&gt;</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Ivan Fomin</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1892" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="WW_365" ID="101142" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Lay Down the Law</enUS>
+			<zhCN>不许乱动</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Tradeable&lt;/b&gt;
+Set a minion's Attack and Health to 1. &lt;b&gt;Quickdraw:&lt;/b&gt; Then deal $1 damage to it.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+将一个随从的攻击力和生命值变为1。&lt;b&gt;快枪：&lt;/b&gt;然后对其造成$1点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>The official term for "Because I said so!".</enUS>
+			<zhCN>“乖乖听话！”的另类说法。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">L. Lullabi &amp; K. Turovec</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1892" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="2905" name="QUICKDRAW" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="WW_434" ID="101969" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Sunspot Dragon</enUS>
+			<zhCN>日斑巨龙</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Tradeable&lt;/b&gt;, &lt;b&gt;Lifesteal&lt;/b&gt;
+&lt;b&gt;Quickdraw:&lt;/b&gt; Deal 6 damage.</enUS>
+			<zhCN>&lt;b&gt;可交易&lt;/b&gt;
+&lt;b&gt;吸血&lt;/b&gt;。&lt;b&gt;快枪：&lt;/b&gt;造成6点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>THIS is why you shouldn't look directly at the sun.</enUS>
+			<zhCN>这就是不要直视太阳的原因。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Earnable on the &lt;i&gt;Showdown in the Badlands&lt;/i&gt; Reward Track.</enUS>
+			<zhCN>可以在&lt;i&gt;决战荒芜之地&lt;/i&gt;奖励路线中获得该奖励。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal 6 damage.</enUS>
+			<zhCN>造成6点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Alex Stone</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="47" name="ATK" type="Int" value="6" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1892" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="685" name="LIFESTEAL" type="Int" value="1" />
+		<Tag enumID="1720" name="TRADEABLE" type="Int" value="1" />
+		<Tag enumID="1743" name="DECK_ACTION_COST" type="Int" value="1" />
+		<Tag enumID="2905" name="QUICKDRAW" type="Int" value="1" />
+	</Entity>
+</CardDefs>

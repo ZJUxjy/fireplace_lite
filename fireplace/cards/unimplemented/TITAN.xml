@@ -1,0 +1,384 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CardDefs build="236529" description="泰坦机制">
+	<Entity CardID="TTN_075" ID="96903" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Norgannon</enUS>
+			<zhCN>诺甘农</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Titan&lt;/b&gt;
+After this uses an ability, double the power of the other abilities.</enUS>
+			<zhCN>&lt;b&gt;泰坦&lt;/b&gt;
+在本随从使用一个技能后，其他技能的效果翻倍。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>His tremendous arcane magic was strong enough to save all of the spirits of the titans after Sargeras destroyed their physical forms.</enUS>
+			<zhCN>他的奥术魔法无与伦比，足以在萨格拉斯摧毁泰坦们的实体之后保护他们的灵魂。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="8" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1858" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="2772" name="TITAN" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TTN_092" ID="97495" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Aggramar, the Avenger</enUS>
+			<zhCN>复仇者阿格拉玛</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Titan&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Equip a
+3/3 Taeshalach.</enUS>
+			<zhCN>&lt;b&gt;泰坦&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;装备一把3/3的泰沙拉克。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Formerly a trusted lieutenant of Sargeras, Aggramar helped him fight the demonic legions across many worlds before he was corrupted.</enUS>
+			<zhCN>阿格拉玛曾是萨格拉斯信赖的副官，在萨格拉斯堕落之前与他一道扫荡诸界，对战恶魔大军。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Kevin Sidharta</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="7" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1858" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="1932" name="HAS_DIAMOND_QUALITY" type="Int" value="1" />
+		<Tag enumID="2772" name="TITAN" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TTN_415" ID="96710" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Khaz'goroth</enUS>
+			<zhCN>卡兹格罗斯</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Titan&lt;/b&gt;
+After this uses an ability, gain
+&lt;b&gt;Immune&lt;/b&gt; this turn and attack a
+random enemy minion.</enUS>
+			<zhCN>&lt;b&gt;泰坦&lt;/b&gt;
+在本随从使用一个技能后，在本回合中获得&lt;b&gt;免疫&lt;/b&gt;并随机攻击一个敌方随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Creator of the titan-forged races, Khaz'goroth intended them to safeguard the world of Azeroth from corruption and discord.</enUS>
+			<zhCN>卡兹格罗斯打造了各个种族的泰坦造物，以期保护艾泽拉斯免受腐蚀与纷乱的侵害。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Grafit</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1858" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="2772" name="TITAN" type="Int" value="1" />
+		<ReferencedTag enumID="240" name="IMMUNE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TTN_429" ID="97103" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Aman'Thul</enUS>
+			<zhCN>阿曼苏尔</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Titan&lt;/b&gt;
+After this uses an ability,
+&lt;b&gt;Discover&lt;/b&gt; any &lt;b&gt;Legendary&lt;/b&gt;
+_minion from any class.</enUS>
+			<zhCN>&lt;b&gt;泰坦&lt;/b&gt;
+在本随从使用一个技能后，&lt;b&gt;发现&lt;/b&gt;任意职业的&lt;b&gt;传说&lt;/b&gt;随从牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>The leader of the titans was the first to awaken. In his loneliness, he sought out other titans across many different worlds, and together, they formed the Pantheon.</enUS>
+			<zhCN>泰坦诸神的领袖最先醒来。在孤寂之中，他穿行诸界，寻找其他泰坦，与之共同组成了万神殿。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">James Ryman</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="10" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1858" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="1932" name="HAS_DIAMOND_QUALITY" type="Int" value="1" />
+		<Tag enumID="2772" name="TITAN" type="Int" value="1" />
+		<ReferencedTag enumID="415" name="DISCOVER" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TTN_721" ID="97642" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>V-07-TR-0N Prime</enUS>
+			<zhCN>终极V-07-TR-0N</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;T1T4N&lt;/b&gt;
+This minion's abilities
+repeat on another random
+friendly minion.</enUS>
+			<zhCN>&lt;b&gt;泰钽&lt;/b&gt;
+本随从的技能会在另一个随机友方随从身上重复。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Long after the titans' departure, Mimiron dreamed of creating something with an approximation of their power. He may have actually succeeded!</enUS>
+			<zhCN>在泰坦们离开了很久之后，米米尔隆有了一个设想，创造出足以匹敌泰坦之能的造物。他好像成功了！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Matt Dixon</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1858" />
+		<Tag enumID="199" name="CLASS" type="Int" value="7" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="17" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="2772" name="TITAN" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TTN_737" ID="98285" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>The Primus</enUS>
+			<zhCN>兵主</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Titan&lt;/b&gt;
+After this uses an ability, &lt;b&gt;Discover&lt;/b&gt; a card with that Rune.</enUS>
+			<zhCN>&lt;b&gt;泰坦&lt;/b&gt;
+在本随从使用一个技能后，&lt;b&gt;发现&lt;/b&gt;一张对应符文的牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>As there is a Pantheon of titans, so is there also a Pantheon of Death, comprised of powerful rulers in the Shadowlands.</enUS>
+			<zhCN>既然存在泰坦万神殿，也就有死亡万神殿，其中包括暗影界各位强大的统治者。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">A. Zemskov &amp; T. Shevtsov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="9" />
+		<Tag enumID="47" name="ATK" type="Int" value="7" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1858" />
+		<Tag enumID="199" name="CLASS" type="Int" value="1" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="2772" name="TITAN" type="Int" value="1" />
+		<ReferencedTag enumID="415" name="DISCOVER" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TTN_800" ID="96909" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Golganneth, the Thunderer</enUS>
+			<zhCN>雷霆之神高戈奈斯</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Titan&lt;/b&gt;
+Your first spell each turn costs (3) less.</enUS>
+			<zhCN>&lt;b&gt;泰坦&lt;/b&gt;
+你每个回合使用的第一张法术牌的法力值消耗减少（3）点。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>With dominion over the seas and skies, Golganneth fearlessly wields the power of nature to serve the Pantheon.</enUS>
+			<zhCN>高戈奈斯统领天空与海洋，英勇无畏地运用着自然的力量，为万神殿效力。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Nicola Saviori</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="7" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1858" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="362" name="AURA" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="2772" name="TITAN" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TTN_858" ID="98061" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Amitus, the Peacekeeper</enUS>
+			<zhCN>维和者阿米图斯</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Titan&lt;/b&gt;
+&lt;b&gt;Taunt&lt;/b&gt;. Your minions
+can't take more than 2_damage at a time.</enUS>
+			<zhCN>&lt;b&gt;泰坦&lt;/b&gt;
+&lt;b&gt;嘲讽&lt;/b&gt;。你的随从每次受到伤害不会超过2点。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>As a champion of harmony, Amitus abstained from the Pantheon's many conflicts until one day, shortly after the corruption of Sargeras, she vanished altogether.</enUS>
+			<zhCN>阿米图斯曾是维护和谐的勇士，消弭了万神殿的诸多纷争。萨格拉斯堕落之后不久，她也一同消失了。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Zoltan Boros</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="8" />
+		<Tag enumID="47" name="ATK" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1858" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="2772" name="TITAN" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TTN_862" ID="98344" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Argus, the Emerald Star</enUS>
+			<zhCN>翠绿之星阿古斯</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Titan&lt;/b&gt;
+Minions to the left of this
+have &lt;b&gt;Rush&lt;/b&gt;, and ones to the
+right have &lt;b&gt;Lifesteal&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;泰坦&lt;/b&gt;
+本随从左边的随从均拥有&lt;b&gt;突袭&lt;/b&gt;，本随从右边的随从均拥有&lt;b&gt;吸血&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Once a proud titan, Argus was fated to meet a darker end. Sargeras and his demons would later corrupt and shatter Argus to use his power for themselves.</enUS>
+			<zhCN>阿古斯曾是一位高傲的泰坦，命运却引他走向了黑暗的结局。萨格拉斯与麾下的恶魔腐蚀了阿古斯，将他的力量据为己有，星球也因此而破碎。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Juan Calle</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="9" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1858" />
+		<Tag enumID="199" name="CLASS" type="Int" value="14" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="2772" name="TITAN" type="Int" value="1" />
+		<ReferencedTag enumID="685" name="LIFESTEAL" type="Int" value="1" />
+		<ReferencedTag enumID="791" name="RUSH" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TTN_903" ID="96671" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Eonar, the Life-Binder</enUS>
+			<zhCN>生命的缚誓者艾欧娜尔</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Titan&lt;/b&gt;
+After this uses an ability,
+summon a 5/5 Ancient
+with &lt;b&gt;Taunt&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;泰坦&lt;/b&gt;
+在本随从使用一个技能后，召唤一棵5/5并具有&lt;b&gt;嘲讽&lt;/b&gt;的古树。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Protector of all living things, she once saved the nascent world-soul of Azeroth from annihilation. It seems mercy was her greatest wisdom.</enUS>
+			<zhCN>她是所有生命的保护者，曾经挽救新生的艾泽拉斯世界之魂，使之免于毁灭。仁善便是她最伟大的智慧。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">James Ryman</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="7" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="10" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1858" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="1932" name="HAS_DIAMOND_QUALITY" type="Int" value="1" />
+		<Tag enumID="2772" name="TITAN" type="Int" value="1" />
+		<ReferencedTag enumID="190" name="TAUNT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TTN_960" ID="97702" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Sargeras, the Destroyer</enUS>
+			<zhCN>灭世泰坦萨格拉斯</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Titan&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Open a portal
+that summons two 3/2
+Imps each turn.</enUS>
+			<zhCN>&lt;b&gt;泰坦&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;打开一道传送门，每回合召唤两个3/2的小鬼。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Formerly the Defender of the Pantheon, he became disillusioned by his mission and formed the Burning Legion to destroy all life within the universe.</enUS>
+			<zhCN>他曾是万神殿的护卫者，在执行任务时心志幻灭，于是组建了燃烧军团，旨在扫平宇宙间的一切生命。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Juan Calle</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="12" />
+		<Tag enumID="47" name="ATK" type="Int" value="6" />
+		<Tag enumID="48" name="COST" type="Int" value="9" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1858" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="15" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="2772" name="TITAN" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="YOG_516" ID="101033" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Yogg-Saron, Unleashed</enUS>
+			<zhCN>脱困古神尤格-萨隆</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Titan&lt;/b&gt;
+After this uses an ability,
+cast two random spells.</enUS>
+			<zhCN>&lt;b&gt;泰坦&lt;/b&gt;
+在本随从使用一个技能后，随机施放两个法术。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Has been known to monologue before he strikes.</enUS>
+			<zhCN>开战之前话巨多。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Konstantin Porubov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="7" />
+		<Tag enumID="48" name="COST" type="Int" value="9" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1858" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="1932" name="HAS_DIAMOND_QUALITY" type="Int" value="1" />
+		<Tag enumID="2772" name="TITAN" type="Int" value="1" />
+	</Entity>
+</CardDefs>

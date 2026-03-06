@@ -1,0 +1,385 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CardDefs>
+	<Entity CardID="DINO_400" ID="118403" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<zhCN>怒袭甲龙</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<zhCN>每当你获得护甲值，获得+2/+2并随机攻击一个敌方随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<zhCN>这个就叫做反应装甲。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Bima Kusuma</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="DINO_400e" ID="125920" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<zhCN>恼羞成怒</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<zhCN>+2/+2。</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="6" />
+	</Entity>
+	<Entity CardID="DINO_401" ID="118404" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<zhCN>伟岸的德拉克雷斯</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<zhCN>&lt;b&gt;突袭&lt;/b&gt;。在本随从攻击一个敌方随从后，还会对所有其他敌方随从造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<zhCN>你们满脑子想着能不能这么做，却没有停下来想想该不该这么做。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mike Sass</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="12" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="791" name="RUSH" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="1932" name="HAS_DIAMOND_QUALITY" type="Int" value="1" />
+		<Tag enumID="2523" name="1" type="Int" value="1" />
+		<Tag enumID="4128" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="DINO_433" ID="118730" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<zhCN>守卫执勤</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<zhCN>随机召唤法力值消耗为（6），（4）和（2）的&lt;b&gt;嘲讽&lt;/b&gt;随从各一个。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<zhCN>“我的兄弟都去屠龙了，我呢？当个守卫，执勤。”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Sergey Tsvelykh</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TLC_478" ID="119637" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<zhCN>远祖之斧</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<zhCN>在你的英雄攻击后，对所有随从造成1点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<zhCN>……还有曾曾曾远祖的斧头</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Vlad Botos</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="7" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TLC_600" ID="117714" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<zhCN>乘风浮龙</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;造成5点伤害，获得5点护甲值。&lt;b&gt;延系：&lt;/b&gt;法力值消耗减少（3）点。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<zhCN>他太纠结了。起飞时总会纠成一个结。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<zhCN>造成5点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Ivo Campelo da Silva</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="47" name="ATK" type="Int" value="6" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="4028" name="KINDRED" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TLC_601" ID="117715" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<zhCN>龟甲旋风</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<zhCN>消耗最多5点护甲值。每消耗一点，对所有随从造成$1点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<zhCN>转向胜利！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Grafit</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TLC_602" ID="117716" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<zhCN>走进失落之城</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<zhCN>&lt;b&gt;任务：&lt;/b&gt;存活10个回合。&lt;b&gt;奖励：&lt;/b&gt;拉特维厄斯，城市之眼。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<zhCN>第8天。成功了！入夜时分，我们走到一处发光的隧道，入口只有两个瞌睡的托维尔人看守。我们悄悄走过隧道，直接来到了失落之城的核心地带！同胞们一定会用温暖的怀抱迎接我们。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Zoltan Boros</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="462" name="QUEST" type="Int" value="1" />
+		<Tag enumID="535" name="QUEST_PROGRESS_TOTAL" type="Int" value="10" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="839" name="1" type="Int" value="1" />
+		<Tag enumID="1089" name="QUEST_REWARD_DATABASE_ID" type="Int" value="117717" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+		<Tag enumID="3674" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TLC_602t" ID="117717" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<zhCN>拉特维厄斯，城市之眼</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;随机获取2张勇闯安戈洛的&lt;b&gt;任务奖励&lt;/b&gt;。将其余奖励洗入你的牌库。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Kevin Sidharta</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="8" />
+		<Tag enumID="47" name="ATK" type="Int" value="8" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TLC_606" ID="117771" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<zhCN>拉特维亚护甲师</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;对一个敌方随从造成2点伤害。如果该随从死亡，获得5点护甲值。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<zhCN>现在只需要给龟壳喷上一层蓝漆！</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<zhCN>对一个敌方随从造成2点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">James Ryman</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TLC_620" ID="117835" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<zhCN>强固</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<zhCN>获得3点护甲值。对一个敌方随从造成等同于你护甲值的伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<zhCN>堡垒异常强固——富含维生素和矿物质！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="370" name="AFFECTED_BY_SPELL_POWER" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TLC_622" ID="117917" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<zhCN>城防守卫</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<zhCN>召唤两个0/6并具有&lt;b&gt;嘲讽&lt;/b&gt;的守卫。守卫在受到伤害时会获得+1攻击力。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<zhCN>千百年来，正是这些0/6的&lt;b&gt;嘲讽&lt;/b&gt;随从挡住了入侵者。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Kevin Sidharta</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="116796" />
+	</Entity>
+	<Entity CardID="TLC_622e" ID="123407" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<zhCN>坚守不移</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<zhCN>攻击力提高。</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="6" />
+	</Entity>
+	<Entity CardID="TLC_622t" ID="116796" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<zhCN>坚毅的守卫</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<zhCN>&lt;b&gt;嘲讽&lt;/b&gt;
+在本随从受到伤害后，获得+1攻击力。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Kevin Sidharta</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+	</Entity>
+	<Entity CardID="TLC_623" ID="117918" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<zhCN>石雕工匠</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<zhCN>在你的回合结束时，随机使一个受伤的友方随从获得+2/+2。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<zhCN>*锵* *锵* *锵* *嗷呜！*</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Stefano Spagnuolo</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TLC_623e" ID="119662" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<zhCN>始祖龟石雕</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<zhCN>+2/+2。</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="6" />
+	</Entity>
+	<Entity CardID="TLC_624" ID="117919" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<zhCN>观察者娜博亚</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;召唤你受伤的随从的复制，使复制获得&lt;b&gt;突袭&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<zhCN>当然啦，把安戈洛交给始祖龟，泰坦们完全放心。娜博亚留在这里只是一道&lt;i&gt;保险&lt;/i&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="7" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TLC_632" ID="117874" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<zhCN>萨弗拉斯的故事</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<zhCN>将你的英雄技能替换为“随机对一个敌人造成8点伤害。”使用两次后，换回原技能。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<zhCN>“……当时对面足有七个随从，可它还是砸中了敌方英雄的脸！”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Ivan Fomin</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="5" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="2" />
+	</Entity>
+	<Entity CardID="TLC_632t" ID="119639" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<zhCN>死吧，虫子！</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<zhCN>随机对一个敌人造成$8点伤害。&lt;i&gt;（还可使用两次！）&lt;/i&gt;</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Jimmy Lo</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="10" />
+	</Entity>
+	<Entity CardID="TLC_632t2" ID="119640" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<zhCN>死吧，虫子！</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<zhCN>随机对一个敌人造成$8点伤害。&lt;i&gt;（还可使用一次！）&lt;/i&gt;</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Jimmy Lo</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="10" />
+	</Entity>
+</CardDefs>

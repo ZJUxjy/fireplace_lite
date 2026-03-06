@@ -1,0 +1,2150 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CardDefs build="236529" description="雇佣兵技能卡牌">
+	<Entity CardID="LETL_000_01" ID="63746" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Attack</enUS>
+			<zhCN>攻击</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Attack&lt;/b&gt; an enemy.</enUS>
+			<zhCN>&lt;b&gt;攻击&lt;/b&gt;一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Attack.</enUS>
+			<zhCN>攻击。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<Tag enumID="1726" name="1" type="Int" value="1" />
+		<Tag enumID="2132" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_000_02" ID="63747" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Ranged Attack</enUS>
+			<zhCN>远程攻击</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal damage equal to your Attack.</enUS>
+			<zhCN>造成等同于你的攻击力的伤害。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Attack with Range.</enUS>
+			<zhCN>远程攻击。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1200" name="1" type="Int" value="1" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<Tag enumID="1726" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_000_03" ID="71683" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Idle</enUS>
+			<zhCN>挂机</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Do nothing.</enUS>
+			<zhCN>什么都不做。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="20" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+	</Entity>
+	<Entity CardID="LETL_000_04" ID="77418" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Charge Attack</enUS>
+			<zhCN>冲锋攻击</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Attack&lt;/b&gt; an enemy.</enUS>
+			<zhCN>&lt;b&gt;攻击&lt;/b&gt;一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="8" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<Tag enumID="1726" name="1" type="Int" value="1" />
+		<Tag enumID="2132" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_000_05" ID="87861" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Bleed</enUS>
+			<zhCN>流血</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Apply &lt;b&gt;Bleed (@)&lt;/b&gt; to an enemy.</enUS>
+			<zhCN>对一个敌人施加&lt;b&gt;流血（@）&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Choose an enemy.</enUS>
+			<zhCN>选择一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<ReferencedTag enumID="2214" name="LETTUCE_BLEED" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_001P3_01" ID="65939" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>For the Queen 1</enUS>
+			<zhCN>为了女王1</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Choose an enemy.
+An adjacent enemy &lt;b&gt;Attacks&lt;/b&gt; it.</enUS>
+			<zhCN>选择一个敌人。使一个相邻敌人&lt;b&gt;攻击&lt;/b&gt;它。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Choose an enemy.</enUS>
+			<zhCN>选择一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="6" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="2" />
+		<Tag enumID="1672" name="2" type="Int" value="2" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_001P3_02" ID="65940" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>For the Queen 2</enUS>
+			<zhCN>为了女王2</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Choose an enemy.
+An adjacent enemy &lt;b&gt;Attacks&lt;/b&gt; it.</enUS>
+			<zhCN>选择一个敌人。使一个相邻敌人&lt;b&gt;攻击&lt;/b&gt;它。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Choose an enemy.</enUS>
+			<zhCN>选择一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="6" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="2" />
+		<Tag enumID="1672" name="2" type="Int" value="2" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="2" type="Int" value="2" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_001P3_03" ID="63740" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>For the Queen 3</enUS>
+			<zhCN>为了女王3</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Choose an enemy.
+Adjacent enemies &lt;b&gt;Attack&lt;/b&gt; it.</enUS>
+			<zhCN>选择一个敌人。使相邻的敌人&lt;b&gt;攻击&lt;/b&gt;它。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Choose an enemy.</enUS>
+			<zhCN>选择一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="6" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="2" />
+		<Tag enumID="1672" name="2" type="Int" value="2" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="3" type="Int" value="3" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_001P3_04" ID="76514" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>For the Queen 4</enUS>
+			<zhCN>为了女王4</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Choose an enemy.
+Adjacent enemies &lt;b&gt;Attack&lt;/b&gt; it.</enUS>
+			<zhCN>选择一个敌人。使相邻的敌人&lt;b&gt;攻击&lt;/b&gt;它。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Choose an enemy.</enUS>
+			<zhCN>选择一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="6" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="2" />
+		<Tag enumID="1672" name="2" type="Int" value="2" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="4" type="Int" value="4" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_001P3_05" ID="76515" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>For the Queen {0}</enUS>
+			<zhCN>为了女王{0}</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Choose an enemy.
+Adjacent enemies &lt;b&gt;Attack&lt;/b&gt; it.</enUS>
+			<zhCN>选择一个敌人。使相邻的敌人&lt;b&gt;攻击&lt;/b&gt;它。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Choose an enemy.</enUS>
+			<zhCN>选择一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="6" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="2" />
+		<Tag enumID="1672" name="2" type="Int" value="2" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<Tag enumID="2493" name="LETTUCE_ABILITY_TIER" type="Int" value="5" />
+		<Tag enumID="2609" name="5" type="Int" value="5" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_001P5_01" ID="65943" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Reclaimed Souls 1</enUS>
+			<zhCN>重拾灵魂1</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Gain +@ Attack for each friendly character that died this game.</enUS>
+			<zhCN>在本局对战中，每有一个友方角色死亡，便获得+@攻击力。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="10" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="6" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_001P5_02" ID="65944" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Reclaimed Souls 2</enUS>
+			<zhCN>重拾灵魂2</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Gain +@ Attack for each friendly character that died this game.</enUS>
+			<zhCN>在本局对战中，每有一个友方角色死亡，便获得+@攻击力。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="10" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="6" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="2" type="Int" value="2" />
+	</Entity>
+	<Entity CardID="LETL_001P5_03" ID="63742" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Reclaimed Souls 3</enUS>
+			<zhCN>重拾灵魂3</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Gain +@ Attack for each friendly character that died this game.</enUS>
+			<zhCN>在本局对战中，每有一个友方角色死亡，便获得+@攻击力。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="10" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="6" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="3" type="Int" value="3" />
+	</Entity>
+	<Entity CardID="LETL_001P5_04" ID="76512" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Reclaimed Souls 4</enUS>
+			<zhCN>重拾灵魂4</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Gain +@ Attack for each friendly character that died this game.</enUS>
+			<zhCN>在本局对战中，每有一个友方角色死亡，便获得+@攻击力。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="10" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="6" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="4" type="Int" value="4" />
+	</Entity>
+	<Entity CardID="LETL_001P5_05" ID="76513" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Reclaimed Souls {0}</enUS>
+			<zhCN>重拾灵魂{0}</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Gain +@ Attack for each friendly character that died this game.</enUS>
+			<zhCN>在本局对战中，每有一个友方角色死亡，便获得+@攻击力。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="10" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="6" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<Tag enumID="2493" name="LETTUCE_ABILITY_TIER" type="Int" value="5" />
+		<Tag enumID="2609" name="5" type="Int" value="5" />
+	</Entity>
+	<Entity CardID="LETL_001P7_02" ID="65945" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Death Volley 2</enUS>
+			<zhCN>死亡箭雨2</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Deathrattle:&lt;/b&gt; Deal
+damage_equal to
+this_Merc's_Attack
+to 1_random_enemy.</enUS>
+			<zhCN>&lt;b&gt;亡语：&lt;/b&gt;随机对1个敌人造成等同于此佣兵攻击力的伤害。</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="684" name="HIDE_COST" type="Int" value="1" />
+		<Tag enumID="1855" name="LETTUCE_IS_EQUPIMENT" type="Int" value="1" />
+		<ReferencedTag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_001P7_03" ID="65946" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Death Volley 3</enUS>
+			<zhCN>死亡箭雨3</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Deathrattle:&lt;/b&gt; Deal
+damage_equal to
+this_Merc's_Attack
+to 2_random_enemies.</enUS>
+			<zhCN>&lt;b&gt;亡语：&lt;/b&gt;随机对2个敌人造成等同于此佣兵攻击力的伤害。</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="684" name="HIDE_COST" type="Int" value="1" />
+		<Tag enumID="1855" name="LETTUCE_IS_EQUPIMENT" type="Int" value="1" />
+		<ReferencedTag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_001P7_04" ID="65046" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Death Volley {0}</enUS>
+			<zhCN>死亡箭雨{0}</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Deathrattle:&lt;/b&gt; Deal damage_equal to this Merc's_Attack to all_enemies.</enUS>
+			<zhCN>&lt;b&gt;亡语：&lt;/b&gt;对所有敌人造成等同于此佣兵攻击力的伤害。</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="684" name="HIDE_COST" type="Int" value="1" />
+		<Tag enumID="1855" name="LETTUCE_IS_EQUPIMENT" type="Int" value="1" />
+		<Tag enumID="2494" name="LETTUCE_EQUIPMENT_TIER" type="Int" value="4" />
+		<ReferencedTag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_001P7_T_04" ID="76129" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Death Volley {0}</enUS>
+			<zhCN>死亡箭雨{0}</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Deathrattle:&lt;/b&gt; Deal damage_equal to this Merc's_Attack to all_enemies.</enUS>
+			<zhCN>&lt;b&gt;亡语：&lt;/b&gt;对所有敌人造成等同于此佣兵攻击力的伤害。</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="684" name="HIDE_COST" type="Int" value="1" />
+		<Tag enumID="1671" name="LETTUCE_PASSIVE_ABILITY" type="Int" value="1" />
+		<ReferencedTag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_001P9_01" ID="67104" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Banshee Bolt 1</enUS>
+			<zhCN>女妖之箭1</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal damage equal
+to this Merc's Attack.</enUS>
+			<zhCN>造成等同于此佣兵攻击力的伤害。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal damage to a character.</enUS>
+			<zhCN>对一个角色造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="370" name="AFFECTED_BY_SPELL_POWER" type="Int" value="1" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="6" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_001P9_02" ID="67103" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Banshee Bolt 2</enUS>
+			<zhCN>女妖之箭2</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal damage equal
+to this Merc's Attack.</enUS>
+			<zhCN>造成等同于此佣兵攻击力的伤害。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal damage to a character.</enUS>
+			<zhCN>对一个角色造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="370" name="AFFECTED_BY_SPELL_POWER" type="Int" value="1" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="6" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="2" type="Int" value="2" />
+	</Entity>
+	<Entity CardID="LETL_001P9_03" ID="66812" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Banshee Bolt 3</enUS>
+			<zhCN>女妖之箭3</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal damage equal
+to this Merc's Attack.</enUS>
+			<zhCN>造成等同于此佣兵攻击力的伤害。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal damage to a character.</enUS>
+			<zhCN>对一个角色造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="370" name="AFFECTED_BY_SPELL_POWER" type="Int" value="1" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="6" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="3" type="Int" value="3" />
+	</Entity>
+	<Entity CardID="LETL_001P9_04" ID="76510" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Banshee Bolt 4</enUS>
+			<zhCN>女妖之箭4</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal damage equal
+to this Merc's Attack.</enUS>
+			<zhCN>造成等同于此佣兵攻击力的伤害。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal damage to a character.</enUS>
+			<zhCN>对一个角色造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="370" name="AFFECTED_BY_SPELL_POWER" type="Int" value="1" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="6" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="4" type="Int" value="4" />
+	</Entity>
+	<Entity CardID="LETL_001P9_05" ID="76511" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Banshee Bolt {0}</enUS>
+			<zhCN>女妖之箭{0}</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal damage equal
+to this Merc's Attack.</enUS>
+			<zhCN>造成等同于此佣兵攻击力的伤害。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal damage to a character.</enUS>
+			<zhCN>对一个角色造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="370" name="AFFECTED_BY_SPELL_POWER" type="Int" value="1" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="6" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<Tag enumID="2493" name="LETTUCE_ABILITY_TIER" type="Int" value="5" />
+		<Tag enumID="2609" name="5" type="Int" value="5" />
+	</Entity>
+	<Entity CardID="LETL_002P2_01" ID="65947" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Mantle of the Fallen 1</enUS>
+			<zhCN>逝者的披风1</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Deathrattle:&lt;/b&gt; Give your characters +2/+2.</enUS>
+			<zhCN>&lt;b&gt;亡语：&lt;/b&gt;使你的所有角色获得+2/+2。</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="684" name="HIDE_COST" type="Int" value="1" />
+		<Tag enumID="1671" name="LETTUCE_PASSIVE_ABILITY" type="Int" value="1" />
+		<ReferencedTag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_002P2_02" ID="65948" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Mantle of the Fallen 2</enUS>
+			<zhCN>逝者的披风2</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Deathrattle:&lt;/b&gt; Give your characters +5/+5.</enUS>
+			<zhCN>&lt;b&gt;亡语：&lt;/b&gt;使你的所有角色获得+5/+5。</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="684" name="HIDE_COST" type="Int" value="1" />
+		<Tag enumID="1671" name="LETTUCE_PASSIVE_ABILITY" type="Int" value="1" />
+		<ReferencedTag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_002P2_03" ID="63754" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Mantle of the Fallen 3</enUS>
+			<zhCN>逝者的披风3</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Deathrattle:&lt;/b&gt; Give your characters +10/+10.</enUS>
+			<zhCN>&lt;b&gt;亡语：&lt;/b&gt;使你的所有角色获得+10/+10。</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="402" name="HIDE_STATS" type="Int" value="1" />
+		<Tag enumID="1671" name="LETTUCE_PASSIVE_ABILITY" type="Int" value="1" />
+		<ReferencedTag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_002P2_04" ID="76102" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Mantle of the Fallen 4</enUS>
+			<zhCN>逝者的披风4</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Deathrattle:&lt;/b&gt; Give your characters +12/+12.</enUS>
+			<zhCN>&lt;b&gt;亡语：&lt;/b&gt;使你的所有角色获得+12/+12。</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="402" name="HIDE_STATS" type="Int" value="1" />
+		<Tag enumID="1671" name="LETTUCE_PASSIVE_ABILITY" type="Int" value="1" />
+		<ReferencedTag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_002P2_05" ID="76103" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Mantle of the Fallen {0}</enUS>
+			<zhCN>逝者的披风{0}</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Deathrattle:&lt;/b&gt; Give your characters +15/+15.</enUS>
+			<zhCN>&lt;b&gt;亡语：&lt;/b&gt;使你的所有角色获得+15/+15。</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="402" name="HIDE_STATS" type="Int" value="1" />
+		<Tag enumID="1671" name="LETTUCE_PASSIVE_ABILITY" type="Int" value="1" />
+		<Tag enumID="2493" name="LETTUCE_ABILITY_TIER" type="Int" value="5" />
+		<ReferencedTag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_002P3_01" ID="65949" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Judgment of Humility 1</enUS>
+			<zhCN>谦逊制裁1</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Set an enemy's Attack to 3 this turn. &lt;b&gt;Attack&lt;/b&gt; them.</enUS>
+			<zhCN>在本回合中使一个敌人的攻击力变为3点。&lt;b&gt;攻击&lt;/b&gt;该敌人。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Attack an enemy.</enUS>
+			<zhCN>攻击一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_002P3_02" ID="65950" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Judgment of Humility 2</enUS>
+			<zhCN>谦逊制裁2</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Set an enemy's Attack to 2 this turn. &lt;b&gt;Attack&lt;/b&gt; them.</enUS>
+			<zhCN>在本回合中使一个敌人的攻击力变为2点。&lt;b&gt;攻击&lt;/b&gt;该敌人。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Attack an enemy.</enUS>
+			<zhCN>攻击一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_002P3_03" ID="63755" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Judgment of Humility 3</enUS>
+			<zhCN>谦逊制裁3</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Set an enemy's Attack to 1 this turn. &lt;b&gt;Attack&lt;/b&gt; them.</enUS>
+			<zhCN>在本回合中使一个敌人的攻击力变为1点。&lt;b&gt;攻击&lt;/b&gt;该敌人。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Attack an enemy.</enUS>
+			<zhCN>攻击一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_002P3_04" ID="76796" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Judgment of Humility 4</enUS>
+			<zhCN>谦逊制裁4</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Set an enemy's Attack to 1 this turn. &lt;b&gt;Attack&lt;/b&gt; them.</enUS>
+			<zhCN>在本回合中使一个敌人的攻击力变为1点。&lt;b&gt;攻击&lt;/b&gt;该敌人。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Attack an enemy.</enUS>
+			<zhCN>攻击一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_002P3_05" ID="76797" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Judgment of Humility {0}</enUS>
+			<zhCN>谦逊制裁{0}</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Set an enemy's Attack to 1 this turn. &lt;b&gt;Attack&lt;/b&gt; them.</enUS>
+			<zhCN>在本回合中使一个敌人的攻击力变为1点。&lt;b&gt;攻击&lt;/b&gt;该敌人。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Attack an enemy.</enUS>
+			<zhCN>攻击一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<Tag enumID="2493" name="LETTUCE_ABILITY_TIER" type="Int" value="5" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_002P4_01" ID="63771" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Blessing of Kings 1</enUS>
+			<zhCN>王者祝福1</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Give a character +{0}/+{0} and &lt;b&gt;Divine Shield&lt;/b&gt;.@Give a character +{0}/+{0} and &lt;b&gt;Divine Shield&lt;/b&gt;. Give this Merc +{1}/+{1}.</enUS>
+			<zhCN>使一个角色获得+{0}/+{0}和&lt;b&gt;圣盾&lt;/b&gt;。@使一个角色获得+{0}/+{0}和&lt;b&gt;圣盾&lt;/b&gt;。使此佣兵获得+{1}/+{1}。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Choose a character.</enUS>
+			<zhCN>选择一个角色。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="2" />
+		<Tag enumID="1672" name="2" type="Int" value="2" />
+		<Tag enumID="1679" name="2" type="Int" value="2" />
+		<ReferencedTag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_002P4_02" ID="63770" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Blessing of Kings 2</enUS>
+			<zhCN>王者祝福2</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Give a character +{0}/+{0} and &lt;b&gt;Divine Shield&lt;/b&gt;.@Give a character +{0}/+{0} and &lt;b&gt;Divine Shield&lt;/b&gt;. Give this Merc +{1}/+{1}.</enUS>
+			<zhCN>使一个角色获得+{0}/+{0}和&lt;b&gt;圣盾&lt;/b&gt;。@使一个角色获得+{0}/+{0}和&lt;b&gt;圣盾&lt;/b&gt;。使此佣兵获得+{1}/+{1}。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Choose a character.</enUS>
+			<zhCN>选择一个角色。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="2" />
+		<Tag enumID="1672" name="2" type="Int" value="2" />
+		<Tag enumID="1679" name="2" type="Int" value="2" />
+		<ReferencedTag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_002P4_03" ID="63756" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Blessing of Kings 3</enUS>
+			<zhCN>王者祝福3</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Give a character +{0}/+{0} and &lt;b&gt;Divine Shield&lt;/b&gt;.@Give a character +{0}/+{0} and &lt;b&gt;Divine Shield&lt;/b&gt;. Give this Merc +{1}/+{1}.</enUS>
+			<zhCN>使一个角色获得+{0}/+{0}和&lt;b&gt;圣盾&lt;/b&gt;。@使一个角色获得+{0}/+{0}和&lt;b&gt;圣盾&lt;/b&gt;。使此佣兵获得+{1}/+{1}。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Choose a character.</enUS>
+			<zhCN>选择一个角色。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="6" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="2" />
+		<Tag enumID="1672" name="2" type="Int" value="2" />
+		<Tag enumID="1679" name="2" type="Int" value="2" />
+		<ReferencedTag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_002P4_04" ID="76794" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Blessing of Kings 4</enUS>
+			<zhCN>王者祝福4</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Give a character +{0}/+{0} and &lt;b&gt;Divine Shield&lt;/b&gt;.@Give a character +{0}/+{0} and &lt;b&gt;Divine Shield&lt;/b&gt;. Give this Merc +{1}/+{1}.</enUS>
+			<zhCN>使一个角色获得+{0}/+{0}和&lt;b&gt;圣盾&lt;/b&gt;。@使一个角色获得+{0}/+{0}和&lt;b&gt;圣盾&lt;/b&gt;。使此佣兵获得+{1}/+{1}。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Choose a character.</enUS>
+			<zhCN>选择一个角色。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="7" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="2" />
+		<Tag enumID="1672" name="2" type="Int" value="2" />
+		<Tag enumID="1679" name="2" type="Int" value="2" />
+		<ReferencedTag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_002P4_05" ID="76795" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Blessing of Kings {0}</enUS>
+			<zhCN>王者祝福{0}</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Give a character +{0}/+{0} and &lt;b&gt;Divine Shield&lt;/b&gt;.@Give a character +{0}/+{0} and &lt;b&gt;Divine Shield&lt;/b&gt;. Give this Merc +{1}/+{1}.</enUS>
+			<zhCN>使一个角色获得+{0}/+{0}和&lt;b&gt;圣盾&lt;/b&gt;。@使一个角色获得+{0}/+{0}和&lt;b&gt;圣盾&lt;/b&gt;。使此佣兵获得+{1}/+{1}。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Choose a character.</enUS>
+			<zhCN>选择一个角色。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="8" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="2" />
+		<Tag enumID="1672" name="2" type="Int" value="2" />
+		<Tag enumID="1679" name="2" type="Int" value="2" />
+		<Tag enumID="2493" name="LETTUCE_ABILITY_TIER" type="Int" value="5" />
+		<ReferencedTag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_002P5_01" ID="65951" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Blessing of Sacrifice 1</enUS>
+			<zhCN>牺牲祝福1</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Restore #@ Health to another friendly Merc. Whenever it takes damage this turn, this Merc takes it instead.</enUS>
+			<zhCN>为另一名友方佣兵恢复#@点生命值。在本回合中，每当其受到伤害时，改为由此佣兵来承担。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Restore Health to another friendly Merc.</enUS>
+			<zhCN>为另一名友方佣兵恢复生命值。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<Tag enumID="1679" name="2" type="Int" value="2" />
+	</Entity>
+	<Entity CardID="LETL_002P5_02" ID="65952" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Blessing of Sacrifice 2</enUS>
+			<zhCN>牺牲祝福2</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Restore #@ Health to another friendly Merc. Whenever it takes damage this turn, this Merc takes it instead.</enUS>
+			<zhCN>为另一名友方佣兵恢复#@点生命值。在本回合中，每当其受到伤害时，改为由此佣兵来承担。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Restore Health to another friendly Merc.</enUS>
+			<zhCN>为另一名友方佣兵恢复生命值。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<Tag enumID="1684" name="2" type="Int" value="2" />
+	</Entity>
+	<Entity CardID="LETL_002P5_03" ID="63757" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Blessing of Sacrifice 3</enUS>
+			<zhCN>牺牲祝福3</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Restore #@ Health to another friendly Merc. Whenever it takes damage this turn, this Merc takes it instead.</enUS>
+			<zhCN>为另一名友方佣兵恢复#@点生命值。在本回合中，每当其受到伤害时，改为由此佣兵来承担。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Restore Health to another friendly Merc.</enUS>
+			<zhCN>为另一名友方佣兵恢复生命值。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="6" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<Tag enumID="1679" name="2" type="Int" value="2" />
+	</Entity>
+	<Entity CardID="LETL_002P5_04" ID="76696" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Blessing of Sacrifice 4</enUS>
+			<zhCN>牺牲祝福4</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Restore #@ Health to another friendly Merc. Whenever it takes damage this turn, this Merc takes it instead.</enUS>
+			<zhCN>为另一名友方佣兵恢复#@点生命值。在本回合中，每当其受到伤害时，改为由此佣兵来承担。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Restore Health to another friendly Merc.</enUS>
+			<zhCN>为另一名友方佣兵恢复生命值。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="8" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<Tag enumID="1679" name="2" type="Int" value="2" />
+	</Entity>
+	<Entity CardID="LETL_002P5_05" ID="76697" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Blessing of Sacrifice {0}</enUS>
+			<zhCN>牺牲祝福{0}</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Restore #@ Health to another friendly Merc. Whenever it takes damage this turn, this Merc takes it instead.</enUS>
+			<zhCN>为另一名友方佣兵恢复#@点生命值。在本回合中，每当其受到伤害时，改为由此佣兵来承担。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Restore Health to another friendly Merc.</enUS>
+			<zhCN>为另一名友方佣兵恢复生命值。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="10" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<Tag enumID="1679" name="2" type="Int" value="2" />
+		<Tag enumID="2493" name="LETTUCE_ABILITY_TIER" type="Int" value="5" />
+	</Entity>
+	<Entity CardID="LETL_002P7_01" ID="70786" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Divine Assault 1</enUS>
+			<zhCN>神圣突击1</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Attack&lt;/b&gt; an enemy. &lt;b&gt;Deathblow:&lt;/b&gt; Gain
+&lt;b&gt;Divine Shield&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;攻击&lt;/b&gt;一个敌人。&lt;b&gt;击杀：&lt;/b&gt;获得&lt;b&gt;圣盾&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Attack an enemy.</enUS>
+			<zhCN>攻击一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="9" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<ReferencedTag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+		<ReferencedTag enumID="2185" name="DEATHBLOW" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_002P7_02" ID="70785" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Divine Assault 2</enUS>
+			<zhCN>神圣突击2</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Attack&lt;/b&gt; an enemy. &lt;b&gt;Deathblow:&lt;/b&gt; Give this
+ Merc and_a_random neighbor_&lt;b&gt;Divine_Shield&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;攻击&lt;/b&gt;一个敌人。&lt;b&gt;击杀：&lt;/b&gt;使此佣兵和随机一个相邻角色获得&lt;b&gt;圣盾&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Attack an enemy.</enUS>
+			<zhCN>攻击一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="9" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<ReferencedTag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+		<ReferencedTag enumID="2185" name="DEATHBLOW" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_002P7_03" ID="70778" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Divine Assault 3</enUS>
+			<zhCN>神圣突击3</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Attack&lt;/b&gt; an enemy. &lt;b&gt;Deathblow:&lt;/b&gt; Give your characters_&lt;b&gt;Divine_Shield&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;攻击&lt;/b&gt;一个敌人。&lt;b&gt;击杀：&lt;/b&gt;使你的角色获得&lt;b&gt;圣盾&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Attack an enemy.</enUS>
+			<zhCN>攻击一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="9" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<ReferencedTag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+		<ReferencedTag enumID="2185" name="DEATHBLOW" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_002P7_04" ID="76792" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Divine Assault 4</enUS>
+			<zhCN>神圣突击4</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Attack&lt;/b&gt; an enemy. &lt;b&gt;Deathblow:&lt;/b&gt; Give your characters_&lt;b&gt;Divine_Shield&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;攻击&lt;/b&gt;一个敌人。&lt;b&gt;击杀：&lt;/b&gt;使你的角色获得&lt;b&gt;圣盾&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Attack an enemy.</enUS>
+			<zhCN>攻击一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<ReferencedTag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+		<ReferencedTag enumID="2185" name="DEATHBLOW" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_002P7_05" ID="76793" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Divine Assault {0}</enUS>
+			<zhCN>神圣突击{0}</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Attack&lt;/b&gt; an enemy. &lt;b&gt;Deathblow:&lt;/b&gt; Give your characters_&lt;b&gt;Divine_Shield&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;攻击&lt;/b&gt;一个敌人。&lt;b&gt;击杀：&lt;/b&gt;使你的角色获得&lt;b&gt;圣盾&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Attack an enemy.</enUS>
+			<zhCN>攻击一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="5" />
+		<Tag enumID="2493" name="LETTUCE_ABILITY_TIER" type="Int" value="5" />
+		<ReferencedTag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+		<ReferencedTag enumID="2185" name="DEATHBLOW" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_003P1_01" ID="65902" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Outcast Attack 1</enUS>
+			<zhCN>流放攻击1</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Attack&lt;/b&gt; the left and
+right-most enemies.
+&lt;b&gt;Deathblow:&lt;/b&gt; Restore
+#{0} Health to this Merc.@[x]&lt;b&gt;Attack&lt;/b&gt; the left-most
+enemy twice and the
+right-most enemy once.
+&lt;b&gt;Deathblow:&lt;/b&gt;_Restore
+#7 Health to this Merc.</enUS>
+			<zhCN>&lt;b&gt;攻击&lt;/b&gt;最左边和最右边的敌人。&lt;b&gt;击杀：&lt;/b&gt;为此佣兵恢复#{0}点生命值。@&lt;b&gt;攻击&lt;/b&gt;最左边的敌人两次，最右边的敌人一次。&lt;b&gt;击杀：&lt;/b&gt;为此佣兵恢复#7点生命值。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="7" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+		<ReferencedTag enumID="2185" name="DEATHBLOW" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_003P1_02" ID="65903" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Outcast Attack 2</enUS>
+			<zhCN>流放攻击2</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Attack&lt;/b&gt; the left and
+right-most enemies.
+&lt;b&gt;Deathblow:&lt;/b&gt; Restore
+#{0} Health to this Merc.@[x]&lt;b&gt;Attack&lt;/b&gt; the left-most
+enemy twice and the
+right-most enemy once.
+&lt;b&gt;Deathblow:&lt;/b&gt;_Restore
+#14 Health to this Merc.</enUS>
+			<zhCN>&lt;b&gt;攻击&lt;/b&gt;最左边和最右边的敌人。&lt;b&gt;击杀：&lt;/b&gt;为此佣兵恢复#{0}点生命值。@&lt;b&gt;攻击&lt;/b&gt;最左边的敌人两次，最右边的敌人一次。&lt;b&gt;击杀：&lt;/b&gt;为此佣兵恢复#14点生命值。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="14" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+		<ReferencedTag enumID="2185" name="DEATHBLOW" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_003P1_03" ID="63762" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Outcast Attack 3</enUS>
+			<zhCN>流放攻击3</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Attack&lt;/b&gt; the left and
+right-most enemies.
+&lt;b&gt;Deathblow:&lt;/b&gt; Restore
+#{0} Health to this Merc.@[x]&lt;b&gt;Attack&lt;/b&gt; the left-most
+enemy twice and the
+right-most enemy once.
+&lt;b&gt;Deathblow:&lt;/b&gt;_Restore
+#21 Health to this Merc.</enUS>
+			<zhCN>&lt;b&gt;攻击&lt;/b&gt;最左边和最右边的敌人。&lt;b&gt;击杀：&lt;/b&gt;为此佣兵恢复#{0}点生命值。@&lt;b&gt;攻击&lt;/b&gt;最左边的敌人两次，最右边的敌人一次。&lt;b&gt;击杀：&lt;/b&gt;为此佣兵恢复#21点生命值。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="21" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+		<ReferencedTag enumID="2185" name="DEATHBLOW" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_003P1_04" ID="76532" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Outcast Attack 4</enUS>
+			<zhCN>流放攻击4</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Attack&lt;/b&gt; the left and
+right-most enemies.
+&lt;b&gt;Deathblow:&lt;/b&gt; Restore
+#{0} Health to this Merc.@[x]&lt;b&gt;Attack&lt;/b&gt; the left-most
+enemy twice and the
+right-most enemy once.
+&lt;b&gt;Deathblow:&lt;/b&gt;_Restore
+#23 Health to this Merc.</enUS>
+			<zhCN>&lt;b&gt;攻击&lt;/b&gt;最左边和最右边的敌人。&lt;b&gt;击杀：&lt;/b&gt;为此佣兵恢复#{0}点生命值。@&lt;b&gt;攻击&lt;/b&gt;最左边的敌人两次，最右边的敌人一次。&lt;b&gt;击杀：&lt;/b&gt;为此佣兵恢复#23点生命值。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="23" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+		<ReferencedTag enumID="2185" name="DEATHBLOW" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_003P1_05" ID="76533" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Outcast Attack {0}</enUS>
+			<zhCN>流放攻击{0}</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Attack&lt;/b&gt; the left and
+right-most enemies.
+&lt;b&gt;Deathblow:&lt;/b&gt; Restore
+#{0} Health to this Merc.@[x]&lt;b&gt;Attack&lt;/b&gt; the left-most
+enemy twice and the
+right-most enemy once.
+&lt;b&gt;Deathblow:&lt;/b&gt;_Restore
+#{0} Health to this Merc.</enUS>
+			<zhCN>&lt;b&gt;攻击&lt;/b&gt;最左边和最右边的敌人。&lt;b&gt;击杀：&lt;/b&gt;为此佣兵恢复#{0}点生命值。@&lt;b&gt;攻击&lt;/b&gt;最左边的敌人两次，最右边的敌人一次。&lt;b&gt;击杀：&lt;/b&gt;为此佣兵恢复#{0}点生命值。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="25" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<Tag enumID="2493" name="LETTUCE_ABILITY_TIER" type="Int" value="5" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+		<ReferencedTag enumID="2185" name="DEATHBLOW" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_003P4_01" ID="65908" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Blade Dance 1</enUS>
+			<zhCN>刃舞1</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal damage equal to this Merc's Attack to 1_random_enemy.</enUS>
+			<zhCN>随机对1个敌人造成等同于此佣兵攻击力的伤害。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="10" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="7" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_003P4_02" ID="65909" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Blade Dance 2</enUS>
+			<zhCN>刃舞2</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal damage equal to this Merc's Attack to 2_random_enemies.</enUS>
+			<zhCN>随机对2个敌人造成等同于此佣兵攻击力的伤害。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="10" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="7" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="2" type="Int" value="2" />
+	</Entity>
+	<Entity CardID="LETL_003P4_03" ID="63765" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Blade Dance 3</enUS>
+			<zhCN>刃舞3</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal damage equal to this Merc's Attack to 3_random_enemies.</enUS>
+			<zhCN>随机对3个敌人造成等同于此佣兵攻击力的伤害。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="9" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="7" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="3" type="Int" value="3" />
+	</Entity>
+	<Entity CardID="LETL_003P4_04" ID="76526" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Blade Dance 4</enUS>
+			<zhCN>刃舞4</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal damage equal to this Merc's Attack to 3_random_enemies.</enUS>
+			<zhCN>随机对3个敌人造成等同于此佣兵攻击力的伤害。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="7" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="4" type="Int" value="4" />
+	</Entity>
+	<Entity CardID="LETL_003P4_05" ID="76527" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Blade Dance {0}</enUS>
+			<zhCN>刃舞{0}</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal damage equal to this Merc's Attack to 3_random_enemies.</enUS>
+			<zhCN>随机对3个敌人造成等同于此佣兵攻击力的伤害。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="7" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<Tag enumID="2493" name="LETTUCE_ABILITY_TIER" type="Int" value="5" />
+		<Tag enumID="2609" name="5" type="Int" value="5" />
+	</Entity>
+	<Entity CardID="LETL_003P8_01" ID="67032" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Winged Assault 1</enUS>
+			<zhCN>侧翼突击1</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Attack&lt;/b&gt; an enemy.
+If it's the left or right-most
+enemy, gain +@ Attack.</enUS>
+			<zhCN>&lt;b&gt;攻击&lt;/b&gt;一个敌人。如果目标为最左边或最右边的敌人，便获得+@攻击力。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Attack an enemy.</enUS>
+			<zhCN>攻击一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_003P8_02" ID="67031" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Winged Assault 2</enUS>
+			<zhCN>侧翼突击2</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Attack&lt;/b&gt; an enemy.
+If it's the left or right-most
+enemy, gain +@ Attack.</enUS>
+			<zhCN>&lt;b&gt;攻击&lt;/b&gt;一个敌人。如果目标为最左边或最右边的敌人，便获得+@攻击力。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Attack an enemy.</enUS>
+			<zhCN>攻击一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_003P8_03" ID="66721" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Winged Assault 3</enUS>
+			<zhCN>侧翼突击3</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Attack&lt;/b&gt; an enemy.
+If it's the left or right-most
+enemy, gain +@ Attack.</enUS>
+			<zhCN>&lt;b&gt;攻击&lt;/b&gt;一个敌人。如果目标为最左边或最右边的敌人，便获得+@攻击力。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Attack an enemy.</enUS>
+			<zhCN>攻击一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_003P8_04" ID="76522" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Winged Assault 4</enUS>
+			<zhCN>侧翼突击4</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Attack&lt;/b&gt; an enemy.
+If it's the left or right-most
+enemy, gain +@ Attack.</enUS>
+			<zhCN>&lt;b&gt;攻击&lt;/b&gt;一个敌人。如果目标为最左边或最右边的敌人，便获得+@攻击力。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Attack an enemy.</enUS>
+			<zhCN>攻击一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_003P8_05" ID="76523" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Winged Assault {0}</enUS>
+			<zhCN>侧翼突击{0}</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Attack&lt;/b&gt; an enemy.
+If it's the left or right-most
+enemy, gain +@ Attack.</enUS>
+			<zhCN>&lt;b&gt;攻击&lt;/b&gt;一个敌人。如果目标为最左边或最右边的敌人，便获得+@攻击力。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Attack an enemy.</enUS>
+			<zhCN>攻击一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<Tag enumID="2493" name="LETTUCE_ABILITY_TIER" type="Int" value="5" />
+		<ReferencedTag enumID="2159" name="LETTUCE_KEYWORD_ATTACK" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_004P1_01" ID="66437" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Scaly Taunt 1</enUS>
+			<zhCN>鳞甲嘲讽1</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Gain &lt;b&gt;Taunt&lt;/b&gt; and this takes {0} less damage this turn.@This Merc takes {0} less
+damage, gains &lt;b&gt;Taunt&lt;/b&gt;,
+and cannot be
+&lt;b&gt;Critically Damaged&lt;/b&gt; this turn.@This Merc takes {0} less
+damage, gains &lt;b&gt;Taunt&lt;/b&gt;,
+and cannot be
+&lt;b&gt;Critically Damaged&lt;/b&gt; this turn.@This Merc takes {0} less
+damage, gains &lt;b&gt;Taunt&lt;/b&gt;,
+and cannot be
+&lt;b&gt;Critically Damaged&lt;/b&gt; this turn.</enUS>
+			<zhCN>在本回合中获得&lt;b&gt;嘲讽&lt;/b&gt;且受到的伤害减少{0}点。@在本回合中，此佣兵受到的伤害减少{0}点，获得&lt;b&gt;嘲讽&lt;/b&gt;且不会受到&lt;b&gt;暴击伤害&lt;/b&gt;。@在本回合中，此佣兵受到的伤害减少{0}点，获得&lt;b&gt;嘲讽&lt;/b&gt;且不会受到&lt;b&gt;暴击伤害&lt;/b&gt;。@在本回合中，此佣兵受到的伤害减少{0}点，获得&lt;b&gt;嘲讽&lt;/b&gt;且不会受到&lt;b&gt;暴击伤害&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="2608" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="190" name="TAUNT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_004P1_02" ID="66436" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Scaly Taunt 2</enUS>
+			<zhCN>鳞甲嘲讽2</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Gain &lt;b&gt;Taunt&lt;/b&gt; and this takes {0} less damage this turn.@This Merc takes {0} less
+damage, gains &lt;b&gt;Taunt&lt;/b&gt;,
+and cannot be
+&lt;b&gt;Critically Damaged&lt;/b&gt; this turn.@This Merc takes {0} less
+damage, gains &lt;b&gt;Taunt&lt;/b&gt;,
+and cannot be
+&lt;b&gt;Critically Damaged&lt;/b&gt; this turn.@This Merc takes {0} less
+damage, gains &lt;b&gt;Taunt&lt;/b&gt;,
+and cannot be
+&lt;b&gt;Critically Damaged&lt;/b&gt; this turn.</enUS>
+			<zhCN>在本回合中获得&lt;b&gt;嘲讽&lt;/b&gt;且受到的伤害减少{0}点。@在本回合中，此佣兵受到的伤害减少{0}点，获得&lt;b&gt;嘲讽&lt;/b&gt;且不会受到&lt;b&gt;暴击伤害&lt;/b&gt;。@在本回合中，此佣兵受到的伤害减少{0}点，获得&lt;b&gt;嘲讽&lt;/b&gt;且不会受到&lt;b&gt;暴击伤害&lt;/b&gt;。@在本回合中，此佣兵受到的伤害减少{0}点，获得&lt;b&gt;嘲讽&lt;/b&gt;且不会受到&lt;b&gt;暴击伤害&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="2608" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="2" type="Int" value="2" />
+		<ReferencedTag enumID="190" name="TAUNT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_004P1_03" ID="63807" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Scaly Taunt 3</enUS>
+			<zhCN>鳞甲嘲讽3</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Gain &lt;b&gt;Taunt&lt;/b&gt; and this takes {0} less damage this turn.@This Merc takes {0} less
+damage, gains &lt;b&gt;Taunt&lt;/b&gt;,
+and cannot be
+&lt;b&gt;Critically Damaged&lt;/b&gt; this turn.@This Merc takes {0} less
+damage, gains &lt;b&gt;Taunt&lt;/b&gt;,
+and cannot be
+&lt;b&gt;Critically Damaged&lt;/b&gt; this turn.@This Merc takes {0} less
+damage, gains &lt;b&gt;Taunt&lt;/b&gt;,
+and cannot be
+&lt;b&gt;Critically Damaged&lt;/b&gt; this turn.</enUS>
+			<zhCN>在本回合中获得&lt;b&gt;嘲讽&lt;/b&gt;且受到的伤害减少{0}点。@在本回合中，此佣兵受到的伤害减少{0}点，获得&lt;b&gt;嘲讽&lt;/b&gt;且不会受到&lt;b&gt;暴击伤害&lt;/b&gt;。@在本回合中，此佣兵受到的伤害减少{0}点，获得&lt;b&gt;嘲讽&lt;/b&gt;且不会受到&lt;b&gt;暴击伤害&lt;/b&gt;。@在本回合中，此佣兵受到的伤害减少{0}点，获得&lt;b&gt;嘲讽&lt;/b&gt;且不会受到&lt;b&gt;暴击伤害&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="2608" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="3" type="Int" value="3" />
+		<ReferencedTag enumID="190" name="TAUNT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_004P1_04" ID="76485" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Scaly Taunt 4</enUS>
+			<zhCN>鳞甲嘲讽4</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Gain &lt;b&gt;Taunt&lt;/b&gt; and this takes {0} less damage this turn.@This Merc takes {0} less
+damage, gains &lt;b&gt;Taunt&lt;/b&gt;,
+and cannot be
+&lt;b&gt;Critically Damaged&lt;/b&gt; this turn.@This Merc takes {0} less
+damage, gains &lt;b&gt;Taunt&lt;/b&gt;,
+and cannot be
+&lt;b&gt;Critically Damaged&lt;/b&gt; this turn.@This Merc takes {0} less
+damage, gains &lt;b&gt;Taunt&lt;/b&gt;,
+and cannot be
+&lt;b&gt;Critically Damaged&lt;/b&gt; this turn.</enUS>
+			<zhCN>在本回合中获得&lt;b&gt;嘲讽&lt;/b&gt;且受到的伤害减少{0}点。@在本回合中，此佣兵受到的伤害减少{0}点，获得&lt;b&gt;嘲讽&lt;/b&gt;且不会受到&lt;b&gt;暴击伤害&lt;/b&gt;。@在本回合中，此佣兵受到的伤害减少{0}点，获得&lt;b&gt;嘲讽&lt;/b&gt;且不会受到&lt;b&gt;暴击伤害&lt;/b&gt;。@在本回合中，此佣兵受到的伤害减少{0}点，获得&lt;b&gt;嘲讽&lt;/b&gt;且不会受到&lt;b&gt;暴击伤害&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="2608" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="4" type="Int" value="4" />
+		<ReferencedTag enumID="190" name="TAUNT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_004P1_05" ID="76486" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Scaly Taunt {0}</enUS>
+			<zhCN>鳞甲嘲讽{0}</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Gain &lt;b&gt;Taunt&lt;/b&gt; and this takes {0} less damage this turn.@This Merc takes {0} less
+damage, gains &lt;b&gt;Taunt&lt;/b&gt;,
+and cannot be
+&lt;b&gt;Critically Damaged&lt;/b&gt; this turn.@This Merc takes {0} less
+damage, gains &lt;b&gt;Taunt&lt;/b&gt;,
+and cannot be
+&lt;b&gt;Critically Damaged&lt;/b&gt; this turn.@This Merc takes {0} less
+damage, gains &lt;b&gt;Taunt&lt;/b&gt;,
+and cannot be
+&lt;b&gt;Critically Damaged&lt;/b&gt; this turn.</enUS>
+			<zhCN>在本回合中获得&lt;b&gt;嘲讽&lt;/b&gt;且受到的伤害减少{0}点。@在本回合中，此佣兵受到的伤害减少{0}点，获得&lt;b&gt;嘲讽&lt;/b&gt;且不会受到&lt;b&gt;暴击伤害&lt;/b&gt;。@在本回合中，此佣兵受到的伤害减少{0}点，获得&lt;b&gt;嘲讽&lt;/b&gt;且不会受到&lt;b&gt;暴击伤害&lt;/b&gt;。@在本回合中，此佣兵受到的伤害减少{0}点，获得&lt;b&gt;嘲讽&lt;/b&gt;且不会受到&lt;b&gt;暴击伤害&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="2493" name="LETTUCE_ABILITY_TIER" type="Int" value="5" />
+		<Tag enumID="2608" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="5" type="Int" value="5" />
+		<ReferencedTag enumID="190" name="TAUNT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_005P3_01" ID="66061" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Meteor 1</enUS>
+			<zhCN>陨石术1</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal ${0} damage to a character and ${1} damage to adjacent ones.</enUS>
+			<zhCN>对一个角色造成${0}点伤害，并对其相邻角色造成${1}点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal damage to a character.</enUS>
+			<zhCN>对一个角色造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="9" />
+		<Tag enumID="3" name="TAG_SCRIPT_DATA_NUM_2" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="2" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="2" />
+		<Tag enumID="1672" name="2" type="Int" value="2" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_005P3_02" ID="66062" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Meteor 2</enUS>
+			<zhCN>陨石术2</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal ${0} damage to a character and ${1} damage to adjacent ones.</enUS>
+			<zhCN>对一个角色造成${0}点伤害，并对其相邻角色造成${1}点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal damage to a character.</enUS>
+			<zhCN>对一个角色造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="15" />
+		<Tag enumID="3" name="TAG_SCRIPT_DATA_NUM_2" type="Int" value="7" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="2" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="2" />
+		<Tag enumID="1672" name="2" type="Int" value="2" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="2" type="Int" value="2" />
+	</Entity>
+	<Entity CardID="LETL_005P3_03" ID="63997" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Meteor 3</enUS>
+			<zhCN>陨石术3</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal ${0} damage to a character and ${1} damage to adjacent ones.</enUS>
+			<zhCN>对一个角色造成${0}点伤害，并对其相邻角色造成${1}点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal damage to a character.</enUS>
+			<zhCN>对一个角色造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="21" />
+		<Tag enumID="3" name="TAG_SCRIPT_DATA_NUM_2" type="Int" value="8" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="2" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="2" />
+		<Tag enumID="1672" name="2" type="Int" value="2" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="3" type="Int" value="3" />
+	</Entity>
+	<Entity CardID="LETL_005P3_04" ID="76702" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Meteor 4</enUS>
+			<zhCN>陨石术4</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal ${0} damage to a character and ${1} damage to adjacent ones.</enUS>
+			<zhCN>对一个角色造成${0}点伤害，并对其相邻角色造成${1}点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal damage to a character.</enUS>
+			<zhCN>对一个角色造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="23" />
+		<Tag enumID="3" name="TAG_SCRIPT_DATA_NUM_2" type="Int" value="9" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="2" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="2" />
+		<Tag enumID="1672" name="2" type="Int" value="2" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="4" type="Int" value="4" />
+	</Entity>
+	<Entity CardID="LETL_005P3_05" ID="76703" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Meteor {0}</enUS>
+			<zhCN>陨石术{0}</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal ${0} damage to a character and ${1} damage to adjacent ones.</enUS>
+			<zhCN>对一个角色造成${0}点伤害，并对其相邻角色造成${1}点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal damage to a character.</enUS>
+			<zhCN>对一个角色造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="25" />
+		<Tag enumID="3" name="TAG_SCRIPT_DATA_NUM_2" type="Int" value="10" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="2" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="2" />
+		<Tag enumID="1672" name="2" type="Int" value="2" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<Tag enumID="2493" name="LETTUCE_ABILITY_TIER" type="Int" value="5" />
+		<Tag enumID="2609" name="5" type="Int" value="5" />
+	</Entity>
+	<Entity CardID="LETL_005P4_01" ID="65925" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Arcane Explosion 1</enUS>
+			<zhCN>魔爆术1</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal ${0} damage to
+all enemies.@Deal ${0} damage to
+all enemies.
+They lose &lt;b&gt;Stealth&lt;/b&gt;.</enUS>
+			<zhCN>对所有敌人造成${0}点伤害。@对所有敌人造成${0}点伤害，并使其失去&lt;b&gt;潜行&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_005P4_02" ID="65926" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Arcane Explosion 2</enUS>
+			<zhCN>魔爆术2</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal ${0} damage to
+all enemies.@Deal ${0} damage to
+all enemies.
+They lose &lt;b&gt;Stealth&lt;/b&gt;.</enUS>
+			<zhCN>对所有敌人造成${0}点伤害。@对所有敌人造成${0}点伤害，并使其失去&lt;b&gt;潜行&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_005P4_03" ID="64886" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Arcane Explosion 3</enUS>
+			<zhCN>魔爆术3</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal ${0} damage to
+all enemies.@Deal ${0} damage to
+all enemies.
+They lose &lt;b&gt;Stealth&lt;/b&gt;.</enUS>
+			<zhCN>对所有敌人造成${0}点伤害。@对所有敌人造成${0}点伤害，并使其失去&lt;b&gt;潜行&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="6" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_005P4_04" ID="76761" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Arcane Explosion 4</enUS>
+			<zhCN>魔爆术4</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal ${0} damage to
+all enemies.@Deal ${0} damage to
+all enemies.
+They lose &lt;b&gt;Stealth&lt;/b&gt;.</enUS>
+			<zhCN>对所有敌人造成${0}点伤害。@对所有敌人造成${0}点伤害，并使其失去&lt;b&gt;潜行&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="7" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_005P4_05" ID="76762" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Arcane Explosion {0}</enUS>
+			<zhCN>魔爆术{0}</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal ${0} damage to
+all enemies.@Deal ${0} damage to
+all enemies.
+They lose &lt;b&gt;Stealth&lt;/b&gt;.</enUS>
+			<zhCN>对所有敌人造成${0}点伤害。@对所有敌人造成${0}点伤害，并使其失去&lt;b&gt;潜行&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="8" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="1" />
+		<Tag enumID="2493" name="LETTUCE_ABILITY_TIER" type="Int" value="5" />
+	</Entity>
+	<Entity CardID="LETL_005P6_01" ID="65930" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Counterspell 1</enUS>
+			<zhCN>法术反制1</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Counter&lt;/b&gt; the next enemy ability.</enUS>
+			<zhCN>&lt;b&gt;反制&lt;/b&gt;下一个敌方技能。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="2" />
+		<Tag enumID="1672" name="2" type="Int" value="2" />
+	</Entity>
+	<Entity CardID="LETL_005P6_02" ID="65931" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Counterspell 2</enUS>
+			<zhCN>法术反制2</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Counter&lt;/b&gt; the next enemy ability.</enUS>
+			<zhCN>&lt;b&gt;反制&lt;/b&gt;下一个敌方技能。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="2" />
+		<Tag enumID="1672" name="2" type="Int" value="2" />
+	</Entity>
+	<Entity CardID="LETL_005P6_03" ID="65039" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Counterspell 3</enUS>
+			<zhCN>法术反制3</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Counter&lt;/b&gt; the next enemy ability.</enUS>
+			<zhCN>&lt;b&gt;反制&lt;/b&gt;下一个敌方技能。</zhCN>
+		</Tag>
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="2" />
+		<Tag enumID="1672" name="2" type="Int" value="2" />
+	</Entity>
+	<Entity CardID="LETL_005P8_01" ID="70774" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Arcane Bolt 1</enUS>
+			<zhCN>奥术箭1</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Deal ${0} damage.
+Gain &lt;b&gt;+{1} Arcane Damage&lt;/b&gt;.</enUS>
+			<zhCN>造成${0}点伤害。获得&lt;b&gt;+{1}奥术伤害&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal damage to a character.</enUS>
+			<zhCN>对一个角色造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="4" />
+		<Tag enumID="3" name="TAG_SCRIPT_DATA_NUM_2" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="1" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="1945" name="SPELLPOWER_ARCANE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_005P8_02" ID="70773" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Arcane Bolt 2</enUS>
+			<zhCN>奥术箭2</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Deal ${0} damage.
+Gain &lt;b&gt;+{1} Arcane Damage&lt;/b&gt;.</enUS>
+			<zhCN>造成${0}点伤害。获得&lt;b&gt;+{1}奥术伤害&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal damage to a character.</enUS>
+			<zhCN>对一个角色造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="7" />
+		<Tag enumID="3" name="TAG_SCRIPT_DATA_NUM_2" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="1" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="1945" name="SPELLPOWER_ARCANE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_005P8_03" ID="70771" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Arcane Bolt 3</enUS>
+			<zhCN>奥术箭3</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Deal ${0} damage.
+Gain &lt;b&gt;+{1} Arcane Damage&lt;/b&gt;.</enUS>
+			<zhCN>造成${0}点伤害。获得&lt;b&gt;+{1}奥术伤害&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal damage to a character.</enUS>
+			<zhCN>对一个角色造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="10" />
+		<Tag enumID="3" name="TAG_SCRIPT_DATA_NUM_2" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="1" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="1945" name="SPELLPOWER_ARCANE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_005P8_04" ID="76763" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Arcane Bolt 4</enUS>
+			<zhCN>奥术箭4</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Deal ${0} damage.
+Gain &lt;b&gt;+{1} Arcane Damage&lt;/b&gt;.</enUS>
+			<zhCN>造成${0}点伤害。获得&lt;b&gt;+{1}奥术伤害&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal damage to a character.</enUS>
+			<zhCN>对一个角色造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="11" />
+		<Tag enumID="3" name="TAG_SCRIPT_DATA_NUM_2" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="1" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="1945" name="SPELLPOWER_ARCANE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_005P8_05" ID="76764" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Arcane Bolt {0}</enUS>
+			<zhCN>奥术箭{0}</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Deal ${0} damage.
+Gain &lt;b&gt;+{1} Arcane Damage&lt;/b&gt;.</enUS>
+			<zhCN>造成${0}点伤害。获得&lt;b&gt;+{1}奥术伤害&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal damage to a character.</enUS>
+			<zhCN>对一个角色造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="12" />
+		<Tag enumID="3" name="TAG_SCRIPT_DATA_NUM_2" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="1" />
+		<Tag enumID="1679" name="1" type="Int" value="1" />
+		<Tag enumID="2493" name="LETTUCE_ABILITY_TIER" type="Int" value="5" />
+		<ReferencedTag enumID="1945" name="SPELLPOWER_ARCANE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_006P1_01" ID="66174" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Fel Infernal 1</enUS>
+			<zhCN>邪能地狱火1</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;+1 Fel Damage&lt;/b&gt;@&lt;b&gt;+2 Fel Damage&lt;/b&gt;@&lt;b&gt;+3 Fel Damage&lt;/b&gt;@&lt;b&gt;+4 Fel Damage&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;+1邪能伤害&lt;/b&gt;@&lt;b&gt;+2邪能伤害&lt;/b&gt;@&lt;b&gt;+3邪能伤害&lt;/b&gt;@&lt;b&gt;+4邪能伤害&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="15" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1676" name="LETTUCE_ABILITY_SUMMONED_MINION" type="Int" value="65785" />
+		<Tag enumID="2609" name="1" type="Int" value="1" />
+		<Tag enumID="2720" name="LETTUCE_FACTION" type="Int" value="5" />
+		<ReferencedTag enumID="1951" name="SPELLPOWER_FEL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_006P1_02" ID="66175" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Fel Infernal 2</enUS>
+			<zhCN>邪能地狱火2</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;+1 Fel Damage&lt;/b&gt;@&lt;b&gt;+2 Fel Damage&lt;/b&gt;@&lt;b&gt;+3 Fel Damage&lt;/b&gt;@&lt;b&gt;+4 Fel Damage&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;+1邪能伤害&lt;/b&gt;@&lt;b&gt;+2邪能伤害&lt;/b&gt;@&lt;b&gt;+3邪能伤害&lt;/b&gt;@&lt;b&gt;+4邪能伤害&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="9" />
+		<Tag enumID="47" name="ATK" type="Int" value="9" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="15" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1676" name="LETTUCE_ABILITY_SUMMONED_MINION" type="Int" value="65786" />
+		<Tag enumID="2609" name="2" type="Int" value="2" />
+		<Tag enumID="2720" name="LETTUCE_FACTION" type="Int" value="5" />
+		<ReferencedTag enumID="1951" name="SPELLPOWER_FEL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_006P1_03" ID="63983" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Fel Infernal 3</enUS>
+			<zhCN>邪能地狱火3</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;+2 Fel Damage&lt;/b&gt;@&lt;b&gt;+3 Fel Damage&lt;/b&gt;@&lt;b&gt;+4 Fel Damage&lt;/b&gt;@&lt;b&gt;+5 Fel Damage&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;+2邪能伤害&lt;/b&gt;@&lt;b&gt;+3邪能伤害&lt;/b&gt;@&lt;b&gt;+4邪能伤害&lt;/b&gt;@&lt;b&gt;+5邪能伤害&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="13" />
+		<Tag enumID="47" name="ATK" type="Int" value="13" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="15" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1676" name="LETTUCE_ABILITY_SUMMONED_MINION" type="Int" value="63820" />
+		<Tag enumID="2609" name="3" type="Int" value="3" />
+		<Tag enumID="2720" name="LETTUCE_FACTION" type="Int" value="5" />
+		<ReferencedTag enumID="1951" name="SPELLPOWER_FEL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_006P1_04" ID="76390" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Fel Infernal 4</enUS>
+			<zhCN>邪能地狱火4</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;+2 Fel Damage&lt;/b&gt;@&lt;b&gt;+3 Fel Damage&lt;/b&gt;@&lt;b&gt;+4 Fel Damage&lt;/b&gt;@&lt;b&gt;+5 Fel Damage&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;+2邪能伤害&lt;/b&gt;@&lt;b&gt;+3邪能伤害&lt;/b&gt;@&lt;b&gt;+4邪能伤害&lt;/b&gt;@&lt;b&gt;+5邪能伤害&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="14" />
+		<Tag enumID="47" name="ATK" type="Int" value="14" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="15" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1676" name="LETTUCE_ABILITY_SUMMONED_MINION" type="Int" value="76391" />
+		<Tag enumID="2609" name="4" type="Int" value="4" />
+		<Tag enumID="2720" name="LETTUCE_FACTION" type="Int" value="5" />
+		<ReferencedTag enumID="1951" name="SPELLPOWER_FEL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_006P1_05" ID="76392" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Fel Infernal {0}</enUS>
+			<zhCN>邪能地狱火{0}</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;+2 Fel Damage&lt;/b&gt;@&lt;b&gt;+3 Fel Damage&lt;/b&gt;@&lt;b&gt;+4 Fel Damage&lt;/b&gt;@&lt;b&gt;+{0} Fel Damage&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;+2邪能伤害&lt;/b&gt;@&lt;b&gt;+3邪能伤害&lt;/b&gt;@&lt;b&gt;+4邪能伤害&lt;/b&gt;@&lt;b&gt;+{0}邪能伤害&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="2" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="15" />
+		<Tag enumID="47" name="ATK" type="Int" value="15" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="15" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1676" name="LETTUCE_ABILITY_SUMMONED_MINION" type="Int" value="76393" />
+		<Tag enumID="2493" name="LETTUCE_ABILITY_TIER" type="Int" value="5" />
+		<Tag enumID="2609" name="5" type="Int" value="5" />
+		<Tag enumID="2720" name="LETTUCE_FACTION" type="Int" value="5" />
+		<ReferencedTag enumID="1951" name="SPELLPOWER_FEL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_006P8_01" ID="66969" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Legion Burst 1</enUS>
+			<zhCN>军团爆能1</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal $@ damage.
+&lt;b&gt;Deathblow:&lt;/b&gt; Cast Fist
+of_Jaraxxus_1.</enUS>
+			<zhCN>造成$@点伤害。&lt;b&gt;击杀：&lt;/b&gt;施放加拉克苏斯之拳1。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal damage to a character.</enUS>
+			<zhCN>对一个角色造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="7" />
+		<Tag enumID="2609" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="2185" name="DEATHBLOW" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_006P8_02" ID="66968" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Legion Burst 2</enUS>
+			<zhCN>军团爆能2</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal $@ damage.
+&lt;b&gt;Deathblow:&lt;/b&gt; Cast Fist
+of_Jaraxxus_2.</enUS>
+			<zhCN>造成$@点伤害。&lt;b&gt;击杀：&lt;/b&gt;施放加拉克苏斯之拳2。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal damage to a character.</enUS>
+			<zhCN>对一个角色造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="8" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="7" />
+		<Tag enumID="2609" name="2" type="Int" value="2" />
+		<ReferencedTag enumID="2185" name="DEATHBLOW" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_006P8_03" ID="66676" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Legion Burst 3</enUS>
+			<zhCN>军团爆能3</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal $@ damage.
+&lt;b&gt;Deathblow:&lt;/b&gt; Cast Fist
+of_Jaraxxus_3.</enUS>
+			<zhCN>造成$@点伤害。&lt;b&gt;击杀：&lt;/b&gt;施放加拉克苏斯之拳3。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal damage to a character.</enUS>
+			<zhCN>对一个角色造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="12" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="7" />
+		<Tag enumID="2609" name="3" type="Int" value="3" />
+		<ReferencedTag enumID="2185" name="DEATHBLOW" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_006P8_04" ID="76386" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Legion Burst 4</enUS>
+			<zhCN>军团爆能4</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal $@ damage.
+&lt;b&gt;Deathblow:&lt;/b&gt; Cast Fist
+of_Jaraxxus_4.</enUS>
+			<zhCN>造成$@点伤害。&lt;b&gt;击杀：&lt;/b&gt;施放加拉克苏斯之拳4。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal damage to a character.</enUS>
+			<zhCN>对一个角色造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="13" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="7" />
+		<Tag enumID="2609" name="4" type="Int" value="4" />
+		<ReferencedTag enumID="2185" name="DEATHBLOW" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_006P8_05" ID="76387" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Legion Burst {0}</enUS>
+			<zhCN>军团爆能{0}</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal ${0} damage.
+&lt;b&gt;Deathblow:&lt;/b&gt; Cast Fist
+of_Jaraxxus_{1}.</enUS>
+			<zhCN>造成${0}点伤害。&lt;b&gt;击杀：&lt;/b&gt;施放加拉克苏斯之拳{1}。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal damage to a character.</enUS>
+			<zhCN>对一个角色造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="14" />
+		<Tag enumID="3" name="TAG_SCRIPT_DATA_NUM_2" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="7" />
+		<Tag enumID="2493" name="LETTUCE_ABILITY_TIER" type="Int" value="5" />
+		<Tag enumID="2609" name="5" type="Int" value="5" />
+		<ReferencedTag enumID="2185" name="DEATHBLOW" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_006P9_01" ID="66964" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Fist of Jaraxxus 1</enUS>
+			<zhCN>加拉克苏斯之拳1</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal ${0} damage to
+a random enemy.
+Repeat for each of your
+other Legion characters.@Deal ${0} damage to the
+lowest Health enemy.
+Repeat for each of your
+other Legion characters.</enUS>
+			<zhCN>随机对一个敌人造成${0}点伤害。每有一个你的其他军团角色，重复一次。@对生命值最低的敌人造成${0}点伤害。每有一个你的其他军团角色，重复一次。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="7" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="LETL_006P9_02" ID="66965" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Fist of Jaraxxus 2</enUS>
+			<zhCN>加拉克苏斯之拳2</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal ${0} damage to
+a random enemy.
+Repeat for each of your
+other Legion characters.@Deal ${0} damage to the
+lowest Health enemy.
+Repeat for each of your
+other Legion characters.</enUS>
+			<zhCN>随机对一个敌人造成${0}点伤害。每有一个你的其他军团角色，重复一次。@对生命值最低的敌人造成${0}点伤害。每有一个你的其他军团角色，重复一次。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="9" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="7" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="2" type="Int" value="2" />
+	</Entity>
+	<Entity CardID="LETL_006P9_03" ID="66963" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Fist of Jaraxxus 3</enUS>
+			<zhCN>加拉克苏斯之拳3</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Deal ${0} damage to
+a random enemy.
+Repeat for each of your
+other Legion characters.@Deal ${0} damage to the
+lowest Health enemy.
+Repeat for each of your
+other Legion characters.</enUS>
+			<zhCN>随机对一个敌人造成${0}点伤害。每有一个你的其他军团角色，重复一次。@对生命值最低的敌人造成${0}点伤害。每有一个你的其他军团角色，重复一次。</zhCN>
+		</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="13" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1586" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="23" />
+		<Tag enumID="1635" name="SPELL_SCHOOL" type="Int" value="7" />
+		<Tag enumID="1669" name="LETTUCE_COOLDOWN_CONFIG" type="Int" value="1" />
+		<Tag enumID="1672" name="1" type="Int" value="1" />
+		<Tag enumID="2609" name="3" type="Int" value="3" />
+	</Entity>
+</CardDefs>

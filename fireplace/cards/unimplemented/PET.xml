@@ -1,0 +1,217 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CardDefs build="236529" description="宠物卡牌">
+	<Entity CardID="PET_3_1" ID="122617" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Classic Krush</enUS>
+			<zhCN>经典克鲁什</zhCN>
+		</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1961" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="45" />
+		<Tag enumID="4018" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PET_3_2" ID="122618" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Devilsaur Krush</enUS>
+			<zhCN>魔暴龙克鲁什</zhCN>
+		</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1961" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="45" />
+		<Tag enumID="858" name="122617" type="Int" value="122617" />
+		<Tag enumID="1413" name="DECK_RULE_COUNT_AS_COPY_OF_CARD_ID" type="Int" value="122617" />
+		<Tag enumID="4018" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PET_3_3" ID="122619" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>King Plush</enUS>
+			<zhCN>抱龙王噗鲁什</zhCN>
+		</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1961" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="45" />
+		<Tag enumID="858" name="122617" type="Int" value="122617" />
+		<Tag enumID="1413" name="DECK_RULE_COUNT_AS_COPY_OF_CARD_ID" type="Int" value="122617" />
+		<Tag enumID="4018" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PET_3_4" ID="122620" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Crystal Krush</enUS>
+			<zhCN>紫水晶克鲁什</zhCN>
+		</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1961" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="45" />
+		<Tag enumID="858" name="122617" type="Int" value="122617" />
+		<Tag enumID="1413" name="DECK_RULE_COUNT_AS_COPY_OF_CARD_ID" type="Int" value="122617" />
+		<Tag enumID="4018" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PET_4_1" ID="125211" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Rabbit'ath</enUS>
+			<zhCN>萨拉兔斯</zhCN>
+		</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1961" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="45" />
+		<Tag enumID="4018" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PET_4_2" ID="125212" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Angelic Rabbit'ath</enUS>
+			<zhCN>天使萨拉兔斯</zhCN>
+		</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1961" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="45" />
+		<Tag enumID="4018" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PET_4_3" ID="125213" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Ethereal Rabbit'ath</enUS>
+			<zhCN>虚灵萨拉兔斯</zhCN>
+		</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1961" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="45" />
+		<Tag enumID="4018" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PET_4_4" ID="125214" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Corrupted Rabbit'ath</enUS>
+			<zhCN>腐化萨拉兔斯</zhCN>
+		</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1961" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="45" />
+		<Tag enumID="4018" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PET_6_1" ID="125982" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Bestest Boy Arfus</enUS>
+			<zhCN>乖狗狗阿尔福斯</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1961" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="45" />
+		<Tag enumID="4018" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PET_6_2" ID="125979" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Arfus, Hound of Menethil</enUS>
+			<zhCN>米奈希尔猎犬阿尔福斯</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1961" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="45" />
+		<Tag enumID="4018" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PET_6_3" ID="125980" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Putrid Pupper Arfus</enUS>
+			<zhCN>腐骨幼犬阿尔福斯</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1961" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="45" />
+		<Tag enumID="4018" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PET_6_4" ID="125981" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Helmed Hound Arfus</enUS>
+			<zhCN>永恒亡犬阿尔福斯</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1961" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="45" />
+		<Tag enumID="4018" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PET_7_1" ID="126182" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Ysera, the Alert</enUS>
+			<zhCN>警醒的伊瑟拉</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1961" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="45" />
+		<Tag enumID="4018" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PET_7_2" ID="126183" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Ardenweald Ysera</enUS>
+			<zhCN>炽蓝仙野的伊瑟拉</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1961" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="45" />
+		<Tag enumID="4018" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PET_7_3" ID="126184" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Ysera of the Bronze</enUS>
+			<zhCN>青铜龙伊瑟拉</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1961" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="45" />
+		<Tag enumID="4018" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PET_7_4" ID="126185" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Corrupted Ysera</enUS>
+			<zhCN>梦魇腐蚀伊瑟拉</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1961" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="45" />
+		<Tag enumID="4018" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PET_8_1" ID="126186" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Chieftain Hogger</enUS>
+			<zhCN>酋长霍格</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1961" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="45" />
+		<Tag enumID="4018" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PET_8_2" ID="126187" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Corrupted Hogger</enUS>
+			<zhCN>堕落的霍格</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1961" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="45" />
+		<Tag enumID="4018" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PET_8_3" ID="126188" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Pirate Hogger</enUS>
+			<zhCN>海盗霍格</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1961" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="45" />
+		<Tag enumID="4018" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PET_8_4" ID="126189" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Ya Zi Hogger</enUS>
+			<zhCN>睚眦招财霍格</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1961" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="45" />
+		<Tag enumID="4018" name="1" type="Int" value="1" />
+	</Entity>
+</CardDefs>

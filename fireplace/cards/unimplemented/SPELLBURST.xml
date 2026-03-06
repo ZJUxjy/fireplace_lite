@@ -1,0 +1,1680 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CardDefs build="236529" description="法术迸发机制">
+	<Entity CardID="BOM_03_Tamsin_08t" ID="74650" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Tamsin</enUS>
+			<zhCN>塔姆辛</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst&lt;/b&gt;: Summon an Imp Familiar. &lt;b&gt;Deathrattle:&lt;/b&gt; Go &lt;b&gt;Dormant&lt;/b&gt; for 2 turns.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;召唤一个小鬼魔仆。&lt;b&gt;亡语：&lt;/b&gt;&lt;b&gt;休眠&lt;/b&gt;2回合。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1525" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<ReferencedTag enumID="1518" name="DORMANT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_104" ID="110113" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Felfire Thrusters</enUS>
+			<zhCN>邪火推进器</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Deal this
+minion's Attack damage to
+2 random enemy minions.
+&lt;b&gt;Starship Piece&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;&lt;b&gt;法术迸发&lt;/b&gt;：&lt;/b&gt;对2个随机敌方随从各造成等同于本随从攻击力的伤害。
+&lt;b&gt;星舰组件&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>The coolness factor of a fire decal is universal.</enUS>
+			<zhCN>全宇宙都流行鬼火车贴。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Kevin Sidharta</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+		<Tag enumID="3568" name="STARSHIP_PIECE" type="Int" value="1" />
+		<Tag enumID="3684" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="3555" name="STARSHIP" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_106" ID="110117" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Guiding Figure</enUS>
+			<zhCN>引航舰首像</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Trigger a random
+friendly minion's &lt;b&gt;Deathrattle&lt;/b&gt;.
+&lt;b&gt;Starship Piece&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;&lt;b&gt;法术迸发&lt;/b&gt;：&lt;/b&gt;触发一个随机友方随从的&lt;b&gt;亡语&lt;/b&gt;。
+&lt;b&gt;星舰组件&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Nearrrr, farrrr, whereeeeeeever you are</enUS>
+			<zhCN>无……论……你离我多么遥远……</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Gabriel Lopes</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="1" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+		<Tag enumID="3568" name="STARSHIP_PIECE" type="Int" value="1" />
+		<Tag enumID="3684" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<ReferencedTag enumID="3555" name="STARSHIP" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_116" ID="110886" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Eldritch Being</enUS>
+			<zhCN>怪异奇物</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Outcast and &lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Shuffle your hand.</enUS>
+			<zhCN>&lt;b&gt;流放，&lt;b&gt;法术迸发&lt;/b&gt;：&lt;/b&gt;洗混你的手牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Tor flud huth respa di blarry? Fleebletor glomdor!</enUS>
+			<zhCN>歪比歪比？歪比巴卜！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Matt Dixon</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="14" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1333" name="OUTCAST" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_127" ID="111179" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>K'ara, the Dark Star</enUS>
+			<zhCN>卡拉，黑暗之星</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Steal 2 Health
+from a random enemy.
+&lt;i&gt;(Shadow spells don't remove
+this &lt;b&gt;Spellburst&lt;/b&gt;.)&lt;/i&gt;</enUS>
+			<zhCN>&lt;b&gt;&lt;b&gt;法术迸发&lt;/b&gt;：&lt;/b&gt;随机从一个敌人处偷取2点生命值。&lt;i&gt;（暗影法术不会移除此&lt;b&gt;法术迸发&lt;/b&gt;。）&lt;/i&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Velen had never seen a shooting star in real life, so when the opportunity arose…</enUS>
+			<zhCN>此前维伦从未在现实生活中亲眼看到过流星，于是当机会来临的时候……</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Kevin Sidharta</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_134" ID="111345" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Arkwing Pilot</enUS>
+			<zhCN>阿肯飞翼驾驶员</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>At the end of your turn, deal 3 damage to a random enemy. &lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Summon an Arkwing Pilot.</enUS>
+			<zhCN>在你的回合结束时，随机对一个敌人造成3点伤害。
+&lt;b&gt;&lt;b&gt;法术迸发&lt;/b&gt;：&lt;/b&gt;召唤一个阿肯飞翼驾驶员。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Delivered in under 30 minutes, or your Arkwings are free!</enUS>
+			<zhCN>阿肯尼特烤机，承诺30分钟内送达，否则免单！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Vika Yarova</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_136t" ID="111894" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>The Galaxy's Lens</enUS>
+			<zhCN>星系投影</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Absorb the spell's power!@Cast {0}.</enUS>
+			<zhCN>&lt;b&gt;&lt;b&gt;法术迸发&lt;/b&gt;：&lt;/b&gt;吸收法术的能量！@施放{0}。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_143" ID="111915" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Nexus-Prince Shaffar</enUS>
+			<zhCN>节点亲王沙法尔</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Spellburst:&lt;/b&gt; Give a minion
+in your hand +3/+3 and this
+&lt;b&gt;Spellburst&lt;/b&gt; &lt;i&gt;(unless it already
+has these effects).&lt;/i&gt;</enUS>
+			<zhCN>&lt;b&gt;法术迸发&lt;/b&gt;：使你手牌中的一张随从牌获得+3/+3和此&lt;b&gt;法术迸发&lt;/b&gt;效果&lt;i&gt;（除非其已经拥有这些效果）&lt;/i&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Whatever you do, do not give him OR his ethereal parrot a magical lamp.</enUS>
+			<zhCN>无论如何，神灯绝对不能落在他手里。让他的虚灵鹦鹉抢到也不行。</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Earnable after opening a &lt;i&gt;Great Dark Beyond&lt;/i&gt; card pack.</enUS>
+			<zhCN>打开&lt;i&gt;深暗领域&lt;/i&gt;卡牌包后可解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Earnable after purchasing the &lt;i&gt;Great Dark Beyond&lt;/i&gt; Tavern Pass.</enUS>
+			<zhCN>购买&lt;i&gt;深暗领域&lt;/i&gt;炉石通行证后开放解锁。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Alex Stone</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_226" ID="110896" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Hostile Invader</enUS>
+			<zhCN>凶恶的入侵者</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Battlecry, &lt;b&gt;Spellburst&lt;/b&gt;, and Deathrattle:&lt;/b&gt; Deal 2 damage to all other minions.</enUS>
+			<zhCN>&lt;b&gt;战吼，&lt;b&gt;法术迸发&lt;/b&gt;，
+亡语：&lt;/b&gt;对所有其他随从造成2点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"And my Axe!" "And my Axe!" "And my Axe!"</enUS>
+			<zhCN>“还有我的斧头！”“还有我的斧头！”“还有我的斧头！”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Ian Ameling</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="15" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_310" ID="111972" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Ethereal Oracle</enUS>
+			<zhCN>虚灵神谕者</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spell Damage +1&lt;/b&gt;
+&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Draw 2 spells.</enUS>
+			<zhCN>&lt;b&gt;法术伤害+1&lt;/b&gt;
+&lt;b&gt;&lt;b&gt;法术迸发&lt;/b&gt;：&lt;/b&gt;抽两张法术牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>I see 2 spells in my future.</enUS>
+			<zhCN>我看到了未来——两张法术牌。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">AJ Nazzaro</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="192" name="SPELLPOWER" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_311" ID="111973" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Deep Space Curator</enUS>
+			<zhCN>深空策展人</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Get a random minion of the spell's Cost. Set its Cost to (0).</enUS>
+			<zhCN>&lt;b&gt;&lt;b&gt;法术迸发&lt;/b&gt;：&lt;/b&gt;随机获取一张法力值消耗与法术相同的随从牌，并将其法力值消耗变为（0）点。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>*Gestures to empty room* "...and here is my curated collection of space."</enUS>
+			<zhCN>*指向空荡荡的房间*“……这就是我的太&lt;b&gt;空&lt;/b&gt;藏品。”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Slawomir Maniak</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_322" ID="111991" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Lightfused Manasaber</enUS>
+			<zhCN>光注魔刃豹</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Rush&lt;/b&gt;
+&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Gain
+&lt;b&gt;Divine Shield&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;突袭&lt;/b&gt;。&lt;b&gt;&lt;b&gt;法术迸发&lt;/b&gt;：&lt;/b&gt;获得&lt;b&gt;圣盾&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Oh no, I ran out of fused Mana!</enUS>
+			<zhCN>糟糕，我灌注的魔力用光了！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Eva Widermann</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="47" name="ATK" type="Int" value="6" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="791" name="RUSH" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<ReferencedTag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_330" ID="112028" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Ur'zul Rager</enUS>
+			<zhCN>乌祖尔暴怒者</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Lifesteal&lt;/b&gt;
+ &lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Attack a random enemy minion.</enUS>
+			<zhCN>&lt;b&gt;吸血&lt;/b&gt;
+&lt;b&gt;&lt;b&gt;法术迸发&lt;/b&gt;：&lt;/b&gt;随机攻击一个敌方随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>The Burning Legion is host to many horrors, but a 3 Mana 5/1 is the worst of all!</enUS>
+			<zhCN>燃烧军团里有不少可怕的恐魔，其中3费5/1的是最可怕的！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Jason Kang</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="1" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="15" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="685" name="LIFESTEAL" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_434" ID="110743" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Bolide Behemoth</enUS>
+			<zhCN>流彩巨岩</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Battlecry:&lt;/b&gt; Your Asteroids deal
+1 more damage this game.
+&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Shuffle 3 of
+them into your deck.</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;在本局对战中，你的小行星造成的伤害增加1点。&lt;b&gt;&lt;b&gt;法术迸发&lt;/b&gt;：&lt;/b&gt;将3张小行星洗入你的牌库。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>There's only so many words that exist for rocks in space.</enUS>
+			<zhCN>用来表示太空中的岩石的词快不够用了。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Matt Dixon</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="18" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_442" ID="110842" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>K'ure, the Light Beyond</enUS>
+			<zhCN>克乌雷，圣光领域</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Summon a
+random 3-Cost minion.
+&lt;i&gt;(Holy spells don't remove
+this &lt;b&gt;Spellburst&lt;/b&gt;.)&lt;/i&gt;</enUS>
+			<zhCN>&lt;b&gt;&lt;b&gt;法术迸发&lt;/b&gt;：
+&lt;/b&gt;随机召唤一个法力值
+消耗为（3）的随从。
+&lt;i&gt;（神圣法术不会移除此&lt;b&gt;法术迸发&lt;/b&gt;。）&lt;/i&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>The Draenei's story of survival should instill hope in you that anything is possible!! As long as you have the aid of an interdimensional manifestation of holy energy.</enUS>
+			<zhCN>德莱尼救亡图存的故事非常励志。一切皆有可能——前提是要有跨维度的神圣能源帮助。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Daniil Kudriavtsev</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_454" ID="111010" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Overzealous Healer</enUS>
+			<zhCN>狂热的医者</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Deathrattle:&lt;/b&gt; Restore #6 Health to the enemy hero. &lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; &lt;b&gt;Silence&lt;/b&gt; this minion.</enUS>
+			<zhCN>&lt;b&gt;亡语：&lt;/b&gt;为敌方英雄恢复#6点生命值。&lt;b&gt;&lt;b&gt;法术迸发&lt;/b&gt;：&lt;/b&gt;&lt;b&gt;沉默&lt;/b&gt;本随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>In another universe, she's Genji's best friend.</enUS>
+			<zhCN>在另一个宇宙里，她是源氏最好的朋友。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Anzka Nguyen</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<ReferencedTag enumID="339" name="SILENCE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_463" ID="111313" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Troubled Mechanic</enUS>
+			<zhCN>困窘的机械师</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Divine Shield&lt;/b&gt;
+&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Draw a Draenei.</enUS>
+			<zhCN>&lt;b&gt;圣盾&lt;/b&gt;。&lt;b&gt;&lt;b&gt;法术迸发&lt;/b&gt;：&lt;/b&gt;抽一张德莱尼牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>In space, no one can hear you talk about your troubles.</enUS>
+			<zhCN>在太空中，没人能听到你诉苦。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">L. Lullabi &amp; I. Campelo da Silva</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="1" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_728" ID="110610" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Interstellar Researcher</enUS>
+			<zhCN>星际研究员</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Battlecry and &lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Draw a Libram.</enUS>
+			<zhCN>&lt;b&gt;战吼，&lt;b&gt;法术迸发&lt;/b&gt;：&lt;/b&gt;抽一张圣契牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"If only I could read Draenei!"</enUS>
+			<zhCN>“要是我会德莱尼语就好了！”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Ivo Campelo da Silva</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_843" ID="111068" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Parallax Cannon</enUS>
+			<zhCN>视差光枪</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Has +2 Attack if you've
+&lt;b&gt;&lt;b&gt;Discover&lt;/b&gt;ed&lt;/b&gt; this turn.
+&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Your hero is
+&lt;b&gt;Immune&lt;/b&gt; this turn.</enUS>
+			<zhCN>如果你在本回合中
+&lt;b&gt;&lt;b&gt;发现&lt;/b&gt;过&lt;/b&gt;，则拥有+2攻击力。&lt;b&gt;&lt;b&gt;法术迸发&lt;/b&gt;：&lt;/b&gt;在本回合中，你的英雄&lt;b&gt;免疫&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Math is now cannon in the Warcraft universe.</enUS>
+			<zhCN>在魔兽宇宙中，数学变成了武器。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Drew Hill</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="7" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<ReferencedTag enumID="240" name="IMMUNE" type="Int" value="1" />
+		<ReferencedTag enumID="415" name="DISCOVER" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_855" ID="111005" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Star Grazer</enUS>
+			<zhCN>吞星兽</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive, Taunt&lt;/b&gt;
+&lt;b&gt;Spellburst:&lt;/b&gt; Give your
+hero +8 Attack this turn and gain 8 Armor.</enUS>
+			<zhCN>&lt;b&gt;扰魔。嘲讽&lt;/b&gt;
+&lt;b&gt;法术迸发：&lt;/b&gt;使你的英雄获得本回合中的+8攻击力，并获得8点护甲值。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Star gazing and star grazing aren't too different. Except for the part where you eat stars.</enUS>
+			<zhCN>观星和吞星没什么区别。一个是收入目中，一个是收入腹中。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Jim Nelson</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="8" />
+		<Tag enumID="47" name="ATK" type="Int" value="8" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_860" ID="111180" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Starscale Constellar</enUS>
+			<zhCN>辰鳞星圣</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Double this minion's Attack.</enUS>
+			<zhCN>&lt;b&gt;&lt;b&gt;法术迸发&lt;/b&gt;：&lt;/b&gt;本随从的攻击力翻倍。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>You'll understand how to best make use of its effect once you connect the dots.</enUS>
+			<zhCN>把这些点连起来，你自会懂得这张牌的妙处。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Earnable on the &lt;i&gt;Great Dark Beyond&lt;/i&gt; Reward Track.</enUS>
+			<zhCN>可以在&lt;i&gt;深暗领域&lt;/i&gt;奖励路线中获得该奖励。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Eva Widermann</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="7" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_870" ID="111263" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Eredar Skulker</enUS>
+			<zhCN>艾瑞达潜藏者</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Combo and &lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt;
+Gain +2 Attack and &lt;b&gt;Stealth&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;连击，&lt;b&gt;法术迸发&lt;/b&gt;：&lt;/b&gt;获得+2攻击力和&lt;b&gt;潜行&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"And I'll do it again, too!"</enUS>
+			<zhCN>“我还能再潜一次！”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Grafit</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="7" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="15" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="220" name="COMBO" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<ReferencedTag enumID="191" name="STEALTH" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PVPDR_DMF_Priestt2" ID="66751" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Droplet of Insanity</enUS>
+			<zhCN>狂乱液滴</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst&lt;/b&gt;: Add two &lt;b&gt;Corrupt&lt;/b&gt; cards to your hand, then &lt;b&gt;Corrupt&lt;/b&gt; them.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;将两张&lt;b&gt;腐蚀&lt;/b&gt;牌置入你的手牌，并将其&lt;b&gt;腐蚀&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Imagine what a whole bucket could do.</enUS>
+			<zhCN>想想整桶装的狂乱会是什么样。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="18" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<ReferencedTag enumID="1524" name="CORRUPT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PVPDR_Hero_KelThuzad" ID="63481" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Headmaster Kel'Thuzad</enUS>
+			<zhCN>校长克尔苏加德</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="15" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="18" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="3" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="PVPDR_YOP_MageT3" ID="67447" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Embercaster</enUS>
+			<zhCN>灰烬施法者</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Add 3 copies of the spell to your hand.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;将法术牌的三张复制置入你的手牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Sometimes all it takes is the right spark of inspiration.</enUS>
+			<zhCN>有时只要一点灵感的火花，就能收获一堆法术的灰烬。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="18" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SCH_120" ID="59619" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Cabal Acolyte</enUS>
+			<zhCN>秘教侍僧</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Taunt&lt;/b&gt;
+&lt;b&gt;Spellburst:&lt;/b&gt; Gain control
+of a random enemy minion
+with 2 or less Attack.</enUS>
+			<zhCN>&lt;b&gt;嘲讽，法术迸发：&lt;/b&gt;随机获得一个攻击力小于或等于2的敌方随从的控制权。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>How did he get to the top of his class? He pulled a few strings!</enUS>
+			<zhCN>为何他能在班级中名列前茅？全靠牵线搭桥掌握了控制权！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Slawomir Maniak</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1443" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SCH_141" ID="59587" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>High Abbess Alura</enUS>
+			<zhCN>高阶修士奥露拉</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Cast a spell from your deck &lt;i&gt;(targets this if possible)&lt;/i&gt;.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;从你的牌库中施放一张法术牌&lt;i&gt;（尽可能以本随从为目标）&lt;/i&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>She's all about hitting the books. Literally.</enUS>
+			<zhCN>法术书对她来说很有吸引力。字面意义的吸引力。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Anton Zemskov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1443" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="476" name="MULTIPLE_CLASSES" type="Int" value="48" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SCH_182" ID="59253" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Speaker Gidra</enUS>
+			<zhCN>演讲者吉德拉</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;&lt;b&gt;Rush&lt;/b&gt;, Windfury&lt;/b&gt;
+&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Gain Attack
+and Health equal to
+the spell's Cost.</enUS>
+			<zhCN>&lt;b&gt;突袭，风怒&lt;/b&gt;
+&lt;b&gt;法术迸发：&lt;/b&gt;获得等同于法术法力值消耗的攻击力和生命值。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>If a teacher lectures in a forest, does she even make a sound?</enUS>
+			<zhCN>如果一个讲师在森林中发表了一次无人倾听的演讲，那么实际上她是否发出了声音？</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Paul Mafayon</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1443" />
+		<Tag enumID="189" name="WINDFURY" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="476" name="MULTIPLE_CLASSES" type="Int" value="130" />
+		<Tag enumID="791" name="RUSH" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SCH_224" ID="58931" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Headmaster Kel'Thuzad</enUS>
+			<zhCN>校长克尔苏加德</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; If the spell destroys any minions, summon them.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;如果法术消灭了任意随从，召唤被消灭的随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"You wish to know my secrets, hmm? I carry little bits of tuna in the sleeves of my robe, he loves that. Oh, you meant the risen dead? That was trivial, trivial."</enUS>
+			<zhCN>“你想知道我的秘密，嗯？我在长袍的袖子里藏了一点金枪鱼，他最喜欢那个了。哦，你说那些复活的死者？那只是小事，小事。”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">James Ryman</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1443" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SCH_230" ID="58971" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Onyx Magescribe</enUS>
+			<zhCN>黑岩法术抄写员</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst:&lt;/b&gt; Add 2 random spells from your class to_your hand.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;随机将两张你职业的法术牌置入你的手牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Sometimes you gotta spend spells to earn spells.</enUS>
+			<zhCN>舍不得法术，套不着法术。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mauricio Herrera</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="9" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1443" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SCH_231" ID="58972" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Intrepid Initiate</enUS>
+			<zhCN>新生刺头</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst:&lt;/b&gt; Gain +2_Attack.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;获得+2攻击力。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>How you like them apples?</enUS>
+			<zhCN>你还想有好果子吃？</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Ursula Dorada</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1443" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SCH_232" ID="58973" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Crimson Hothead</enUS>
+			<zhCN>赤红急先锋</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst:&lt;/b&gt; Gain +1 Attack and &lt;b&gt;Taunt&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;获得+1攻击力和&lt;b&gt;嘲讽&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Has a real passion for spelling.</enUS>
+			<zhCN>对法术是真的热爱。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mauricio Herrera</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1443" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<ReferencedTag enumID="190" name="TAUNT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SCH_234" ID="58975" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Shifty Sophomore</enUS>
+			<zhCN>调皮的大二学妹</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Stealth&lt;/b&gt;
+&lt;b&gt;Spellburst:&lt;/b&gt; Add a &lt;b&gt;Combo&lt;/b&gt; card to your hand.</enUS>
+			<zhCN>&lt;b&gt;潜行，法术迸发：&lt;/b&gt;将一张&lt;b&gt;连击&lt;/b&gt;牌置入你的手牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Experienced enough to do crimes, inexperienced enough to be super obvious about it.</enUS>
+			<zhCN>稍有资历便调皮，资历尚浅露形迹。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Arthur Bozonnet</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1443" />
+		<Tag enumID="191" name="STEALTH" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="7" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<ReferencedTag enumID="220" name="COMBO" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SCH_236" ID="58977" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Diligent Notetaker</enUS>
+			<zhCN>笔记能手</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst:&lt;/b&gt; Return the spell to your hand.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;将法术牌移回你的手牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>You never know what cards are going to be on the test.</enUS>
+			<zhCN>你永远想不到考试会考哪张牌。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Peter Stapleton</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1443" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SCH_238" ID="58979" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Reaper's Scythe</enUS>
+			<zhCN>收割之镰</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Spellburst&lt;/b&gt;: Also
+damages adjacent
+minions this turn.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;在本回合中同时对攻击目标相邻的随从造成伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Die. Die. Die.</enUS>
+			<zhCN>死吧，死吧，死吧。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Kagi</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1443" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="7" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SCH_239" ID="58980" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Krolusk Barkstripper</enUS>
+			<zhCN>裂树三叶虫</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst:&lt;/b&gt; Destroy a random enemy minion.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;随机消灭一个敌方随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>My friend went krolusk tipping once… once!</enUS>
+			<zhCN>有一次我的朋友闲得去给三叶虫翻身……就再也没回来！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Hideaki Takamura</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1443" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SCH_241" ID="59000" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Firebrand</enUS>
+			<zhCN>火印火妖</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Deal 4 damage randomly split among all_enemy minions.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;造成4点伤害，随机分配到所有敌方随从身上。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Too cool for school, too hot for thought.</enUS>
+			<zhCN>你好烧啊。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mike Sass</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1443" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SCH_242" ID="59001" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Gibberling</enUS>
+			<zhCN>聒噪怪</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst:&lt;/b&gt; Summon a Gibberling.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;召唤一个聒噪怪。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"As a Linguistics student I have studied the Gibberlings. I have determined they are speaking Gibberish."</enUS>
+			<zhCN>“作为语言学专业的学生，我对聒噪怪颇有研究。我确信，它们说的话就是——怪话。”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Anton Zemskov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="1" />
+		<Tag enumID="47" name="ATK" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1443" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SCH_243" ID="59002" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Wyrm Weaver</enUS>
+			<zhCN>浮龙培养师</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Summon two 1/3 Mana Wyrms.</enUS>
+			<zhCN>&lt;b&gt;&lt;b&gt;法术迸发&lt;/b&gt;：&lt;/b&gt;召唤两条1/3的法力浮龙。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Studied basket weaving as an undergrad.</enUS>
+			<zhCN>浮夸的学长最终留校；萨莉去了加基森当警员；我去永歌森林培养浮龙：我们都有光明的前途。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Bios Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1443" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="405" />
+	</Entity>
+	<Entity CardID="SCH_248" ID="59039" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Pen Flinger</enUS>
+			<zhCN>甩笔侏儒</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Battlecry:&lt;/b&gt; Deal 1 damage
+to a minion.
+ &lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Return this
+to_your hand.</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;对一个随从造成1点伤害。&lt;b&gt;法术迸发：&lt;/b&gt;将本随从移回你的
+手牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>The pen is also a more aerodynamic short-range projectile than the sword.</enUS>
+			<zhCN>笔确实胜于长剑，特别是在短距离投射打击时的空气动力学性能方面。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal 1 damage.</enUS>
+			<zhCN>造成1点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Zoe Feng</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="1" />
+		<Tag enumID="47" name="ATK" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1443" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SCH_313" ID="59036" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Wretched Tutor</enUS>
+			<zhCN>失心辅导员</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst:&lt;/b&gt; Deal 2 damage to all other minions.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;对所有其他随从造成2点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"If you like my tutoring, you'll love my sister the art therapist, my father the driver, and my mother the housekeeper."</enUS>
+			<zhCN>“要是你喜欢我的辅导，那你也一定会喜欢我那当美术老师的妹妹，当司机的父亲，还有当管家的母亲。”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">James Ryman</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1443" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SCH_523" ID="59408" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Ceremonial Maul</enUS>
+			<zhCN>仪式重槌</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst&lt;/b&gt;: Summon a Student with &lt;b&gt;Taunt&lt;/b&gt; and stats equal to the spell's Cost.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;召唤一个属性值等同于法术法力值消耗的并具有&lt;b&gt;嘲讽&lt;/b&gt;的学生。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>For the most discerning of hall monitors.</enUS>
+			<zhCN>专为纪律委员设计。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">MAR Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1443" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="7" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="476" name="MULTIPLE_CLASSES" type="Int" value="528" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="59954" />
+		<ReferencedTag enumID="190" name="TAUNT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SCH_532" ID="59594" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Goody Two-Shields</enUS>
+			<zhCN>双盾优等生</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Divine Shield&lt;/b&gt;
+&lt;b&gt;Spellburst:&lt;/b&gt; Gain &lt;b&gt;Divine Shield&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;圣盾，法术迸发：&lt;/b&gt;获得&lt;b&gt;圣盾&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>These are my shields. There are at least two like them, and both are mine.</enUS>
+			<zhCN>考试当天带上一根油条和两块盾，你也能成为优等生。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Anton Zemskov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1443" />
+		<Tag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SCH_614" ID="59555" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Forest Warden Omu</enUS>
+			<zhCN>林地守护者欧穆</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst:&lt;/b&gt; Refresh your Mana Crystals.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;复原你的法力水晶。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>She wishes all things could grow and flourish at Scholomance. If only she knew…</enUS>
+			<zhCN>她许愿所有的生命都能在通灵学园破土而出，永葆生机。要是她知道后来……</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mike Sass</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1443" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_04_Jaina" ID="66591" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Jaina Proudmoore</enUS>
+			<zhCN>吉安娜·普罗德摩尔</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst&lt;/b&gt;: Summon a 3/6 Water Elemental. &lt;b&gt;Deathrattle:&lt;/b&gt; Shuffle into your deck.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;召唤一个3/6的水元素。&lt;b&gt;亡语：&lt;/b&gt;洗入你的牌库。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1466" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_04_KelThuzad" ID="66594" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Spirit of Kel'Thuzad</enUS>
+			<zhCN>克尔苏加德的灵魂</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; If the spell destroys any minions, summon them.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;如果法术消灭了任意随从，召唤被消灭的随从。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1466" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="858" name="58931" type="Int" value="58931" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_05_Mekkatorque" ID="67138" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Gelbin Mekkatorque</enUS>
+			<zhCN>格尔宾·梅卡托克</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Summon an AWESOME invention. &lt;b&gt;Deathrattle:&lt;/b&gt; Go &lt;b&gt;Dormant&lt;/b&gt; for 4 turns.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;召唤一项惊人的发明。&lt;b&gt;亡语：&lt;/b&gt;&lt;b&gt;休眠&lt;/b&gt;4回合。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="6" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1466" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="858" name="858" type="Int" value="858" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<ReferencedTag enumID="1518" name="DORMANT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_06_Broll" ID="68034" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Broll Bearmantle</enUS>
+			<zhCN>布罗尔·熊皮</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst:&lt;/b&gt; Transform into a 3/6 Bear with &lt;b&gt;Rush&lt;/b&gt;.
+&lt;b&gt;Deathrattle:&lt;/b&gt; Go
+ &lt;b&gt;Dormant&lt;/b&gt; for 2 turns.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;变形成为一只3/6并具有&lt;b&gt;突袭&lt;/b&gt;的熊。&lt;b&gt;亡语：&lt;/b&gt;&lt;b&gt;休眠&lt;/b&gt;2回合。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1466" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="839" name="1" type="Int" value="1" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<ReferencedTag enumID="791" name="RUSH" type="Int" value="1" />
+		<ReferencedTag enumID="1518" name="DORMANT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_06_JainaMinion" ID="70992" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Jaina Proudmoore</enUS>
+			<zhCN>吉安娜·普罗德摩尔</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst:&lt;/b&gt; Summon a 3/6 Water Elemental. &lt;b&gt;Deathrattle:&lt;/b&gt; Shuffle into your deck.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;召唤一个3/6的水元素。&lt;b&gt;亡语：&lt;/b&gt;洗入你的牌库。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1466" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_06_RehgarMinion" ID="70990" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Rehgar Earthfury</enUS>
+			<zhCN>雷加尔·大地之怒</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst&lt;/b&gt;: Summon a random Totem.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;随机召唤一个图腾。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1466" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_07_DrekTharMinion" ID="71384" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Drek'Thar</enUS>
+			<zhCN>德雷克塔尔</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Summon a random Elemental. &lt;b&gt;Deathrattle:&lt;/b&gt; Shuffle_this into_your_deck.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;随机召唤一个元素。&lt;b&gt;亡语：&lt;/b&gt;洗入你的牌库。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1525" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_08_Gibberling" ID="77215" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Gibberling</enUS>
+			<zhCN>聒噪怪</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst:&lt;/b&gt; Summon a Gibberling.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;召唤一个聒噪怪。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"As a Linguistics student I have studied the Gibberlings. I have determined they are speaking Gibberish."</enUS>
+			<zhCN>“作为语言学专业的学生，我对聒噪怪颇有研究。我确信，它们说的话就是——怪话。”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Anton Zemskov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="1" />
+		<Tag enumID="47" name="ATK" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1443" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_08_TyrandePriestess" ID="72098" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Priestess Tyrande</enUS>
+			<zhCN>祭司泰兰德</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst&lt;/b&gt;: Restore 2 Health
+to all friendly characters.
+&lt;b&gt;Deathrattle: &lt;/b&gt; Go &lt;b&gt;Dormant&lt;/b&gt; for 2 turns.</enUS>
+			<zhCN>&lt;b&gt;法术迸发&lt;/b&gt;：为所有友方角色恢复2点生命值。&lt;b&gt;亡语：&lt;/b&gt;&lt;b&gt;休眠&lt;/b&gt;2回合。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="8" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1525" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<ReferencedTag enumID="1518" name="DORMANT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_09_ChoGall" ID="74719" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Cho'gall</enUS>
+			<zhCN>古加尔</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Spellburst&lt;/b&gt;&lt;b&gt;:&lt;/b&gt; The next spell
+ you cast this turn costs
+ Health instead of Mana.
+&lt;b&gt;Deathrattle:&lt;/b&gt; Go &lt;b&gt;Dormant&lt;/b&gt;
+for 2 turns.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;在本回合中，你施放的下一个法术不再消耗法力值，转而消耗生命值。&lt;b&gt;亡语：&lt;/b&gt;&lt;b&gt;休眠&lt;/b&gt;2回合。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Even after all this time, Gul'dan still makes Cho'gall go get donuts and coffee.</enUS>
+			<zhCN>即便这么多年过去了，古尔丹还是会吩咐古加尔去准备咖啡和甜甜圈。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">James Ryman</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="7" />
+		<Tag enumID="47" name="ATK" type="Int" value="7" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1525" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<ReferencedTag enumID="1518" name="DORMANT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_09_ShadowreaverWarlock" ID="74749" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Stormreaver Warlock</enUS>
+			<zhCN>暴掠术士</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst&lt;/b&gt;&lt;b&gt;:&lt;/b&gt; Add a copy of the spell to your hand. It costs (0).</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;将法术牌的一张复制置入你的手牌，其法力值消耗为（0）点。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1525" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_10_Akama" ID="76248" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Akama</enUS>
+			<zhCN>阿卡玛</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Permanently &lt;b&gt;&lt;b&gt;Stealth&lt;/b&gt;ed&lt;/b&gt;.
+&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Deal 3 damage to
+the enemy hero.
+&lt;b&gt;Deathrattle:&lt;/b&gt; Go &lt;b&gt;Dormant&lt;/b&gt;
+ for 3 turns.</enUS>
+			<zhCN>永久&lt;b&gt;潜行&lt;/b&gt;。&lt;b&gt;法术迸发：&lt;/b&gt;对敌方英雄造成3点伤害。&lt;b&gt;亡语：&lt;/b&gt;&lt;b&gt;休眠&lt;/b&gt;3回合。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">James Ryman</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="6" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1578" />
+		<Tag enumID="191" name="STEALTH" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<ReferencedTag enumID="1518" name="DORMANT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_DredgeLorde" ID="86892" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Dredgin'</enUS>
+			<zhCN>正在探底</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst&lt;/b&gt;: Add a Dredge spell to your hand.</enUS>
+			<zhCN>&lt;b&gt;法术迸发&lt;/b&gt;：将一张&lt;b&gt;探底&lt;/b&gt;法术牌置入你的手牌。</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="6" />
+		<Tag enumID="330" name="ENCHANTMENT_BIRTH_VISUAL" type="Int" value="3" />
+		<Tag enumID="331" name="ENCHANTMENT_IDLE_VISUAL" type="Int" value="3" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_QuickFix2e" ID="89795" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Quick Fix</enUS>
+			<zhCN>快速维修</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst&lt;/b&gt;: Throw a better random weapon to your hand.</enUS>
+			<zhCN>&lt;b&gt;法术迸发&lt;/b&gt;：随机将一把更好的武器掷入你的手中。</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="6" />
+		<Tag enumID="251" name="AttackVisualType" type="Int" value="1" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_QuickFixe" ID="87312" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Quick Fix</enUS>
+			<zhCN>快速维修</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst&lt;/b&gt;: Throw a random weapon to your hand.</enUS>
+			<zhCN>&lt;b&gt;法术迸发&lt;/b&gt;：随机将一把武器掷入你的手中。</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="6" />
+		<Tag enumID="251" name="AttackVisualType" type="Int" value="1" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_SunkenHopese" ID="90421" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Sinking Hopes</enUS>
+			<zhCN>沉没的希望</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst&lt;/b&gt;: Dredge for your opponent. If it's a spell, increase its Cost to 10.</enUS>
+			<zhCN>&lt;b&gt;法术迸发&lt;/b&gt;：为你的对手&lt;b&gt;探底&lt;/b&gt;。如果选中的是法术牌，则将其法力值消耗增加到10点。</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="6" />
+		<Tag enumID="330" name="ENCHANTMENT_BIRTH_VISUAL" type="Int" value="3" />
+		<Tag enumID="331" name="ENCHANTMENT_IDLE_VISUAL" type="Int" value="3" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_Swap2e" ID="86680" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Swapping!</enUS>
+			<zhCN>正在调换</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst&lt;/b&gt;: Add a Swap spell to your hand.</enUS>
+			<zhCN>&lt;b&gt;法术迸发&lt;/b&gt;：将一张调换法术牌置入你的手牌。</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="6" />
+		<Tag enumID="251" name="AttackVisualType" type="Int" value="1" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_Swap3e" ID="86681" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Swapping!</enUS>
+			<zhCN>正在调换</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst&lt;/b&gt;: Add a Swap spell to your hand.</enUS>
+			<zhCN>&lt;b&gt;法术迸发&lt;/b&gt;：将一张调换法术牌置入你的手牌。</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="6" />
+		<Tag enumID="251" name="AttackVisualType" type="Int" value="1" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_Swape" ID="86668" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Swapping!</enUS>
+			<zhCN>正在调换</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst&lt;/b&gt;: Add a Swap spell to your hand.</enUS>
+			<zhCN>&lt;b&gt;法术迸发&lt;/b&gt;：将一张调换法术牌置入你的手牌。</zhCN>
+		</Tag>
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="6" />
+		<Tag enumID="251" name="AttackVisualType" type="Int" value="1" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="WON_143" ID="102689" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Infinite Amalgam</enUS>
+			<zhCN>永恒融合怪</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Inspire, Frenzy, &lt;b&gt;Spellburst&lt;/b&gt;,
+Honorable Kill, and Overkill:&lt;/b&gt;
+Summon a random
+1-Cost minion.</enUS>
+			<zhCN>&lt;b&gt;激励，暴怒，&lt;b&gt;法术迸发&lt;/b&gt;，荣誉消灭，超杀：&lt;/b&gt;随机召唤一个法力值消耗为（1）的随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>The Infinite Amalgam sought Gammy, the greatest among them, though it feared the queen of the amalgams would never be found.</enUS>
+			<zhCN>永恒融合怪找上了它们之中最强大的盖米。虽然它有点担心融合怪女王永远也不会出现。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Jakub Kasper</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1898" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="26" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="403" name="INSPIRE" type="Int" value="1" />
+		<Tag enumID="923" name="OVERKILL" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<Tag enumID="1637" name="FRENZY" type="Int" value="1" />
+		<Tag enumID="1920" name="HONORABLE_KILL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="YOP_010" ID="61948" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Imprisoned Celestial</enUS>
+			<zhCN>被禁锢的星骓</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Dormant&lt;/b&gt; for 2 turns.
+&lt;b&gt;Spellburst&lt;/b&gt;: Give your minions
+&lt;b&gt;Divine Shield&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;休眠&lt;/b&gt;2回合。&lt;b&gt;法术迸发：&lt;/b&gt;使你的随从获得&lt;b&gt;圣盾&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"Look at your deck, now back to me, now back at your deck, now back to me. Who am I? None of your—I'm on a horse."</enUS>
+			<zhCN>此马非凡马，星骓本是星。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Sean McNally</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1466" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<Tag enumID="1652" name="1" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<ReferencedTag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+		<ReferencedTag enumID="1518" name="DORMANT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="YOP_018" ID="61956" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Keywarden Ivory</enUS>
+			<zhCN>钥匙守护者艾芙瑞</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Discover&lt;/b&gt; a
+Dual Class spell from
+any class. &lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt;
+Get another copy.</enUS>
+			<zhCN>&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;发现&lt;/b&gt;一张任意职业的双职业法术牌。&lt;b&gt;法术迸发：&lt;/b&gt;获取发现的法术牌的另一张复制。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>She learned exactly one thing from her old man: copying.</enUS>
+			<zhCN>她从她父亲那里只学到一件事：复制。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Anzka Nguyen</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1466" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="415" name="DISCOVER" type="Int" value="1" />
+		<Tag enumID="476" name="MULTIPLE_CLASSES" type="Int" value="72" />
+		<Tag enumID="1342" name="USE_DISCOVER_VISUALS" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="YOP_020" ID="61958" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Glacier Racer</enUS>
+			<zhCN>冰川竞速者</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Spellburst&lt;/b&gt;: Deal 3 damage to all &lt;b&gt;Frozen&lt;/b&gt; enemies.</enUS>
+			<zhCN>&lt;b&gt;法术迸发：&lt;/b&gt;对所有已被&lt;b&gt;冻结&lt;/b&gt;的敌人造成3点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>It’s just not the same without a super suit.</enUS>
+			<zhCN>没了超人战服，终究是差点味道。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Agatha Zhou</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1466" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<ReferencedTag enumID="260" name="FROZEN" type="Int" value="1" />
+	</Entity>
+</CardDefs>

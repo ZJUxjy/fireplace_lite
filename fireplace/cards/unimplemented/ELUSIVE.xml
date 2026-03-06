@@ -1,0 +1,1641 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CardDefs build="236529" description="无法被指定机制">
+	<Entity CardID="BOM_03_ThunderBluff_01t" ID="73351" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Thunder Bluff</enUS>
+			<zhCN>雷霆崖</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Taunt&lt;/b&gt;, &lt;b&gt;Elusive&lt;/b&gt;
+&lt;b&gt;Deathrattle:&lt;/b&gt; Deal 10 damage to your hero.</enUS>
+			<zhCN>&lt;b&gt;嘲讽&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;
+&lt;b&gt;亡语：&lt;/b&gt;对你的英雄造成10点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="10" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1525" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="1458" name="SUPPRESS_ALL_SUMMON_VO" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="BOM_07_Scabbs_VanessaVanCleef_008t" ID="80938" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Vanessa VanCleef</enUS>
+			<zhCN>梵妮莎·范克里夫</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Poisonous&lt;/b&gt;, &lt;b&gt;Elusive&lt;/b&gt;
+Your hero is &lt;b&gt;Immune&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;剧毒&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;
+你的英雄&lt;b&gt;免疫&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="15" />
+		<Tag enumID="47" name="ATK" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1578" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="363" name="POISONOUS" type="Int" value="1" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<ReferencedTag enumID="240" name="IMMUNE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="BOM_08_Grummus_006t" ID="82418" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Lt. Grummus</enUS>
+			<zhCN>格鲁姆斯中尉</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;
+Your hero is &lt;b&gt;Immune&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;
+你的英雄&lt;b&gt;免疫&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="20" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1626" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="11" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="362" name="AURA" type="Int" value="1" />
+		<Tag enumID="367" name="AI_MUST_PLAY" type="Int" value="1" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<ReferencedTag enumID="240" name="IMMUNE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="BOM_10_EvasiveWyrm_007t" ID="122751" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Evasive Wyrm</enUS>
+			<zhCN>辟法巨龙</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Rush&lt;/b&gt;
+&lt;b&gt;Divine Shield&lt;/b&gt;
+&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;突袭&lt;/b&gt;。&lt;b&gt;圣盾&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Deftly dodges spells like a real wiggle wyrm.</enUS>
+			<zhCN>八百巨龙奔北坡，北坡法师并排跑。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Arthur Bozonnet</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1626" />
+		<Tag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="791" name="RUSH" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="BOT_237" ID="48142" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Beryllium Nullifier</enUS>
+			<zhCN>铍金毁灭者</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Magnetic&lt;/b&gt;
+&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;磁力&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Why Beryllium? Because it's hard to spell.</enUS>
+			<zhCN>为什么要用铍？因为这个字难拼，进而难以被选中。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Anton Zemskov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="8" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1127" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="17" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="849" name="MAGNETIC" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="2787" name="48698" type="Int" value="48698" />
+	</Entity>
+	<Entity CardID="BOTA_UNG_852" ID="111082" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Tyrantus</enUS>
+			<zhCN>泰拉图斯</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Millennia of evolutionary pressures turned his species into the Faerie Dragons we know today.</enUS>
+			<zhCN>历经数千年的演变后，它变成了我们现在所熟知的精灵龙。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Chris Rahn</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="12" />
+		<Tag enumID="47" name="ATK" type="Int" value="12" />
+		<Tag enumID="48" name="COST" type="Int" value="10" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1127" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="CORE_DRG_079" ID="112925" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Evasive Wyrm</enUS>
+			<zhCN>辟法巨龙</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Rush&lt;/b&gt;
+&lt;b&gt;Divine Shield&lt;/b&gt;
+&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;突袭&lt;/b&gt;。&lt;b&gt;圣盾&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Deftly dodges spells like a real wiggle wyrm.</enUS>
+			<zhCN>八百巨龙奔北坡，北坡法师并排跑。</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Unlocked by completing the Tutorial.</enUS>
+			<zhCN>完成教学后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked after 500 total wins.</enUS>
+			<zhCN>总计赢得500场对战后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Arthur Bozonnet</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1637" />
+		<Tag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="791" name="RUSH" type="Int" value="1" />
+		<Tag enumID="858" name="55429" type="Int" value="55429" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="CORE_ICC_419" ID="69694" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Bearshark</enUS>
+			<zhCN>熊鲨</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"Candygram."</enUS>
+			<zhCN>它的分类让生物学家很是头疼。</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Unlocked with Hunter class.</enUS>
+			<zhCN>与猎人职业一同解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked after winning 50 games as Hunter.</enUS>
+			<zhCN>使用猎人赢得50场对战后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Max Grecke</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1810" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="42711" type="Int" value="42711" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="2534" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="CORE_NEW1_023" ID="76329" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Faerie Dragon</enUS>
+			<zhCN>精灵龙</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Adorable.  Immune to Magic.  Doesn't pee on the rug.  The perfect pet!</enUS>
+			<zhCN>可爱至极，免疫魔法，不会在毯子上撒尿。真是完美的宠物！</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Unlocked by completing the Tutorial.</enUS>
+			<zhCN>完成教学后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked after 500 total wins.</enUS>
+			<zhCN>总计赢得500场对战后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Samwise</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1637" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="609" type="Int" value="609" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Core_UNG_019" ID="113108" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Air Elemental</enUS>
+			<zhCN>空气元素</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Makes a mean puff pastry.</enUS>
+			<zhCN>那种没人在意你的感觉，是永远的痛。</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Unlocked with Shaman class.</enUS>
+			<zhCN>与萨满祭司职业一同解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked after winning 50 games as Shaman.</enUS>
+			<zhCN>使用萨满祭司赢得50场对战后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Evgeniy Dlinnov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="1" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1810" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="18" />
+		<Tag enumID="201" name="FACTION" type="Int" value="1" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="251" name="AttackVisualType" type="Int" value="1" />
+		<Tag enumID="268" name="DevState" type="Int" value="2" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="41152" type="Int" value="41152" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="DEEP_002t3" ID="102155" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Me'sho</enUS>
+			<zhCN>米霜</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Daniil Kudriavtsev</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1892" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="18" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="476" name="MULTIPLE_CLASSES" type="Int" value="12" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="DEEP_006" ID="102162" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Stone Drake</enUS>
+			<zhCN>岩石幼龙</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Divine Shield&lt;/b&gt;, &lt;b&gt;Taunt&lt;/b&gt;,
+&lt;b&gt;Lifesteal&lt;/b&gt;, &lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;圣盾&lt;/b&gt;，&lt;b&gt;嘲讽&lt;/b&gt;，&lt;b&gt;吸血&lt;/b&gt;，&lt;b&gt;扰魔&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"I am the great Stone Drake - good morning!"</enUS>
+			<zhCN>“我是岩石神龙——早上好！”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Alex Stone</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="8" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1892" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="685" name="LIFESTEAL" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="2540" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="DINO_421" ID="118617" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Seismopod</enUS>
+			<zhCN>震地雷龙</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Taunt&lt;/b&gt;, &lt;b&gt;Elusive&lt;/b&gt;
+&lt;b&gt;Deathrattle:&lt;/b&gt; Give all minions in your hand
+and deck +3/+3.</enUS>
+			<zhCN>&lt;b&gt;嘲讽&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;
+&lt;b&gt;亡语：&lt;/b&gt;使你的手牌和牌库里的所有随从牌获得+3/+3。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"Let your heart guide you. It whispers, so listen closely."</enUS>
+			<zhCN>地雷？什么地雷？</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Todd Harris</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="9" />
+		<Tag enumID="47" name="ATK" type="Int" value="9" />
+		<Tag enumID="48" name="COST" type="Int" value="9" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="DREAM_01" ID="340" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Laughing Sister</enUS>
+			<zhCN>欢笑的姐妹</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="3" />
+		<Tag enumID="199" name="CLASS" type="Int" value="11" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="DRG_066" ID="55416" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Evasive Chimaera</enUS>
+			<zhCN>辟法奇美拉</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Poisonous&lt;/b&gt;
+&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;剧毒&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>One head only tells the truth, while the other head only tells lies. But they both spit poison.</enUS>
+			<zhCN>一个头只说真话，另一个头只说假话。不过两个头都很毒舌。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Anton Zemskov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="1" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1347" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="363" name="POISONOUS" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="DRG_073" ID="55423" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Evasive Feywing</enUS>
+			<zhCN>辟法灵龙</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>I've never heard of this fey-dragon called "Brightwing," but if I HAD, I’d say we’d be best friends.</enUS>
+			<zhCN>我从没听说过这只叫“光明之翼”的精灵龙。但如果我听过的话，我一定要说：我们是最好的朋友。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Concept Art House</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1347" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="DRG_079" ID="55429" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Evasive Wyrm</enUS>
+			<zhCN>辟法巨龙</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Rush&lt;/b&gt;
+&lt;b&gt;Divine Shield&lt;/b&gt;
+&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;突袭&lt;/b&gt;。&lt;b&gt;圣盾&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Deftly dodges spells like a real wiggle wyrm.</enUS>
+			<zhCN>八百巨龙奔北坡，北坡法师并排跑。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Arthur Bozonnet</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1347" />
+		<Tag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="791" name="RUSH" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="DRG_310" ID="54935" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Evasive Drakonid</enUS>
+			<zhCN>辟法龙人</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Taunt&lt;/b&gt;
+&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;嘲讽&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Doesn't respond to spells, hero powers, calls, or text messages.</enUS>
+			<zhCN>法术，英雄技能，还有电话，短信，统统不接。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Vladimir Kafanov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="7" />
+		<Tag enumID="47" name="ATK" type="Int" value="7" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1347" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="EDR_272" ID="115873" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Evergreen Stag</enUS>
+			<zhCN>常青雄鹿</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;
+&lt;b&gt;Lifesteal&lt;/b&gt;
+&lt;b&gt;Taunt&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;。&lt;b&gt;吸血&lt;/b&gt;。&lt;b&gt;嘲讽&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Nevergreen Stag has Enrage, Overkill, and Honorable Kill.</enUS>
+			<zhCN>非常青雄鹿拥有激怒，超杀，以及荣誉消灭。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Alex Stone</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="7" />
+		<Tag enumID="47" name="ATK" type="Int" value="6" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1946" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="685" name="LIFESTEAL" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="EDR_462" ID="114308" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Selenic Drake</enUS>
+			<zhCN>逐月幼龙</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Elusive&lt;/b&gt;
+At the end of your turn,
+get a random Dragon.</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;。在你的回合结束时，随机获取一张龙牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Shouldn't this have like, a thousand times more attack?</enUS>
+			<zhCN>这张牌的攻击力本该是现在的一千倍吧？</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Edgar Hidalgo</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1946" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="EDR_471" ID="114353" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Tortolla</enUS>
+			<zhCN>托尔托拉</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Taunt&lt;/b&gt;, &lt;b&gt;Elusive&lt;/b&gt;
+After this takes damage,
+gain 1 Armor and give
+this minion +1 Attack.</enUS>
+			<zhCN>&lt;b&gt;嘲讽&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;
+在本随从受到伤害后，获得1点护甲值并使本随从获得+1攻击力。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Tortolla survived the Burning Legion’s invasion unscathed, but the Nightmare’s corruption really got under his shell.</enUS>
+			<zhCN>托尔托拉在燃烧军团的入侵中毫发无损，但梦魇的腐蚀却深深地穿透了他的防备。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Zoltan Boros</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="30" />
+		<Tag enumID="47" name="ATK" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="10" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1946" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+		<Tag enumID="4065" name="1" type="Int" value="1" />
+		<Tag enumID="4128" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="EDR_598" ID="117420" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Dream Rager</enUS>
+			<zhCN>梦境暴怒者</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"Just try and ping me now!"</enUS>
+			<zhCN>“来呀，来把我点掉呀！”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Stefano Spagnuolo</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="1" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1946" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="EDR_840t1" ID="114658" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Crow Dreadseed</enUS>
+			<zhCN>鸦魔之种</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;
+[x]&lt;b&gt;Dormant&lt;/b&gt; for 1 turn.</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;。&lt;b&gt;休眠&lt;/b&gt;1回合。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Vika Yarova</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1946" />
+		<Tag enumID="199" name="CLASS" type="Int" value="14" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="1652" name="1" type="Int" value="1" />
+		<Tag enumID="2534" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="1518" name="DORMANT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="END_030" ID="121193" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Haywire Hornswog</enUS>
+			<zhCN>失控龙蛙</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Elusive,&lt;/b&gt; &lt;b&gt;Taunt&lt;/b&gt;
+Costs (1) less for each
+Mana Crystal you've
+_&lt;b&gt;Overloaded&lt;/b&gt; this game.</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;。&lt;b&gt;嘲讽&lt;/b&gt;。在本局对战中，你每&lt;b&gt;过载&lt;/b&gt;一个法力水晶，本牌的法力值消耗便减少（1）点。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>This minion is full of bugs.</enUS>
+			<zhCN>捉虫高手，肚子里全是bug。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Jim Nelson</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="2542" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="215" name="OVERLOAD" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="FP1_008" ID="1789" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Spectral Knight</enUS>
+			<zhCN>鬼灵骑士</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>What do Faerie Dragons and Spectral Knights have in common?  They both love pasta!</enUS>
+			<zhCN>精灵龙和鬼灵骑士有什么共同之处？它们的名字里都有“灵”字！</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Unlocked in The Military Quarter, in the Naxxramas adventure.</enUS>
+			<zhCN>加入“纳克萨玛斯的诅咒”冒险模式，在军事区中解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Crafting unlocked in The Military Quarter, in the Naxxramas adventure.</enUS>
+			<zhCN>加入“纳克萨玛斯的诅咒”冒险模式，在军事区中解锁制作。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Chris Rahn</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="12" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="11" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_471t5" ID="111910" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Recon Crewmate</enUS>
+			<zhCN>通信组乘务员</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Elusive&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Summon every
+adjoining Crewmate.</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;。&lt;b&gt;战吼：&lt;/b&gt;召唤所有接邻的乘务员。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Sergey Tsvelykh</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="14" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="3631" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_855" ID="111005" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Star Grazer</enUS>
+			<zhCN>吞星兽</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive, Taunt&lt;/b&gt;
+&lt;b&gt;Spellburst:&lt;/b&gt; Give your
+hero +8 Attack this turn and gain 8 Armor.</enUS>
+			<zhCN>&lt;b&gt;扰魔。嘲讽&lt;/b&gt;
+&lt;b&gt;法术迸发：&lt;/b&gt;使你的英雄获得本回合中的+8攻击力，并获得8点护甲值。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Star gazing and star grazing aren't too different. Except for the part where you eat stars.</enUS>
+			<zhCN>观星和吞星没什么区别。一个是收入目中，一个是收入腹中。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Jim Nelson</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="8" />
+		<Tag enumID="47" name="ATK" type="Int" value="8" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GVG_091" ID="2059" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Arcane Nullifier X-21</enUS>
+			<zhCN>施法者克星X-21</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Taunt&lt;/b&gt;
+&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;嘲讽&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>There was some hard talk between gnome magi and engineers about inventing this mech.</enUS>
+			<zhCN>在将这款机械装置投入生产之前，侏儒工程师们与法师们不知进行了多少次谈判。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Zero</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="13" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="17" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="ICC_419" ID="42711" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Bearshark</enUS>
+			<zhCN>熊鲨</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"Candygram."</enUS>
+			<zhCN>它的分类让生物学家很是头疼。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Max Grecke</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1001" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="2534" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="MIS_300" ID="108615" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Snuggle Teddy</enUS>
+			<zhCN>抱抱泰迪熊</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Gigantify&lt;/b&gt;
+&lt;b&gt;Elusive&lt;/b&gt;, &lt;b&gt;Lifesteal&lt;/b&gt;, &lt;b&gt;Taunt&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扩大&lt;/b&gt;
+&lt;b&gt;扰魔&lt;/b&gt;，&lt;b&gt;吸血&lt;/b&gt;，&lt;b&gt;嘲讽&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Someone really put their heart into making this.</enUS>
+			<zhCN>这只小熊真的是用心做成的。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Kleston Marques</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="685" name="LIFESTEAL" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="108616" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="3399" name="GIGANTIFY" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="MIS_300t" ID="108616" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Snuggle Teddy</enUS>
+			<zhCN>抱抱泰迪熊</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Gigantic&lt;/b&gt;
+&lt;b&gt;Elusive&lt;/b&gt;, &lt;b&gt;Lifesteal&lt;/b&gt;, &lt;b&gt;Taunt&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;大型&lt;/b&gt;
+&lt;b&gt;扰魔&lt;/b&gt;，&lt;b&gt;吸血&lt;/b&gt;，&lt;b&gt;嘲讽&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Kleston Marques</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="8" />
+		<Tag enumID="47" name="ATK" type="Int" value="8" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="685" name="LIFESTEAL" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="3400" name="GIGANTIC" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="MIS_303" ID="108620" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Darkmoon Magician</enUS>
+			<zhCN>暗月魔术师</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Elusive&lt;/b&gt;
+After you cast a spell,
+cast a random spell that
+costs (1) more.</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;。在你施放一个法术后，随机施放一个法力值消耗增加（1）点的法术。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Darkmoon Magicians pull rabbits out of their hats, and wins out of their...
+hats.</enUS>
+			<zhCN>暗月魔术师能从帽子里变出兔子，还有……胜利。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Matt Dixon</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="MIS_712" ID="105582" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Toyrantus</enUS>
+			<zhCN>模玩泰拉图斯</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Taunt&lt;/b&gt;, &lt;b&gt;Elusive&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; If you have
+10 Mana Crystals,
+gain +7/+7.</enUS>
+			<zhCN>&lt;b&gt;嘲讽&lt;/b&gt;，&lt;b&gt;扰魔&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;如果你有十个法力水晶，获得+7/+7。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Dr. Boom was definitely a dinosaur kid.</enUS>
+			<zhCN>砰砰博士小时候绝对是个恐龙少年。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Alex Horley Orlandelli</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="7" />
+		<Tag enumID="47" name="ATK" type="Int" value="7" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="NEW1_023" ID="609" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Faerie Dragon</enUS>
+			<zhCN>精灵龙</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Adorable.  Immune to Magic.  Doesn't pee on the rug.  The perfect pet!</enUS>
+			<zhCN>可爱至极，免疫魔法，不会在毯子上撒尿。真是完美的宠物！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Samwise</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="3" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="OG_340" ID="39119" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Soggoth the Slitherer</enUS>
+			<zhCN>深渊滑行者索苟斯</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Taunt&lt;/b&gt;
+&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;嘲讽&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Don't tell Soggoth, but in the future he gets totally owned by the Master's Glaive and his skull becomes a tourist attraction.</enUS>
+			<zhCN>千万别告诉索苟斯将来它会被主宰之剑给干掉，还有它的颅骨后来成为了艾泽拉斯非常热门的旅游景点……</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">James Ryman</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="9" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="9" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="21" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="RLK_544t" ID="84427" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Golem Guardian</enUS>
+			<zhCN>魔像卫士</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Taunt&lt;/b&gt;
+&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;嘲讽&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Konstantin Turovec</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1776" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="RLK_602" ID="84293" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Silverfury Stalwart</enUS>
+			<zhCN>银怒坚兵</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Rush&lt;/b&gt;
+&lt;b&gt;Elusive&lt;/b&gt;
+&lt;b&gt;Taunt&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;突袭&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;。&lt;b&gt;嘲讽&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Don't strike until you see the whites of their teeth.</enUS>
+			<zhCN>施法者：“牙白……”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Hideaki Takamura</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="8" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1776" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="791" name="RUSH" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_07_SpiritofAir" ID="71315" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Spirit of Air</enUS>
+			<zhCN>空气之灵</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;
+&lt;b&gt;Deathrattle:&lt;/b&gt; Advance
+fight and restore
+15 Health to Thrall.</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;。&lt;b&gt;亡语：&lt;/b&gt;推进战斗，并为萨尔恢复15点生命值。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="8" />
+		<Tag enumID="47" name="ATK" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1525" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="18" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="684" name="HIDE_COST" type="Int" value="1" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="1958" name="10" type="Int" value="10" />
+	</Entity>
+	<Entity CardID="Story_07_SpiritofAirt" ID="73493" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Spirit of Air</enUS>
+			<zhCN>空气之灵</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;
+&lt;b&gt;Deathrattle:&lt;/b&gt; Restore
+2 Health to all friendly characters.</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;。&lt;b&gt;亡语：&lt;/b&gt;为所有友方角色恢复2点生命值。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="8" />
+		<Tag enumID="47" name="ATK" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1525" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="18" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_RadianceofAzshara" ID="90546" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Radiance of Azshara</enUS>
+			<zhCN>艾萨拉之辉</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Elusive&lt;/b&gt;
+At the end of your turn, deal 1
+ damage to all enemy minions.
+&lt;b&gt;Deathrattle:&lt;/b&gt; Advance fight.</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;。在你的回合结束时，对所有敌方随从造成1点伤害。&lt;b&gt;亡语：&lt;/b&gt;推进战斗。</zhCN>
+		</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="10" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="18" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="684" name="HIDE_COST" type="Int" value="1" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="1958" name="10" type="Int" value="10" />
+	</Entity>
+	<Entity CardID="TB_HeadlessHorseman_001" ID="46912" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Headless Horseman's Head</enUS>
+			<zhCN>无头骑士的头</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Destroy his head to win the game, but watch out for fireballs!</enUS>
+			<zhCN>摧毁无头骑士的头可以赢得比赛，但要小心火球！</zhCN>
+		</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="35" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="10" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="18" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TB_TempleOutrun_HHHead" ID="59530" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Headless Horseman's Head</enUS>
+			<zhCN>无头骑士的头</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Destroy his head to win the game, but watch out for fireballs!</enUS>
+			<zhCN>摧毁无头骑士的头可以赢得比赛，但要小心火球！</zhCN>
+		</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="35" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="10" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="18" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_013" ID="119686" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Farseer Wo</enUS>
+			<zhCN>先知者沃</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Elusive&lt;/b&gt;
+After you cast a spell,
+&lt;b&gt;Discover&lt;/b&gt; a Nature spell
+from the past.</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;。在你施放一个法术后，&lt;b&gt;发现&lt;/b&gt;一张来自过去的自然法术牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>For two weeks, she meditated in silence, undisturbed as she peered into the endless, unfolding facets of the universe. No pathway lay unexplored, no stone left unturned. When she finally snapped from her fugue, she uttered a single word: "Woah."</enUS>
+			<zhCN>她冥想了两个星期，心无旁骛地探知着宇宙的每一个角落，事无巨细，无所不包。当她从冥想中醒来，口中只吐出了一个声音：“喔。”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Max Grecke</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="415" name="DISCOVER" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="1932" name="HAS_DIAMOND_QUALITY" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_059" ID="120966" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Living Paradox</enUS>
+			<zhCN>悖论活体</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Summon two
+2/1 Living Paradoxes with &lt;b&gt;Elusive&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;。&lt;b&gt;战吼：&lt;/b&gt;召唤两个2/1并具有&lt;b&gt;扰魔&lt;/b&gt;的悖论活体。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>We just need to find the right clone to pin this all on.</enUS>
+			<zhCN>只要找到正确的复制体就可以了。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Earnable on the &lt;i&gt;Across the Timeways&lt;/i&gt; Tavern Pass.</enUS>
+			<zhCN>购买&lt;i&gt;穿越时间流&lt;/i&gt;炉石通行证后开放解锁。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Max Grecke</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="1" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_605" ID="119703" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Epoch Stalker</enUS>
+			<zhCN>纪元追猎者</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Rush&lt;/b&gt;, &lt;b&gt;Elusive&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Summon a
+copy of this.</enUS>
+			<zhCN>&lt;b&gt;突袭&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;召唤一个本随从的复制。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Look out! It's at your 6 o'clock!</enUS>
+			<zhCN>当心！它在你6点钟方向！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Dmitry Bolotov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="791" name="RUSH" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_850t1" ID="119454" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Valeera, Blood Fighter</enUS>
+			<zhCN>血斗士瓦莉拉</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Elusive&lt;/b&gt;
+&lt;b&gt;Deathrattle:&lt;/b&gt; Summon a Blood
+Fighter from your hand. Give
+it +5/+5 and &lt;b&gt;Elusive&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;。&lt;b&gt;亡语：&lt;/b&gt;从你的手牌中召唤一位血斗士，使其获得+5/+5和&lt;b&gt;扰魔&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">James Ryman</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="7" />
+		<Tag enumID="47" name="ATK" type="Int" value="7" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+		<Tag enumID="4445" name="IS_FABLED_BUNDLE_CARD" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TLC_446t3" ID="120037" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Felraptor</enUS>
+			<zhCN>邪能迅猛龙</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Charge&lt;/b&gt;
+&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;冲锋&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="197" name="CHARGE" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="2537" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_330t96" ID="104948" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Virus Module</enUS>
+			<zhCN>病毒模块</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;, &lt;b&gt;Poisonous&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;，&lt;b&gt;剧毒&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>PErfffeetct fo00r mi1itiGatin g   er00roRs!</enUS>
+			<zhCN>可完美用于处埋舌L石马！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="363" name="POISONOUS" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="3377" name="ZILLIAX_CUSTOMIZABLE_FUNCTIONALMODULE" type="Int" value="1" />
+		<Tag enumID="3450" name="ZILLIAX_CUSTOMIZABLE_LINKED_COSMETICMOUDLE" type="Int" value="110441" />
+	</Entity>
+	<Entity CardID="TOY_380t2" ID="107774" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Clay Whelp</enUS>
+			<zhCN>黏土雏龙</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Daniil Kudriavtsev</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="2355" name="WHELP" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_503" ID="103119" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Shining Sentinel</enUS>
+			<zhCN>闪岩哨兵</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Taunt&lt;/b&gt;, &lt;b&gt;Elusive&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Summon a
+copy of this.</enUS>
+			<zhCN>&lt;b&gt;嘲讽&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;召唤一个本随从的复制。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>OMG, I FINALLY GOT A SHINING SENTINEL AFTER 3 PHASES AND 8192 RESETS!!!!!</enUS>
+			<zhCN>我歪了3回，刷了8192次，终于抓到了闪光的岩哨兵！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Brian Despain</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="7" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="18" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_814t5" ID="105468" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Toy Soldier</enUS>
+			<zhCN>玩具士兵</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="1" />
+		<Tag enumID="47" name="ATK" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TTN_480t4" ID="102140" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Primordial Vortex</enUS>
+			<zhCN>始生涡流</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1858" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="18" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TTN_719t5" ID="97635" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Sparkbot</enUS>
+			<zhCN>火花机器人</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Magnetic&lt;/b&gt;
+&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;磁力&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Ivan Fomin</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="1" />
+		<Tag enumID="47" name="ATK" type="Int" value="1" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1858" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="17" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="849" name="MAGNETIC" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="2787" name="104887" type="Int" value="104887" />
+	</Entity>
+	<Entity CardID="UNG_019" ID="41152" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Air Elemental</enUS>
+			<zhCN>空气元素</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Makes a mean puff pastry.</enUS>
+			<zhCN>那种没人在意你的感觉，是永远的痛。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Evgeniy Dlinnov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="1" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="27" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="18" />
+		<Tag enumID="201" name="FACTION" type="Int" value="1" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="251" name="AttackVisualType" type="Int" value="1" />
+		<Tag enumID="268" name="DevState" type="Int" value="2" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="UNG_852" ID="41954" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Tyrantus</enUS>
+			<zhCN>泰拉图斯</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Taunt&lt;/b&gt;
+&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;嘲讽&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Millennia of evolutionary pressures turned his species into the Faerie Dragons we know today.</enUS>
+			<zhCN>历经数千年的演变后，它变成了我们现在所熟知的精灵龙。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Chris Rahn</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="14" />
+		<Tag enumID="47" name="ATK" type="Int" value="14" />
+		<Tag enumID="48" name="COST" type="Int" value="10" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="27" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="VAC_527" ID="106381" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Draconic Delicacy</enUS>
+			<zhCN>龙族美餐</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Rush&lt;/b&gt;, &lt;b&gt;Elusive&lt;/b&gt;
+Can only take 1 damage
+at a time.</enUS>
+			<zhCN>&lt;b&gt;突袭&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;。每次只能受到1点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>How to Serve your Dragon.</enUS>
+			<zhCN>“熏龙高手”。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Brian Despain</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="47" name="ATK" type="Int" value="6" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1905" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="791" name="RUSH" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="VAN_DREAM_01" ID="70474" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Laughing Sister</enUS>
+			<zhCN>欢笑的姐妹</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1646" />
+		<Tag enumID="199" name="CLASS" type="Int" value="11" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="VAN_NEW1_023" ID="70087" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Faerie Dragon</enUS>
+			<zhCN>精灵龙</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Adorable.  Immune to Magic.  Doesn't pee on the rug.  The perfect pet!</enUS>
+			<zhCN>可爱至极，免疫魔法，不会在毯子上撒尿。真是完美的宠物！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Samwise</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1646" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="609" type="Int" value="609" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="WW_001t13" ID="98760" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Steelhide Mole</enUS>
+			<zhCN>铁皮鼹鼠</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Taunt&lt;/b&gt;
+&lt;b&gt;Reborn&lt;/b&gt;
+&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;嘲讽&lt;/b&gt;。&lt;b&gt;复生&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Juan Calle</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="7" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1892" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="1085" name="REBORN" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+		<Tag enumID="2823" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="WW_345t5" ID="102926" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Surly</enUS>
+			<zhCN>悄咪咪</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1892" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="WW_810t5" ID="100184" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Chameleon</enUS>
+			<zhCN>变色龙</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1892" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="YOD_003" ID="56063" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Winged Guardian</enUS>
+			<zhCN>飞翼守护者</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Taunt&lt;/b&gt;
+&lt;b&gt;Reborn&lt;/b&gt;
+&lt;b&gt;Elusive&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;嘲讽&lt;/b&gt;。&lt;b&gt;复生&lt;/b&gt;。&lt;b&gt;扰魔&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Take these broken wings, be reborn, and learn to fly again.</enUS>
+			<zhCN>就算冰雪覆盖，我也不怕重来，我已不是那个懵懂的幼崽。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">MAR Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="8" />
+		<Tag enumID="47" name="ATK" type="Int" value="6" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1403" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1085" name="REBORN" type="Int" value="1" />
+		<Tag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+</CardDefs>

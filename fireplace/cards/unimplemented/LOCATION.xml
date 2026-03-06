@@ -1,0 +1,2054 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CardDefs build="236529" description="地标卡牌">
+	<Entity CardID="CORE_REV_290" ID="118074" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Cathedral of Atonement</enUS>
+			<zhCN>赎罪教堂</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Give a minion +2/+1 and draw a card.</enUS>
+			<zhCN>使一个随从获得+2/+1。抽一张牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>You'll actually find more than one tonement here.</enUS>
+			<zhCN>人非圣贤，赎，能无过。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">L. Lullabi &amp; K. Turovec</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1810" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="82310" type="Int" value="82310" />
+		<Tag enumID="1413" name="DECK_RULE_COUNT_AS_COPY_OF_CARD_ID" type="Int" value="82310" />
+	</Entity>
+	<Entity CardID="CORE_REV_333" ID="118085" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Hedge Maze</enUS>
+			<zhCN>树篱迷宫</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Trigger a friendly minion's &lt;b&gt;Deathrattle&lt;/b&gt;.</enUS>
+			<zhCN>触发一个友方随从的&lt;b&gt;亡语&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>If you keep seeing a statue of the Sire, you’re not going in circles. There’s just so many of them.</enUS>
+			<zhCN>如果你反复见到大帝的雕像，那也不能说明你在兜圈子。因为大帝的雕像太多了。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Michaela Nienaber</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1810" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="78202" type="Int" value="78202" />
+		<Tag enumID="1413" name="DECK_RULE_COUNT_AS_COPY_OF_CARD_ID" type="Int" value="78202" />
+		<ReferencedTag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="CORE_REV_362" ID="118097" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Castle Kennels</enUS>
+			<zhCN>城堡狗舍</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Give a friendly minion 
++2 Attack. If it's a 
+Beast, give it &lt;b&gt;Rush&lt;/b&gt;.</enUS>
+			<zhCN>使一个友方随从获得+2攻击力。如果是野兽，还会使其获得&lt;b&gt;突袭&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Play dead! Oh…</enUS>
+			<zhCN>快，装死！哦……</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1810" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="78418" type="Int" value="78418" />
+		<Tag enumID="1413" name="DECK_RULE_COUNT_AS_COPY_OF_CARD_ID" type="Int" value="78418" />
+		<ReferencedTag enumID="791" name="RUSH" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="CORE_REV_371" ID="118103" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Vile Library</enUS>
+			<zhCN>邪恶图书馆</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Give a friendly minion +1/+1. Repeat for each Imp you control.</enUS>
+			<zhCN>使一个友方随从获得+1/+1。你每控制一个小鬼，重复一次。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>What type of vial library has 0 vials in it!?</enUS>
+			<zhCN>这座图书馆肯定有鬼！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1810" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="79147" type="Int" value="79147" />
+		<Tag enumID="1413" name="DECK_RULE_COUNT_AS_COPY_OF_CARD_ID" type="Int" value="79147" />
+	</Entity>
+	<Entity CardID="CORE_REV_602" ID="118124" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Nightcloak Sanctum</enUS>
+			<zhCN>夜隐者圣所</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Freeze&lt;/b&gt; a minion. Summon a 2/2 Volatile Skeleton.</enUS>
+			<zhCN>&lt;b&gt;冻结&lt;/b&gt;一个随从。召唤一个2/2的不稳定的骷髅。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>For VIPs only. (Very Infused Person)</enUS>
+			<zhCN>仅限骨干入内。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Evgeniy Dlinnov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1810" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="84356" type="Int" value="84356" />
+		<Tag enumID="1413" name="DECK_RULE_COUNT_AS_COPY_OF_CARD_ID" type="Int" value="84356" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="84169" />
+		<ReferencedTag enumID="208" name="FREEZE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="CORE_REV_750" ID="118125" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Sinstone Graveyard</enUS>
+			<zhCN>罪碑坟场</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Summon a @/@ Ghost.
+&lt;i&gt;(Has +1/+1 for each other
+card you played this turn!)&lt;/i&gt;</enUS>
+			<zhCN>召唤一个@/@的幽灵。&lt;i&gt;（在本回合中每有一张其他牌被使用，拥有+1/+1！）&lt;/i&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>A graveyard in the realm of the dead; a bit redundant, don't you think?</enUS>
+			<zhCN>在亡者的国度修建坟场，是不是有点多余？</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Chris Hayes</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1810" />
+		<Tag enumID="199" name="CLASS" type="Int" value="7" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="82369" type="Int" value="82369" />
+		<Tag enumID="1413" name="DECK_RULE_COUNT_AS_COPY_OF_CARD_ID" type="Int" value="82369" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="82371" />
+	</Entity>
+	<Entity CardID="CORE_REV_923" ID="111382" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Muck Pools</enUS>
+			<zhCN>淤泥之池</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Transform a friendly minion into one that costs (1) more.</enUS>
+			<zhCN>将一个友方随从变形成为法力值消耗增加（1）点的随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Making a dredger is easier than you'd think. You don't need to worry about mucking it up!</enUS>
+			<zhCN>制作泥仆比你想象的简单，搞砸了都不怕！</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Unlocked with Shaman class.</enUS>
+			<zhCN>与萨满祭司职业一同解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked after winning 100 games as Shaman.</enUS>
+			<zhCN>使用萨满祭司赢得100场对战后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Jakub Kasper</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1810" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="76981" type="Int" value="76981" />
+	</Entity>
+	<Entity CardID="CORE_REV_942" ID="118160" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Relic Vault</enUS>
+			<zhCN>圣物仓库</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>The next Relic you play this turn casts twice.</enUS>
+			<zhCN>在本回合中你使用的下一个圣物将施放两次。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Holds Sire Denathrius' most prized possession - his teddy bear, Jeremy Bearimy.</enUS>
+			<zhCN>内藏德纳修斯最珍视的宝物：他的泰迪熊，杰里米·贝里米。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">L. Lullabi &amp; K. Turovec</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1810" />
+		<Tag enumID="199" name="CLASS" type="Int" value="14" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="77615" type="Int" value="77615" />
+		<Tag enumID="1413" name="DECK_RULE_COUNT_AS_COPY_OF_CARD_ID" type="Int" value="77615" />
+	</Entity>
+	<Entity CardID="CORE_REV_983" ID="118176" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Great Hall</enUS>
+			<zhCN>大厅</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Set a minion's Attack and Health to 3.</enUS>
+			<zhCN>将一个随从的攻击力和生命值变为3。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>It's fabulous! It's grand! It's, well it's really very nice.</enUS>
+			<zhCN>漂亮！大气！嗯……真的挺好的。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1810" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="82316" type="Int" value="82316" />
+		<Tag enumID="1413" name="DECK_RULE_COUNT_AS_COPY_OF_CARD_ID" type="Int" value="82316" />
+	</Entity>
+	<Entity CardID="CORE_REV_990" ID="111459" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Sanguine Depths</enUS>
+			<zhCN>赤红深渊</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Deal 1 damage to a 
+minion and give it 
++2 Attack.</enUS>
+			<zhCN>对一个随从造成1点伤害，并使其获得+2攻击力。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>There may not be any skeletons in the closets at Castle Nathria, but there sure are souls in the basement.</enUS>
+			<zhCN>纳斯利亚堡的衣橱里或许没有骷髅，但地下深处是真的关着灵魂。</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Unlocked with Warrior class.</enUS>
+			<zhCN>与战士职业一同解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Unlocked after winning 100 games as Warrior.</enUS>
+			<zhCN>使用战士赢得100场对战后解锁。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1637" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="858" name="82313" type="Int" value="82313" />
+	</Entity>
+	<Entity CardID="DEEP_019" ID="104530" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Crimson Expanse</enUS>
+			<zhCN>赤红岩床</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Choose a damaged
+minion. Summon a copy
+of it that goes &lt;b&gt;Dormant&lt;/b&gt;
+for one turn.</enUS>
+			<zhCN>选择一个
+受伤的随从，召唤一个它的&lt;b&gt;休眠&lt;/b&gt;一回合的复制。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Idk. Looks pink to me.</enUS>
+			<zhCN>唔，我觉得这是粉色。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Grace Liu</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1892" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="476" name="MULTIPLE_CLASSES" type="Int" value="8704" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<ReferencedTag enumID="1518" name="DORMANT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="EDR_454" ID="114215" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Clutch of Corruption</enUS>
+			<zhCN>腐蚀之巢</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Choose a friendly Dragon.
+Summon a 0/2 Egg that
+hatches into a copy of it.</enUS>
+			<zhCN>选择一条友方的龙。召唤一枚0/2的可以孵化成所选龙的复制的龙蛋。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>These eggs are no yolk!</enUS>
+			<zhCN>这些蛋没有黄！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Grafit</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1946" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="EDR_520" ID="114293" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Forbidden Shrine</enUS>
+			<zhCN>禁忌神龛</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Spend all your Mana.
+Cast a random spell
+that costs that much.</enUS>
+			<zhCN>消耗你所有的法力值，随机施放一个法力值消耗相同的法术。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Telling me not to use something just makes me want to use it more.</enUS>
+			<zhCN>越不让我用我越要用。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1946" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="ETC_449" ID="97403" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Fan Club</enUS>
+			<zhCN>粉丝俱乐部</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Restore #3 Health to all friendly characters.</enUS>
+			<zhCN>为所有友方角色恢复#3点生命值。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"Well that was weird. Yeah, I just walked up to the president of the fan club, he blabbered on for like 10 minutes, and then gave me a bike voucher..."</enUS>
+			<zhCN>“说来奇怪。我走进俱乐部，找到会长，他噼里啪啦唠叨了大概10分钟，然后给了我一张自行车兑换券……”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Evgeniy Dlinnov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1809" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="ETC_533" ID="90648" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Mosh Pit</enUS>
+			<zhCN>狂欢舞台</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Spend 3 &lt;b&gt;Corpses&lt;/b&gt; to give
+a friendly minion &lt;b&gt;Reborn&lt;/b&gt;.</enUS>
+			<zhCN>消耗3份&lt;b&gt;残骸&lt;/b&gt;，使一个友方随从获得&lt;b&gt;复生&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Let the Corpses hit the floor!</enUS>
+			<zhCN>嗨到死去活来！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1809" />
+		<Tag enumID="199" name="CLASS" type="Int" value="1" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="4058" name="CORPSE_SPENDER" type="Int" value="1" />
+		<ReferencedTag enumID="1085" name="REBORN" type="Int" value="1" />
+		<ReferencedTag enumID="2559" name="CORPSE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="FIR_907" ID="115631" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Amirdrassil</enUS>
+			<zhCN>阿梅达希尔</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Summon a @-Cost minion.
+Gain @ Armor. Draw @ |4(card, cards).
+Refresh @ Mana |4(Crystal, Crystals).
+&lt;i&gt;(Improves each use!)&lt;/i&gt;</enUS>
+			<zhCN>召唤一个法力值消耗为（@）的随从。获得@点护甲值。抽@张牌。复原@个法力水晶。&lt;i&gt;（每使用此效果一次都会提升！）&lt;/i&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>The spirits burned at Teldrassil shall not be forgotten. They live on within a new world tree, the Crown of Harmony.</enUS>
+			<zhCN>泰达希尔大火中的亡魂不会被遗忘。如今，他们寄身于这棵新的世界之树：“宁和之冠”阿梅达希尔。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Grace Liu</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1946" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="4128" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="GDB_136t" ID="111894" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>The Galaxy's Lens</enUS>
+			<zhCN>星系投影</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;&lt;b&gt;Spellburst&lt;/b&gt;:&lt;/b&gt; Absorb the spell's power!@Cast {0}.</enUS>
+			<zhCN>&lt;b&gt;&lt;b&gt;法术迸发&lt;/b&gt;：&lt;/b&gt;吸收法术的能量！@施放{0}。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="1427" name="SPELLBURST" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="JAM_009" ID="98411" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Dance Floor</enUS>
+			<zhCN>闪亮舞池</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Give your minions &lt;b&gt;Rush&lt;/b&gt;.</enUS>
+			<zhCN>使你的所有随从获得&lt;b&gt;突袭&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>I don't think Rush would ever be here.</enUS>
+			<zhCN>场内禁止奔跑突袭。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1809" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<ReferencedTag enumID="791" name="RUSH" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="MIS_919" ID="105282" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Puppet Theatre</enUS>
+			<zhCN>木偶剧场</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Choose an enemy
+minion. Get a 1/1 copy
+of it that costs (1).</enUS>
+			<zhCN>选择一个敌方随从，获取一张它的1/1且法力值消耗为（1）点的复制。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>AUDIENCE PARTICIPATION TIME!</enUS>
+			<zhCN>现在是观众互动时间！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Vlad Botos</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="NX2_036" ID="87326" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Construct Quarter</enUS>
+			<zhCN>构造区</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Destroy a friendly
+minion to summon a
+4/5 Undead with &lt;b&gt;Rush&lt;/b&gt;.</enUS>
+			<zhCN>消灭一个友方随从，召唤一个4/5并具有&lt;b&gt;突袭&lt;/b&gt;的亡灵。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>It's not alive! IT'S NOT ALIIIIIVE!!!</enUS>
+			<zhCN>它不是活物！不是活物！！！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1776" />
+		<Tag enumID="199" name="CLASS" type="Int" value="1" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="78572" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<ReferencedTag enumID="791" name="RUSH" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="REV_290" ID="82310" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Cathedral of Atonement</enUS>
+			<zhCN>赎罪教堂</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Give a minion +2/+1 and draw a card.</enUS>
+			<zhCN>使一个随从获得+2/+1。抽一张牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>You'll actually find more than one tonement here.</enUS>
+			<zhCN>人非圣贤，赎，能无过。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">L. Lullabi &amp; K. Turovec</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1691" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="REV_333" ID="78202" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Hedge Maze</enUS>
+			<zhCN>树篱迷宫</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Trigger a friendly minion's &lt;b&gt;Deathrattle&lt;/b&gt;.</enUS>
+			<zhCN>触发一个友方随从的&lt;b&gt;亡语&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>If you keep seeing a statue of the Sire, you’re not going in circles. There’s just so many of them.</enUS>
+			<zhCN>如果你反复见到大帝的雕像，那也不能说明你在兜圈子。因为大帝的雕像太多了。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Michaela Nienaber</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1691" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<ReferencedTag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="REV_362" ID="78418" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Castle Kennels</enUS>
+			<zhCN>城堡狗舍</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Give a friendly minion 
++2 Attack. If it's a 
+Beast, give it &lt;b&gt;Rush&lt;/b&gt;.</enUS>
+			<zhCN>使一个友方随从获得+2攻击力。如果是野兽，还会使其获得&lt;b&gt;突袭&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Play dead! Oh…</enUS>
+			<zhCN>快，装死！哦……</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1691" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<ReferencedTag enumID="791" name="RUSH" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="REV_371" ID="79147" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Vile Library</enUS>
+			<zhCN>邪恶图书馆</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Give a friendly minion +1/+1. Repeat for each Imp you control.</enUS>
+			<zhCN>使一个友方随从获得+1/+1。你每控制一个小鬼，重复一次。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>What type of vial library has 0 vials in it!?</enUS>
+			<zhCN>这座图书馆肯定有鬼！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1691" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="REV_602" ID="84356" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Nightcloak Sanctum</enUS>
+			<zhCN>夜隐者圣所</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Freeze&lt;/b&gt; a minion. Summon a 2/2 Volatile Skeleton.</enUS>
+			<zhCN>&lt;b&gt;冻结&lt;/b&gt;一个随从。召唤一个2/2的不稳定的骷髅。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>For VIPs only. (Very Infused Person)</enUS>
+			<zhCN>仅限骨干入内。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Evgeniy Dlinnov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1691" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="84169" />
+		<ReferencedTag enumID="208" name="FREEZE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="REV_750" ID="82369" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Sinstone Graveyard</enUS>
+			<zhCN>罪碑坟场</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Summon a @/@ Ghost.
+&lt;i&gt;(Has +1/+1 for each other
+card you played this turn!)&lt;/i&gt;</enUS>
+			<zhCN>召唤一个@/@的幽灵。&lt;i&gt;（在本回合中每有一张其他牌被使用，拥有+1/+1！）&lt;/i&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>A graveyard in the realm of the dead; a bit redundant, don't you think?</enUS>
+			<zhCN>在亡者的国度修建坟场，是不是有点多余？</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Chris Hayes</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1691" />
+		<Tag enumID="199" name="CLASS" type="Int" value="7" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="82371" />
+	</Entity>
+	<Entity CardID="REV_790" ID="96320" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Castle Kennels</enUS>
+			<zhCN>城堡狗舍</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]{0}
+{1}</enUS>
+			<zhCN>{0}{1}</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Play dead! Oh…</enUS>
+			<zhCN>快，装死！哦……</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1691" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+	</Entity>
+	<Entity CardID="REV_791" ID="96322" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Cathedral of Atonement</enUS>
+			<zhCN>赎罪教堂</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]{0}
+{1}</enUS>
+			<zhCN>{0}{1}</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>You'll actually find more than one tonement here.</enUS>
+			<zhCN>人非圣贤，赎，能无过。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">L. Lullabi &amp; K. Turovec</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1691" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+	</Entity>
+	<Entity CardID="REV_792" ID="96319" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Hedge Maze</enUS>
+			<zhCN>树篱迷宫</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]{0}
+{1}</enUS>
+			<zhCN>{0}{1}</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>If you keep seeing a statue of the Sire, you’re not going in circles. There’s just so many of them.</enUS>
+			<zhCN>如果你反复见到大帝的雕像，那也不能说明你在兜圈子。因为大帝的雕像太多了。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Michaela Nienaber</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1691" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+	</Entity>
+	<Entity CardID="REV_793" ID="96323" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Sanguine Depths</enUS>
+			<zhCN>赤红深渊</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]{0}
+{1}</enUS>
+			<zhCN>{0}{1}</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>There may not be any skeletons in the closets at Castle Nathria, but there sure are souls in the basement.</enUS>
+			<zhCN>纳斯利亚堡的衣橱里或许没有骷髅，但地下深处是真的关着灵魂。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1691" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+	</Entity>
+	<Entity CardID="REV_794" ID="96324" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Great Hall</enUS>
+			<zhCN>大厅</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]{0}
+{1}</enUS>
+			<zhCN>{0}{1}</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>It's fabulous! It's grand! It's, well it's really very nice.</enUS>
+			<zhCN>漂亮！大气！嗯……真的挺好的。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1691" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+	</Entity>
+	<Entity CardID="REV_795" ID="96325" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Sinstone Graveyard</enUS>
+			<zhCN>罪碑坟场</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]{0}
+{1}</enUS>
+			<zhCN>{0}{1}</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>A graveyard in the realm of the dead; a bit redundant, don't you think?</enUS>
+			<zhCN>在亡者的国度修建坟场，是不是有点多余？</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Chris Hayes</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1691" />
+		<Tag enumID="199" name="CLASS" type="Int" value="7" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+	</Entity>
+	<Entity CardID="REV_796" ID="96326" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Nightcloak Sanctum</enUS>
+			<zhCN>夜隐者圣所</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]{0}
+{1}</enUS>
+			<zhCN>{0}{1}</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>For VIPs only. (Very Infused Person)</enUS>
+			<zhCN>仅限骨干入内。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Evgeniy Dlinnov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1691" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+	</Entity>
+	<Entity CardID="REV_797" ID="96318" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Relic Vault</enUS>
+			<zhCN>圣物仓库</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]{0}
+{1}</enUS>
+			<zhCN>{0}{1}</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Holds Sire Denathrius' most prized possession - his teddy bear, Jeremy Bearimy.</enUS>
+			<zhCN>内藏德纳修斯最珍视的宝物：他的泰迪熊，杰里米·贝里米。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">L. Lullabi &amp; K. Turovec</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1691" />
+		<Tag enumID="199" name="CLASS" type="Int" value="14" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+	</Entity>
+	<Entity CardID="REV_798" ID="96317" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Muck Pools</enUS>
+			<zhCN>淤泥之池</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]{0}
+{1}</enUS>
+			<zhCN>{0}{1}</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Making a dredger is easier than you'd think. You don't need to worry about mucking it up!</enUS>
+			<zhCN>制作泥仆比你想象的简单，搞砸了都不怕！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Jakub Kasper</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1691" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+	</Entity>
+	<Entity CardID="REV_799" ID="96321" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Vile Library</enUS>
+			<zhCN>邪恶图书馆</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]{0}
+{1}</enUS>
+			<zhCN>{0}{1}</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>What type of vial library has 0 vials in it!?</enUS>
+			<zhCN>这座图书馆肯定有鬼！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1691" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+	</Entity>
+	<Entity CardID="REV_923" ID="76981" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Muck Pools</enUS>
+			<zhCN>淤泥之池</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Transform a friendly minion into one that costs (1) more.</enUS>
+			<zhCN>将一个友方随从变形成为法力值消耗增加（1）点的随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Making a dredger is easier than you'd think. You don't need to worry about mucking it up!</enUS>
+			<zhCN>制作泥仆比你想象的简单，搞砸了都不怕！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Jakub Kasper</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1691" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="REV_942" ID="77615" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Relic Vault</enUS>
+			<zhCN>圣物仓库</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>The next Relic you play this turn casts twice.</enUS>
+			<zhCN>在本回合中你使用的下一个圣物将施放两次。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Holds Sire Denathrius' most prized possession - his teddy bear, Jeremy Bearimy.</enUS>
+			<zhCN>内藏德纳修斯最珍视的宝物：他的泰迪熊，杰里米·贝里米。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">L. Lullabi &amp; K. Turovec</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1691" />
+		<Tag enumID="199" name="CLASS" type="Int" value="14" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="REV_983" ID="82316" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Great Hall</enUS>
+			<zhCN>大厅</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Set a minion's Attack and Health to 3.</enUS>
+			<zhCN>将一个随从的攻击力和生命值变为3。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>It's fabulous! It's grand! It's, well it's really very nice.</enUS>
+			<zhCN>漂亮！大气！嗯……真的挺好的。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1691" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="REV_990" ID="82313" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Sanguine Depths</enUS>
+			<zhCN>赤红深渊</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Deal 1 damage to a 
+minion and give it 
++2 Attack.</enUS>
+			<zhCN>对一个随从造成1点伤害，并使其获得+2攻击力。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>There may not be any skeletons in the closets at Castle Nathria, but there sure are souls in the basement.</enUS>
+			<zhCN>纳斯利亚堡的衣橱里或许没有骷髅，但地下深处是真的关着灵魂。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1691" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SC_000" ID="112799" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Spawning Pool</enUS>
+			<zhCN>孵化池</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Get a 1/1 Zergling.
+&lt;b&gt;Deathrattle:&lt;/b&gt; Your Zerg
+minions have &lt;b&gt;Rush&lt;/b&gt;
+this turn.</enUS>
+			<zhCN>获取一张1/1的跳虫。&lt;b&gt;亡语：&lt;/b&gt;在本回合中，你的异虫随从拥有&lt;b&gt;突袭&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Looks more like a spawning hot tub to me, just based on the size.</enUS>
+			<zhCN>从尺寸上来看，我觉得这更像是个孵化浴缸。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="476" name="MULTIPLE_CLASSES" type="Int" value="8453" />
+		<Tag enumID="1724" name="1" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="3457" name="ZERG" type="Int" value="1" />
+		<ReferencedTag enumID="791" name="RUSH" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SC_019" ID="113664" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Ultralisk Cavern</enUS>
+			<zhCN>雷兽窟</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Deal 1 damage
+to all enemies.
+&lt;b&gt;Deathrattle:&lt;/b&gt; Summon an
+8/8 Ultralisk with &lt;b&gt;Rush&lt;/b&gt;.</enUS>
+			<zhCN>对所有敌人造成1点伤害。&lt;b&gt;亡语：&lt;/b&gt;召唤一只8/8并具有&lt;b&gt;突袭&lt;/b&gt;的雷兽。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Don't let your ultralisk get stuck on a ramp.</enUS>
+			<zhCN>注意别把你的雷兽卡在这段坡道上。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1724" name="1" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="3457" name="ZERG" type="Int" value="1" />
+		<ReferencedTag enumID="791" name="RUSH" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SC_403" ID="112856" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Starport</enUS>
+			<zhCN>星港</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Summon a 2/1
+&lt;b&gt;Starship_Piece&lt;/b&gt; with an
+effect when launched.</enUS>
+			<zhCN>召唤一个2/1并具有一项发射时效果的&lt;b&gt;星舰组件&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Make sure to arrive 3 light-years early for any intergalactic flights.</enUS>
+			<zhCN>乘坐跨星系航线的旅客，请提前3光年准备，以便抵达星港。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="476" name="MULTIPLE_CLASSES" type="Int" value="656" />
+		<Tag enumID="1724" name="1" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="3458" name="TERRAN" type="Int" value="1" />
+		<ReferencedTag enumID="3555" name="STARSHIP" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="SC_751" ID="113164" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Warp Gate</enUS>
+			<zhCN>折跃门</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Your next Protoss minion costs (3) less.</enUS>
+			<zhCN>你的下一张星灵随从牌的法力值消耗减少（3）点。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>This is gonna be really meta-warping.</enUS>
+			<zhCN>看来环境又要提速了。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1935" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="476" name="MULTIPLE_CLASSES" type="Int" value="106" />
+		<Tag enumID="1724" name="1" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="3469" name="PROTOSS" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_044" ID="120821" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Past Gnomeregan</enUS>
+			<zhCN>过去的诺莫瑞根</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Give a minion +2/+1.
+&lt;i&gt;Advance to the present!&lt;/i&gt;</enUS>
+			<zhCN>使一个随从获得+2/+1。&lt;i&gt;推进到现在！&lt;/i&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Before the trogg invasion, Gnomeregan was a thriving, high-tech metropolis.</enUS>
+			<zhCN>穴居人侵入之前，诺莫瑞根曾是一座欣欣向荣，科技发达的大都市。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Kevin Sidharta</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="120822" />
+	</Entity>
+	<Entity CardID="TIME_044t1" ID="120822" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Present Gnomeregan</enUS>
+			<zhCN>现在的诺莫瑞根</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Give a minion +2/+1
+and "&lt;b&gt;Deathrattle:&lt;/b&gt; Deal 2
+damage to the enemy hero."
+&lt;i&gt;Advance to the future!&lt;/i&gt;</enUS>
+			<zhCN>使一个随从获得+2/+1和“&lt;b&gt;亡语：&lt;/b&gt;对敌方英雄造成2点伤害。”&lt;i&gt;推进到未来！&lt;/i&gt;</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Kevin Sidharta</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="120823" />
+		<ReferencedTag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_044t2" ID="120823" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Future Gnomeregan</enUS>
+			<zhCN>未来的诺莫瑞根</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Give a minion
++2/+1, &lt;b&gt;Divine_Shield&lt;/b&gt;,
+and "&lt;b&gt;Deathrattle:&lt;/b&gt; Deal 2
+damage to the enemy hero."</enUS>
+			<zhCN>使一个随从获得+2/+1，&lt;b&gt;圣盾&lt;/b&gt;和“&lt;b&gt;亡语：&lt;/b&gt;对敌方英雄造成2点伤害。”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Kevin Sidharta</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<ReferencedTag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+		<ReferencedTag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_211t1" ID="119929" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>The Well of Eternity</enUS>
+			<zhCN>永恒之井</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Fill your hand
+with random
+&lt;b&gt;Temporary&lt;/b&gt; spells.</enUS>
+			<zhCN>用随机的&lt;b&gt;临时&lt;/b&gt;法术牌填满你的手牌。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Daniil Kudriavtsev</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="4445" name="IS_FABLED_BUNDLE_CARD" type="Int" value="1" />
+		<ReferencedTag enumID="3630" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_211t1t" ID="120200" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>The Well of Eternity</enUS>
+			<zhCN>永恒之井</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Fill your hand
+with random &lt;b&gt;Temporary&lt;/b&gt;
+spells. They cast twice.</enUS>
+			<zhCN>用随机的&lt;b&gt;临时&lt;/b&gt;法术牌填满你的手牌，这些牌会施放两次。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Daniil Kudriavtsev</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<ReferencedTag enumID="3630" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_211t2" ID="119930" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Zin-Azshari</enUS>
+			<zhCN>辛艾萨莉</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Summon a copy of a friendly minion.</enUS>
+			<zhCN>召唤一个友方随从的一个复制。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="4445" name="IS_FABLED_BUNDLE_CARD" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_211t2t" ID="120202" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Zin-Azshari</enUS>
+			<zhCN>辛艾萨莉</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Summon a copy of a friendly minion with
+its stats doubled.</enUS>
+			<zhCN>召唤一个友方随从的一个具有翻倍属性值的复制。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+	</Entity>
+	<Entity CardID="TIME_436" ID="120544" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Past Conflux</enUS>
+			<zhCN>过去的时光流汇</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Summon a random Dragon
+that costs (5) or more.
+&lt;i&gt;Advance to the present!&lt;/i&gt;</enUS>
+			<zhCN>随机召唤一条法力值消耗大于或等于（5）点的龙。&lt;i&gt;推进到现在！&lt;/i&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>For millennia, magic shrouded the Temporal Conflux and the rest of the Dragon Isles from all of Azeroth — even the dragonflights themselves.</enUS>
+			<zhCN>万年以来，魔法笼罩着时光流汇以及整片巨龙群岛，将其与艾泽拉斯的其余地区隔绝开来——哪怕是巨龙军团自己也无法接近。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="122262" />
+	</Entity>
+	<Entity CardID="TIME_436t1" ID="122262" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Present Conflux</enUS>
+			<zhCN>现在的时光流汇</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Discover&lt;/b&gt; a Dragon
+that costs (5) or more
+and summon it.
+&lt;i&gt;Advance to the future!&lt;/i&gt;</enUS>
+			<zhCN>&lt;b&gt;发现&lt;/b&gt;并召唤一条法力值消耗大于或等于（5）点的龙。&lt;i&gt;推进到未来！&lt;/i&gt;</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="415" name="DISCOVER" type="Int" value="1" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="122263" />
+		<Tag enumID="1342" name="USE_DISCOVER_VISUALS" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_436t2" ID="122263" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Future Conflux</enUS>
+			<zhCN>未来的时光流汇</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Discover&lt;/b&gt; a Dragon
+that costs (5) or more
+and summon it. Also
+get a copy of it.</enUS>
+			<zhCN>&lt;b&gt;发现&lt;/b&gt;并召唤一条法力值消耗大于或等于（5）点的龙，并获取一张它的复制。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="415" name="DISCOVER" type="Int" value="1" />
+		<Tag enumID="1342" name="USE_DISCOVER_VISUALS" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_446" ID="120999" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>The Eternal Hold</enUS>
+			<zhCN>永时坚垒</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Discover&lt;/b&gt; any Demon that
+costs (5) or more. If your
+deck has no minions,
+your next one costs (0).</enUS>
+			<zhCN>&lt;b&gt;发现&lt;/b&gt;一张法力值消耗大于或等于（5）点的任意恶魔牌。如果你的牌库中没有随从牌，你的下一张随从牌法力值消耗为（0）点。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"...stay on the line, our customer service representative will speak with you soon..."</enUS>
+			<zhCN>用时间垒成的坚垒，永时坚垒。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="14" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="415" name="DISCOVER" type="Int" value="1" />
+		<Tag enumID="1342" name="USE_DISCOVER_VISUALS" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_810" ID="119166" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Past Silvermoon</enUS>
+			<zhCN>过去的银月城</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Deal 5 damage to a
+random enemy minion.
+&lt;i&gt;Advance to the present!&lt;/i&gt;</enUS>
+			<zhCN>随机对一个敌方随从造成5点伤害。&lt;i&gt;推进到现在！&lt;/i&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>For nearly seven thousand years, Silvermoon stood unblemished as the crown jewel of Quel'Thalas. But that was before the Lich King came.</enUS>
+			<zhCN>银月城巍然屹立近七千年，堪称奎尔萨拉斯王冠上的明珠。可那都是巫妖王进军之前的事了。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="119168" />
+	</Entity>
+	<Entity CardID="TIME_810t1" ID="119168" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Present Silvermoon</enUS>
+			<zhCN>现在的银月城</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Deal 5 damage to a
+random enemy minion.
+Excess hits the enemy hero.
+&lt;i&gt;Advance to the future!&lt;/i&gt;</enUS>
+			<zhCN>随机对一个敌方随从造成5点伤害，超过目标生命值的伤害会命中敌方英雄。&lt;i&gt;推进到未来！&lt;/i&gt;</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="119169" />
+	</Entity>
+	<Entity CardID="TIME_810t2" ID="119169" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Future Silvermoon</enUS>
+			<zhCN>未来的银月城</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Deal 5 damage to the
+lowest Health enemy
+minion. Excess damage
+hits the enemy hero.</enUS>
+			<zhCN>对生命值最低的敌方随从造成5点伤害，超过目标生命值的伤害会命中敌方英雄。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+	</Entity>
+	<Entity CardID="TIME_890t2" ID="120068" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Karazhan the Sanctum</enUS>
+			<zhCN>圣地卡拉赞</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Costs (0) if you're wielding Atiesh. Summon two random 8-Cost minions.</enUS>
+			<zhCN>如果你装备着埃提耶什，本牌的法力值消耗为（0）点。随机召唤两个法力值消耗为（8）的随从。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Grace Liu</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="10" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="4445" name="IS_FABLED_BUNDLE_CARD" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TLC_100t1" ID="117761" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Un'Goro Jungle</enUS>
+			<zhCN>安戈洛丛林</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>{0} {1}</enUS>
+			<zhCN>{0}{1}</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Grace Liu</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="1342" name="USE_DISCOVER_VISUALS" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TLC_100t2" ID="117760" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Terror Run</enUS>
+			<zhCN>恐惧小道</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>{0} {1}</enUS>
+			<zhCN>{0}{1}</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="1342" name="USE_DISCOVER_VISUALS" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TLC_100t3" ID="117759" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Fire Plume Ridge</enUS>
+			<zhCN>火羽山</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>{0} {1}</enUS>
+			<zhCN>{0}{1}</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="10" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="1342" name="USE_DISCOVER_VISUALS" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TLC_433t2" ID="119897" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Terror's Grave</enUS>
+			<zhCN>恐怖之墓</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Deal 4 damage.
+&lt;b&gt;Deathrattle:&lt;/b&gt; Resummon
+Tyrax, Bone Terror.</enUS>
+			<zhCN>造成4点伤害。&lt;b&gt;亡语：&lt;/b&gt;再次召唤泰拉克斯，魔骸暴龙。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="1" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="117707" />
+	</Entity>
+	<Entity CardID="TLC_449" ID="117837" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Bloodpetal Biome</enUS>
+			<zhCN>血瓣群系</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Discover&lt;/b&gt; a &lt;b&gt;Temporary&lt;/b&gt; 1-Cost minion.</enUS>
+			<zhCN>&lt;b&gt;发现&lt;/b&gt;一张&lt;b&gt;临时&lt;/b&gt;的法力值消耗为（1）的随从牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>The rash doesn't FEEL temporary.</enUS>
+			<zhCN>过敏的症状可不是临时的。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1952" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="415" name="DISCOVER" type="Int" value="1" />
+		<Tag enumID="1342" name="USE_DISCOVER_VISUALS" type="Int" value="1" />
+		<ReferencedTag enumID="3630" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_359" ID="103186" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Jungle Gym</enUS>
+			<zhCN>丛林乐园</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Deal 1 damage to a
+random enemy. Repeat
+for each friendly Beast.</enUS>
+			<zhCN>随机对一个敌人
+造成1点伤害。每有一只友方野兽，重复一次。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Yeah, I work out at the gym. The one with all the plushies and toys.</enUS>
+			<zhCN>对，我去丛林里探险了，那里到处都是玩具。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_507" ID="103332" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Fairy Tale Forest</enUS>
+			<zhCN>童话林地</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Draw a &lt;b&gt;Battlecry&lt;/b&gt; minion.
+It costs (1) less.</enUS>
+			<zhCN>抽一张&lt;b&gt;战吼&lt;/b&gt;随从牌，其法力值消耗减少（1）点。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Man, I wish fairy tales were &lt;i&gt;real&lt;/i&gt;, Durg'tash the Sorcerer.</enUS>
+			<zhCN>哇，巫师杜格塔什，我希望童话里都是&lt;i&gt;真的&lt;/i&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<ReferencedTag enumID="218" name="BATTLECRY" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_512" ID="103346" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>The Crystal Cove</enUS>
+			<zhCN>水晶海湾</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]The next minion you
+summon this turn has
+its stats set to 4/4.</enUS>
+			<zhCN>在本回合中，你召唤的下一个随从的属性值变为4/4。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>For some strange reason, everyone that hangs out at the Crystal Cove has the same name...</enUS>
+			<zhCN>出于某种奇怪的原因，水晶海湾的每位游客都叫同一个名字……</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Grafit</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="7" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_850" ID="104596" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Magical Dollhouse</enUS>
+			<zhCN>魔法妙妙屋</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Gain &lt;b&gt;Spell Damage +1&lt;/b&gt;
+this turn only.</enUS>
+			<zhCN>在本回合中获得&lt;b&gt;法术伤害+1&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Build your own dollhouse in 3 easy steps!
+1. Build a castle.
+2. Miniaturize it.
+3. GLITTER!</enUS>
+			<zhCN>打造自己的玩具屋，只需3步！1.修建一座城堡。2.微缩城堡。3.加光效！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<ReferencedTag enumID="192" name="SPELLPOWER" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TTN_090" ID="97406" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Prison of Yogg-Saron</enUS>
+			<zhCN>尤格-萨隆的监狱</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Choose a character.
+Cast 4 random spells
+&lt;i&gt;(targeting it if possible)&lt;/i&gt;.</enUS>
+			<zhCN>选择一个角色。随机施放4个法术&lt;i&gt;（尽可能以其为目标）&lt;/i&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"We've finally captured Yogg-Saron! How should we keep him contained?"
+"How about... an open pit... right below us... with four loose chains?"
+"PERFECT!"</enUS>
+			<zhCN>“我们终于控制住了尤格-萨隆！该怎么关押他呢？”“在地底……挖一个浅坑……随便拴上四条链子……如何？”“完美！”</zhCN>
+		</Tag>
+		<Tag enumID="364" name="HOW_TO_EARN" type="LocString">
+			<enUS>Earnable after opening a &lt;i&gt;TITANS&lt;/i&gt; card pack.</enUS>
+			<zhCN>打开&lt;i&gt;泰坦诸神&lt;/i&gt;卡牌包后可解锁。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Earnable after purchasing the &lt;i&gt;TITANS&lt;/i&gt; Tavern Pass.</enUS>
+			<zhCN>购买&lt;i&gt;泰坦诸神&lt;/i&gt;炉石通行证后开放解锁。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Evgeniy Dlinnov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1858" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TTN_465" ID="97623" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Forge of Wills</enUS>
+			<zhCN>意志熔炉</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Choose a friendly minion. Summon a Giant with its stats and &lt;b&gt;Rush&lt;/b&gt;.</enUS>
+			<zhCN>选择一个友方随从。召唤一个具有其属性值和&lt;b&gt;突袭&lt;/b&gt;的
+巨人。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Standing in the Forge of Wills fills you with a sense of DETERMINATION.</enUS>
+			<zhCN>身处意志熔炉之中，你会感受到决心的力量。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Vlad Botos</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1858" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="97624" />
+		<ReferencedTag enumID="791" name="RUSH" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="VAC_334" ID="107762" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Knickknack Shack</enUS>
+			<zhCN>小玩物小屋</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Draw a card. If you play
+it this turn, reopen this.</enUS>
+			<zhCN>抽一张牌。如果你在本回合中使用抽到的这张牌，重新开启本地标。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>In a hole in the ground there... was a tourist trap?</enUS>
+			<zhCN>在一处温暖而舒适的地洞里，有一个……游客陷阱？</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Earnable on the &lt;i&gt;Perils in Paradise&lt;/i&gt; Reward Track.</enUS>
+			<zhCN>可以在&lt;i&gt;胜地历险记&lt;/i&gt;奖励路线中获得该奖励。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1905" />
+		<Tag enumID="199" name="CLASS" type="Int" value="7" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="VAC_409" ID="106576" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Parrot Sanctuary</enUS>
+			<zhCN>鹦鹉乐园</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Your next &lt;b&gt;Battlecry&lt;/b&gt;
+minion costs (1) less.
+After you play a &lt;b&gt;Battlecry&lt;/b&gt;
+minion, reopen this.</enUS>
+			<zhCN>你的下一张&lt;b&gt;战吼&lt;/b&gt;随从牌的法力值消耗减少（1）点。在你使用一张&lt;b&gt;战吼&lt;/b&gt;随从牌后，重新开启本地标。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Did you know? It's very loud in a parrot sanctuary. This has been bird facts with Ranger Gilly.</enUS>
+			<zhCN>你知道吗？鹦鹉乐园里是很吵的。——园林护卫者基利</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1905" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<ReferencedTag enumID="218" name="BATTLECRY" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="VAC_425" ID="107719" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Horizon's Edge</enUS>
+			<zhCN>大地之末号</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Deal 3 damage
+randomly split among all
+enemies. After a friendly
+minion dies, reopen this.</enUS>
+			<zhCN>造成3点伤害，随机分配到所有敌人身上。在一个友方随从死亡后，重新开启本地标。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Originally named Horizony McHorizonface.</enUS>
+			<zhCN>票选出来的名字叫“皮皮虾号”。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1905" />
+		<Tag enumID="199" name="CLASS" type="Int" value="1" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="VAC_517" ID="105891" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Hiking Trail</enUS>
+			<zhCN>远足步道</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Discover&lt;/b&gt; a &lt;b&gt;Taunt&lt;/b&gt; minion. After you gain Armor, reopen this.</enUS>
+			<zhCN>&lt;b&gt;发现&lt;/b&gt;一张&lt;b&gt;嘲讽&lt;/b&gt;随从牌。在你获得护甲值后，重新开启本地标。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"Hello adventurers!"
+"Hi King Trale!"</enUS>
+			<zhCN>“你在哪？”“步道啊！”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1905" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="415" name="DISCOVER" type="Int" value="1" />
+		<Tag enumID="1342" name="USE_DISCOVER_VISUALS" type="Int" value="1" />
+		<ReferencedTag enumID="190" name="TAUNT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="VAC_522" ID="106373" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Tide Pools</enUS>
+			<zhCN>潮汐之池</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Discover&lt;/b&gt; a spell that
+costs (3) or less.
+After you cast a spell,
+reopen this.</enUS>
+			<zhCN>&lt;b&gt;发现&lt;/b&gt;一张法力值消耗小于或等于（3）点的法术牌。在你施放一个法术后，重新开启本地标。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>I know they look delicious but do NOT eat them.</enUS>
+			<zhCN>我知道它们看起来很好吃，但切记请勿食用。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Tanamaes Leejierasaes</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1905" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="415" name="DISCOVER" type="Int" value="1" />
+		<Tag enumID="1342" name="USE_DISCOVER_VISUALS" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="VAC_923t" ID="106450" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Sanc'Azel</enUS>
+			<zhCN>圣沙泽尔</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Give a friendly minion
++@ Attack and &lt;b&gt;Rush&lt;/b&gt;.
+Turn back into a minion.</enUS>
+			<zhCN>使一个友方随从获得+@攻击力和&lt;b&gt;突袭&lt;/b&gt;。变回随从。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="2" name="TAG_SCRIPT_DATA_NUM_1" type="Int" value="3" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="8" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1905" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<ReferencedTag enumID="791" name="RUSH" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="VAC_929" ID="106614" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Dangerous Cliffside</enUS>
+			<zhCN>惊险悬崖</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Summon two 1/1
+Pirates with &lt;b&gt;Charge&lt;/b&gt;.
+After your hero attacks,
+reopen this.</enUS>
+			<zhCN>召唤两个1/1并具有&lt;b&gt;冲锋&lt;/b&gt;的海盗。在你的英雄攻击后，重新开启本地标。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>It's not as dangerous as it looks… IT'S EVEN MORE DANGEROUS!</enUS>
+			<zhCN>并不像看上去那么危险……而是危险得多！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1905" />
+		<Tag enumID="199" name="CLASS" type="Int" value="14" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<ReferencedTag enumID="197" name="CHARGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="WON_015" ID="102538" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Cenarion Hold</enUS>
+			<zhCN>塞纳里奥要塞</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Your next &lt;b&gt;Choose One&lt;/b&gt;
+card this turn has both
+effects combined.</enUS>
+			<zhCN>在本回合中，你的下一张&lt;b&gt;抉择&lt;/b&gt;牌同时拥有两种效果。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>After the War of the Shifting Sands, Cenarion Hold became a strategic outpost, awaiting the moment when the armies of C'Thun would rise once again.</enUS>
+			<zhCN>在流沙之战后，塞纳里奥要塞变成了一座战略前哨站，时刻提防克苏恩的大军卷土重来。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Evgeniy Dlinnov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1898" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="WON_053t" ID="102581" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Outskirts of Lordaeron</enUS>
+			<zhCN>洛丹伦城郊</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Choose a minion. 
+Destroy all minions with less Attack than it.</enUS>
+			<zhCN>选择一个随从，消灭所有攻击力小于它的随从。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1898" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+	</Entity>
+	<Entity CardID="WON_053t2" ID="102582" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Wind Rider Roost</enUS>
+			<zhCN>双足飞龙栖木</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Summon a random
+3-Cost minion.
+Give it &lt;b&gt;Charge&lt;/b&gt;.</enUS>
+			<zhCN>随机召唤一个法力值消耗为（3）的随从。使其获得&lt;b&gt;冲锋&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1898" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<ReferencedTag enumID="197" name="CHARGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="WON_053t3" ID="102583" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Xenedar</enUS>
+			<zhCN>泽尼达尔</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Your next &lt;b&gt;Battlecry&lt;/b&gt; this turn triggers twice.</enUS>
+			<zhCN>你在本回合中的下一个&lt;b&gt;战吼&lt;/b&gt;将触发两次。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1898" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<ReferencedTag enumID="218" name="BATTLECRY" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="WON_053t4" ID="102584" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>The Nighthold</enUS>
+			<zhCN>暗夜要塞</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Cast three random Paladin &lt;b&gt;Secrets&lt;/b&gt;.</enUS>
+			<zhCN>随机施放三个圣骑士&lt;b&gt;奥秘&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1898" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<ReferencedTag enumID="219" name="SECRET" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="WON_053t5" ID="102585" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Valdrakken</enUS>
+			<zhCN>瓦德拉肯</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Get two random Dragons with +2/+2.</enUS>
+			<zhCN>获取两张具有+2/+2的随机龙牌。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1898" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+	</Entity>
+	<Entity CardID="WON_053t6" ID="102586" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Ruins of Korune</enUS>
+			<zhCN>寇茹废墟</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Draw 2 cards.
+Swap their Costs.</enUS>
+			<zhCN>抽两张牌，交换其法力值消耗。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1898" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+	</Entity>
+	<Entity CardID="WON_053t7" ID="102587" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Temple of Earth</enUS>
+			<zhCN>大地神殿</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Choose a friendly minion.
+Summon a copy of it with
++3_Health and &lt;b&gt;Taunt&lt;/b&gt;
+that can't attack.</enUS>
+			<zhCN>选择一个友方随从。召唤一个它的具有+3生命值和&lt;b&gt;嘲讽&lt;/b&gt;且无法攻击的复制。</zhCN>
+		</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1898" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<ReferencedTag enumID="190" name="TAUNT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="WON_103" ID="102646" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Chamber of Viscidus</enUS>
+			<zhCN>维希度斯的窟穴</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]Look at 3 cards in your
+hand and choose one to
+discard. Draw two cards.</enUS>
+			<zhCN>检视你手牌中的三张牌，选择一张弃掉。抽两张牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Whose house? Ooze House.</enUS>
+			<zhCN>这个洞窟有多少年了？有好多黏！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Jakub Kasper</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1898" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="WW_001t11" ID="98755" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Ogrefist Boulder</enUS>
+			<zhCN>魔拳岩</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Set a minion's stats
+to 6/7.</enUS>
+			<zhCN>将一个随从的属性值变为6/7。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">BOSi Studio</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1892" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="2823" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="WW_359t" ID="103339" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Badlands Jail</enUS>
+			<zhCN>荒芜之地监狱</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>Make a minion go &lt;b&gt;Dormant&lt;/b&gt; for 3 turns.</enUS>
+			<zhCN>使一个随从&lt;b&gt;休眠&lt;/b&gt;3回合。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Grafit</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1892" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="39" />
+		<ReferencedTag enumID="1518" name="DORMANT" type="Int" value="1" />
+	</Entity>
+</CardDefs>

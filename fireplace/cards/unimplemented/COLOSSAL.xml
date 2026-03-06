@@ -1,0 +1,507 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CardDefs build="236529" description="巨型机制">
+	<Entity CardID="NX2_037" ID="87329" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Frost Queen Sindragosa</enUS>
+			<zhCN>冰霜女王辛达苟萨</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Colossal +2&lt;/b&gt;
+After an enemy minion is &lt;b&gt;Frozen&lt;/b&gt;, destroy it.</enUS>
+			<zhCN>&lt;b&gt;巨型+2&lt;/b&gt;
+在一个敌方随从被&lt;b&gt;冻结&lt;/b&gt;后，将其消灭。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>With her final breath, Sindragosa cursed her consort and all who abandoned her to die in Icecrown. When she was reborn by the hands of the Lich King, her first freezing exhale wrought only pain.</enUS>
+			<zhCN>辛达苟萨用她最后的一丝气息，诅咒她的爱侣，以及所有任由她死在冰冠冰川的生灵。当她在巫妖王的手中重生之时，她吐出了新生的第一口寒气。那是饱含痛苦的寒气。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">James Ryman</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="47" name="ATK" type="Int" value="6" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1776" />
+		<Tag enumID="199" name="CLASS" type="Int" value="1" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="94607" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="2197" name="COST_FROST" type="Int" value="1" />
+		<Tag enumID="2247" name="COLOSSAL" type="Int" value="1" />
+		<Tag enumID="2534" name="1" type="Int" value="1" />
+		<ReferencedTag enumID="208" name="FREEZE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_BlackwaterBehemoth" ID="90545" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Blackwater Behemoth</enUS>
+			<zhCN>黑水巨鳗</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Colossal +1&lt;/b&gt;
+At the end of your turn, deal 3
+ damage to enemy minions
+without Bioluminescent.
+&lt;b&gt;Deathrattle:&lt;/b&gt; Advance fight.</enUS>
+			<zhCN>&lt;b&gt;巨型+1&lt;/b&gt;
+在你的回合结束时，对没有生物荧光的敌方随从造成3点伤害。&lt;b&gt;亡语：&lt;/b&gt;推进战斗。</zhCN>
+		</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="10" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="1" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="684" name="HIDE_COST" type="Int" value="1" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="90647" />
+		<Tag enumID="1107" name="HIDE_WATERMARK" type="Int" value="1" />
+		<Tag enumID="2247" name="COLOSSAL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="Story_11_Gaia" ID="91597" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Gaia, the Techtonic</enUS>
+			<zhCN>盖亚，巨力机甲</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Colossal +2&lt;/b&gt;
+After a friendly Mech
+attacks, deal 1 damage
+to all enemies.</enUS>
+			<zhCN>&lt;b&gt;巨型+2&lt;/b&gt;
+在一个友方机械攻击后，对所有敌人造成1点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Always planning ahead, Ini knew she'd need this invention to protect all her other inventions.</enUS>
+			<zhCN>伊妮总能计划在先。她料到自己会用这项发明来保护她的其他发明。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Matt Dixon</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="7" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="17" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="91994" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="91993" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="2247" name="COLOSSAL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TID_711" ID="75580" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Ozumat</enUS>
+			<zhCN>厄祖玛特</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Colossal +6&lt;/b&gt; 
+&lt;b&gt;Deathrattle:&lt;/b&gt; For each of
+Ozumat's Tentacles, destroy
+   a random enemy minion.</enUS>
+			<zhCN>&lt;b&gt;巨型+6&lt;/b&gt;
+&lt;b&gt;亡语：&lt;/b&gt;每有一条厄祖玛特的触须，随机消灭一个敌方随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>&lt;b&gt;Deathrattle:&lt;/b&gt; You'll be octo-sorry.</enUS>
+			<zhCN>&lt;b&gt;亡语：&lt;/b&gt;八分遗憾。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Zoltan Boros</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="6" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="75581" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="2247" name="COLOSSAL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TID_712" ID="75583" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Neptulon the Tidehunter</enUS>
+			<zhCN>猎潮者耐普图隆</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Colossal +2&lt;/b&gt;, &lt;b&gt;Rush&lt;/b&gt;, &lt;b&gt;Windfury&lt;/b&gt;
+Whenever Neptulon attacks,
+if you control any Hands,
+they attack instead.</enUS>
+			<zhCN>&lt;b&gt;巨型+2&lt;/b&gt;
+&lt;b&gt;突袭&lt;/b&gt;，&lt;b&gt;风怒&lt;/b&gt;，每当耐普图隆攻击时，如果你控制着任意耐普图隆之手，改为由手攻击。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Neptulon, tired of filling hands, is now throwing hands.</enUS>
+			<zhCN>耐普图隆不愿再把手塞得满满当当。他学会了放手。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">James Ryman</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="7" />
+		<Tag enumID="47" name="ATK" type="Int" value="7" />
+		<Tag enumID="48" name="COST" type="Int" value="10" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="189" name="WINDFURY" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="18" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="791" name="RUSH" type="Int" value="1" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="80016" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="2247" name="COLOSSAL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_026" ID="71712" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Colaque</enUS>
+			<zhCN>可拉克</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Colossal +1&lt;/b&gt;
+ &lt;b&gt;Immune&lt;/b&gt; while you control
+Colaque's Shell.</enUS>
+			<zhCN>&lt;b&gt;巨型+1&lt;/b&gt;
+当你控制可拉克的壳时&lt;b&gt;免疫&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Ten thousand years ago, the city of Zin-Azshari fell to the bottom of the sea... and partially onto Colaque's shell.</enUS>
+			<zhCN>一万年前，辛艾萨莉落入了海底……有一部分落到了可拉克的壳上。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Zoltan Boros</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="6" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="71828" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="71828" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="2247" name="COLOSSAL" type="Int" value="1" />
+		<ReferencedTag enumID="240" name="IMMUNE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_029" ID="71841" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Gaia, the Techtonic</enUS>
+			<zhCN>盖亚，巨力机甲</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Colossal +2&lt;/b&gt;
+After a friendly Mech
+attacks, deal 1 damage
+to all enemies.</enUS>
+			<zhCN>&lt;b&gt;巨型+2&lt;/b&gt;
+在一个友方机械攻击后，对所有敌人造成1点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Always planning ahead, Ini knew she'd need this invention to protect all her other inventions.</enUS>
+			<zhCN>伊妮总能计划在先。她料到自己会用这项发明来保护她的其他发明。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Matt Dixon</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="7" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="17" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="85858" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="2247" name="COLOSSAL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_030" ID="71984" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>The Leviathan</enUS>
+			<zhCN>海兽号</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Colossal +1&lt;/b&gt;
+&lt;b&gt;Rush&lt;/b&gt;, &lt;b&gt;Divine Shield&lt;/b&gt;
+After this attacks,
+&lt;b&gt;Dredge&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;巨型+1&lt;/b&gt;
+&lt;b&gt;突袭&lt;/b&gt;，&lt;b&gt;圣盾&lt;/b&gt;。在本随从攻击后，&lt;b&gt;探底&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Built by Ini Stormcoil, this massive vessel can withstand almost anything you put it through... although she would prefer you didn't!</enUS>
+			<zhCN>由伊妮·积雷亲手建造。这艘巨舰可以陪你闯过几乎任何恶劣环境……但她真心希望你别去那么险恶的地方！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Paul Mafayon</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="17" />
+		<Tag enumID="201" name="FACTION" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="791" name="RUSH" type="Int" value="1" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="71982" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="71982" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="2247" name="COLOSSAL" type="Int" value="1" />
+		<Tag enumID="2332" name="DREDGE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_216" ID="72488" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Blackwater Behemoth</enUS>
+			<zhCN>黑水巨鳗</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Colossal +1&lt;/b&gt;
+&lt;b&gt;Lifesteal&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;巨型+1&lt;/b&gt;
+&lt;b&gt;吸血&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>What's a Blackwater Behemoth's favorite meal? Fish n' Ships.</enUS>
+			<zhCN>黑水巨鳗最爱的菜品是？炸鱼配上数条……船。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Zoltan Boros</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="10" />
+		<Tag enumID="47" name="ATK" type="Int" value="8" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="685" name="LIFESTEAL" type="Int" value="1" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="72489" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="72489" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="2247" name="COLOSSAL" type="Int" value="1" />
+		<Tag enumID="2469" name="COLOSSAL_LIMB_ON_LEFT" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_219" ID="73726" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Xhilag of the Abyss</enUS>
+			<zhCN>渊狱魔犬希拉格</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Colossal +4&lt;/b&gt;
+At the start of your turn,
+increase the damage of
+Xhilag's Stalks by 1.</enUS>
+			<zhCN>&lt;b&gt;巨型+4&lt;/b&gt;
+在你的回合开始时，希拉格的蔓足造成的伤害提高1点。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>When ancient heroes drove a felhunter into the sea, they thought it was the end. But for Xhilag, it was only the beginning...</enUS>
+			<zhCN>上古时代的英雄将魔犬驱赶入海，他们以为那就是结局。然而对希拉格来说，那只是个开始……</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Vladimir Kafanov</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="14" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="15" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="85854" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="2247" name="COLOSSAL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_639" ID="72553" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Glugg the Gulper</enUS>
+			<zhCN>暴食巨鳗格拉格</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Colossal +3&lt;/b&gt;
+ After a friendly minion dies,
+gain its original stats.</enUS>
+			<zhCN>&lt;b&gt;巨型+3&lt;/b&gt;
+在一个友方随从死亡后，获得其原始属性值。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Food can be scarce in the Abyssal Depths, leading its top predators to pursue any potential source of sustenance. Even extra crunchy ones.</enUS>
+			<zhCN>无底海渊食物匮乏，最顶尖的捕食者也不能挑食。哪怕这食物脆硬如铁。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Alex Stone</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="72554" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="2247" name="COLOSSAL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_660" ID="74894" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Nellie, the Great Thresher</enUS>
+			<zhCN>奈利，超巨蛇颈龙</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Colossal +1&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Discover&lt;/b&gt; 3 Pirates
+to crew Nellie's Ship!</enUS>
+			<zhCN>&lt;b&gt;巨型+1&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;发现&lt;/b&gt;三个海盗来构成奈利的船员团队！</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Not to be mistaken for her freshwater cousin, Nessie, this massive creature was harnessed to carry Hooktusk's favorite ship.</enUS>
+			<zhCN>这头巨兽身披鞍辔，驮载着钩牙船长最爱的船。别把她和她的淡水远亲尼斯搞混了。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">L. Lullabi &amp; K. Turovec</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="415" name="DISCOVER" type="Int" value="1" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="74895" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="74895" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="2247" name="COLOSSAL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_937" ID="72536" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Crabatoa</enUS>
+			<zhCN>可拉巴托亚</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Colossal +2&lt;/b&gt;
+Your Crabatoa Claws have +2 Attack.</enUS>
+			<zhCN>&lt;b&gt;巨型+2&lt;/b&gt;
+你的可拉巴托亚的钳子拥有+2攻击力。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>This giant crab loves to sink entire naval fleets, but it'll settle for a single dinghy in a pinch.</enUS>
+			<zhCN>这只巨蟹喜欢弄沉整支舰队，不过饿极了的时候，一艘小艇也能凑合。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Zoltan Boros</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="6" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="7" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="362" name="AURA" type="Int" value="1" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="85859" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="2247" name="COLOSSAL" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_950" ID="72935" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Hydralodon</enUS>
+			<zhCN>海卓拉顿</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Colossal +2&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Give your
+_Hydralodon Heads &lt;b&gt;Rush&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;巨型+2&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;使你的海卓拉顿之头获得&lt;b&gt;突袭&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Deep beneath the waves, this hydra grew to incredible size based on a steady diet of literally anything that crossed its path.</enUS>
+			<zhCN>这条多头蛇生长在大海深处，体型极为庞大。这要归功于它稳定的饮食习惯：有什么吃什么。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">James Ryman</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="85857" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="2247" name="COLOSSAL" type="Int" value="1" />
+		<ReferencedTag enumID="791" name="RUSH" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TSC_962" ID="74741" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Gigafin</enUS>
+			<zhCN>老巨鳍</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Colossal +1&lt;/b&gt;. &lt;b&gt;Battlecry:&lt;/b&gt;
+Devour all enemy minions.
+&lt;b&gt;Deathrattle:&lt;/b&gt; Spit them
+back out.</enUS>
+			<zhCN>&lt;b&gt;巨型+1&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;吞食所有敌方随从。&lt;b&gt;亡语：&lt;/b&gt;吐出来。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>How much storage does Gigafin's Maw have? About a giga bite.</enUS>
+			<zhCN>老巨鳍体内的存储空间有多大？大概有一鲸。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Slawomir Maniak</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="7" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1658" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="14" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1078" name="DISPLAY_CARD_ON_MOUSEOVER" type="Int" value="74742" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="74742" />
+		<Tag enumID="1544" name="1" type="Int" value="1" />
+		<Tag enumID="2247" name="COLOSSAL" type="Int" value="1" />
+	</Entity>
+</CardDefs>

@@ -1,0 +1,621 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CardDefs build="236529" description="微型机制">
+	<Entity CardID="MIS_025" ID="106232" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>The Replicator-inator</enUS>
+			<zhCN>复制鬼才</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Miniaturize&lt;/b&gt;, &lt;b&gt;Gigantify&lt;/b&gt;
+After you play a minion with
+the same Attack as this,
+summon a copy of it.</enUS>
+			<zhCN>&lt;b&gt;微缩&lt;/b&gt;，&lt;b&gt;扩大&lt;/b&gt;
+在你使用一张攻击力与本随从相同的随从牌后，召唤一个它的复制。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Dr. Boom is the greatest inventor in the Tri-Zone area!</enUS>
+			<zhCN>砰砰博士是外域大都会区最伟大的发明家！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Matt Dixon</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="17" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1824" name="MINI_SET" type="Int" value="1" />
+		<Tag enumID="3318" name="MINIATURIZE" type="Int" value="1" />
+		<Tag enumID="3399" name="GIGANTIFY" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_307" ID="102784" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Sweetened Snowflurry</enUS>
+			<zhCN>甜蜜雪灵</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Miniaturize&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Get 2 random
+&lt;b&gt;Temporary&lt;/b&gt; Frost spells.</enUS>
+			<zhCN>&lt;b&gt;微缩&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;随机获取2张&lt;b&gt;临时&lt;/b&gt;冰霜法术牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"You want a piece of me!? Will that be one scoop or two?"</enUS>
+			<zhCN>“你想尝尝我的拳头？大杯还是小杯？”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Todd Harris</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="18" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="102785" />
+		<Tag enumID="3318" name="MINIATURIZE" type="Int" value="1" />
+		<ReferencedTag enumID="3630" name="1" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_312" ID="102799" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Nostalgic Gnome</enUS>
+			<zhCN>恋旧的侏儒</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Miniaturize&lt;/b&gt;
+&lt;b&gt;Rush&lt;/b&gt;. After this minion deals
+exact lethal damage on your
+turn, draw a card.</enUS>
+			<zhCN>&lt;b&gt;微缩&lt;/b&gt;
+&lt;b&gt;突袭&lt;/b&gt;。在本随从在你的回合中造成了刚好消灭目标的伤害后，抽一张牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>She remembers Alterac Valley like it was 833 days ago.</enUS>
+			<zhCN>她仍然记得奥特兰克山谷的经历，仿佛那仅仅发生在……833天前。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Earnable on the &lt;i&gt;Whizbang's Workshop&lt;/i&gt; Reward Track.</enUS>
+			<zhCN>可以在&lt;i&gt;威兹班的工坊&lt;/i&gt;奖励路线中获得该奖励。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Ivan Fomin</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="791" name="RUSH" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="102800" />
+		<Tag enumID="3318" name="MINIATURIZE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_340" ID="103327" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Nostalgic Initiate</enUS>
+			<zhCN>恋旧的新生</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Miniaturize&lt;/b&gt;
+The first time you cast a spell, gain +2/+2.</enUS>
+			<zhCN>&lt;b&gt;微缩&lt;/b&gt;
+在你施放本随从登场后的第一个法术时获得+2/+2。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Nostalgic Initiate: "Man I wish I could relive my college days..."
+Kel'thuzad: "Say no more."</enUS>
+			<zhCN>恋旧的新生：“啊，我的校园，死去的记忆好像又活了……”克尔苏加德：“快别说了。”</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Earnable on the &lt;i&gt;Whizbang's Workshop&lt;/i&gt; Reward Track.</enUS>
+			<zhCN>可以在&lt;i&gt;威兹班的工坊&lt;/i&gt;奖励路线中获得该奖励。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Sergey Tsvelykh</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="103329" />
+		<Tag enumID="3318" name="MINIATURIZE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_341" ID="103333" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Nostalgic Clown</enUS>
+			<zhCN>恋旧的小丑</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Miniaturize&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; If you've played a
+higher Cost card while holding
+this, deal 4 damage.</enUS>
+			<zhCN>&lt;b&gt;微缩&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;如果你在本牌在你手中时使用过法力值消耗更高的牌，造成4点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>He used to be kind of corrupt, but now he performs purely for the fun of it.</enUS>
+			<zhCN>过去的他有点腐蚀堕落，而现在的他已经成了纯纯的小丑。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Deal 4 damage.</enUS>
+			<zhCN>造成4点伤害。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">James Ryman</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="6" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="103334" />
+		<Tag enumID="3318" name="MINIATURIZE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_351" ID="103144" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Mystery Egg</enUS>
+			<zhCN>神秘的蛋</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Miniaturize&lt;/b&gt;
+&lt;b&gt;Deathrattle:&lt;/b&gt; Get a copy of a
+random Beast in your deck.
+It costs (3) less.</enUS>
+			<zhCN>&lt;b&gt;微缩&lt;/b&gt;
+&lt;b&gt;亡语：&lt;/b&gt;获取你牌库中一张随机野兽牌的一张复制，其法力值消耗减少（3）点。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Which came first, the Mukla or the egg?</enUS>
+			<zhCN>究竟是先有穆克拉，还是先有蛋？</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Edgar Hidalgo</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="103163" />
+		<Tag enumID="3318" name="MINIATURIZE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_375" ID="103348" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Sleet Skater</enUS>
+			<zhCN>滑冰元素</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Miniaturize&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Freeze&lt;/b&gt; an
+enemy minion. Gain Armor equal to its Attack.</enUS>
+			<zhCN>&lt;b&gt;微缩&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;冻结&lt;/b&gt;一个敌方随从，获得等同于其攻击力的护甲值。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>How do you do, fellow Ice Elementals?</enUS>
+			<zhCN>冰元素朋友，你们好吗？</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Freeze an enemy minion.</enUS>
+			<zhCN>冻结一个敌方随从。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Daniil Kudriavtsev</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="18" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="103349" />
+		<Tag enumID="3318" name="MINIATURIZE" type="Int" value="1" />
+		<ReferencedTag enumID="208" name="FREEZE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_380" ID="103491" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Clay Matriarch</enUS>
+			<zhCN>黏土巢母</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Miniaturize&lt;/b&gt;
+&lt;b&gt;Taunt&lt;/b&gt;. &lt;b&gt;Deathrattle:&lt;/b&gt; Summon
+a 4/4 Whelp with &lt;b&gt;Elusive&lt;/b&gt;.</enUS>
+			<zhCN>&lt;b&gt;微缩&lt;/b&gt;
+&lt;b&gt;嘲讽&lt;/b&gt;。&lt;b&gt;亡语：&lt;/b&gt;召唤一条4/4并具有&lt;b&gt;扰魔&lt;/b&gt;的雏龙。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>I hope you didn't need all that purple clay.</enUS>
+			<zhCN>那些紫色黏土你应该不用了吧。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Daniil Kudriavtsev</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="7" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="3318" name="MINIATURIZE" type="Int" value="1" />
+		<ReferencedTag enumID="1211" name="ELUSIVE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_501" ID="103080" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Shudderblock</enUS>
+			<zhCN>沙德木刻</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Miniaturize&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Your next &lt;b&gt;Battlecry&lt;/b&gt;
+triggers 3 times, but can't
+_damage the enemy hero.</enUS>
+			<zhCN>&lt;b&gt;微缩&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;你的下一个&lt;b&gt;战吼&lt;/b&gt;会触发3次，但无法伤害敌方英雄。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Beware the hinges that pinch, the scales that splinter!</enUS>
+			<zhCN>我，芽尖笊利！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Alex Horley Orlandelli</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="6" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="108516" />
+		<Tag enumID="3318" name="MINIATURIZE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_513" ID="103379" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Sand Art Elemental</enUS>
+			<zhCN>沙画元素</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Miniaturize&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Give your hero
++1 Attack and &lt;b&gt;Windfury&lt;/b&gt;
+this turn.</enUS>
+			<zhCN>&lt;b&gt;微缩&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;在本回合中，使你的英雄获得+1攻击力和&lt;b&gt;风怒&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>This art HURT ME!!!</enUS>
+			<zhCN>这幅画好伤人！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Konstantin Porubov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="18" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="103380" />
+		<Tag enumID="3318" name="MINIATURIZE" type="Int" value="1" />
+		<ReferencedTag enumID="189" name="WINDFURY" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_521" ID="103603" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Sandbox Scoundrel</enUS>
+			<zhCN>沙箱恶霸</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Miniaturize&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Your next card
+this turn costs (2) less.</enUS>
+			<zhCN>&lt;b&gt;微缩&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;在本回合中，你的下一张牌法力值消耗减少（2）点。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"Really? A bunch of fake plastic gems AGAIN!?"</enUS>
+			<zhCN>“啊？又是塑料假宝石？”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Timur Shevtsov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="7" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="23" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="104975" />
+		<Tag enumID="3318" name="MINIATURIZE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_601" ID="103431" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Factory Assemblybot</enUS>
+			<zhCN>工厂装配机</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Miniaturize&lt;/b&gt;
+At the end of your turn, summon a 6/7 Bot that attacks a random enemy.</enUS>
+			<zhCN>&lt;b&gt;微缩&lt;/b&gt;
+在你的回合结束时，召唤一个6/7的机器人并使其攻击一个随机敌人。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>I call it Mini-me.</enUS>
+			<zhCN>我称之为微型的我。</zhCN>
+		</Tag>
+		<Tag enumID="365" name="HOW_TO_EARN_GOLDEN" type="LocString">
+			<enUS>Earnable on the &lt;i&gt;Whizbang's Workshop&lt;/i&gt; Reward Track.</enUS>
+			<zhCN>可以在&lt;i&gt;威兹班的工坊&lt;/i&gt;奖励路线中获得该奖励。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mauricio Herrera</Tag>
+		<Tag enumID="32" name="TRIGGER_VISUAL" type="Int" value="1" />
+		<Tag enumID="45" name="HEALTH" type="Int" value="7" />
+		<Tag enumID="47" name="ATK" type="Int" value="6" />
+		<Tag enumID="48" name="COST" type="Int" value="10" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="12" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="17" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="103432" />
+		<Tag enumID="3318" name="MINIATURIZE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_604" ID="103444" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Boom Wrench</enUS>
+			<zhCN>砰砰扳手</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Miniaturize&lt;/b&gt;
+&lt;b&gt;Deathrattle:&lt;/b&gt; Trigger the
+&lt;b&gt;Deathrattle&lt;/b&gt; of a random
+friendly Mech.</enUS>
+			<zhCN>&lt;b&gt;微缩&lt;/b&gt;
+&lt;b&gt;亡语：&lt;/b&gt;随机触发一个友方机械的&lt;b&gt;亡语&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Boom, the Inventor; Can he fix it?
+Boom, the Inventor; No he can't!</enUS>
+			<zhCN>发明家砰砰他懂维修？他不懂！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Studio Hive</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="7" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="105916" />
+		<Tag enumID="3318" name="MINIATURIZE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_652" ID="104652" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Window Shopper</enUS>
+			<zhCN>橱窗看客</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Miniaturize&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Discover&lt;/b&gt; a
+Demon. Set its stats and
+Cost to this minion's.</enUS>
+			<zhCN>&lt;b&gt;微缩&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;发现&lt;/b&gt;一张恶魔牌，将其属性值与法力值消耗变为与本随从相同。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>OMG THAT'S LITERALLY ME!</enUS>
+			<zhCN>我的天呐，这就是我！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Sergey Tsvelykh</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="6" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="14" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="15" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="4" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="415" name="DISCOVER" type="Int" value="1" />
+		<Tag enumID="1342" name="USE_DISCOVER_VISUALS" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="104654" />
+		<Tag enumID="3318" name="MINIATURIZE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_801" ID="104583" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Chia Drake</enUS>
+			<zhCN>绿植幼龙</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Miniaturize&lt;/b&gt;
+&lt;b&gt;Choose One -&lt;/b&gt; Gain
+&lt;b&gt;Spell Damage +1&lt;/b&gt;; or
+Draw a spell.</enUS>
+			<zhCN>&lt;b&gt;微缩&lt;/b&gt;
+&lt;b&gt;抉择：&lt;/b&gt;获得&lt;b&gt;法术伤害+1&lt;/b&gt;；或者抽一张法术牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Huh-huh-huh Hearthstone!</enUS>
+			<zhCN>哈！绿植传说！</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Mooncolony</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="443" name="CHOOSE_ONE" type="Int" value="1" />
+		<Tag enumID="3318" name="MINIATURIZE" type="Int" value="1" />
+		<ReferencedTag enumID="192" name="SPELLPOWER" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_811" ID="103633" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Tigress Plushy</enUS>
+			<zhCN>绒绒虎</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>&lt;b&gt;Miniaturize&lt;/b&gt;
+&lt;b&gt;Rush&lt;/b&gt;, &lt;b&gt;Lifesteal&lt;/b&gt;,
+&lt;b&gt;Divine Shield&lt;/b&gt;</enUS>
+			<zhCN>&lt;b&gt;微缩&lt;/b&gt;
+&lt;b&gt;突袭&lt;/b&gt;，&lt;b&gt;吸血&lt;/b&gt;，&lt;b&gt;圣盾&lt;/b&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>The sheervalue of this card is undeniable.</enUS>
+			<zhCN>新一代的萌虎之神。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Ursula Dorada</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="194" name="DIVINE_SHIELD" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="20" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="685" name="LIFESTEAL" type="Int" value="1" />
+		<Tag enumID="791" name="RUSH" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="103637" />
+		<Tag enumID="3318" name="MINIATURIZE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_813" ID="103635" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Toy Captain Tarim</enUS>
+			<zhCN>玩具队长塔林姆</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Miniaturize&lt;/b&gt;
+&lt;b&gt;Taunt&lt;/b&gt;. &lt;b&gt;Battlecry:&lt;/b&gt; Set a
+minion's Attack and Health
+to this minion's.</enUS>
+			<zhCN>&lt;b&gt;微缩&lt;/b&gt;
+&lt;b&gt;嘲讽&lt;/b&gt;。&lt;b&gt;战吼：&lt;/b&gt;将一个随从的攻击力和生命值变为与本随从相同。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Whizbang is now the sole proprietor of Un'Goro.</enUS>
+			<zhCN>安戈洛现在属于威兹班。</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Set a minion's Attack and Health to this minion's.</enUS>
+			<zhCN>将一个随从的攻击力和生命值变为与本随从相同。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">James Ryman</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="7" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="104642" />
+		<Tag enumID="3318" name="MINIATURIZE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_828" ID="104694" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Amateur Puppeteer</enUS>
+			<zhCN>业余傀儡师</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Miniaturize&lt;/b&gt;, &lt;b&gt;Taunt&lt;/b&gt;
+&lt;b&gt;Deathrattle:&lt;/b&gt; Give Undead
+in your hand +2/+2.</enUS>
+			<zhCN>&lt;b&gt;微缩&lt;/b&gt;
+&lt;b&gt;嘲讽&lt;/b&gt;。&lt;b&gt;亡语：&lt;/b&gt;使你手牌中的亡灵牌获得+2/+2。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"I'm a real toy!"</enUS>
+			<zhCN>“我成了真正的玩具！”</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Zoltan Boros</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="190" name="TAUNT" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="1" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="11" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="3" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="105360" />
+		<Tag enumID="2196" name="COST_BLOOD" type="Int" value="1" />
+		<Tag enumID="2198" name="COST_UNHOLY" type="Int" value="1" />
+		<Tag enumID="3318" name="MINIATURIZE" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TOY_915" ID="104855" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Tabletop Roleplayer</enUS>
+			<zhCN>桌游角色扮演玩家</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Miniaturize&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Give a friendly
+Demon +2 Attack and
+&lt;b&gt;Immune&lt;/b&gt; this turn.</enUS>
+			<zhCN>&lt;b&gt;微缩&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;在本回合中，使一个友方恶魔获得+2攻击力和&lt;b&gt;免疫&lt;/b&gt;。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>"And then I uh... I curse them with... uh... OH! I got it! They have to speak in rhymes or they turn into a crab!"</enUS>
+			<zhCN>“然后……我要，我要对它施加诅咒……呃……有了！我要诅咒它说话必须押韵，不然就会变成螃蟹！”</zhCN>
+		</Tag>
+		<Tag enumID="325" name="TARGETING_ARROW_TEXT" type="LocString">
+			<enUS>Give a friendly Demon +2 Attack and Immune.</enUS>
+			<zhCN>使一个友方恶魔获得+2攻击力和免疫。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Alex Stone</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="3" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1897" />
+		<Tag enumID="199" name="CLASS" type="Int" value="9" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="1452" name="COLLECTION_RELATED_CARD_DATABASE_ID" type="Int" value="104857" />
+		<Tag enumID="3318" name="MINIATURIZE" type="Int" value="1" />
+		<ReferencedTag enumID="240" name="IMMUNE" type="Int" value="1" />
+	</Entity>
+</CardDefs>

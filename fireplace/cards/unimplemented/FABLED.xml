@@ -1,0 +1,341 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CardDefs build="236529" description="传说机制">
+	<Entity CardID="TIME_009" ID="119918" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Gelbin of Tomorrow</enUS>
+			<zhCN>明日巨匠格尔宾</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Fabled&lt;/b&gt;
+&lt;b&gt;Battlecry:&lt;/b&gt; Put one of each
+Aura from your deck into
+the battlefield.</enUS>
+			<zhCN>&lt;b&gt;奇闻&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;将每种不同的光环从你的牌库中置入战场。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>In one future, Gelbin invents a way to preserve his brain in a suit of robotic armor, and leads the gnomes into a bright future powered by the Holy Light.</enUS>
+			<zhCN>在某条未来的时间线中，格尔宾发明出了用机甲保存大脑的方法，并带领侏儒一族奔向了以圣光为能源的光明未来。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">James Ryman</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="6" />
+		<Tag enumID="47" name="ATK" type="Int" value="6" />
+		<Tag enumID="48" name="COST" type="Int" value="8" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="5" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="17" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+		<Tag enumID="2936" name="1" type="Int" value="1" />
+		<Tag enumID="4085" name="FABLED" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_020" ID="120074" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Broxigar</enUS>
+			<zhCN>布洛克斯加</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Fabled, Charge&lt;/b&gt;
+&lt;b&gt;Start of Game:&lt;/b&gt; Disappear.
+Kill all 4 Demons from Argus
+to reappear in hand.</enUS>
+			<zhCN>&lt;b&gt;奇闻
+冲锋。&lt;/b&gt;&lt;b&gt;对战开始时：&lt;/b&gt;消失。
+消灭全部4个来自阿古斯的恶魔以重新出现在[x]手牌中。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>The wound Broxigar dealt to Sargeras during his last stand is a glory no other orcish hero has ever achieved.</enUS>
+			<zhCN>布洛克斯的临终一击伤到了萨格拉斯。这项光辉战绩在兽人英雄当中无人可及。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Luca Zontini</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="12" />
+		<Tag enumID="47" name="ATK" type="Int" value="12" />
+		<Tag enumID="48" name="COST" type="Int" value="2" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="197" name="CHARGE" type="Int" value="1" />
+		<Tag enumID="199" name="CLASS" type="Int" value="14" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="968" name="START_OF_GAME_KEYWORD" type="Int" value="1" />
+		<Tag enumID="1673" name="1" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+		<Tag enumID="2936" name="1" type="Int" value="1" />
+		<Tag enumID="4085" name="FABLED" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_209" ID="119643" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Muradin, High King</enUS>
+			<zhCN>高山之王穆拉丁</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Fabled&lt;/b&gt;, &lt;b&gt;Rush&lt;/b&gt;. &lt;b&gt;Battlecry:&lt;/b&gt;
+Bring the High King's
+Hammer to ME! &lt;b&gt;Deathrattle:&lt;/b&gt;
+Add it to your hand.</enUS>
+			<zhCN>&lt;b&gt;奇闻&lt;/b&gt;
+&lt;b&gt;突袭&lt;/b&gt;。&lt;b&gt;战吼：&lt;/b&gt;为本随从装备高山之王的战锤！&lt;b&gt;亡语：&lt;/b&gt;将该战锤置入你的手牌。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>There is no story more tragic in Ironforge history than that of King Muradin slaying the corrupted Prince Arthas. The Lich King never rose to power, the Stormriders united, but the boy's death created fractures in the Alliance that would never repair.</enUS>
+			<zhCN>铁炉堡的史书中最为惨痛的一笔，莫过于穆拉丁国王亲手击毙了堕落的王子阿尔萨斯。巫妖王未能崛起，驭雷者团结如初，可是王子的死还是给联盟留下了一道嫌隙，永远无法弥合。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Timur Shevtsov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="2" />
+		<Tag enumID="47" name="ATK" type="Int" value="3" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="8" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="791" name="RUSH" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+		<Tag enumID="2936" name="1" type="Int" value="1" />
+		<Tag enumID="4085" name="FABLED" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_211" ID="119928" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Lady Azshara</enUS>
+			<zhCN>艾萨拉女士</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Fabled&lt;/b&gt;. &lt;b&gt;Choose One -&lt;/b&gt;
+Empower Zin-Azshari; or
+The Well of Eternity. &lt;i&gt;(The
+__other gets destroyed!)&lt;/i&gt;</enUS>
+			<zhCN>&lt;b&gt;奇闻&lt;/b&gt;
+&lt;b&gt;抉择：&lt;/b&gt;强化辛艾萨莉；或者永恒之井。&lt;i&gt;（未选择的选项会被摧毁！）&lt;/i&gt;</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>There was a time when Azshara was a benevolent queen to the Kaldorei. There is a timeline where she even stayed one.</enUS>
+			<zhCN>艾萨拉曾是卡多雷一族仁善的女王。而在某条时间线中，她一直都是这样的女王。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Eva Widermann</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="2" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="443" name="CHOOSE_ONE" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="2936" name="1" type="Int" value="1" />
+		<Tag enumID="4085" name="FABLED" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_609" ID="119707" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Ranger General Sylvanas</enUS>
+			<zhCN>游侠将军希尔瓦娜斯</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Fabled&lt;/b&gt;. &lt;b&gt;Battlecry:&lt;/b&gt; Deal 2
+damage to all enemies.
+____If you've played Alleria or____
+__Vereesa, repeat for each.</enUS>
+			<zhCN>&lt;b&gt;奇闻&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;对所有敌人造成2点伤害。如果你使用过奥蕾莉亚或温蕾萨，每使用过一位，重复一次。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Whatever she would later become, no hero fought the Lich King so courageously as the Ranger General of Silvermoon.</enUS>
+			<zhCN>无论她后来会变成什么样子，她都是抗击巫妖王时最为英勇的游侠将军，是银月城的英雄。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Rafael Zanchetin</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="3" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="3" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="1932" name="HAS_DIAMOND_QUALITY" type="Int" value="1" />
+		<Tag enumID="2936" name="1" type="Int" value="1" />
+		<Tag enumID="4085" name="FABLED" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_619" ID="120183" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Talanji of the Graves</enUS>
+			<zhCN>墓地尊主塔兰吉</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Fabled.&lt;/b&gt; &lt;b&gt;Battlecry:&lt;/b&gt; Draw
+Bwonsamdi &lt;i&gt;(or resurrect
+him if he has died)&lt;/i&gt;. Choose
+a Boon to give him.</enUS>
+			<zhCN>&lt;b&gt;奇闻&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;抽取邦桑迪&lt;i&gt;（如果他已经死亡则将其复活）&lt;/i&gt;，选择并使其获得一项恩泽。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>In one dark timeline, Talanji was struck down and raised again as a death knight. But even death can't stop her from protecting the Zandalari.</enUS>
+			<zhCN>在某条黑暗的时间线中，塔兰吉不幸被害，又被复活为死亡骑士。可即便是死亡，也不能阻止她保护赞达拉的人民。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">James Ryman</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="5" />
+		<Tag enumID="47" name="ATK" type="Int" value="4" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="1" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="11" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+		<Tag enumID="2936" name="1" type="Int" value="1" />
+		<Tag enumID="4085" name="FABLED" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_850" ID="119451" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Lo'Gosh, Blood Fighter</enUS>
+			<zhCN>血斗士洛戈什</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Fabled&lt;/b&gt;, &lt;b&gt;Rush&lt;/b&gt;. &lt;b&gt;Deathrattle:&lt;/b&gt;
+Summon a Blood Fighter from
+your hand. It gains +5/+5 and
+attacks a random enemy.</enUS>
+			<zhCN>&lt;b&gt;奇闻&lt;/b&gt;
+&lt;b&gt;突袭&lt;/b&gt;。&lt;b&gt;亡语：&lt;/b&gt;从你的手牌中召唤一位血斗士，使其获得+5/+5并随机攻击一个敌人。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>In the Crimson Ring they call him Lo'gosh, the Ghost Wolf. He's forgotten the time when he was called by another name: Varian Wrynn, King of Stormwind.</enUS>
+			<zhCN>在血红之环，人们称他为“幽灵之狼”洛戈什。他已然忘了自己的过去，他的另一重身份：瓦里安·乌瑞恩，暴风城国王。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Alex Horley Orlandelli</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="7" />
+		<Tag enumID="47" name="ATK" type="Int" value="7" />
+		<Tag enumID="48" name="COST" type="Int" value="7" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="10" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="217" name="DEATHRATTLE" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="791" name="RUSH" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+		<Tag enumID="2936" name="1" type="Int" value="1" />
+		<Tag enumID="4085" name="FABLED" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_852" ID="119524" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Azure Queen Sindragosa</enUS>
+			<zhCN>碧蓝女王辛达苟萨</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Fabled&lt;/b&gt;
+If you control another
+Dragon, your Arcane
+spells cost (2) less.</enUS>
+			<zhCN>&lt;b&gt;奇闻&lt;/b&gt;
+如果你控制着其他龙，你的奥术法术的法力值消耗减少（2）点。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Once Malygos' beloved mate, Sindragosa was among the first to suspect the corruption that had overtaken Neltharion. She came to regret not trusting her suspicions.</enUS>
+			<zhCN>辛达苟萨曾是玛里苟斯的爱侣，也是首批怀疑奈萨里奥已被腐蚀的巨龙之一。她悔恨自己没能坚持当初的怀疑。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Zoltan Boros</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="8" />
+		<Tag enumID="47" name="ATK" type="Int" value="2" />
+		<Tag enumID="48" name="COST" type="Int" value="5" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="4" />
+		<Tag enumID="200" name="CARDRACE" type="Int" value="24" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="362" name="AURA" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+		<Tag enumID="2936" name="1" type="Int" value="1" />
+		<Tag enumID="4085" name="FABLED" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_875" ID="119814" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Garona Halforcen</enUS>
+			<zhCN>半兽人迦罗娜</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Fabled&lt;/b&gt;. &lt;b&gt;Battlecry:&lt;/b&gt; If your
+opponent is holding King
+Llane, destroy him and cut
+their Health in half.</enUS>
+			<zhCN>&lt;b&gt;奇闻&lt;/b&gt;
+&lt;b&gt;战吼：&lt;/b&gt;如果莱恩国王在对手手牌中，将其摧毁并将敌方英雄的生命值砍半。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>Garona made her mark that day. No longer was she simply the assassin of the Horde. She was now the liberator of the dictatorship of Lordaeron.</enUS>
+			<zhCN>那一天，迦罗娜成就了奇功。从此，她不仅仅是部落派出的刺客，更是终结洛丹伦独裁暴政的解放者。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">L. Lullabi &amp; T. Shevtsov</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="4" />
+		<Tag enumID="47" name="ATK" type="Int" value="5" />
+		<Tag enumID="48" name="COST" type="Int" value="4" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="7" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="2589" name="HAS_SIGNATURE_QUALITY" type="Int" value="1" />
+		<Tag enumID="2936" name="1" type="Int" value="1" />
+		<Tag enumID="4085" name="FABLED" type="Int" value="1" />
+	</Entity>
+	<Entity CardID="TIME_890" ID="120060" version="2">
+		<Tag enumID="185" name="CARDNAME" type="LocString">
+			<enUS>Medivh the Hallowed</enUS>
+			<zhCN>圣者麦迪文</zhCN>
+		</Tag>
+		<Tag enumID="184" name="CARDTEXT" type="LocString">
+			<enUS>[x]&lt;b&gt;Fabled&lt;/b&gt;. Costs (0) if
+you control Karazhan.
+&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Silence&lt;/b&gt; and destroy
+all other minions.</enUS>
+			<zhCN>&lt;b&gt;奇闻&lt;/b&gt;
+如果你控制着卡拉赞，本牌的法力值消耗为（0）点。&lt;b&gt;战吼：&lt;/b&gt;&lt;b&gt;沉默&lt;/b&gt;并消灭所有其他随从。</zhCN>
+		</Tag>
+		<Tag enumID="351" name="FLAVORTEXT" type="LocString">
+			<enUS>In our timeline, Medivh tells himself he never had the chance to reject Sargeras' dark influence. But there's a timeline where he did.</enUS>
+			<zhCN>在我们的时间线中，麦迪文以为萨格拉斯的黑暗影响无法抵抗。但在某条时间线中，他成功了。</zhCN>
+		</Tag>
+		<Tag enumID="342" name="ARTISTNAME" type="String">Sergey Tsvelykh</Tag>
+		<Tag enumID="45" name="HEALTH" type="Int" value="7" />
+		<Tag enumID="47" name="ATK" type="Int" value="7" />
+		<Tag enumID="48" name="COST" type="Int" value="10" />
+		<Tag enumID="114" name="ELITE" type="Int" value="1" />
+		<Tag enumID="183" name="CARD_SET" type="Int" value="1957" />
+		<Tag enumID="199" name="CLASS" type="Int" value="6" />
+		<Tag enumID="202" name="CARDTYPE" type="Int" value="4" />
+		<Tag enumID="203" name="RARITY" type="Int" value="5" />
+		<Tag enumID="218" name="BATTLECRY" type="Int" value="1" />
+		<Tag enumID="321" name="COLLECTIBLE" type="Int" value="1" />
+		<Tag enumID="676" name="DONT_PICK_FROM_SUBSETS" type="Int" value="1" />
+		<Tag enumID="2936" name="1" type="Int" value="1" />
+		<Tag enumID="4085" name="FABLED" type="Int" value="1" />
+		<ReferencedTag enumID="339" name="SILENCE" type="Int" value="1" />
+	</Entity>
+</CardDefs>
