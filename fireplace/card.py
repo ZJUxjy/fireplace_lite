@@ -41,7 +41,8 @@ def Card(id):
         CardType.ENCHANTMENT: Enchantment,
         CardType.WEAPON: Weapon,
         CardType.HERO_POWER: HeroPower,
-    }[data.type]
+        CardType.LOCATION: Spell,  # Location cards use Spell logic
+    }.get(data.type, Spell)
     if subclass is Spell:
         if data.secret:
             subclass = Secret

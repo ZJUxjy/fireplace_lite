@@ -1,5 +1,7 @@
+from __future__ import annotations
 import os
 from importlib import import_module
+from typing import Dict
 
 from hearthstone import cardxml
 from hearthstone.enums import CardSet, CardType, GameTag, Race, ZodiacYear
@@ -49,7 +51,7 @@ def get_script_definition(id, card=None):
                 return cls
 
 
-class CardDB(dict[str, cardxml.CardXML]):
+class CardDB(Dict[str, cardxml.CardXML]):
     def __init__(self):
         self.initialized = False
         self.dbf = {}

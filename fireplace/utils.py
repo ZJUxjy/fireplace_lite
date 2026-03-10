@@ -19,7 +19,7 @@ CARD_SETS = [cs for _, cs, ispkg in iter_modules([_cards_module]) if ispkg]
 T = TypeVar("T")
 
 
-class CardList(list[T], Entity):
+class CardList(List[T], Entity):
     def __contains__(self, x: T) -> bool:
         for item in self:
             if x is item:
