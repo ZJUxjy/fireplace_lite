@@ -3,26 +3,35 @@ import { io, Socket } from 'socket.io-client';
 class SocketService {
   private socket: Socket | null = null;
   private url: string = 'http://localhost:5000';
+  private connecting: boolean = false;
 
   connect() {
-    if (!this.socket) {
+    if (!this.socket || !this.connecting) {
+      this.connecting = true;
       this.socket = io(this.url, {
         transports: ['polling', 'websocket'],
         reconnection: true,
-        reconnectionDelay: 1000,
-        reconnectionAttempts: 5,
+        reconnectionDelay: 2000,
+        reconnectionAttempts: 10,
+        timeout: 10000,
       });
 
       this.socket.on('connect', () => {
         console.log('Socket connected:', this.socket?.id);
+        this.connecting = false;
       });
 
       this.socket.on('disconnect', (reason) => {
         console.log('Socket disconnected:', reason);
+        // 如果是服务端断开，不自动重连
+        if (reason === 'io server disconnect') {
+          this.connecting = false;
+        }
       });
 
       this.socket.on('connect_error', (error) => {
-        console.error('Socket connection error:', error);
+        console.error('Socket connection error:', error.message);
+        this.connecting = false;
       });
     }
     return this.socket;
@@ -32,6 +41,7 @@ class SocketService {
     if (this.socket) {
       this.socket.disconnect();
       this.socket = null;
+      this.connecting = false;
     }
   }
 
