@@ -98,11 +98,11 @@
   color: var(--gold);
 }
 
-/* 主游戏区域 */
+/* 主游戏区域 - 三列布局 */
 .game-main {
   flex: 1;
   display: grid;
-  grid-template-columns: 1fr var(--log-width);
+  grid-template-columns: 1fr auto var(--log-width);
   overflow: hidden;
 }
 
@@ -110,7 +110,7 @@
   .game-main {
     grid-template-columns: 1fr;
   }
-  .action-log {
+  .action-log, .game-controls {
     display: none;
   }
 }
@@ -306,23 +306,14 @@
   padding: 4%;
 }
 
-.minion-stats-left, .minion-stats-right {
+.minion-stats {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 20%;
-  height: 20%;
+  justify-content: space-between;
+  width: 90%;
+  padding: 2px 4px;
+  background: rgba(0, 0, 0, 0.6);
   border-radius: 4px;
-}
-
-.minion-stats-left {
-  background: rgba(0, 0, 0, 0.5);
-  align-self: flex-start;
-}
-
-.minion-stats-right {
-  background: rgba(0, 0, 0, 0.5);
-  align-self: flex-end;
 }
 
 .minion-atk {
@@ -438,17 +429,9 @@
   font-size: clamp(0.5rem, 1.2vw, 0.8rem);
 }
 
-/* 控制面板 */
+/* 控制面板 - 已移至中间 game-controls */
 .control-panel {
-  position: absolute;
-  bottom: clamp(0.5rem, 2vw, 1.5rem);
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: clamp(0.4rem, 1vw, 0.8rem);
-  z-index: 100;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: none;
 }
 
 .end-turn-btn {
@@ -550,4 +533,117 @@
   padding: 3px 5px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 3px;
+}
+
+/* 中间控制按钮 */
+.game-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: linear-gradient(180deg, var(--bg-primary) 0%, #0d0a08 100%);
+  border-left: 1px solid var(--gold);
+  border-right: 1px solid var(--gold);
+}
+
+@media (max-width: 900px) {
+  .game-controls {
+    display: none;
+  }
+}
+
+/* 标题栏返回按钮 */
+.header-back-btn {
+  position: absolute;
+  left: 0.5rem;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--gold);
+  padding: 0.3rem;
+}
+
+.header-back-btn:hover {
+  color: #fff;
+}
+
+/* 卡牌拖拽中 */
+.card.dragging {
+  opacity: 0.5;
+  transform: scale(1.2);
+}
+
+/* 卡牌详情弹窗 */
+.card-tooltip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.card-tooltip-content {
+  background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+  border: 3px solid var(--gold);
+  border-radius: 12px;
+  padding: 1.5rem;
+  min-width: 280px;
+  max-width: 90vw;
+  position: relative;
+}
+
+.card-tooltip-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.card-tooltip-cost {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(180deg, var(--blue), #2266dd);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+  border: 2px solid var(--gold);
+}
+
+.card-tooltip-name {
+  flex: 1;
+  color: var(--gold);
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.card-tooltip-body {
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
+.card-tooltip-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.card-tooltip-close:hover {
+  color: #fff;
 }

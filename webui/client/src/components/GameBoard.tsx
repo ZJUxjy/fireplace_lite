@@ -33,6 +33,8 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
   const [showSettings, setShowSettings] = useState(false);
   const [actionLog, setActionLog] = useState<string[]>([]);
   const [showTurnBanner, setShowTurnBanner] = useState(false);
+  const [selectedCard, setSelectedCard] = useState<{ name: string; index: number } | null>(null);
+  const [draggedCard, setDraggedCard] = useState<number | null>(null);
   const prevTurnRef = useRef<number>(0);
   const prevPlayerRef = useRef<string>('');
 
@@ -75,9 +77,39 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
     setGameState(null);
     setConnecting(true);
     setActionLog([]);
+    setSelectedCard(null);
     prevTurnRef.current = 0;
     prevPlayerRef.current = '';
     gameService.createGame(mode);
+  };
+
+  // 处理卡牌拖拽
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    setDraggedCard(index);
+    e.dataTransfer.setData('text/plain', index.toString());
+  };
+
+  const handleDragEnd = () => {
+    setDraggedCard(null);
+  };
+
+  // 处理拖拽到战场区域
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    const cardIndex = parseInt(e.dataTransfer.getData('text/plain'));
+    if (!isNaN(cardIndex) && isMyTurn) {
+      gameService.playCard(cardIndex);
+    }
+    setDraggedCard(null);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+  };
+
+  // 点击卡牌查看详情
+  const handleCardClick = (name: string, index: number) => {
+    setSelectedCard({ name, index });
   };
 
   if (connecting || !gameState) {
@@ -100,6 +132,7 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
     <div className="game-container">
       {/* 顶部标题栏 */}
       <header className="game-header">
+        <button className="header-back-btn" onClick={onBack}>←</button>
         <h1>Fireplace</h1>
         <button className="header-settings-btn" onClick={() => setShowSettings(!showSettings)}>
           ⚙️
@@ -125,7 +158,11 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
 
       <div className="game-main">
         {/* 左侧游戏棋盘 */}
-        <div className="game-board">
+        <div
+          className="game-board"
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+        >
           {/* 对手手牌 */}
           <div className="opponent-hand-area">
             {Array(gameState.opponent.hand_count).fill(0).map((_, i) => (
@@ -154,13 +191,11 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
             {gameState.opponent.field.map((minion, i) => (
               <div key={i} className="minion">
                 <div className="minion-body">
-                  <div className="minion-stats-left">
+                  <div className="minion-stats">
                     <span className="minion-atk">{minion.atk}</span>
-                  </div>
-                  <div className="minion-name">{minion.name}</div>
-                  <div className="minion-stats-right">
                     <span className="minion-health">{minion.health}</span>
                   </div>
+                  <div className="minion-name">{minion.name}</div>
                 </div>
               </div>
             ))}
@@ -179,13 +214,11 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
             {gameState.player.field.map((minion, i) => (
               <div key={i} className="minion playable">
                 <div className="minion-body">
-                  <div className="minion-stats-left">
+                  <div className="minion-stats">
                     <span className="minion-atk">{minion.atk}</span>
-                  </div>
-                  <div className="minion-name">{minion.name}</div>
-                  <div className="minion-stats-right">
                     <span className="minion-health">{minion.health}</span>
                   </div>
+                  <div className="minion-name">{minion.name}</div>
                 </div>
               </div>
             ))}
@@ -209,7 +242,7 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
             </div>
           </div>
 
-          {/* 玩家手牌 */}
+          {/* 玩家手牌 - 拖拽打出 */}
           <div className="player-hand-area">
             {gameState.player.hand.map((cardName, i) => {
               const totalCards = gameState.player.hand.length;
@@ -217,32 +250,18 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
               return (
                 <div
                   key={i}
-                  className="card playable"
+                  className={`card ${isMyTurn ? 'playable' : ''} ${draggedCard === i ? 'dragging' : ''}`}
                   style={{ transform: `rotate(${angle}deg)` }}
+                  draggable={isMyTurn}
+                  onDragStart={(e) => handleDragStart(e, i)}
+                  onDragEnd={handleDragEnd}
+                  onClick={() => handleCardClick(cardName, i)}
                 >
                   <div className="card-cost">{i + 1}</div>
                   <div className="card-name">{cardName}</div>
-                  <div className="card-footer">
-                    <span className="card-atk">⚔️</span>
-                    <span className="card-health">🛡️</span>
-                  </div>
                 </div>
               );
             })}
-          </div>
-
-          {/* 控制按钮 */}
-          <div className="control-panel">
-            <button
-              className="end-turn-btn"
-              onClick={handleEndTurn}
-              disabled={!isMyTurn || !gameState.player.can_end_turn}
-            >
-              {t('game.endTurn')}
-            </button>
-            <button className="concede-btn">{t('game.concede')}</button>
-            <button className="new-game-btn" onClick={handleNewGame}>🔄 {t('ui.newGame')}</button>
-            <button className="back-btn" onClick={onBack}>←</button>
           </div>
 
           {/* 回合提示 - 只在玩家回合开始时显示 */}
@@ -251,6 +270,35 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
               {t('game.yourTurn')}
             </div>
           )}
+
+          {/* 卡牌详情弹窗 */}
+          {selectedCard && (
+            <div className="card-tooltip" onClick={() => setSelectedCard(null)}>
+              <div className="card-tooltip-content" onClick={(e) => e.stopPropagation()}>
+                <div className="card-tooltip-header">
+                  <div className="card-tooltip-cost">{selectedCard.index + 1}</div>
+                  <div className="card-tooltip-name">{selectedCard.name}</div>
+                </div>
+                <div className="card-tooltip-body">
+                  <p>卡牌详情</p>
+                </div>
+                <button className="card-tooltip-close" onClick={() => setSelectedCard(null)}>×</button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* 中间控制按钮 */}
+        <div className="game-controls">
+          <button
+            className="end-turn-btn"
+            onClick={handleEndTurn}
+            disabled={!isMyTurn || !gameState.player.can_end_turn}
+          >
+            {t('game.endTurn')}
+          </button>
+          <button className="concede-btn">{t('game.concede')}</button>
+          <button className="new-game-btn" onClick={handleNewGame}>🔄 {t('ui.newGame')}</button>
         </div>
 
         {/* 右侧操作日志 */}
