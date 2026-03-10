@@ -5,15 +5,17 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+  background: linear-gradient(180deg, #1a1410 0%, #2d261e 100%);
   color: #fff;
+  position: relative;
 }
 
 .app h1 {
-  font-size: 3rem;
+  font-size: 2.5rem;
   margin-bottom: 2rem;
-  color: #f1c40f;
+  color: #c8a45c;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
 }
 
 .mode-select {
@@ -25,39 +27,76 @@
 .mode-select button {
   padding: 1rem 2rem;
   font-size: 1.2rem;
-  background: linear-gradient(180deg, #3498db 0%, #2980b9 100%);
-  border: 3px solid #f1c40f;
+  background: linear-gradient(180deg, #3a3020 0%, #2a241c 100%);
+  border: 3px solid #c8a45c;
   border-radius: 8px;
-  color: white;
+  color: #c8a45c;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .mode-select button:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(241, 196, 15, 0.4);
+  box-shadow: 0 4px 12px rgba(200, 164, 92, 0.4);
 }
 
-.language-select {
-  display: flex;
-  gap: 1rem;
-}
-
-.language-select button {
+.settings-btn {
   padding: 0.5rem 1rem;
   font-size: 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid #c0c0c0;
+  background: rgba(200, 164, 92, 0.2);
+  border: 2px solid #c8a45c;
   border-radius: 4px;
-  color: #c0c0c0;
+  color: #c8a45c;
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.language-select button:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: #f1c40f;
-  color: #f1c40f;
+.settings-btn:hover {
+  background: rgba(200, 164, 92, 0.4);
+}
+
+.settings-menu {
+  position: absolute;
+  top: 60%;
+  background: linear-gradient(180deg, #2a241c 0%, #1a1410 100%);
+  border: 3px solid #c8a45c;
+  border-radius: 8px;
+  padding: 1.5rem;
+  min-width: 200px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.settings-menu h3 {
+  margin: 0 0 1rem 0;
+  color: #c8a45c;
+  font-size: 1rem;
+}
+
+.language-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.language-options button {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #666;
+  border-radius: 4px;
+  color: #ccc;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.language-options button:hover {
+  border-color: #c8a45c;
+  color: #c8a45c;
+}
+
+.language-options button.active {
+  background: rgba(200, 164, 92, 0.3);
+  border-color: #c8a45c;
+  color: #c8a45c;
 }
 
 .game-placeholder {
@@ -65,7 +104,7 @@
 }
 
 .game-placeholder h2 {
-  color: #f1c40f;
+  color: #c8a45c;
 }
 
 .game-placeholder button {

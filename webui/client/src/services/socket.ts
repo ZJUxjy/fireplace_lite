@@ -7,7 +7,22 @@ class SocketService {
   connect() {
     if (!this.socket) {
       this.socket = io(this.url, {
-        transports: ['websocket', 'polling'],
+        transports: ['polling', 'websocket'],
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionAttempts: 5,
+      });
+
+      this.socket.on('connect', () => {
+        console.log('Socket connected:', this.socket?.id);
+      });
+
+      this.socket.on('disconnect', (reason) => {
+        console.log('Socket disconnected:', reason);
+      });
+
+      this.socket.on('connect_error', (error) => {
+        console.error('Socket connection error:', error);
       });
     }
     return this.socket;

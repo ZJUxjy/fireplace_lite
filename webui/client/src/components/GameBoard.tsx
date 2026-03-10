@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { gameService, GameState } from '../services/gameService';
+import { gameService, type GameState } from '../services/gameService';
 import './GameBoard.css';
 
 interface GameBoardProps {
@@ -8,10 +8,30 @@ interface GameBoardProps {
   onBack: () => void;
 }
 
+// 英雄职业映射
+const HERO_CLASSES: Record<string, string> = {
+  'Rexxar': 'hunter',
+  'Jaina Proudmoore': 'mage',
+  'Anduin Wrynn': 'priest',
+  'Thrall': 'shaman',
+  'Uther Lightbringer': 'paladin',
+  'Garrosh Hellscream': 'warrior',
+  'Valeera Sanguinar': 'rogue',
+  'Gul\'dan': 'warlock',
+  'Malfurion Stormrage': 'druid',
+  'Illidan Stormrage': 'demonhunter',
+};
+
+function getHeroClass(heroName: string): string {
+  return HERO_CLASSES[heroName] || 'neutral';
+}
+
 export function GameBoard({ mode, onBack }: GameBoardProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [connecting, setConnecting] = useState(true);
+  const [showSettings, setShowSettings] = useState(false);
+  const [actionLog, setActionLog] = useState<string[]>([]);
 
   useEffect(() => {
     gameService.createGame(mode);
@@ -19,6 +39,7 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
     gameService.onGameState((data) => {
       setGameState(data.state);
       setConnecting(false);
+      setActionLog(prev => [`Turn ${data.state.turn}`, ...prev].slice(0, 20));
     });
 
     gameService.onError((data) => {
@@ -35,6 +56,13 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
     gameService.endTurn();
   };
 
+  const handleNewGame = () => {
+    setGameState(null);
+    setConnecting(true);
+    setActionLog([]);
+    gameService.createGame(mode);
+  };
+
   if (connecting || !gameState) {
     return (
       <div className="game-board loading">
@@ -47,102 +75,169 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
   const isMyTurn = gameState.current_player === 'player1';
 
   return (
-    <div className="game-board">
-      {/* 对手区域 */}
-      <div className="opponent-area">
-        <div className="opponent-info">
-          <div className="hero-portrait opponent">
-            <span className="hero-icon">🧙</span>
-          </div>
-          <div className="hero-details">
-            <div className="hero-name">{gameState.opponent.hero}</div>
-            <div className="hero-health">❤️ {gameState.opponent.health}</div>
-          </div>
-        </div>
-        <div className="deck-info">
-          <span className="deck-count">🔴 {gameState.opponent.deck}</span>
-        </div>
-        <div className="opponent-hand">
-          {Array(gameState.opponent.hand_count).fill(0).map((_, i) => (
-            <div key={i} className="card-back" />
-          ))}
-        </div>
-      </div>
-
-      {/* 对手战场 */}
-      <div className="battle-field opponent-field">
-        {gameState.opponent.field.map((minion, i) => (
-          <div key={i} className="minion opponent-minion">
-            <div className="minion-stats">
-              <span className="minion-atk">{minion.atk}</span>
-            </div>
-            <div className="minion-name">{minion.name}</div>
-            <div className="minion-stats">
-              <span className="minion-health">{minion.health}</span>
-            </div>
-          </div>
-        ))}
-        {gameState.opponent.field.length === 0 && (
-          <div className="empty-field">-</div>
-        )}
-      </div>
-
-      {/* 己方战场 */}
-      <div className="battle-field player-field">
-        {gameState.player.field.map((minion, i) => (
-          <div key={i} className="minion player-minion">
-            <div className="minion-stats">
-              <span className="minion-atk">{minion.atk}</span>
-            </div>
-            <div className="minion-name">{minion.name}</div>
-            <div className="minion-stats">
-              <span className="minion-health">{minion.health}</span>
-            </div>
-          </div>
-        ))}
-        {gameState.player.field.length === 0 && (
-          <div className="empty-field">-</div>
-        )}
-      </div>
-
-      {/* 玩家区域 */}
-      <div className="player-area">
-        <div className="player-hand">
-          {gameState.player.hand.map((cardName, i) => (
-            <div key={i} className="card playable">
-              <div className="card-cost">{i + 1}</div>
-              <div className="card-name">{cardName}</div>
-            </div>
-          ))}
-        </div>
-        <div className="player-info">
-          <div className="mana-crystal">
-            💎 {gameState.player.mana}/{gameState.player.max_mana}
-          </div>
-          <div className="hero-portrait player">
-            <span className="hero-icon">🧙</span>
-          </div>
-          <div className="hero-details">
-            <div className="hero-name">{gameState.player.hero}</div>
-            <div className="hero-health">❤️ {gameState.player.health}</div>
-          </div>
-        </div>
-      </div>
-
-      {/* 控制面板 */}
-      <div className="control-panel">
-        <div className="turn-indicator">
-          {isMyTurn ? t('game.yourTurn') : t('game.opponentTurn')}
-        </div>
-        <button
-          className="end-turn-btn"
-          onClick={handleEndTurn}
-          disabled={!isMyTurn || !gameState.player.can_end_turn}
-        >
-          {t('game.endTurn')}
+    <div className="game-container">
+      {/* 顶部标题栏 */}
+      <header className="game-header">
+        <h1>JS Fireplace - Hearthstone Simulator</h1>
+        <button className="header-settings-btn" onClick={() => setShowSettings(!showSettings)}>
+          ⚙️
         </button>
-        <button className="concede-btn">{t('game.concede')}</button>
-        <button className="back-btn" onClick={onBack}>←</button>
+        {showSettings && (
+          <div className="header-settings-menu">
+            <h4>{t('ui.language')}</h4>
+            <button
+              className={i18n.language === 'zhCN' ? 'active' : ''}
+              onClick={() => i18n.changeLanguage('zhCN')}
+            >
+              简体中文
+            </button>
+            <button
+              className={i18n.language === 'enUS' ? 'active' : ''}
+              onClick={() => i18n.changeLanguage('enUS')}
+            >
+              English
+            </button>
+          </div>
+        )}
+      </header>
+
+      <div className="game-main">
+        {/* 左侧游戏棋盘 */}
+        <div className="game-board">
+          {/* 对手手牌 */}
+          <div className="opponent-hand">
+            {Array(gameState.opponent.hand_count).fill(0).map((_, i) => (
+              <div key={i} className="card-back-small" />
+            ))}
+          </div>
+
+          {/* 对手英雄区 */}
+          <div className="hero-area opponent-hero-area">
+            <div className="weapon-slot">
+              <div className="weapon-slot-empty" />
+            </div>
+            <div className={`hero-portrait opponent hero-${getHeroClass(gameState.opponent.hero)}`}>
+              <span className="hero-initial">{gameState.opponent.hero.charAt(0)}</span>
+            </div>
+            <div className="hero-stats">
+              <div className="hero-health">❤️ {gameState.opponent.health}</div>
+            </div>
+            <div className="hero-power">
+              <div className="hero-power-empty" />
+            </div>
+          </div>
+
+          {/* 对手随从区域 */}
+          <div className="field opponent-field">
+            {gameState.opponent.field.map((minion, i) => (
+              <div key={i} className="minion">
+                <div className="minion-body">
+                  <div className="minion-stats-left">
+                    <span className="minion-atk">{minion.atk}</span>
+                  </div>
+                  <div className="minion-name">{minion.name}</div>
+                  <div className="minion-stats-right">
+                    <span className="minion-health">{minion.health}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+            {gameState.opponent.field.length === 0 && <div className="field-placeholder" />}
+          </div>
+
+          {/* 中央分隔线 */}
+          <div className="field-divider">
+            <div className="turn-indicator">
+              {t('game.turn')} {gameState.turn}
+            </div>
+          </div>
+
+          {/* 玩家随从区域 */}
+          <div className="field player-field">
+            {gameState.player.field.map((minion, i) => (
+              <div key={i} className="minion playable">
+                <div className="minion-body">
+                  <div className="minion-stats-left">
+                    <span className="minion-atk">{minion.atk}</span>
+                  </div>
+                  <div className="minion-name">{minion.name}</div>
+                  <div className="minion-stats-right">
+                    <span className="minion-health">{minion.health}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+            {gameState.player.field.length === 0 && <div className="field-placeholder" />}
+          </div>
+
+          {/* 玩家英雄区 */}
+          <div className="hero-area player-hero-area">
+            <div className="weapon-slot">
+              <div className="weapon-slot-empty" />
+            </div>
+            <div className={`hero-portrait player hero-${getHeroClass(gameState.player.hero)}`}>
+              <span className="hero-initial">{gameState.player.hero.charAt(0)}</span>
+            </div>
+            <div className="hero-stats">
+              <div className="mana-crystal">💎 {gameState.player.mana}/{gameState.player.max_mana}</div>
+              <div className="hero-health">❤️ {gameState.player.health}</div>
+            </div>
+            <div className="hero-power">
+              <div className="hero-power-empty" />
+            </div>
+          </div>
+
+          {/* 玩家手牌 */}
+          <div className="player-hand">
+            {gameState.player.hand.map((cardName, i) => {
+              const totalCards = gameState.player.hand.length;
+              const angle = ((i / (totalCards - 1 || 1)) - 0.5) * 40;
+              return (
+                <div
+                  key={i}
+                  className="card playable"
+                  style={{ transform: `rotate(${angle}deg)` }}
+                >
+                  <div className="card-cost">{i + 1}</div>
+                  <div className="card-name">{cardName}</div>
+                  <div className="card-footer">
+                    <span className="card-atk">⚔️</span>
+                    <span className="card-health">🛡️</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* 控制按钮 */}
+          <div className="control-panel">
+            <button
+              className="end-turn-btn"
+              onClick={handleEndTurn}
+              disabled={!isMyTurn || !gameState.player.can_end_turn}
+            >
+              {t('game.endTurn')}
+            </button>
+            <button className="concede-btn">{t('game.concede')}</button>
+            <button className="new-game-btn" onClick={handleNewGame}>🔄 {t('ui.newGame')}</button>
+            <button className="back-btn" onClick={onBack}>←</button>
+          </div>
+
+          {/* 回合提示 */}
+          <div className="turn-banner">
+            {isMyTurn ? t('game.yourTurn') : t('game.opponentTurn')}
+          </div>
+        </div>
+
+        {/* 右侧操作日志 */}
+        <aside className="action-log">
+          <h3>📜 {t('ui.actionLog')}</h3>
+          <div className="log-content">
+            {actionLog.map((log, i) => (
+              <div key={i} className="log-entry">{log}</div>
+            ))}
+          </div>
+        </aside>
       </div>
     </div>
   );

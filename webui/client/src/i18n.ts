@@ -15,6 +15,7 @@ const resources = {
       "game.victory": "胜利",
       "game.defeat": "失败",
       "game.draw": "平局",
+      "game.turn": "回合",
       "action.play": "打出",
       "action.attack": "攻击",
       "action.heroPower": "英雄技能",
@@ -23,7 +24,9 @@ const resources = {
       "card.health": "生命",
       "ui.settings": "设置",
       "ui.language": "语言",
-      "ui.startGame": "开始游戏"
+      "ui.startGame": "开始游戏",
+      "ui.newGame": "新游戏",
+      "ui.actionLog": "操作日志"
     }
   },
   enUS: {
@@ -39,6 +42,7 @@ const resources = {
       "game.victory": "Victory",
       "game.defeat": "Defeat",
       "game.draw": "Draw",
+      "game.turn": "Turn",
       "action.play": "Play",
       "action.attack": "Attack",
       "action.heroPower": "Hero Power",
@@ -47,7 +51,9 @@ const resources = {
       "card.health": "Health",
       "ui.settings": "Settings",
       "ui.language": "Language",
-      "ui.startGame": "Start Game"
+      "ui.startGame": "Start Game",
+      "ui.newGame": "New Game",
+      "ui.actionLog": "Action Log"
     }
   }
 };

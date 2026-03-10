@@ -1,6 +1,6 @@
 import { socketService } from './socket';
 
-export interface GameState {
+export type GameState = {
   turn: number;
   current_player: string;
   player: {
@@ -21,7 +21,7 @@ export interface GameState {
     hand_count: number;
     field: { name: string; atk: number; health: number }[];
   };
-}
+};
 
 class GameService {
   private gameId: string | null = null;
