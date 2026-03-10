@@ -318,11 +318,15 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
           </div>
 
           {/* 对手英雄区 */}
-          <div className="hero-area opponent-hero-area">
+          <div
+            className="hero-area opponent-hero-area"
+            onDrop={(e) => handleAttackDrop(e, 'hero')}
+            onDragOver={handleAttackDragOver}
+          >
             <div className="weapon-slot">
               <div className="weapon-slot-empty" />
             </div>
-            <div className={`hero-portrait opponent hero-${getHeroClass(gameState.opponent.hero)}`}>
+            <div className={`hero-portrait opponent hero-${getHeroClass(gameState.opponent.hero)} ${validTargets.canAttackHero ? 'valid-target' : ''}`}>
               <span className="hero-initial">{gameState.opponent.hero.charAt(0)}</span>
             </div>
             <div className="hero-stats">
@@ -336,7 +340,12 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
           {/* 对手随从区域 */}
           <div className="field opponent-field">
             {gameState.opponent.field.map((minion, i) => (
-              <div key={i} className="minion">
+              <div
+                key={i}
+                className={`minion ${minion.taunt ? 'taunt' : ''} ${validTargets.minions.includes(i) ? 'valid-target' : ''}`}
+                onDrop={(e) => handleAttackDrop(e, 'minion', i)}
+                onDragOver={handleAttackDragOver}
+              >
                 <div className="minion-body">
                   <div className="minion-stats">
                     <span className="minion-atk">{minion.atk}</span>
@@ -359,7 +368,14 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
           {/* 玩家随从区域 */}
           <div className="field player-field">
             {gameState.player.field.map((minion, i) => (
-              <div key={i} className="minion playable">
+              <div
+                key={i}
+                className={`minion ${minion.can_attack ? 'can-attack' : ''} ${minion.taunt ? 'taunt' : ''}`}
+                draggable={!!minion.can_attack && isMyTurn}
+                onDragStart={(e) => handleMinionDragStart(e, i)}
+                onDrag={handleMinionDrag}
+                onDragEnd={handleMinionDragEnd}
+              >
                 <div className="minion-body">
                   <div className="minion-stats">
                     <span className="minion-atk">{minion.atk}</span>
