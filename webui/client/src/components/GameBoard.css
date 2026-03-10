@@ -511,7 +511,7 @@
   font-weight: bold;
   border: 3px solid var(--gold);
   z-index: 50;
-  animation: fadeInOut 2s ease-in-out;
+  animation: fadeInOut 2s ease-in-out forwards;
 }
 
 @keyframes fadeInOut {

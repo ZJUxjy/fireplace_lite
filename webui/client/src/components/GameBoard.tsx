@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { gameService, type GameState } from '../services/gameService';
 import './GameBoard.css';
@@ -32,12 +32,27 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
   const [connecting, setConnecting] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   const [actionLog, setActionLog] = useState<string[]>([]);
+  const [showTurnBanner, setShowTurnBanner] = useState(false);
+  const prevTurnRef = useRef<number>(0);
+  const prevPlayerRef = useRef<string>('');
 
   useEffect(() => {
     gameService.createGame(mode);
 
     gameService.onGameState((data) => {
       setGameState(data.state);
+
+      // 检测回合切换，显示提示
+      const isMyTurn = data.state.current_player === 'player1';
+      if (data.state.turn !== prevTurnRef.current || isMyTurn !== (prevPlayerRef.current === 'player1')) {
+        if (isMyTurn) {
+          setShowTurnBanner(true);
+          setTimeout(() => setShowTurnBanner(false), 2000);
+        }
+      }
+      prevTurnRef.current = data.state.turn;
+      prevPlayerRef.current = data.state.current_player;
+
       setConnecting(false);
       setActionLog(prev => [`Turn ${data.state.turn}`, ...prev].slice(0, 20));
     });
@@ -60,6 +75,8 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
     setGameState(null);
     setConnecting(true);
     setActionLog([]);
+    prevTurnRef.current = 0;
+    prevPlayerRef.current = '';
     gameService.createGame(mode);
   };
 
@@ -228,10 +245,12 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
             <button className="back-btn" onClick={onBack}>←</button>
           </div>
 
-          {/* 回合提示 */}
-          <div className="turn-banner">
-            {isMyTurn ? t('game.yourTurn') : t('game.opponentTurn')}
-          </div>
+          {/* 回合提示 - 只在玩家回合开始时显示 */}
+          {showTurnBanner && (
+            <div className="turn-banner">
+              {t('game.yourTurn')}
+            </div>
+          )}
         </div>
 
         {/* 右侧操作日志 */}
