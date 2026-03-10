@@ -1,38 +1,69 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .app {
   width: 100%;
   height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   background: linear-gradient(180deg, #1a1410 0%, #2d261e 100%);
   color: #fff;
-  position: relative;
+}
+
+.app-content {
+  width: 100%;
+  max-width: 800px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .app h1 {
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
+  font-size: clamp(3rem, 10vw, 5rem);
+  margin: 0;
   color: #c8a45c;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+  letter-spacing: 0.1em;
+}
+
+.app h2 {
+  font-size: clamp(1rem, 4vw, 1.5rem);
+  margin: -1rem 0 1rem 0;
+  color: #8b7355;
+  font-weight: normal;
   font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
 }
 
 .mode-select {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1rem;
-  margin-bottom: 2rem;
+  width: 100%;
 }
 
 .mode-select button {
-  padding: 1rem 2rem;
-  font-size: 1.2rem;
+  padding: clamp(0.8rem, 2vw, 1.2rem) clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(0.9rem, 2vw, 1.2rem);
   background: linear-gradient(180deg, #3a3020 0%, #2a241c 100%);
   border: 3px solid #c8a45c;
   border-radius: 8px;
   color: #c8a45c;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
+  min-width: 150px;
 }
 
 .mode-select button:hover {
@@ -56,13 +87,12 @@
 }
 
 .settings-menu {
-  position: absolute;
-  top: 60%;
   background: linear-gradient(180deg, #2a241c 0%, #1a1410 100%);
   border: 3px solid #c8a45c;
   border-radius: 8px;
   padding: 1.5rem;
-  min-width: 200px;
+  width: 100%;
+  max-width: 300px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
@@ -70,6 +100,7 @@
   margin: 0 0 1rem 0;
   color: #c8a45c;
   font-size: 1rem;
+  text-align: center;
 }
 
 .language-options {
@@ -97,22 +128,4 @@
   background: rgba(200, 164, 92, 0.3);
   border-color: #c8a45c;
   color: #c8a45c;
-}
-
-.game-placeholder {
-  text-align: center;
-}
-
-.game-placeholder h2 {
-  color: #c8a45c;
-}
-
-.game-placeholder button {
-  padding: 0.5rem 1rem;
-  margin-top: 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid #c0c0c0;
-  border-radius: 4px;
-  color: white;
-  cursor: pointer;
 }

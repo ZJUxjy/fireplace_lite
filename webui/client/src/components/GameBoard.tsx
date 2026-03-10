@@ -65,9 +65,14 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
 
   if (connecting || !gameState) {
     return (
-      <div className="game-board loading">
-        <div className="loading-spinner">Loading...</div>
-        <button className="back-btn" onClick={onBack}>← Back</button>
+      <div className="game-container">
+        <header className="game-header">
+          <h1>Fireplace</h1>
+        </header>
+        <div className="game-loading">
+          <div className="loading-spinner">Loading...</div>
+          <button className="back-btn" onClick={onBack}>← Back</button>
+        </div>
       </div>
     );
   }
@@ -78,7 +83,7 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
     <div className="game-container">
       {/* 顶部标题栏 */}
       <header className="game-header">
-        <h1>JS Fireplace - Hearthstone Simulator</h1>
+        <h1>Fireplace</h1>
         <button className="header-settings-btn" onClick={() => setShowSettings(!showSettings)}>
           ⚙️
         </button>
@@ -105,7 +110,7 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
         {/* 左侧游戏棋盘 */}
         <div className="game-board">
           {/* 对手手牌 */}
-          <div className="opponent-hand">
+          <div className="opponent-hand-area">
             {Array(gameState.opponent.hand_count).fill(0).map((_, i) => (
               <div key={i} className="card-back-small" />
             ))}
@@ -188,10 +193,10 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
           </div>
 
           {/* 玩家手牌 */}
-          <div className="player-hand">
+          <div className="player-hand-area">
             {gameState.player.hand.map((cardName, i) => {
               const totalCards = gameState.player.hand.length;
-              const angle = ((i / (totalCards - 1 || 1)) - 0.5) * 40;
+              const angle = totalCards > 1 ? ((i / (totalCards - 1)) - 0.5) * 30 : 0;
               return (
                 <div
                   key={i}
