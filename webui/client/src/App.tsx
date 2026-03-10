@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './i18n';
 import './App.css';
+import { GameBoard } from './components/GameBoard';
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -12,15 +13,7 @@ function App() {
   };
 
   if (gameMode) {
-    return (
-      <div className="app">
-        <div className="game-placeholder">
-          <h2>Game Board - {gameMode}</h2>
-          <p>Game functionality coming soon...</p>
-          <button onClick={() => setGameMode(null)}>Back</button>
-        </div>
-      </div>
-    );
+    return <GameBoard mode={gameMode} onBack={() => setGameMode(null)} />;
   }
 
   return (
