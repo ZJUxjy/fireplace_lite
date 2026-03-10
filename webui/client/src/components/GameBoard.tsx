@@ -36,6 +36,54 @@ function getHeroClass(heroName: string): string {
   return HERO_CLASSES[heroName] || 'neutral';
 }
 
+// 攻击箭头 SVG 组件
+function AttackArrow({ start, end }: { start: { x: number; y: number }; end: { x: number; y: number } }) {
+  // 计算贝塞尔曲线控制点（向上弯曲的弧线）
+  const midX = (start.x + end.x) / 2;
+  const midY = Math.min(start.y, end.y) - 60;
+
+  const pathD = `M ${start.x} ${start.y} Q ${midX} ${midY} ${end.x} ${end.y}`;
+
+  return (
+    <svg
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        pointerEvents: 'none',
+        zIndex: 1000,
+      }}
+    >
+      <defs>
+        <linearGradient id="attackGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="rgba(255,255,255,1)" />
+          <stop offset="100%" stopColor="rgba(255,0,0,1)" />
+        </linearGradient>
+        <marker
+          id="arrowhead"
+          markerWidth="12"
+          markerHeight="8"
+          refX="10"
+          refY="4"
+          orient="auto"
+        >
+          <polygon points="0 0, 12 4, 0 8" fill="#ff0000" />
+        </marker>
+      </defs>
+      <path
+        d={pathD}
+        stroke="url(#attackGradient)"
+        strokeWidth="4"
+        fill="none"
+        strokeLinecap="round"
+        markerEnd="url(#arrowhead)"
+      />
+    </svg>
+  );
+}
+
 export function GameBoard({ mode, onBack }: GameBoardProps) {
   const { t, i18n } = useTranslation();
   const [gameState, setGameState] = useState<GameState | null>(null);
@@ -429,6 +477,11 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
                 <button className="card-tooltip-close" onClick={() => setSelectedCard(null)}>×</button>
               </div>
             </div>
+          )}
+
+          {/* 攻击箭头 */}
+          {arrowStart && arrowEnd && (
+            <AttackArrow start={arrowStart} end={arrowEnd} />
           )}
         </div>
 
