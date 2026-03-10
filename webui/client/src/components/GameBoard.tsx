@@ -1,7 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { gameService, type GameState } from '../services/gameService';
+import { gameService, type GameState, type CardData } from '../services/gameService';
 import './GameBoard.css';
+
+interface CardData {
+  name: string;
+  cost: number;
+  atk?: number;
+  health?: number;
+  text?: string;
+  race?: string;
+  mechanics?: string[];
+}
 
 interface GameBoardProps {
   mode: string;
@@ -33,15 +43,19 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
   const [showSettings, setShowSettings] = useState(false);
   const [actionLog, setActionLog] = useState<string[]>([]);
   const [showTurnBanner, setShowTurnBanner] = useState(false);
-  const [selectedCard, setSelectedCard] = useState<{ name: string; index: number } | null>(null);
+  const [selectedCard, setSelectedCard] = useState<{ card: CardData; index: number } | null>(null);
+  const [hoveredCard, setHoveredCard] = useState<{ card: CardData; x: number; y: number } | null>(null);
   const [draggedCard, setDraggedCard] = useState<number | null>(null);
+  const [attackingMinion, setAttackingMinion] = useState<number | null>(null);
+  const [arrowStart, setArrowStart] = useState<{ x: number; y: number } | null>(null);
+  const [arrowEnd, setArrowEnd] = useState<{ x: number; y: number } | null>(null);
   const prevTurnRef = useRef<number>(0);
   const prevPlayerRef = useRef<string>('');
 
   useEffect(() => {
     gameService.createGame(mode);
 
-    gameService.onGameState((data) => {
+    const handleGameState = (data: { game_id: string; state: GameState }) => {
       setGameState(data.state);
 
       // 检测回合切换，显示提示
@@ -57,14 +71,18 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
 
       setConnecting(false);
       setActionLog(prev => [`Turn ${data.state.turn}`, ...prev].slice(0, 20));
-    });
+    };
 
-    gameService.onError((data) => {
+    const handleError = (data: { message: string }) => {
       console.error('Game error:', data.message);
       setConnecting(false);
-    });
+    };
+
+    gameService.onGameState(handleGameState);
+    gameService.onError(handleError);
 
     return () => {
+      // 清理时直接断开连接
       gameService.cleanup();
     };
   }, [mode]);
@@ -108,8 +126,82 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
   };
 
   // 点击卡牌查看详情
-  const handleCardClick = (name: string, index: number) => {
-    setSelectedCard({ name, index });
+  const handleCardClick = (card: CardData, index: number) => {
+    setSelectedCard({ card, index });
+  };
+
+  // 计算有效攻击目标
+  const getValidAttackTargets = () => {
+    if (!gameState || attackingMinion === null) return { minions: [] as number[], canAttackHero: false };
+
+    const opponent = gameState.opponent;
+
+    // 如果对手有嘲讽随从，只能攻击嘲讽随从
+    if (opponent.has_taunt) {
+      return {
+        minions: opponent.field
+          .map((m, i) => m.taunt ? i : -1)
+          .filter(i => i >= 0),
+        canAttackHero: false
+      };
+    }
+
+    // 没有嘲讽，可以攻击所有随从和英雄
+    return {
+      minions: opponent.field.map((_, i) => i),
+      canAttackHero: true
+    };
+  };
+
+  const validTargets = getValidAttackTargets();
+
+  // 随从拖拽开始
+  const handleMinionDragStart = (e: React.DragEvent, index: number) => {
+    const minion = gameState!.player.field[index];
+    if (!minion.can_attack) {
+      e.preventDefault();
+      return;
+    }
+    setAttackingMinion(index);
+    const rect = e.currentTarget.getBoundingClientRect();
+    const startX = rect.left + rect.width / 2;
+    const startY = rect.top + rect.height / 2;
+    setArrowStart({ x: startX, y: startY });
+    setArrowEnd({ x: startX, y: startY });
+    e.dataTransfer.setData('text/plain', `attack-${index}`);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  // 随从拖拽中
+  const handleMinionDrag = (e: React.DragEvent) => {
+    if (arrowStart) {
+      setArrowEnd({ x: e.clientX, y: e.clientY });
+    }
+  };
+
+  // 随从拖拽结束
+  const handleMinionDragEnd = () => {
+    setAttackingMinion(null);
+    setArrowStart(null);
+    setArrowEnd(null);
+  };
+
+  // 攻击目标放置
+  const handleAttackDrop = (e: React.DragEvent, targetType: 'hero' | 'minion', targetIndex?: number) => {
+    e.preventDefault();
+    const data = e.dataTransfer.getData('text/plain');
+    if (!data.startsWith('attack-')) return;
+
+    const attackerIndex = parseInt(data.split('-')[1]);
+    const targetId = targetType === 'hero' ? 'hero' : `minion-${targetIndex}`;
+
+    gameService.attack(attackerIndex, targetId);
+    handleMinionDragEnd();
+  };
+
+  // 阻止默认行为
+  const handleAttackDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
   };
 
   if (connecting || !gameState) {
@@ -119,7 +211,14 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
           <h1>Fireplace</h1>
         </header>
         <div className="game-loading">
-          <div className="loading-spinner">Loading...</div>
+          <div className="loading-spinner">
+            <div className="spinner">
+              <div className="spinner-ring"></div>
+              <div className="spinner-ring"></div>
+              <div className="spinner-ring"></div>
+            </div>
+            <div className="loading-text">正在初始化卡牌...</div>
+          </div>
           <button className="back-btn" onClick={onBack}>← Back</button>
         </div>
       </div>
@@ -244,7 +343,7 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
 
           {/* 玩家手牌 - 拖拽打出 */}
           <div className="player-hand-area">
-            {gameState.player.hand.map((cardName, i) => {
+            {gameState.player.hand.map((card, i) => {
               const totalCards = gameState.player.hand.length;
               const angle = totalCards > 1 ? ((i / (totalCards - 1)) - 0.5) * 30 : 0;
               return (
@@ -255,14 +354,45 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
                   draggable={isMyTurn}
                   onDragStart={(e) => handleDragStart(e, i)}
                   onDragEnd={handleDragEnd}
-                  onClick={() => handleCardClick(cardName, i)}
+                  onClick={() => handleCardClick(card, i)}
+                  onMouseEnter={(e) => setHoveredCard({ card, x: e.clientX, y: e.clientY })}
+                  onMouseLeave={() => setHoveredCard(null)}
+                  onMouseMove={(e) => hoveredCard && setHoveredCard({ card, x: e.clientX, y: e.clientY })}
                 >
-                  <div className="card-cost">{i + 1}</div>
-                  <div className="card-name">{cardName}</div>
+                  <div className="card-cost">{card.cost}</div>
+                  <div className="card-name">{card.name}</div>
+                  {card.atk !== undefined && card.health !== undefined && (
+                    <div className="card-footer">
+                      <span className="card-atk">{card.atk}</span>
+                      <span className="card-health">{card.health}</span>
+                    </div>
+                  )}
                 </div>
               );
             })}
           </div>
+
+          {/* 悬浮提示 - 使用 fixed position 避免遮挡和布局抖动 */}
+          {hoveredCard && (
+            <div
+              className="tooltip-fixed"
+              style={{
+                left: hoveredCard.x + 15,
+                top: hoveredCard.y
+              }}
+            >
+              <div className="tooltip-name">{hoveredCard.card.name}</div>
+              {hoveredCard.card.race && <div className="tooltip-race">{hoveredCard.card.race}</div>}
+              {hoveredCard.card.text && <div className="tooltip-text" dangerouslySetInnerHTML={{ __html: hoveredCard.card.text }} />}
+              {hoveredCard.card.mechanics && hoveredCard.card.mechanics.length > 0 && (
+                <div className="tooltip-mechanics">
+                  {hoveredCard.card.mechanics.map((m, idx) => (
+                    <span key={idx} className="mechanic-tag">{m}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* 回合提示 - 只在玩家回合开始时显示 */}
           {showTurnBanner && (
@@ -276,11 +406,25 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
             <div className="card-tooltip" onClick={() => setSelectedCard(null)}>
               <div className="card-tooltip-content" onClick={(e) => e.stopPropagation()}>
                 <div className="card-tooltip-header">
-                  <div className="card-tooltip-cost">{selectedCard.index + 1}</div>
-                  <div className="card-tooltip-name">{selectedCard.name}</div>
+                  <div className="card-tooltip-cost">{selectedCard.card.cost}</div>
+                  <div className="card-tooltip-name">{selectedCard.card.name}</div>
                 </div>
                 <div className="card-tooltip-body">
-                  <p>卡牌详情</p>
+                  {selectedCard.card.race && <p className="tooltip-race">{selectedCard.card.race}</p>}
+                  {selectedCard.card.atk !== undefined && selectedCard.card.health !== undefined && (
+                    <div className="tooltip-stats">
+                      <span className="tooltip-atk">⚔️ {selectedCard.card.atk}</span>
+                      <span className="tooltip-health">❤️ {selectedCard.card.health}</span>
+                    </div>
+                  )}
+                  {selectedCard.card.text && <p className="tooltip-text" dangerouslySetInnerHTML={{ __html: selectedCard.card.text }} />}
+                  {selectedCard.card.mechanics && selectedCard.card.mechanics.length > 0 && (
+                    <div className="tooltip-mechanics">
+                      {selectedCard.card.mechanics.map((m, idx) => (
+                        <span key={idx} className="mechanic-tag">{m}</span>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <button className="card-tooltip-close" onClick={() => setSelectedCard(null)}>×</button>
               </div>
