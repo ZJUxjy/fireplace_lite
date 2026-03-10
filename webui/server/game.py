@@ -3,6 +3,7 @@ from fireplace import cards
 from fireplace.game import Game
 from fireplace.player import Player
 from fireplace.utils import random_class, random_draft
+from .card_text import card_text_loader
 
 class GameManager:
     def __init__(self):
@@ -48,6 +49,36 @@ class GameManager:
 
         return game_id
 
+    def get_card_data(self, card):
+        """获取卡牌详细信息"""
+        # 优先使用中文名
+        card_id = getattr(card, 'card_id', None)
+        chinese_info = card_text_loader.get_card_info(card_id) if card_id else {}
+
+        name = chinese_info.get('name') or str(card)
+        text = chinese_info.get('text')
+
+        data = {
+            "name": name,
+            "cost": card.cost,
+        }
+        # 随从才有攻击力和血量
+        if hasattr(card, 'atk') and hasattr(card, 'health'):
+            data["atk"] = card.atk
+            data["health"] = card.health
+        # 卡牌描述 - 优先使用中文
+        if text:
+            data["text"] = text
+        elif hasattr(card, 'description') and card.description:
+            data["text"] = str(card.description)
+        # 种族
+        if hasattr(card, 'race') and str(card.race) != 'Race.INVALID':
+            data["race"] = str(card.race)
+        # 关键字（战吼、亡语等）
+        if hasattr(card, 'mechanics') and card.mechanics:
+            data["mechanics"] = [str(m) for m in card.mechanics]
+        return data
+
     def get_game_state(self, game_id):
         """获取游戏状态"""
         if game_id not in self.games:
@@ -68,8 +99,14 @@ class GameManager:
                 "mana": player.mana,
                 "max_mana": player.max_mana,
                 "deck": len(player.deck),
-                "hand": [str(c) for c in player.hand],
-                "field": [{"name": str(m), "atk": m.atk, "health": m.health} for m in player.field],
+                "hand": [self.get_card_data(c) for c in player.hand],
+                "field": [{
+                    "name": str(m),
+                    "atk": m.atk,
+                    "health": m.health,
+                    "can_attack": m.can_attack(),
+                    "taunt": m.taunt,
+                } for m in player.field],
                 "can_end_turn": game.current_player == player
             },
             "opponent": {
@@ -77,7 +114,13 @@ class GameManager:
                 "health": opponent.hero.health,
                 "deck": len(opponent.deck),
                 "hand_count": len(opponent.hand),
-                "field": [{"name": str(m), "atk": m.atk, "health": m.health} for m in opponent.field]
+                "field": [{
+                    "name": str(m),
+                    "atk": m.atk,
+                    "health": m.health,
+                    "taunt": m.taunt,
+                } for m in opponent.field],
+                "has_taunt": any(m.taunt for m in opponent.field)
             }
         }
 
