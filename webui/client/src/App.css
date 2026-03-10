@@ -1,42 +1,79 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+.app {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+  color: #fff;
+}
+
+.app h1 {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  color: #f1c40f;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.mode-select {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.mode-select button {
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  background: linear-gradient(180deg, #3498db 0%, #2980b9 100%);
+  border: 3px solid #f1c40f;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.mode-select button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(241, 196, 15, 0.4);
+}
+
+.language-select {
+  display: flex;
+  gap: 1rem;
+}
+
+.language-select button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #c0c0c0;
+  border-radius: 4px;
+  color: #c0c0c0;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.language-select button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #f1c40f;
+  color: #f1c40f;
+}
+
+.game-placeholder {
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.game-placeholder h2 {
+  color: #f1c40f;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+.game-placeholder button {
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #c0c0c0;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
 }

@@ -1,35 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import './i18n';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { t, i18n } = useTranslation();
+  const [gameMode, setGameMode] = useState<string | null>(null);
+
+  const changeLanguage = (lang: string) => {
+    i18n.changeLanguage(lang);
+  };
+
+  if (gameMode) {
+    return (
+      <div className="app">
+        <div className="game-placeholder">
+          <h2>Game Board - {gameMode}</h2>
+          <p>Game functionality coming soon...</p>
+          <button onClick={() => setGameMode(null)}>Back</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="app">
+      <h1>{t('game.title')}</h1>
+      <div className="mode-select">
+        <button onClick={() => setGameMode('pve')}>{t('game.mode.pve')}</button>
+        <button onClick={() => setGameMode('pvp')}>{t('game.mode.pvp')}</button>
+        <button onClick={() => setGameMode('ai')}>{t('game.mode.ai')}</button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <div className="language-select">
+        <button onClick={() => changeLanguage('zhCN')}>简体中文</button>
+        <button onClick={() => changeLanguage('enUS')}>English</button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
