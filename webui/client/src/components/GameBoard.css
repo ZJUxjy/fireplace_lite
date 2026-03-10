@@ -126,8 +126,65 @@
 }
 
 .loading-spinner {
-  font-size: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.spinner {
+  position: relative;
+  width: 60px;
+  height: 60px;
+}
+
+.spinner-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 3px solid transparent;
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.spinner-ring:nth-child(1) {
+  animation-delay: -0.45s;
+  opacity: 1;
+}
+
+.spinner-ring:nth-child(2) {
+  animation-delay: -0.3s;
+  opacity: 0.8;
+  width: 80%;
+  height: 80%;
+  top: 10%;
+  left: 10%;
+}
+
+.spinner-ring:nth-child(3) {
+  animation-delay: -0.15s;
+  opacity: 0.6;
+  width: 60%;
+  height: 60%;
+  top: 20%;
+  left: 20%;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 1.2rem;
   color: var(--gold);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
 /* 游戏棋盘 */
@@ -278,7 +335,7 @@
   font-size: 1.5rem;
 }
 
-/* 随从 */
+/* 随从 - 竖椭圆形 */
 .minion {
   width: var(--minion-width);
   height: var(--minion-height);
@@ -286,24 +343,45 @@
   align-items: center;
   justify-content: center;
   transition: transform 0.2s;
-}
-
-.minion.playable:hover {
-  transform: scale(1.1);
-  cursor: pointer;
+  position: relative;
 }
 
 .minion-body {
-  width: 85%;
-  height: 90%;
-  background: linear-gradient(180deg, #4a4a4a 0%, #2a2a2a 100%);
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #5a5a5a 0%, #3a3a3a 50%, #2a2a2a 100%);
   border: 2px solid #888;
-  border-radius: 8px;
+  border-radius: 50%;  /* 椭圆形 */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 4%;
+  padding: 8% 6%;
+  position: relative;
+}
+
+/* 可攻击的随从 - 绿色边框 */
+.minion.can-attack .minion-body {
+  border: 3px solid #4CAF50;
+  box-shadow: 0 0 12px rgba(76, 175, 80, 0.6);
+}
+
+.minion.can-attack {
+  cursor: grab;
+}
+
+.minion.can-attack:hover {
+  transform: scale(1.08);
+}
+
+.minion.can-attack:active {
+  cursor: grabbing;
+}
+
+/* 拖拽中的随从 */
+.minion.dragging {
+  opacity: 0.4;
+  transform: scale(0.95);
 }
 
 .minion-stats {
@@ -425,8 +503,82 @@
   display: flex;
   justify-content: space-between;
   padding: 0 5%;
-  color: #888;
+}
+
+.card-atk {
+  color: #ffcc00;
+  font-weight: bold;
   font-size: clamp(0.5rem, 1.2vw, 0.8rem);
+}
+
+.card-health {
+  color: #ff4444;
+  font-weight: bold;
+  font-size: clamp(0.5rem, 1.2vw, 0.8rem);
+}
+
+/* 卡片悬浮提示 - fixed position */
+.tooltip-fixed {
+  position: fixed;
+  width: clamp(180px, 30vw, 280px);
+  background: linear-gradient(180deg, rgba(30, 25, 20, 0.92) 0%, rgba(20, 16, 12, 0.92) 100%);
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  padding: 10px;
+  z-index: 9999;
+  pointer-events: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  transform: translateY(-50%);
+}
+
+.tooltip-name {
+  color: var(--gold);
+  font-weight: bold;
+  font-size: clamp(0.7rem, 1.5vw, 1rem);
+  margin-bottom: 4px;
+}
+
+.tooltip-race {
+  color: #888;
+  font-size: clamp(0.6rem, 1.2vw, 0.85rem);
+  margin-bottom: 6px;
+}
+
+.tooltip-text {
+  color: #ddd;
+  font-size: clamp(0.65rem, 1.3vw, 0.9rem);
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.tooltip-text b {
+  color: #ffcc00;
+  font-weight: bold;
+}
+
+.tooltip-text i {
+  color: #88ccff;
+  font-style: italic;
+}
+
+.tooltip-text .keyword {
+  color: #ff8844;
+  font-weight: bold;
+}
+
+.tooltip-mechanics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.mechanic-tag {
+  background: rgba(68, 136, 255, 0.3);
+  border: 1px solid #4488ff;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: clamp(0.5rem, 1vw, 0.75rem);
+  color: #88ccff;
 }
 
 /* 控制面板 - 已移至中间 game-controls */
@@ -633,15 +785,64 @@
   font-size: 0.9rem;
 }
 
+.card-tooltip-body .tooltip-race {
+  color: #888;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-tooltip-body .tooltip-stats {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
+}
+
+.card-tooltip-body .tooltip-atk {
+  color: #ffcc00;
+  font-weight: bold;
+}
+
+.card-tooltip-body .tooltip-health {
+  color: #ff4444;
+  font-weight: bold;
+}
+
+.card-tooltip-body .tooltip-text {
+  color: #ddd;
+  line-height: 1.5;
+  margin-bottom: 0.8rem;
+}
+
+.card-tooltip-body .tooltip-text b {
+  color: #ffcc00;
+  font-weight: bold;
+}
+
+.card-tooltip-body .tooltip-text i {
+  color: #88ccff;
+  font-style: italic;
+}
+
+.card-tooltip-body .tooltip-mechanics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
 .card-tooltip-close {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: 0.3rem;
+  right: 0.3rem;
   background: none;
   border: none;
   color: #999;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   cursor: pointer;
+  width: 24px;
+  height: 24px;
+  line-height: 20px;
+  text-align: center;
 }
 
 .card-tooltip-close:hover {
