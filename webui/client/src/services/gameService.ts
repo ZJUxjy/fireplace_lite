@@ -1,5 +1,23 @@
 import { socketService } from './socket';
 
+export type CardData = {
+  name: string;
+  cost: number;
+  atk?: number;
+  health?: number;
+  text?: string;
+  race?: string;
+  mechanics?: string[];
+};
+
+export type MinionData = {
+  name: string;
+  atk: number;
+  health: number;
+  can_attack?: boolean;
+  taunt?: boolean;
+};
+
 export type GameState = {
   turn: number;
   current_player: string;
@@ -10,8 +28,8 @@ export type GameState = {
     mana: number;
     max_mana: number;
     deck: number;
-    hand: string[];
-    field: { name: string; atk: number; health: number }[];
+    hand: CardData[];
+    field: MinionData[];
     can_end_turn: boolean;
   };
   opponent: {
@@ -19,15 +37,24 @@ export type GameState = {
     health: number;
     deck: number;
     hand_count: number;
-    field: { name: string; atk: number; health: number }[];
+    field: MinionData[];
+    has_taunt?: boolean;
   };
 };
 
 class GameService {
   private gameId: string | null = null;
+  private gameStateCallback: ((data: { game_id: string; state: GameState }) => void) | null = null;
 
   createGame(mode: string, playerClass: string = 'random') {
     socketService.connect();
+    // 设置重连后重新加入房间的逻辑
+    socketService.onReconnect(() => {
+      if (this.gameId) {
+        console.log('[GameService] Reconnected, rejoining game:', this.gameId);
+        socketService.emit('rejoin_game', { game_id: this.gameId });
+      }
+    });
     socketService.emit('create_game', { mode, player_class: playerClass });
   }
 
@@ -66,10 +93,18 @@ class GameService {
   }
 
   onGameState(callback: (data: { game_id: string; state: GameState }) => void) {
+    this.gameStateCallback = callback;
     socketService.on('game_state', (data) => {
-      const gameData = data as { game_id: string; state: GameState };
-      this.setGameId(gameData.game_id);
-      callback(gameData);
+      console.log('[GameService] Raw game_state data:', data);
+      const gameData = data as { game_id?: string; state: GameState };
+      // 如果没有 game_id，使用已保存的 gameId
+      if (!gameData.game_id) {
+        console.log('[GameService] No game_id in data, using saved:', this.gameId);
+        gameData.game_id = this.gameId || '';
+      } else {
+        this.setGameId(gameData.game_id);
+      }
+      callback(gameData as { game_id: string; state: GameState });
     });
   }
 
@@ -80,6 +115,7 @@ class GameService {
   cleanup() {
     socketService.disconnect();
     this.gameId = null;
+    this.gameStateCallback = null;
   }
 }
 
