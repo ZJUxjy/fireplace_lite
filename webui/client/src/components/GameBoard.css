@@ -457,13 +457,14 @@
 }
 
 .card.playable {
-  box-shadow: 0 0 10px rgba(68, 136, 255, 0.5);
+  border: 3px solid #4CAF50;
+  box-shadow: 0 0 12px rgba(76, 175, 80, 0.6);
   cursor: pointer;
 }
 
 .card.playable:hover {
   transform: scale(1.4) translateY(-20px);
-  box-shadow: 0 0 20px rgba(68, 136, 255, 0.8);
+  box-shadow: 0 0 20px rgba(76, 175, 80, 0.8);
   z-index: 100;
 }
 
