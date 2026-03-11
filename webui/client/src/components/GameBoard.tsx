@@ -207,7 +207,7 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
   // 随从攻击开始（鼠标按下）
   const handleAttackMouseDown = (e: React.MouseEvent, index: number) => {
     const minion = gameState!.player.field[index];
-    if (!minion.can_attack || !isMyTurn) return;
+    if (!minion.can_attack) return;
 
     e.preventDefault();
     setAttackingMinion(index);
@@ -218,7 +218,30 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
     setArrowEnd({ x: e.clientX, y: e.clientY });
   };
 
-  // 全局鼠标移动（更新箭头）
+  if (connecting || !gameState) {
+    return (
+      <div className="game-container">
+        <header className="game-header">
+          <h1>Fireplace</h1>
+        </header>
+        <div className="game-loading">
+          <div className="loading-spinner">
+            <div className="spinner">
+              <div className="spinner-ring"></div>
+              <div className="spinner-ring"></div>
+              <div className="spinner-ring"></div>
+            </div>
+            <div className="loading-text">正在初始化卡牌...</div>
+          </div>
+          <button className="back-btn" onClick={onBack}>← Back</button>
+        </div>
+      </div>
+    );
+  }
+
+  const isMyTurn = gameState.current_player === 'player1';
+
+  // 全局鼠标移动（更新箭头和攻击）
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (attackingMinion !== null) {
@@ -260,30 +283,7 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [attackingMinion, validTargets, isMyTurn]);
-
-  if (connecting || !gameState) {
-    return (
-      <div className="game-container">
-        <header className="game-header">
-          <h1>Fireplace</h1>
-        </header>
-        <div className="game-loading">
-          <div className="loading-spinner">
-            <div className="spinner">
-              <div className="spinner-ring"></div>
-              <div className="spinner-ring"></div>
-              <div className="spinner-ring"></div>
-            </div>
-            <div className="loading-text">正在初始化卡牌...</div>
-          </div>
-          <button className="back-btn" onClick={onBack}>← Back</button>
-        </div>
-      </div>
-    );
-  }
-
-  const isMyTurn = gameState.current_player === 'player1';
+  }, [attackingMinion, validTargets]);
 
   return (
     <div className="game-container">
