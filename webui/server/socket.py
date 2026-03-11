@@ -223,17 +223,19 @@ def register_socket_events(socketio):
         g = manager.games[game_id]
         player = g["players"][0]
 
-        attacker = player.hero if attacker_index == 0 else player.field[attacker_index - 1]
+        # Frontend sends field index directly (0, 1, 2, ...)
+        attacker = player.field[attacker_index]
         opponent = player.opponent
 
         if target_id == "hero":
             target = opponent.hero
         elif target_id.startswith("minion-"):
-            minion_index = int(target_id.split("-")[1]) - 1
+            # Frontend sends "minion-0", "minion-1", etc. (direct field index)
+            minion_index = int(target_id.split("-")[1])
             target = opponent.field[minion_index]
         else:
-            # Legacy format: direct number
-            target = opponent.field[int(target_id) - 1]
+            # Legacy format
+            target = opponent.field[int(target_id)]
 
         try:
             attacker.attack(target)
