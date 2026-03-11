@@ -367,15 +367,11 @@
 }
 
 .minion.can-attack {
-  cursor: grab;
+  cursor: crosshair;
 }
 
 .minion.can-attack:hover {
   transform: scale(1.08);
-}
-
-.minion.can-attack:active {
-  cursor: grabbing;
 }
 
 /* 拖拽中的随从 */

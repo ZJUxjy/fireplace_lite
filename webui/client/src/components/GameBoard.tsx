@@ -204,54 +204,63 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
 
   const validTargets = getValidAttackTargets();
 
-  // 随从拖拽开始
-  const handleMinionDragStart = (e: React.DragEvent, index: number) => {
+  // 随从攻击开始（鼠标按下）
+  const handleAttackMouseDown = (e: React.MouseEvent, index: number) => {
     const minion = gameState!.player.field[index];
-    if (!minion.can_attack) {
-      e.preventDefault();
-      return;
-    }
+    if (!minion.can_attack || !isMyTurn) return;
+
+    e.preventDefault();
     setAttackingMinion(index);
     const rect = e.currentTarget.getBoundingClientRect();
     const startX = rect.left + rect.width / 2;
     const startY = rect.top + rect.height / 2;
     setArrowStart({ x: startX, y: startY });
-    setArrowEnd({ x: startX, y: startY });
-    e.dataTransfer.setData('text/plain', `attack-${index}`);
-    e.dataTransfer.effectAllowed = 'move';
+    setArrowEnd({ x: e.clientX, y: e.clientY });
   };
 
-  // 随从拖拽中
-  const handleMinionDrag = (e: React.DragEvent) => {
-    if (arrowStart) {
-      setArrowEnd({ x: e.clientX, y: e.clientY });
+  // 全局鼠标移动（更新箭头）
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (attackingMinion !== null) {
+        setArrowEnd({ x: e.clientX, y: e.clientY });
+      }
+    };
+
+    const handleMouseUp = (e: MouseEvent) => {
+      if (attackingMinion !== null) {
+        // 检查鼠标释放位置是否在有效目标上
+        const target = document.elementFromPoint(e.clientX, e.clientY);
+        if (target) {
+          // 检查是否点击了敌方英雄
+          const heroArea = target.closest('.opponent-hero-area');
+          if (heroArea && validTargets.canAttackHero) {
+            gameService.attack(attackingMinion, 'hero');
+          }
+          // 检查是否点击了敌方随从
+          const minionEl = target.closest('.opponent-field .minion');
+          if (minionEl) {
+            const index = parseInt(minionEl.getAttribute('data-index') || '-1');
+            if (validTargets.minions.includes(index)) {
+              gameService.attack(attackingMinion, `minion-${index}`);
+            }
+          }
+        }
+        setAttackingMinion(null);
+        setArrowStart(null);
+        setArrowEnd(null);
+      }
+    };
+
+    if (attackingMinion !== null) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
     }
-  };
 
-  // 随从拖拽结束
-  const handleMinionDragEnd = () => {
-    setAttackingMinion(null);
-    setArrowStart(null);
-    setArrowEnd(null);
-  };
-
-  // 攻击目标放置
-  const handleAttackDrop = (e: React.DragEvent, targetType: 'hero' | 'minion', targetIndex?: number) => {
-    e.preventDefault();
-    const data = e.dataTransfer.getData('text/plain');
-    if (!data.startsWith('attack-')) return;
-
-    const attackerIndex = parseInt(data.split('-')[1]);
-    const targetId = targetType === 'hero' ? 'hero' : `minion-${targetIndex}`;
-
-    gameService.attack(attackerIndex, targetId);
-    handleMinionDragEnd();
-  };
-
-  // 阻止默认行为
-  const handleAttackDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-  };
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [attackingMinion, validTargets, isMyTurn]);
 
   if (connecting || !gameState) {
     return (
@@ -319,11 +328,7 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
           </div>
 
           {/* 对手英雄区 */}
-          <div
-            className="hero-area opponent-hero-area"
-            onDrop={(e) => handleAttackDrop(e, 'hero')}
-            onDragOver={handleAttackDragOver}
-          >
+          <div className="hero-area opponent-hero-area">
             <div className="weapon-slot">
               <div className="weapon-slot-empty" />
             </div>
@@ -343,9 +348,8 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
             {gameState.opponent.field.map((minion, i) => (
               <div
                 key={i}
+                data-index={i}
                 className={`minion ${minion.taunt ? 'taunt' : ''} ${validTargets.minions.includes(i) ? 'valid-target' : ''}`}
-                onDrop={(e) => handleAttackDrop(e, 'minion', i)}
-                onDragOver={handleAttackDragOver}
                 onMouseEnter={(e) => setHoveredMinion({ minion, x: e.clientX, y: e.clientY })}
                 onMouseLeave={() => setHoveredMinion(null)}
                 onMouseMove={(e) => hoveredMinion && setHoveredMinion({ minion, x: e.clientX, y: e.clientY })}
@@ -374,11 +378,8 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
             {gameState.player.field.map((minion, i) => (
               <div
                 key={i}
-                className={`minion ${minion.can_attack ? 'can-attack' : ''} ${minion.taunt ? 'taunt' : ''}`}
-                draggable={!!minion.can_attack && isMyTurn}
-                onDragStart={(e) => handleMinionDragStart(e, i)}
-                onDrag={handleMinionDrag}
-                onDragEnd={handleMinionDragEnd}
+                className={`minion ${minion.can_attack && isMyTurn ? 'can-attack' : ''} ${minion.taunt ? 'taunt' : ''}`}
+                onMouseDown={(e) => handleAttackMouseDown(e, i)}
                 onMouseEnter={(e) => setHoveredMinion({ minion, x: e.clientX, y: e.clientY })}
                 onMouseLeave={() => setHoveredMinion(null)}
                 onMouseMove={(e) => hoveredMinion && setHoveredMinion({ minion, x: e.clientX, y: e.clientY })}
