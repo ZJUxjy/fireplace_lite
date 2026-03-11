@@ -93,6 +93,7 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
   const [showTurnBanner, setShowTurnBanner] = useState(false);
   const [selectedCard, setSelectedCard] = useState<{ card: CardData; index: number } | null>(null);
   const [hoveredCard, setHoveredCard] = useState<{ card: CardData; x: number; y: number } | null>(null);
+  const [hoveredMinion, setHoveredMinion] = useState<{ minion: MinionData; x: number; y: number } | null>(null);
   const [draggedCard, setDraggedCard] = useState<number | null>(null);
   const [attackingMinion, setAttackingMinion] = useState<number | null>(null);
   const [arrowStart, setArrowStart] = useState<{ x: number; y: number } | null>(null);
@@ -345,6 +346,9 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
                 className={`minion ${minion.taunt ? 'taunt' : ''} ${validTargets.minions.includes(i) ? 'valid-target' : ''}`}
                 onDrop={(e) => handleAttackDrop(e, 'minion', i)}
                 onDragOver={handleAttackDragOver}
+                onMouseEnter={(e) => setHoveredMinion({ minion, x: e.clientX, y: e.clientY })}
+                onMouseLeave={() => setHoveredMinion(null)}
+                onMouseMove={(e) => hoveredMinion && setHoveredMinion({ minion, x: e.clientX, y: e.clientY })}
               >
                 <div className="minion-body">
                   <div className="minion-stats">
@@ -375,6 +379,9 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
                 onDragStart={(e) => handleMinionDragStart(e, i)}
                 onDrag={handleMinionDrag}
                 onDragEnd={handleMinionDragEnd}
+                onMouseEnter={(e) => setHoveredMinion({ minion, x: e.clientX, y: e.clientY })}
+                onMouseLeave={() => setHoveredMinion(null)}
+                onMouseMove={(e) => hoveredMinion && setHoveredMinion({ minion, x: e.clientX, y: e.clientY })}
               >
                 <div className="minion-body">
                   <div className="minion-stats">
@@ -451,6 +458,32 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
               {hoveredCard.card.mechanics && hoveredCard.card.mechanics.length > 0 && (
                 <div className="tooltip-mechanics">
                   {hoveredCard.card.mechanics.map((m, idx) => (
+                    <span key={idx} className="mechanic-tag">{m}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* 随从悬浮提示 */}
+          {hoveredMinion && (
+            <div
+              className="tooltip-fixed"
+              style={{
+                left: hoveredMinion.x + 15,
+                top: hoveredMinion.y
+              }}
+            >
+              <div className="tooltip-name">{hoveredMinion.minion.name}</div>
+              {hoveredMinion.minion.race && <div className="tooltip-race">{hoveredMinion.minion.race}</div>}
+              <div className="tooltip-stats">
+                <span className="tooltip-atk">⚔️ {hoveredMinion.minion.atk}</span>
+                <span className="tooltip-health">❤️ {hoveredMinion.minion.health}</span>
+              </div>
+              {hoveredMinion.minion.text && <div className="tooltip-text" dangerouslySetInnerHTML={{ __html: hoveredMinion.minion.text }} />}
+              {hoveredMinion.minion.mechanics && hoveredMinion.minion.mechanics.length > 0 && (
+                <div className="tooltip-mechanics">
+                  {hoveredMinion.minion.mechanics.map((m, idx) => (
                     <span key={idx} className="mechanic-tag">{m}</span>
                   ))}
                 </div>

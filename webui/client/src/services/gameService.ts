@@ -16,6 +16,9 @@ export type MinionData = {
   health: number;
   can_attack?: boolean;
   taunt?: boolean;
+  text?: string;
+  race?: string;
+  mechanics?: string[];
 };
 
 export type GameState = {
