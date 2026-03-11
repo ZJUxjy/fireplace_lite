@@ -422,9 +422,9 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
               return (
                 <div
                   key={i}
-                  className={`card ${isMyTurn ? 'playable' : ''} ${draggedCard === i ? 'dragging' : ''}`}
+                  className={`card ${isMyTurn && card.is_playable ? 'playable' : ''} ${draggedCard === i ? 'dragging' : ''}`}
                   style={{ transform: `rotate(${angle}deg)` }}
-                  draggable={isMyTurn}
+                  draggable={isMyTurn && !!card.is_playable}
                   onDragStart={(e) => handleDragStart(e, i)}
                   onDragEnd={handleDragEnd}
                   onClick={() => handleCardClick(card, i)}

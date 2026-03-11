@@ -3,6 +3,7 @@ import { socketService } from './socket';
 export type CardData = {
   name: string;
   cost: number;
+  is_playable?: boolean;
   atk?: number;
   health?: number;
   text?: string;
