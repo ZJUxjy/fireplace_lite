@@ -101,6 +101,9 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
   const prevTurnRef = useRef<number>(0);
   const prevPlayerRef = useRef<string>('');
 
+  // 提前计算 isMyTurn（需要在条件返回之前定义，因为其他函数会用到）
+  const isMyTurn = gameState?.current_player === 'player1';
+
   useEffect(() => {
     gameService.createGame(mode);
 
@@ -206,8 +209,8 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
 
   // 随从攻击开始（鼠标按下）
   const handleAttackMouseDown = (e: React.MouseEvent, index: number) => {
-    const minion = gameState!.player.field[index];
-    if (!minion.can_attack) return;
+    const minion = gameState?.player.field[index];
+    if (!minion?.can_attack) return;
 
     e.preventDefault();
     setAttackingMinion(index);
@@ -218,30 +221,7 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
     setArrowEnd({ x: e.clientX, y: e.clientY });
   };
 
-  if (connecting || !gameState) {
-    return (
-      <div className="game-container">
-        <header className="game-header">
-          <h1>Fireplace</h1>
-        </header>
-        <div className="game-loading">
-          <div className="loading-spinner">
-            <div className="spinner">
-              <div className="spinner-ring"></div>
-              <div className="spinner-ring"></div>
-              <div className="spinner-ring"></div>
-            </div>
-            <div className="loading-text">正在初始化卡牌...</div>
-          </div>
-          <button className="back-btn" onClick={onBack}>← Back</button>
-        </div>
-      </div>
-    );
-  }
-
-  const isMyTurn = gameState.current_player === 'player1';
-
-  // 全局鼠标移动（更新箭头和攻击）
+  // 全局鼠标移动（更新箭头和攻击）- 必须在条件返回之前
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (attackingMinion !== null) {
@@ -284,6 +264,27 @@ export function GameBoard({ mode, onBack }: GameBoardProps) {
       window.removeEventListener('mouseup', handleMouseUp);
     };
   }, [attackingMinion, validTargets]);
+
+  if (connecting || !gameState) {
+    return (
+      <div className="game-container">
+        <header className="game-header">
+          <h1>Fireplace</h1>
+        </header>
+        <div className="game-loading">
+          <div className="loading-spinner">
+            <div className="spinner">
+              <div className="spinner-ring"></div>
+              <div className="spinner-ring"></div>
+              <div className="spinner-ring"></div>
+            </div>
+            <div className="loading-text">正在初始化卡牌...</div>
+          </div>
+          <button className="back-btn" onClick={onBack}>← Back</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="game-container">
