@@ -581,6 +581,23 @@
   color: #88ccff;
 }
 
+.tooltip-fixed .tooltip-stats {
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 6px;
+  font-size: clamp(0.65rem, 1.3vw, 0.9rem);
+}
+
+.tooltip-fixed .tooltip-atk {
+  color: #ffcc00;
+  font-weight: bold;
+}
+
+.tooltip-fixed .tooltip-health {
+  color: #ff4444;
+  font-weight: bold;
+}
+
 /* 控制面板 - 已移至中间 game-controls */
 .control-panel {
   display: none;
