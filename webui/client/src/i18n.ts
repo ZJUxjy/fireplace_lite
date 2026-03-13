@@ -26,7 +26,14 @@ const resources = {
       "ui.language": "语言",
       "ui.startGame": "开始游戏",
       "ui.newGame": "新游戏",
-      "ui.actionLog": "操作日志"
+      "ui.actionLog": "操作日志",
+      "ui.loading": "正在初始化卡牌...",
+      "game.selectTarget": "选择一个目标",
+      "game.selectTargets": "选择目标",
+      "game.selectTargetHeroPower": "选择英雄技能目标",
+      "game.cancel": "取消",
+      "game.selectHero": "选择英雄",
+      "ui.back": "返回"
     }
   },
   enUS: {
@@ -53,7 +60,14 @@ const resources = {
       "ui.language": "Language",
       "ui.startGame": "Start Game",
       "ui.newGame": "New Game",
-      "ui.actionLog": "Action Log"
+      "ui.actionLog": "Action Log",
+      "ui.loading": "Initializing cards...",
+      "game.selectTarget": "Select a target",
+      "game.selectTargets": "Select targets",
+      "game.selectTargetHeroPower": "Select hero power target",
+      "game.cancel": "Cancel",
+      "game.selectHero": "Select Hero",
+      "ui.back": "Back"
     }
   }
 };

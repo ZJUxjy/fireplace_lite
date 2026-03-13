@@ -1,6 +1,7 @@
 from flask_socketio import emit, join_room
 from .game import manager
 import random
+import time
 
 # 全局 socketio 实例
 _socketio = None
@@ -193,9 +194,7 @@ def register_socket_events(socketio):
 
             target = None
             if target_id and card.requires_target():
-                targets = list(card.targets)
-                if targets:
-                    target = targets[0] if target_id == "hero" else targets[int(target_id) - 1]
+                target = manager.get_target_by_id(game_id, target_id)
 
             try:
                 card.play(target=target)
@@ -213,6 +212,59 @@ def register_socket_events(socketio):
 
             except Exception as e:
                 emit('error', {'message': str(e)})
+
+    @socketio.on('use_hero_power')
+    def handle_use_hero_power(data):
+        """使用英雄技能"""
+        game_id = data.get('game_id')
+        target_id = data.get('target_id')
+
+        if game_id not in manager.games:
+            emit('error', {'message': 'Game not found'})
+            return
+
+        g = manager.games[game_id]
+        player = g["players"][0]
+        game = g["game"]
+
+        # 检查是否是玩家回合
+        if game.current_player != player:
+            emit('error', {'message': 'Not your turn'})
+            return
+
+        heropower = player.hero.power
+
+        # 检查技能是否可用
+        if not heropower.is_usable():
+            emit('error', {'message': 'Hero power is not usable'})
+            return
+
+        target = None
+        print(f"[Server] Hero power requires_target: {heropower.requires_target()}, target_id: {target_id}")
+        if heropower.requires_target():
+            if target_id:
+                target = manager.get_target_by_id(game_id, target_id)
+                print(f"[Server] Resolved target: {target}")
+            if not target:
+                emit('error', {'message': 'Valid target required'})
+                return
+
+        try:
+            heropower.use(target=target)
+            print(f"[Server] Hero power used: {heropower} -> {target}")
+            state = manager.get_game_state(game_id)
+            emit('game_state', {'game_id': game_id, 'state': state})
+
+            # 如果是 PVE 模式且玩家使用技能后是 AI 回合，执行 AI
+            if g["mode"] == "pve":
+                if game.current_player == g["players"][1]:
+                    import threading
+                    ai_thread = threading.Thread(target=run_ai_turn, args=(game_id,))
+                    ai_thread.daemon = True
+                    ai_thread.start()
+
+        except Exception as e:
+            emit('error', {'message': str(e)})
 
     @socketio.on('attack')
     def handle_attack(data):

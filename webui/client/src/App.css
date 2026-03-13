@@ -129,3 +129,57 @@ html, body, #root {
   border-color: #c8a45c;
   color: #c8a45c;
 }
+
+/* 英雄选择界面 */
+.hero-select {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+  width: 100%;
+  max-width: 600px;
+  padding: 1rem;
+}
+
+.hero-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: linear-gradient(180deg, #3a3020 0%, #2a241c 100%);
+  border: 3px solid #c8a45c;
+  border-radius: 12px;
+  color: #c8a45c;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  gap: 0.5rem;
+}
+
+.hero-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(200, 164, 92, 0.4);
+}
+
+.hero-icon {
+  font-size: 2rem;
+}
+
+.hero-name {
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.back-btn {
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid #666;
+  border-radius: 4px;
+  color: #ccc;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.back-btn:hover {
+  border-color: #c8a45c;
+  color: #c8a45c;
+}

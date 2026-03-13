@@ -9,6 +9,8 @@ export type CardData = {
   text?: string;
   race?: string;
   mechanics?: string[];
+  requires_target?: boolean;
+  valid_targets?: string[];
 };
 
 export type MinionData = {
@@ -20,6 +22,15 @@ export type MinionData = {
   text?: string;
   race?: string;
   mechanics?: string[];
+};
+
+export type HeroPowerData = {
+  name: string;
+  cost: number;
+  is_usable: boolean;
+  requires_target: boolean;
+  description: string;
+  valid_targets?: string[];
 };
 
 export type GameState = {
@@ -35,6 +46,7 @@ export type GameState = {
     hand: CardData[];
     field: MinionData[];
     can_end_turn: boolean;
+    hero_power: HeroPowerData;
   };
   opponent: {
     hero: string;
@@ -48,7 +60,6 @@ export type GameState = {
 
 class GameService {
   private gameId: string | null = null;
-  private gameStateCallback: ((data: { game_id: string; state: GameState }) => void) | null = null;
 
   createGame(mode: string, playerClass: string = 'random') {
     socketService.connect();
@@ -78,6 +89,15 @@ class GameService {
     }
   }
 
+  useHeroPower(targetId?: string) {
+    if (this.gameId) {
+      socketService.emit('use_hero_power', {
+        game_id: this.gameId,
+        target_id: targetId
+      });
+    }
+  }
+
   attack(attackerIndex: number, targetId: string) {
     if (this.gameId) {
       socketService.emit('attack', {
@@ -97,7 +117,6 @@ class GameService {
   }
 
   onGameState(callback: (data: { game_id: string; state: GameState }) => void) {
-    this.gameStateCallback = callback;
     socketService.on('game_state', (data) => {
       console.log('[GameService] Raw game_state data:', data);
       const gameData = data as { game_id?: string; state: GameState };
@@ -113,13 +132,12 @@ class GameService {
   }
 
   onError(callback: (data: { message: string }) => void) {
-    socketService.on('error', callback);
+    socketService.on('error', (data) => callback(data as { message: string }));
   }
 
   cleanup() {
     socketService.disconnect();
     this.gameId = null;
-    this.gameStateCallback = null;
   }
 }
 
