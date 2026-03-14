@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { gameService, type GameState, type CardData } from '../services/gameService';
+import { gameService, type GameState, type CardData, type LogEntry, type MinionData as ServiceMinionData } from '../services/gameService';
 import './GameBoard.css';
 
 interface GameBoardProps {
@@ -9,15 +9,39 @@ interface GameBoardProps {
   onBack: () => void;
 }
 
-interface MinionData {
-  name: string;
-  atk: number;
-  health: number;
-  can_attack?: boolean;
-  taunt?: boolean;
-  text?: string;
-  race?: string;
-  mechanics?: string[];
+interface MinionData extends ServiceMinionData {}
+
+// 格式化日志条目
+function formatLogEntry(log: LogEntry): string {
+  const timestamp = new Date(log.timestamp).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  const prefix = `[${timestamp}]`;
+
+  switch (log.type) {
+    case 'game_start':
+      return `${prefix} 🎮 游戏开始: ${log.message}`;
+    case 'play_card':
+      return `${prefix} 🃏 ${log.message}`;
+    case 'battlecry':
+      return `${prefix} ⚡ 战吼: ${log.message}`;
+    case 'attack':
+      return `${prefix} ⚔️ ${log.message}`;
+    case 'damage':
+      return `${prefix} 💥 ${log.message}`;
+    case 'minion_died':
+      return `${prefix} 💀 ${log.message}`;
+    case 'weapon_attack':
+      return `${prefix} ⚔️ ${log.message}`;
+    case 'weapon_broken':
+      return `${prefix} 💔 ${log.message}`;
+    case 'hero_power':
+      return `${prefix} 🔮 ${log.message}`;
+    case 'hero_power_effect':
+      return `${prefix} ✨ ${log.message}`;
+    case 'end_turn':
+      return `${prefix} ⏹️ ${log.message}`;
+    default:
+      return `${prefix} ${log.message}`;
+  }
 }
 
 const HERO_CLASSES: Record<string, string> = {
@@ -109,12 +133,14 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
   const [showTurnBanner, setShowTurnBanner] = useState(false);
   const [actionLog, setActionLog] = useState<string[]>([]);
   const [showSettings, setShowSettings] = useState(false);
+  const [useTestDeck, setUseTestDeck] = useState(false);
   const [, setSelectedCard] = useState<{ card: CardData; index: number } | null>(null);
   const [hoveredCard, setHoveredCard] = useState<{ card: CardData; x: number; y: number } | null>(null);
   const [hoveredMinion, setHoveredMinion] = useState<{ minion: MinionData; x: number; y: number } | null>(null);
-  const [hoveredHeroPower, setHoveredHeroPower] = useState<{ x: number; y: number } | null>(null);
+  const [hoveredHeroPower, setHoveredHeroPower] = useState<{ x: number; y: number; isOpponent?: boolean } | null>(null);
   const [draggedCard, setDraggedCard] = useState<number | null>(null);
   const [attackingMinion, setAttackingMinion] = useState<number | null>(null);
+  const [weaponAttacking, setWeaponAttacking] = useState<boolean>(false);
   const [arrowStart, setArrowStart] = useState<{ x: number; y: number } | null>(null);
   const [arrowEnd, setArrowEnd] = useState<{ x: number; y: number } | null>(null);
   const prevTurnRef = useRef<number>(0);
@@ -122,10 +148,19 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
 
   // 目标选择状态
   const [pendingAction, setPendingAction] = useState<{
-    type: 'card' | 'hero_power';
+    type: 'card' | 'hero_power' | 'weapon';
     cardIndex?: number;
     targets: string[];
     requiredCount: number;
+    validTargets: string[];
+    committed: boolean; // true 表示不能再取消
+  } | null>(null);
+
+  // 预放置/预施法状态（用于随从战吼和法术目标选择）
+  const [stagedCard, setStagedCard] = useState<{
+    cardIndex: number;
+    card: CardData;
+    type: 'minion' | 'spell';
     validTargets: string[];
   } | null>(null);
 
@@ -145,14 +180,22 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
       prevTurnRef.current = data.state.turn;
       prevPlayerRef.current = data.state.current_player;
       setConnecting(false);
-      setActionLog(prev => [`Turn ${data.state.turn}`, ...prev.slice(0, 20)]);
+
+      // 更新详细日志
+      if (data.state.logs && data.state.logs.length > 0) {
+        const logMessages = data.state.logs.map(log => formatLogEntry(log));
+        setActionLog(logMessages);
+      } else {
+        setActionLog([`Turn ${data.state.turn}`]);
+      }
+
     };
 
     const handleError = (data: { message: string }) => {
       setActionLog(prev => [`Error: ${data.message}`, ...prev.slice(0, 20)]);
     };
 
-    gameService.createGame(mode, playerClass);
+    gameService.createGame(mode, playerClass, useTestDeck);
     gameService.onGameState(handleGameState);
     gameService.onError(handleError);
 
@@ -160,6 +203,27 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
       gameService.cleanup();
     };
   }, [mode]);
+
+  // 当随从被消灭时清除悬浮提示
+  useEffect(() => {
+    if (!gameState || !hoveredMinion) return;
+
+    const allMinions = [
+      ...gameState.player.field,
+      ...gameState.opponent.field
+    ];
+
+    // 检查悬浮的随从是否还在场上（通过name, atk, health匹配）
+    const minionStillExists = allMinions.some(m =>
+      m.name === hoveredMinion.minion.name &&
+      m.atk === hoveredMinion.minion.atk &&
+      m.health === hoveredMinion.minion.health
+    );
+
+    if (!minionStillExists) {
+      setHoveredMinion(null);
+    }
+  }, [gameState?.player.field, gameState?.opponent.field, hoveredMinion?.minion.name]);
 
   const handleEndTurn = () => {
     gameService.endTurn();
@@ -172,7 +236,7 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
     setSelectedCard(null);
     prevTurnRef.current = 0;
     prevPlayerRef.current = '';
-    gameService.createGame(mode, playerClass);
+    gameService.createGame(mode, playerClass, useTestDeck);
   };
 
   // 处理卡牌拖拽
@@ -190,22 +254,110 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
     e.preventDefault();
     const cardIndex = parseInt(e.dataTransfer.getData('text/plain'));
     if (isNaN(cardIndex) || !isMyTurn || !gameState) return;
-    const card = gameState.player.hand[cardIndex];
-    if (!card.is_playable) return;
 
-    // 检查是否需要目标
-    if (card.requires_target && card.valid_targets && card.valid_targets.length > 0) {
-      setPendingAction({
-        type: 'card',
-        cardIndex,
-        targets: [],
-        requiredCount: 1,
-        validTargets: card.valid_targets,
-      });
-    } else {
-      gameService.playCard(cardIndex);
+    const card = gameState.player.hand[cardIndex];
+    if (!card?.is_playable) {
+      setDraggedCard(null);
+      return;
     }
+
+    // 检查是否真的拖放到战场区域
+    const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
+    const isOnBattlefield = dropTarget?.closest('.player-field') ||
+                            dropTarget?.closest('.player-hero-area') ||
+                            dropTarget?.closest('.field-divider');
+
+    // 判断卡牌类型：有攻击力的是随从，没有的是法术
+    const isMinion = card.atk !== undefined && card.health !== undefined;
+
+    if (isMinion) {
+      // ===== 随从牌逻辑 =====
+      if (!isOnBattlefield) {
+        // 拖回手牌区，取消操作
+        setDraggedCard(null);
+        return;
+      }
+
+      // 检查是否需要目标（战吼需要目标）
+      if (card.requires_target && card.valid_targets && card.valid_targets.length > 0) {
+        // 进入预放置状态：显示占位符，开始选择目标
+        setStagedCard({
+          cardIndex,
+          card,
+          type: 'minion',
+          validTargets: card.valid_targets,
+        });
+        setPendingAction({
+          type: 'card',
+          cardIndex,
+          targets: [],
+          requiredCount: 1,
+          validTargets: card.valid_targets,
+          committed: false, // 可以取消
+        });
+        // 设置箭头起点为战场中心位置
+        const fieldEl = document.querySelector('.player-field');
+        if (fieldEl) {
+          const rect = fieldEl.getBoundingClientRect();
+          setArrowStart({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
+        }
+      } else {
+        // 不需要目标，直接打出
+        gameService.playCard(cardIndex);
+      }
+    } else {
+      // ===== 法术牌逻辑 =====
+      // 法术牌：拖拽离开手牌区并松开后开始选择
+      const isLeavingHand = !dropTarget?.closest('.player-hand-area');
+
+      if (!isLeavingHand) {
+        // 拖回手牌区，取消操作
+        setDraggedCard(null);
+        return;
+      }
+
+      // 检查是否需要目标
+      if (card.requires_target && card.valid_targets && card.valid_targets.length > 0) {
+        // 进入预施法状态
+        setStagedCard({
+          cardIndex,
+          card,
+          type: 'spell',
+          validTargets: card.valid_targets,
+        });
+        setPendingAction({
+          type: 'card',
+          cardIndex,
+          targets: [],
+          requiredCount: 1,
+          validTargets: card.valid_targets,
+          committed: false,
+        });
+        // 设置箭头起点为手牌位置
+        const handEl = document.querySelector('.player-hand-area');
+        if (handEl) {
+          const rect = handEl.getBoundingClientRect();
+          setArrowStart({ x: rect.left + rect.width / 2, y: rect.top });
+        }
+      } else {
+        // 不需要目标的法术，直接打出
+        gameService.playCard(cardIndex);
+      }
+    }
+
     setDraggedCard(null);
+  };
+
+  // 取消预放置/预施法状态（右键或拖回）
+  const cancelStagedCard = () => {
+    if (stagedCard) {
+      setStagedCard(null);
+      setPendingAction(null);
+      setArrowStart(null);
+      setArrowEnd(null);
+      // 添加日志提示
+      setActionLog(prev => ['[系统] 取消了卡牌打出', ...prev.slice(0, 29)]);
+    }
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -286,30 +438,129 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
     return pendingAction.validTargets.includes(targetId);
   };
 
-  // 英雄技能点击
-  const handleHeroPowerClick = () => {
-    if (!isMyTurn || !gameState?.player.hero_power?.is_usable) return;
-    const heroPower = gameState.player.hero_power;
-    console.log('[HeroPower] Click - requires_target:', heroPower.requires_target, 'valid_targets:', heroPower.valid_targets);
+  // 确认打出卡牌（目标选择完成后）
+  const confirmPlayCard = (targetId?: string) => {
+    if (!stagedCard) return;
 
-    // 法师技能需要目标，即使 valid_targets 为空也要进入选择模式
+    const { cardIndex } = stagedCard;
+
+    // 发送打出请求
+    gameService.playCard(cardIndex, targetId);
+
+    // 清理状态
+    setStagedCard(null);
+    setPendingAction(null);
+    setArrowStart(null);
+    setArrowEnd(null);
+  };
+
+
+  // 英雄技能按下 - 像攻击一样拖动选择目标
+  const handleHeroPowerMouseDown = (e: React.MouseEvent) => {
+    if (!isMyTurn || !gameState?.player.hero_power?.is_usable) return;
+    e.preventDefault();
+
+    const heroPower = gameState.player.hero_power;
+    console.log('[HeroPower] MouseDown - requires_target:', heroPower.requires_target, 'valid_targets:', heroPower.valid_targets);
+
+    // 法师技能需要目标，按下就开始拖动选择
     if (heroPower.requires_target) {
       setPendingAction({
         type: 'hero_power',
         targets: [],
         requiredCount: 1,
         validTargets: heroPower.valid_targets || [],
+        committed: false,
       });
-      // 设置箭头起点
-      const heroPowerEl = document.querySelector('.player-hero-power');
-      if (heroPowerEl) {
-        const rect = heroPowerEl.getBoundingClientRect();
-        setArrowStart({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
-      }
+      // 设置箭头起点为英雄技能位置
+      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+      setArrowStart({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
+      setArrowEnd({ x: e.clientX, y: e.clientY });
     } else {
+      // 不需要目标的技能直接触发
       gameService.useHeroPower();
     }
   };
+
+  // 武器按下 - 像攻击一样拖动选择目标
+  const handleWeaponMouseDown = (e: React.MouseEvent) => {
+    if (!isMyTurn || !gameState?.player.weapon) return;
+    e.preventDefault();
+
+    const weapon = gameState.player.weapon;
+    console.log('[Weapon] MouseDown - weapon:', weapon.name, 'atk:', weapon.atk, 'durability:', weapon.durability);
+
+    // 设置武器攻击状态
+    setPendingAction({
+      type: 'weapon',
+      targets: [],
+      requiredCount: 1,
+      validTargets: [], // 武器可以攻击任何目标，由后端验证
+      committed: false,
+    });
+    setWeaponAttacking(true);
+
+    // 设置箭头起点为武器槽位置
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    setArrowStart({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
+    setArrowEnd({ x: e.clientX, y: e.clientY });
+  };
+
+  // 计算武器攻击的有效目标（与随从攻击逻辑相同）
+  const getValidWeaponTargets = () => {
+    if (!gameState || !weaponAttacking) return { minions: [] as number[], canAttackHero: false };
+
+    const opponent = gameState.opponent;
+    if (opponent.has_taunt) {
+      return {
+        minions: opponent.field
+          .map((m, i) => m.taunt ? i : -1)
+          .filter(i => i >= 0),
+        canAttackHero: false
+      };
+    }
+    return {
+      minions: opponent.field.map((_, i) => i),
+      canAttackHero: true
+    };
+  };
+
+  const validWeaponTargets = getValidWeaponTargets();
+
+  // 计算英雄技能的有效目标（用于视觉指示器）
+  const getHeroPowerValidTargets = () => {
+    if (!gameState || !pendingAction || pendingAction.type !== 'hero_power') {
+      return { minions: [] as number[], canTargetHero: false };
+    }
+
+    const validTargets = pendingAction.validTargets;
+    // 如果没有指定有效目标，允许所有目标（由后端验证）
+    if (validTargets.length === 0) {
+      return {
+        minions: gameState.opponent.field.map((_, i) => i),
+        canTargetHero: true
+      };
+    }
+
+    // 从 validTargets 中提取目标
+    const minionIndices: number[] = [];
+    let canTargetHero = false;
+
+    for (const targetId of validTargets) {
+      if (targetId === 'opponent_hero' || targetId === 'hero') {
+        canTargetHero = true;
+      } else if (targetId.startsWith('enemy_minion-')) {
+        const index = parseInt(targetId.split('-')[1]);
+        if (!isNaN(index)) {
+          minionIndices.push(index);
+        }
+      }
+    }
+
+    return { minions: minionIndices, canTargetHero };
+  };
+
+  const heroPowerValidTargets = getHeroPowerValidTargets();
 
   // 全局鼠标事件处理
   useEffect(() => {
@@ -338,36 +589,58 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
         setAttackingMinion(null);
         setArrowStart(null);
         setArrowEnd(null);
-      } else if (pendingAction !== null) {
+      } else if (pendingAction !== null && stagedCard !== null) {
+        // ===== 卡牌目标选择（随从战吼/法术）=====
+        const target = document.elementFromPoint(e.clientX, e.clientY);
+        const targetId = getTargetIdFromElement(target);
+
+        console.log('[TargetSelect] Card type:', stagedCard.type, 'Target ID:', targetId);
+
+        if (targetId && isValidTarget(targetId)) {
+          // 目标有效，确认打出
+          confirmPlayCard(targetId);
+        } else {
+          // 点击无效目标，不执行操作（保持选择状态）
+          console.log('[TargetSelect] Invalid target, selection continues');
+        }
+      } else if (pendingAction !== null && stagedCard === null) {
+        // ===== 英雄技能/武器攻击目标选择 =====
         const target = document.elementFromPoint(e.clientX, e.clientY);
         const targetId = getTargetIdFromElement(target);
         console.log('[TargetSelect] Target element:', target?.className, 'Target ID:', targetId);
         console.log('[TargetSelect] Valid targets:', pendingAction.validTargets);
 
         if (targetId && isValidTarget(targetId)) {
-          const newTargets = [...pendingAction.targets, targetId];
-          if (newTargets.length >= pendingAction.requiredCount) {
-            if (pendingAction.type === 'card') {
-              gameService.playCard(pendingAction.cardIndex!, newTargets[0]);
-            } else if (pendingAction.type === 'hero_power') {
-              gameService.useHeroPower(newTargets[0]);
-            }
-            setPendingAction(null);
-            setArrowStart(null);
-            setArrowEnd(null);
-          } else {
-            setPendingAction({ ...pendingAction, targets: newTargets });
+          if (pendingAction.type === 'hero_power') {
+            gameService.useHeroPower(targetId);
+          } else if (pendingAction.type === 'weapon') {
+            gameService.weaponAttack(targetId);
           }
         }
+        // 无论是否有效目标，都清理状态（拖动操作结束）
+        setPendingAction(null);
+        setWeaponAttacking(false);
+        setArrowStart(null);
+        setArrowEnd(null);
       }
     };
 
     // 右键取消目标选择
     const handleContextMenu = (e: MouseEvent) => {
-      if (pendingAction !== null || attackingMinion !== null) {
+      if (attackingMinion !== null) {
         e.preventDefault();
         setAttackingMinion(null);
+        setArrowStart(null);
+        setArrowEnd(null);
+      } else if (stagedCard !== null && pendingAction !== null && !pendingAction.committed) {
+        // ===== 可以取消的卡牌选择（随从战吼/法术）=====
+        e.preventDefault();
+        cancelStagedCard();
+      } else if (pendingAction !== null && stagedCard === null) {
+        // ===== 英雄技能/武器攻击（直接取消，不回退）=====
+        e.preventDefault();
         setPendingAction(null);
+        setWeaponAttacking(false);
         setArrowStart(null);
         setArrowEnd(null);
       }
@@ -384,7 +657,7 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
       window.removeEventListener('mouseup', handleMouseUp);
       window.removeEventListener('contextmenu', handleContextMenu);
     };
-  }, [attackingMinion, pendingAction]);
+  }, [attackingMinion, pendingAction, stagedCard]);
 
   // 渲染加载界面
   if (connecting || !gameState) {
@@ -415,6 +688,16 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
         <AttackArrow start={arrowStart} end={arrowEnd} />
       )}
 
+      {/* 目标选择提示 */}
+      {stagedCard && (
+        <div className="targeting-hint">
+          <div className="hint-text">
+            {stagedCard.type === 'minion' ? '随从战吼：选择目标' : '法术：选择目标'}
+          </div>
+          <div className="hint-subtext">右键取消，卡牌将退回手牌</div>
+        </div>
+      )}
+
       {/* 顶部标题栏 */}
       <header className="game-header">
         <button className="header-back-btn" onClick={onBack}>←</button>
@@ -437,6 +720,17 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
             >
               English
             </button>
+            <hr style={{ margin: '0.5rem 0', borderColor: '#444' }} />
+            <h4>测试卡组</h4>
+            <button
+              className={useTestDeck ? 'active' : ''}
+              onClick={() => setUseTestDeck(!useTestDeck)}
+            >
+              {useTestDeck ? '✓ 启用测试卡组' : '使用测试卡组'}
+            </button>
+            <div style={{ fontSize: '0.7rem', color: '#888', marginTop: '0.3rem' }}>
+              包含各种机制卡牌用于测试
+            </div>
           </div>
         )}
       </header>
@@ -457,21 +751,44 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
 
           {/* 对手英雄区 */}
           <div className="hero-area opponent-hero-area">
-            <div className="weapon-slot">
-              <div className="weapon-slot-empty" />
+            <div className="weapon-slot opponent-weapon-slot">
+              {gameState.opponent.weapon ? (
+                <div className="weapon-equipped">
+                  <div className="weapon-icon">⚔️</div>
+                  <div className="weapon-stats">
+                    <span className="weapon-atk">{gameState.opponent.weapon.atk}</span>
+                    <span className="weapon-durability">{gameState.opponent.weapon.durability}</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="weapon-slot-empty" />
+              )}
             </div>
             <div
-              className={`hero-portrait opponent hero-${getHeroClass(gameState.opponent.hero)} ${validAttackTargets.canAttackHero ? 'valid-target' : ''}`}
+              className={`hero-portrait opponent hero-${getHeroClass(gameState.opponent.hero)} ${(validAttackTargets.canAttackHero || validWeaponTargets.canAttackHero || heroPowerValidTargets.canTargetHero) ? 'valid-target' : ''}`}
               title={gameState.opponent.hero}
             >
               <div className="hero-class-icon">{getHeroClassIcon(gameState.opponent.hero)}</div>
               <div className="hero-name">{gameState.opponent.hero.split(' ')[0]}</div>
             </div>
-            <div className="hero-stats">
+            <div className="hero-stats opponent-stats">
+              <div className="mana-crystal">💎 {gameState.opponent.mana ?? 0}/{gameState.opponent.max_mana ?? 0}</div>
               <div className="hero-health">❤️ {gameState.opponent.health}</div>
+              <div className="hero-armor">🛡️ {gameState.opponent.armor}</div>
+              {gameState.opponent.spell_power > 0 && (
+                <div className="spell-power opponent">🔮 +{gameState.opponent.spell_power}</div>
+              )}
             </div>
-            <div className="hero-power">
-              <div className="hero-power-empty" />
+            <div
+              className="hero-power opponent-hero-power"
+              onMouseEnter={(e) => setHoveredHeroPower({ x: e.clientX, y: e.clientY, isOpponent: true })}
+              onMouseLeave={() => setHoveredHeroPower(null)}
+              onMouseMove={(e) => hoveredHeroPower && setHoveredHeroPower({ x: e.clientX, y: e.clientY, isOpponent: true })}
+            >
+              <span className="hero-power-cost">{gameState.opponent.hero_power.cost}</span>
+              <div className="hero-power-icon">
+                {gameState.opponent.hero_power.name}
+              </div>
             </div>
           </div>
 
@@ -481,7 +798,7 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
               <div
                 key={i}
                 data-index={i}
-                className={`minion ${minion.taunt ? 'taunt' : ''} ${validAttackTargets.minions.includes(i) ? 'valid-target' : ''}`}
+                className={`minion ${minion.taunt ? 'taunt' : ''} ${minion.divine_shield ? 'divine-shield' : ''} ${minion.stealth ? 'stealth' : ''} ${minion.windfury ? 'windfury' : ''} ${minion.frozen ? 'frozen' : ''} ${(validAttackTargets.minions.includes(i) || validWeaponTargets.minions.includes(i) || heroPowerValidTargets.minions.includes(i)) ? 'valid-target' : ''}`}
                 onMouseEnter={(e) => setHoveredMinion({ minion, x: e.clientX, y: e.clientY })}
                 onMouseLeave={() => setHoveredMinion(null)}
                 onMouseMove={(e) => hoveredMinion && setHoveredMinion({ minion, x: e.clientX, y: e.clientY })}
@@ -493,6 +810,15 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
                   </div>
                   <div className="minion-name">{minion.name}</div>
                 </div>
+                {minion.has_deathrattle && (
+                  <div className="deathrattle-icon" title="亡语">💀</div>
+                )}
+                {minion.windfury && (
+                  <div className="windfury-icon" title="风怒">🌪️</div>
+                )}
+                {minion.poisonous && (
+                  <div className="poisonous-icon" title="剧毒">🐍</div>
+                )}
               </div>
             ))}
             {gameState.opponent.field.length === 0 && <div className="field-placeholder" />}
@@ -510,7 +836,8 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
             {gameState.player.field.map((minion, i) => (
               <div
                 key={i}
-                className={`minion ${minion.can_attack && isMyTurn ? 'can-attack' : ''} ${minion.taunt ? 'taunt' : ''}`}
+                data-index={i}
+                className={`minion ${minion.can_attack && isMyTurn ? 'can-attack' : ''} ${minion.taunt ? 'taunt' : ''} ${minion.divine_shield ? 'divine-shield' : ''} ${minion.stealth ? 'stealth' : ''} ${minion.windfury ? 'windfury' : ''} ${minion.frozen ? 'frozen' : ''}`}
                 onMouseDown={(e) => handleAttackMouseDown(e, i)}
                 onMouseEnter={(e) => setHoveredMinion({ minion, x: e.clientX, y: e.clientY })}
                 onMouseLeave={() => setHoveredMinion(null)}
@@ -523,15 +850,50 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
                   </div>
                   <div className="minion-name">{minion.name}</div>
                 </div>
+                {minion.has_deathrattle && (
+                  <div className="deathrattle-icon" title="亡语">💀</div>
+                )}
+                {minion.windfury && (
+                  <div className="windfury-icon" title="风怒">🌪️</div>
+                )}
+                {minion.poisonous && (
+                  <div className="poisonous-icon" title="剧毒">🐍</div>
+                )}
               </div>
             ))}
-            {gameState.player.field.length === 0 && <div className="field-placeholder" />}
+            {/* 预放置随从占位符 */}
+            {stagedCard?.type === 'minion' && (
+              <div className="minion staged-minion-placeholder">
+                <div className="minion-body">
+                  <div className="minion-stats">
+                    <span className="minion-atk">{stagedCard.card.atk}</span>
+                    <span className="minion-health">{stagedCard.card.health}</span>
+                  </div>
+                  <div className="minion-name">{stagedCard.card.name}</div>
+                </div>
+                <div className="staged-indicator">选择目标...</div>
+              </div>
+            )}
+            {gameState.player.field.length === 0 && !stagedCard && <div className="field-placeholder" />}
           </div>
 
           {/* 玩家英雄区 */}
           <div className="hero-area player-hero-area">
-            <div className="weapon-slot">
-              <div className="weapon-slot-empty" />
+            <div
+              className={`weapon-slot player-weapon-slot ${gameState.player.weapon ? 'has-weapon' : ''} ${weaponAttacking ? 'attacking' : ''}`}
+              onMouseDown={handleWeaponMouseDown}
+            >
+              {gameState.player.weapon ? (
+                <div className="weapon-equipped" title={gameState.player.weapon.name}>
+                  <div className="weapon-icon">⚔️</div>
+                  <div className="weapon-stats">
+                    <span className="weapon-atk">{gameState.player.weapon.atk}</span>
+                    <span className="weapon-durability">{gameState.player.weapon.durability}</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="weapon-slot-empty" />
+              )}
             </div>
             <div
               className={`hero-portrait player hero-${getHeroClass(gameState.player.hero)}`}
@@ -540,16 +902,20 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
               <div className="hero-class-icon">{getHeroClassIcon(gameState.player.hero)}</div>
               <div className="hero-name">{gameState.player.hero.split(' ')[0]}</div>
             </div>
-            <div className="hero-stats">
+            <div className="hero-stats player-stats">
               <div className="mana-crystal">💎 {gameState.player.mana}/{gameState.player.max_mana}</div>
               <div className="hero-health">❤️ {gameState.player.health}</div>
+              <div className="hero-armor">🛡️ {gameState.player.armor}</div>
+              {gameState.player.spell_power > 0 && (
+                <div className="spell-power">🔮 +{gameState.player.spell_power}</div>
+              )}
             </div>
             <div
               className={`hero-power player-hero-power ${isMyTurn && gameState.player.hero_power?.is_usable ? 'usable' : ''}`}
-              onClick={handleHeroPowerClick}
-              onMouseEnter={(e) => setHoveredHeroPower({ x: e.clientX, y: e.clientY })}
+              onMouseDown={handleHeroPowerMouseDown}
+              onMouseEnter={(e) => setHoveredHeroPower({ x: e.clientX, y: e.clientY, isOpponent: false })}
               onMouseLeave={() => setHoveredHeroPower(null)}
-              onMouseMove={(e) => hoveredHeroPower && setHoveredHeroPower({ x: e.clientX, y: e.clientY })}
+              onMouseMove={(e) => hoveredHeroPower && setHoveredHeroPower({ x: e.clientX, y: e.clientY, isOpponent: false })}
             >
               <span className="hero-power-cost">{gameState.player.hero_power.cost}</span>
               <div className="hero-power-icon">
@@ -559,16 +925,17 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
           </div>
 
           {/* 玩家手牌 */}
-          <div className="player-hand-area">
+          <div className={`player-hand-area ${stagedCard ? 'has-staged-card' : ''}`}>
             {gameState.player.hand.map((card, i) => {
               const totalCards = gameState.player.hand.length;
               const angle = totalCards > 1 ? ((i / (totalCards - 1)) - 0.5) * 30 : 0;
+              const isStaged = stagedCard?.cardIndex === i;
               return (
                 <div
                   key={i}
-                  className={`card ${isMyTurn && card.is_playable ? 'playable' : ''} ${draggedCard === i ? 'dragging' : ''}`}
-                  style={{ transform: `rotate(${angle}deg)` }}
-                  draggable={isMyTurn && !!card.is_playable}
+                  className={`card ${isMyTurn && card.is_playable ? 'playable' : ''} ${draggedCard === i ? 'dragging' : ''} ${isStaged ? 'staged' : ''} ${card.has_combo ? 'has-combo' : ''}`}
+                  style={{ transform: `rotate(${angle}deg)`, opacity: isStaged ? 0.4 : 1 }}
+                  draggable={isMyTurn && !!card.is_playable && !stagedCard}
                   onDragStart={(e) => handleDragStart(e, i, card)}
                   onDragEnd={handleDragEnd}
                   onClick={() => handleCardClick(card, i)}
@@ -577,11 +944,25 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
                   onMouseMove={(e) => hoveredCard && setHoveredCard({ card, x: e.clientX, y: e.clientY })}
                 >
                   <div className="card-cost">{card.cost}</div>
+                  {card.lifesteal && (
+                    <div className="card-lifesteal" title="吸血">🩸</div>
+                  )}
+                  {card.poisonous && (
+                    <div className="card-poisonous" title="剧毒">🐍</div>
+                  )}
+                  {card.has_combo && (
+                    <div className="card-combo" title="连击">连击</div>
+                  )}
                   <div className="card-name">{card.name}</div>
                   {card.atk !== undefined && card.health !== undefined && (
                     <div className="card-footer">
                       <span className="card-atk">{card.atk}</span>
                       <span className="card-health">{card.health}</span>
+                    </div>
+                  )}
+                  {isStaged && (
+                    <div className="card-staged-indicator">
+                      {stagedCard?.type === 'minion' ? '选择目标...' : '施法中...'}
                     </div>
                   )}
                 </div>
@@ -607,7 +988,7 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
           <aside className="action-log">
             <h3>📜 {t('ui.actionLog')}</h3>
             <div className="log-content">
-              {actionLog.map((log, i) => (
+              {[...actionLog].reverse().map((log, i) => (
                 <div key={i} className="log-entry">{log}</div>
               ))}
             </div>
@@ -625,6 +1006,13 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
           }}
         >
           <div className="tooltip-name">{hoveredCard.card.name}</div>
+          {(hoveredCard.card.lifesteal || hoveredCard.card.has_combo || hoveredCard.card.poisonous) && (
+            <div className="tooltip-mechanics">
+              {hoveredCard.card.lifesteal && <span className="mechanic-tag lifesteal">吸血</span>}
+              {hoveredCard.card.poisonous && <span className="mechanic-tag poisonous">剧毒</span>}
+              {hoveredCard.card.has_combo && <span className="mechanic-tag combo">连击</span>}
+            </div>
+          )}
           {hoveredCard.card.race && <div className="tooltip-race">{hoveredCard.card.race}</div>}
           {hoveredCard.card.text && (
             <div className="tooltip-text" dangerouslySetInnerHTML={{ __html: hoveredCard.card.text }} />
@@ -676,13 +1064,22 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
             top: hoveredHeroPower.y,
           }}
         >
-          <div className="tooltip-name">{gameState.player.hero_power.name}</div>
-          <div className="tooltip-stats">
-            <span className="tooltip-cost">💎 {gameState.player.hero_power.cost}</span>
-          </div>
-          {gameState.player.hero_power.description && (
-            <div className="tooltip-text" dangerouslySetInnerHTML={{ __html: gameState.player.hero_power.description }} />
-          )}
+          {(() => {
+            const heroPower = hoveredHeroPower.isOpponent
+              ? gameState.opponent.hero_power
+              : gameState.player.hero_power;
+            return (
+              <>
+                <div className="tooltip-name">{heroPower.name}</div>
+                <div className="tooltip-stats">
+                  <span className="tooltip-cost">💎 {heroPower.cost}</span>
+                </div>
+                {heroPower.description && (
+                  <div className="tooltip-text" dangerouslySetInnerHTML={{ __html: heroPower.description }} />
+                )}
+              </>
+            );
+          })()}
         </div>
       )}
 

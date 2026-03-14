@@ -137,7 +137,8 @@ def register_socket_events(socketio):
     def handle_create_game(data):
         mode = data.get('mode', 'pve')
         player_class = data.get('player_class', 'random')
-        game_id = manager.create_game(player_class, mode=mode)
+        test_deck = data.get('test_deck', False)
+        game_id = manager.create_game(player_class, mode=mode, test_deck=test_deck)
         join_room(game_id)
 
         # 如果是 PVE 模式且AI先手，立即执行AI回合
@@ -159,6 +160,14 @@ def register_socket_events(socketio):
         if game_id in manager.games:
             g = manager.games[game_id]
             game = g["game"]
+            player = g["players"][0]
+
+            # 记录结束回合日志
+            manager.log_event(game_id, 'end_turn', f'{player} 结束了回合', {
+                'player': str(player),
+                'turn': game.turn
+            })
+
             game.end_turn()
             print(f"[Server] Player ended turn, now is {game.current_player}")
 
@@ -197,7 +206,24 @@ def register_socket_events(socketio):
                 target = manager.get_target_by_id(game_id, target_id)
 
             try:
+                # 记录出牌日志
+                target_name = str(target) if target else None
+                manager.log_event(game_id, 'play_card', f'{player} 打出了 {card}', {
+                    'player': str(player),
+                    'card': str(card),
+                    'card_id': card.id if hasattr(card, 'id') else None,
+                    'target': target_name,
+                    'cost': card.cost
+                })
+
                 card.play(target=target)
+
+                # 记录战吼效果（如果有）
+                if hasattr(card, 'has_battlecry') and card.has_battlecry:
+                    manager.log_event(game_id, 'battlecry', f'{card} 的战吼效果触发', {
+                        'card': str(card)
+                    })
+
                 state = manager.get_game_state(game_id)
                 emit('game_state', {'game_id': game_id, 'state': state})
 
@@ -250,8 +276,25 @@ def register_socket_events(socketio):
                 return
 
         try:
+            # 记录英雄技能使用
+            target_name = str(target) if target else None
+            manager.log_event(game_id, 'hero_power', f'{player} 使用了英雄技能 {heropower}', {
+                'player': str(player),
+                'hero_power': str(heropower),
+                'target': target_name,
+                'cost': heropower.cost
+            })
+
             heropower.use(target=target)
             print(f"[Server] Hero power used: {heropower} -> {target}")
+
+            # 记录技能效果
+            if target and hasattr(target, 'health'):
+                manager.log_event(game_id, 'hero_power_effect', f'{heropower} 对 {target} 生效', {
+                    'target': str(target),
+                    'target_health': target.health
+                })
+
             state = manager.get_game_state(game_id)
             emit('game_state', {'game_id': game_id, 'state': state})
 
@@ -279,10 +322,14 @@ def register_socket_events(socketio):
         attacker = player.field[attacker_index]
         opponent = player.opponent
 
-        if target_id == "hero":
+        if target_id == "hero" or target_id == "opponent_hero":
             target = opponent.hero
+        elif target_id.startswith("enemy_minion-"):
+            # Frontend sends "enemy_minion-0", "enemy_minion-1", etc.
+            minion_index = int(target_id.split("-")[1])
+            target = opponent.field[minion_index]
         elif target_id.startswith("minion-"):
-            # Frontend sends "minion-0", "minion-1", etc. (direct field index)
+            # Legacy format - should be enemy minions
             minion_index = int(target_id.split("-")[1])
             target = opponent.field[minion_index]
         else:
@@ -290,13 +337,149 @@ def register_socket_events(socketio):
             target = opponent.field[int(target_id)]
 
         try:
+            # 记录攻击前状态
+            target_health_before = target.health
+            attacker_atk = attacker.atk
+
+            # 记录攻击日志
+            manager.log_event(game_id, 'attack', f'{attacker} 攻击了 {target}', {
+                'attacker': str(attacker),
+                'attacker_atk': attacker_atk,
+                'target': str(target),
+                'target_health_before': target_health_before
+            })
+
             attacker.attack(target)
+
+            # 记录攻击结果
+            damage_dealt = min(attacker_atk, target_health_before)
+            target_died = target.health <= 0 if hasattr(target, 'health') else False
+
+            if target_died:
+                manager.log_event(game_id, 'minion_died', f'{target} 被消灭了！', {
+                    'minion': str(target),
+                    'killed_by': str(attacker)
+                })
+            else:
+                manager.log_event(game_id, 'damage', f'{target} 受到了 {damage_dealt} 点伤害', {
+                    'target': str(target),
+                    'damage': damage_dealt,
+                    'health_remaining': target.health if hasattr(target, 'health') else None
+                })
+
+            # 检查攻击者是否死亡（反击伤害）
+            if hasattr(attacker, 'health') and attacker.health <= 0:
+                manager.log_event(game_id, 'minion_died', f'{attacker} 在战斗中死亡！', {
+                    'minion': str(attacker)
+                })
+
             state = manager.get_game_state(game_id)
             emit('game_state', {'game_id': game_id, 'state': state})
 
             # 如果是 PVE 模式且玩家攻击后是 AI 回合，执行 AI
             if g["mode"] == "pve":
                 game = g["game"]
+                if game.current_player == g["players"][1]:
+                    import threading
+                    ai_thread = threading.Thread(target=run_ai_turn, args=(game_id,))
+                    ai_thread.daemon = True
+                    ai_thread.start()
+
+        except Exception as e:
+            emit('error', {'message': str(e)})
+
+    @socketio.on('weapon_attack')
+    def handle_weapon_attack(data):
+        """使用武器攻击目标"""
+        game_id = data.get('game_id')
+        target_id = data.get('target_id')
+
+        if game_id not in manager.games:
+            emit('error', {'message': 'Game not found'})
+            return
+
+        g = manager.games[game_id]
+        player = g["players"][0]
+        game = g["game"]
+
+        # 检查是否是玩家回合
+        if game.current_player != player:
+            emit('error', {'message': 'Not your turn'})
+            return
+
+        # 检查是否有武器
+        weapon = player.hero.weapon
+        if not weapon:
+            emit('error', {'message': 'No weapon equipped'})
+            return
+
+        # 检查武器是否可以攻击
+        if not player.hero.can_attack():
+            emit('error', {'message': 'Cannot attack with weapon'})
+            return
+
+        opponent = player.opponent
+
+        # 解析目标
+        if target_id == "hero":
+            target = opponent.hero
+        elif target_id == "opponent_hero":
+            target = opponent.hero
+        elif target_id.startswith("minion-"):
+            minion_index = int(target_id.split("-")[1])
+            target = opponent.field[minion_index]
+        elif target_id.startswith("enemy_minion-"):
+            minion_index = int(target_id.split("-")[1])
+            target = opponent.field[minion_index]
+        else:
+            emit('error', {'message': f'Invalid target: {target_id}'})
+            return
+
+        try:
+            # 记录攻击前状态
+            target_health_before = target.health if hasattr(target, 'health') else 0
+            weapon_atk = weapon.atk
+            weapon_durability_before = weapon.durability
+
+            # 记录武器攻击日志
+            manager.log_event(game_id, 'weapon_attack', f'{player} 使用 {weapon} 攻击了 {target}', {
+                'player': str(player),
+                'weapon': str(weapon),
+                'weapon_atk': weapon_atk,
+                'target': str(target),
+                'target_health_before': target_health_before
+            })
+
+            # 执行攻击
+            player.hero.attack(target)
+
+            # 记录攻击结果
+            damage_dealt = min(weapon_atk, target_health_before)
+            target_died = hasattr(target, 'health') and target.health <= 0
+
+            if target_died:
+                manager.log_event(game_id, 'minion_died', f'{target} 被消灭了！', {
+                    'minion': str(target),
+                    'killed_by': str(weapon)
+                })
+            else:
+                manager.log_event(game_id, 'damage', f'{target} 受到了 {damage_dealt} 点伤害', {
+                    'target': str(target),
+                    'damage': damage_dealt,
+                    'health_remaining': target.health if hasattr(target, 'health') else None
+                })
+
+            # 检查武器是否破损
+            if not player.hero.weapon or player.hero.weapon.durability <= 0:
+                manager.log_event(game_id, 'weapon_broken', f'{weapon} 破损了！', {
+                    'weapon': str(weapon)
+                })
+
+            state = manager.get_game_state(game_id)
+            emit('game_state', {'game_id': game_id, 'state': state})
+
+            # 如果是 PVE 模式且玩家攻击后是 AI 回合，执行 AI
+            if g["mode"] == "pve":
                 if game.current_player == g["players"][1]:
                     import threading
                     ai_thread = threading.Thread(target=run_ai_turn, args=(game_id,))

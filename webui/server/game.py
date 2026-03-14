@@ -1,11 +1,39 @@
 import uuid
 import random
+from datetime import datetime
 from fireplace import cards
 from fireplace.game import Game
 from fireplace.player import Player
 from fireplace.utils import random_class
 from fireplace.deck import Deck
 from hearthstone.enums import CardClass as CardClassEnum, CardType
+
+# 游戏日志收集器
+class GameLogger:
+    def __init__(self):
+        self.logs = []
+        self.max_logs = 100
+
+    def add_log(self, log_type: str, message: str, details: dict = None):
+        """添加一条日志"""
+        log_entry = {
+            'timestamp': datetime.now().isoformat(),
+            'type': log_type,
+            'message': message,
+            'details': details or {}
+        }
+        self.logs.append(log_entry)
+        # 限制日志数量
+        if len(self.logs) > self.max_logs:
+            self.logs = self.logs[-self.max_logs:]
+
+    def get_logs(self, count=20):
+        """获取最近N条日志"""
+        return self.logs[-count:]
+
+    def clear(self):
+        """清空日志"""
+        self.logs = []
 
 # 职业名称到 CardClass 枚举的映射
 CLASS_NAME_MAP = {
@@ -129,6 +157,121 @@ def filtered_random_draft(card_class):
     return deck
 
 
+# 测试卡组：各职业的关键机制卡牌
+TEST_DECK_CARDS = {
+    # 中立卡牌（所有职业可用）
+    'NEUTRAL': {
+        # 基础机制
+        'divine_shield': ['EX1_008', 'CS2_122'],  # 银色侍从、白银之手骑士
+        'taunt': ['CS1_042', 'CS2_179', 'EX1_093'],  # 闪金镇步兵、森金持盾卫士、阿古斯之盾
+        'windfury': ['CS2_231', 'NEW1_038'],  # 愤怒的小鸡、风领主奥拉基尔
+        'stealth': ['EX1_593', 'NEW1_014'],  # 夜刃刺客、猢狲战士
+        'deathrattle': ['EX1_534', 'FP1_002', 'LOOT_161'],  # 长鬃草原狮、鬼灵蜘蛛、龙骨卫士
+        'poisonous': ['EX1_170', 'UNG_937'],  # 帝王眼镜蛇、翼手龙毒刺
+        'lifesteal': ['ICC_855', 'BOT_423'],  # 鲜血掠夺者、鲁莽试验者
+        'charge': ['CS2_103', 'EX1_084'],  # 冲锋、狼骑兵
+        # 战吼
+        'battlecry': ['CS2_141', 'CS2_189'],  # 侏儒发明家、精灵龙
+    },
+    # 法师
+    'MAGE': {
+        'freeze': ['CS2_026', 'CS2_033'],  # 冰霜新星、水元素
+        'spell_damage': ['CS2_155', 'EX1_584'],  # 大法师、食人魔法师
+        'secrets': ['EX1_294', 'EX1_295'],  # 寒冰屏障、寒冰护体
+        'fire_spell': ['CS2_029', 'CS2_028'],  # 火球术、暴风雪
+    },
+    # 猎人
+    'HUNTER': {
+        'beast': ['CS2_172', 'EX1_534'],  # 血沼迅猛龙、长鬃草原狮
+        'deathrattle': ['EX1_534', 'ICC_825'],  # 长鬃草原狮、熊鲨
+        'secrets': ['EX1_533', 'EX1_609'],  # 误导、爆炸陷阱
+    },
+    # 战士
+    'WARRIOR': {
+        'armor': ['EX1_402', 'EX1_606'],  # 炽炎战斧、盾牌格挡
+        'enrage': ['EX1_393', 'EX1_412'],  # 阿曼尼狂战士、暴怒的狼人
+        'charge': ['CS2_103', 'EX1_084'],  # 冲锋、狼骑兵
+    },
+    # 圣骑士
+    'PALADIN': {
+        'divine_shield': ['EX1_008', 'CS2_122'],  # 银色侍从
+        'hand_buff': ['UNG_950', 'CFM_650'],  # 剑龙骑术、适者生存
+        'secrets': ['EX1_130', 'EX1_136'],  # 复仇、以眼还眼
+    },
+    # 潜行者
+    'ROGUE': {
+        'combo': ['EX1_131', 'CS2_073', 'CS2_072'],  # 军情七处特工、冷血、背刺
+        'stealth': ['NEW1_014', 'EX1_522'],  # 猢狲战士、耐心的刺客
+        'weapon': ['CS2_080', 'EX1_133'],  # 刺客之刃、毁灭之刃
+        'damage_spell': ['EX1_124', 'EX1_145'],  # 剔骨、准备
+    },
+    # 牧师
+    'PRIEST': {
+        'heal': ['CS1_130', 'CS2_004'],  # 神圣惩击、真言术：盾
+        'buff': ['CS2_236', 'EX1_339'],  # 神圣之灵、暗言术：痛
+    },
+    # 德鲁伊
+    'DRUID': {
+        'choose_one': ['EX1_164', 'EX1_165'],  # 滋养、丛林守护者
+        'ramp': ['CS2_013', 'EX1_169'],  # 野性成长、激活（可能为技能）
+        'taunt': ['EX1_093', 'CS2_179'],  # 阿古斯之盾、森金持盾卫士
+    },
+    # 萨满
+    'SHAMAN': {
+        'overload': ['EX1_248', 'EX1_251'],  # 野性狼魂、闪电风暴
+        'totem': ['CS2_050', 'UNG_201'],  # 石爪图腾、原始融合
+        'windfury': ['EX1_259', 'UNG_938'],  # 风暴看守、雷霆万钧
+    },
+    # 术士
+    'WARLOCK': {
+        'demon': ['CS2_064', 'EX1_306'],  # 恐惧地狱火、魅魔
+        'discard': ['EX1_308', 'EX1_310'],  # 灵魂之火、末日守卫
+        'spell_damage': ['EX1_597', 'NEW1_021'],  # 古拉巴什狂暴者、狂野炎术师
+    },
+}
+
+
+def create_test_deck(card_class):
+    """
+    创建测试卡组，包含各种已实现的机制卡牌
+    优先选择职业特色机制，补足30张
+    """
+    deck = []
+    class_name = card_class.name
+
+    # 1. 添加本职业机制卡牌
+    if class_name in TEST_DECK_CARDS:
+        for mechanic, cards in TEST_DECK_CARDS[class_name].items():
+            # 每种机制最多2张
+            for card_id in cards[:2]:
+                if len(deck) < 30:
+                    deck.append(card_id)
+
+    # 2. 添加中立机制卡牌补足
+    neutral_cards = []
+    for mechanic, cards in TEST_DECK_CARDS['NEUTRAL'].items():
+        neutral_cards.extend(cards)
+
+    # 随机打乱，确保不同测试卡组有变化
+    import random
+    random.shuffle(neutral_cards)
+
+    # 补满30张
+    for card_id in neutral_cards:
+        if len(deck) >= 30:
+            break
+        # 检查是否已有2张
+        if deck.count(card_id) < 2:
+            deck.append(card_id)
+
+    # 3. 如果还不够，随机填充
+    while len(deck) < 30:
+        deck.append(random.choice(neutral_cards))
+
+    print(f"[TestDeck] Created {class_name} test deck with {len(deck)} cards")
+    return deck
+
+
 class GameManager:
     def __init__(self):
         self.games = {}
@@ -139,8 +282,15 @@ class GameManager:
             cards.db.initialize()
             self._initialized = True
 
-    def create_game(self, player1_class, player2_class=None, mode="pve"):
-        """创建游戏返回 game_id"""
+    def create_game(self, player1_class, player2_class=None, mode="pve", test_deck=False):
+        """创建游戏返回 game_id
+
+        Args:
+            player1_class: 玩家1职业
+            player2_class: 玩家2职业 (PVE模式下对手职业)
+            mode: 游戏模式 (pve/pvp)
+            test_deck: 是否使用测试卡组（包含各种机制卡牌）
+        """
         self.initialize()
         game_id = str(uuid.uuid4())
 
@@ -150,8 +300,13 @@ class GameManager:
         else:
             p2_class = random_class()
 
-        p1_deck = filtered_random_draft(p1_class)
-        p2_deck = filtered_random_draft(p2_class)
+        # 选择卡组生成方式
+        if test_deck:
+            p1_deck = create_test_deck(p1_class)
+            p2_deck = create_test_deck(p2_class)
+        else:
+            p1_deck = filtered_random_draft(p1_class)
+            p2_deck = filtered_random_draft(p2_class)
 
         player1 = Player("Player1", p1_deck, p1_class.default_hero)
         player2 = Player("Player2", p2_deck, p2_class.default_hero)
@@ -164,11 +319,19 @@ class GameManager:
             if p.choice:
                 p.choice.choose()
 
+        # 创建游戏日志记录器
+        logger = GameLogger()
+        logger.add_log('game_start', f'游戏开始 - {player1} vs {player2}', {
+            'player1': str(player1),
+            'player2': str(player2)
+        })
+
         self.games[game_id] = {
             "game": game,
             "mode": mode,
             "players": [player1, player2],
-            "current": player1
+            "current": player1,
+            "logger": logger
         }
 
         return game_id
@@ -203,6 +366,18 @@ class GameManager:
         if hasattr(card, 'mechanics') and card.mechanics:
             data["mechanics"] = [str(m) for m in card.mechanics]
 
+        # 吸血(Lifesteal)
+        if hasattr(card, 'lifesteal') and card.lifesteal:
+            data["lifesteal"] = True
+
+        # 连击(Combo)
+        if hasattr(card, 'has_combo') and card.has_combo:
+            data["has_combo"] = True
+
+        # 剧毒(Poisonous)
+        if hasattr(card, 'poisonous') and card.poisonous:
+            data["poisonous"] = True
+
         # 目标选择信息
         if hasattr(card, 'requires_target') and card.requires_target():
             data["requires_target"] = True
@@ -216,19 +391,45 @@ class GameManager:
 
     def _get_target_id(self, target):
         """获取目标的唯一标识符"""
-        # 英雄用 "hero" 或 "opponent_hero"
-        if hasattr(target, 'hero'):
-            return "hero" if target == target.controller else "opponent_hero"
-        # 随从用 "minion-index" 或 "enemy_minion-index"
-        if hasattr(target, 'zone') and hasattr(target.controller, 'field'):
-            is_own = target.controller == target.game.players[0]
-            try:
-                field = target.controller.field
-                index = list(field).index(target)
-                prefix = "minion" if is_own else "enemy_minion"
-                return f"{prefix}-{index}"
-            except (ValueError, AttributeError):
-                pass
+        # 获取游戏实例来查找玩家
+        g = self.games.get(list(self.games.keys())[0]) if self.games else None
+        if not g:
+            return str(id(target))
+
+        player = g["players"][0]
+        opponent = g["players"][1]
+
+        # 英雄 - 直接比较（最高优先级）
+        if target == player.hero:
+            return "hero"
+        if target == opponent.hero:
+            return "opponent_hero"
+
+        # 随从 - 检查是否在玩家的战场上
+        # 检查敌方随从（对手的战场）
+        for i, m in enumerate(opponent.field):
+            if m == target:
+                return f"enemy_minion-{i}"
+
+        # 检查己方随从（玩家的战场）
+        for i, m in enumerate(player.field):
+            if m == target:
+                return f"minion-{i}"
+
+        # 检查是否有控制器（可能是英雄或武器）
+        if hasattr(target, 'controller'):
+            if target.controller == player:
+                # 检查是否是英雄类型
+                if hasattr(target, 'type') and target.type == CardType.HERO:
+                    return "hero"
+                return "hero"  # Assume hero if controlled by player
+            if target.controller == opponent:
+                if hasattr(target, 'type') and target.type == CardType.HERO:
+                    return "opponent_hero"
+                return "opponent_hero"
+
+        # 如果以上都不匹配，使用id作为fallback
+        print(f"[TargetID] Could not identify target: {target}, type: {type(target)}")
         return str(id(target))
 
     def get_minion_data(self, minion, include_can_attack=False):
@@ -249,6 +450,18 @@ class GameManager:
             data["can_attack"] = minion.can_attack()
         # 嘲讽
         data["taunt"] = minion.taunt
+        # 亡语
+        data["has_deathrattle"] = getattr(minion, 'has_deathrattle', False)
+        # 圣盾
+        data["divine_shield"] = getattr(minion, 'divine_shield', False)
+        # 潜行
+        data["stealth"] = getattr(minion, 'stealthed', False)
+        # 风怒
+        data["windfury"] = getattr(minion, 'windfury', False)
+        # 冻结
+        data["frozen"] = getattr(minion, 'frozen', False)
+        # 剧毒
+        data["poisonous"] = getattr(minion, 'poisonous', False)
         # 卡牌描述
         if text:
             data["text"] = text
@@ -292,7 +505,22 @@ class GameManager:
         if requires_target and hasattr(hero_power, 'targets'):
             valid_targets = [self._get_target_id(t) for t in hero_power.targets]
             hero_power_data["valid_targets"] = valid_targets
-            print(f"[HeroPower] valid_targets: {valid_targets}")
+
+        # 获取日志
+        logger = g.get("logger")
+        logs = logger.get_logs(30) if logger else []
+
+        # 获取武器信息
+        def get_weapon_data(hero):
+            weapon = hero.weapon
+            if weapon:
+                return {
+                    "name": str(weapon),
+                    "atk": getattr(weapon, 'atk', 0),
+                    "durability": getattr(weapon, 'durability', 0),
+                    "max_durability": getattr(weapon, 'max_durability', getattr(weapon, 'durability', 0)),
+                }
+            return None
 
         return {
             "turn": game.turn,
@@ -301,48 +529,48 @@ class GameManager:
                 "hero": str(player.hero),
                 "health": player.hero.health,
                 "max_health": player.hero.max_health,
+                "armor": getattr(player.hero, 'armor', 0),
                 "mana": player.mana,
                 "max_mana": player.max_mana,
+                "spell_power": getattr(player, 'spellpower', 0),
                 "deck": len(player.deck),
                 "hand": [self.get_card_data(c) for c in player.hand],
                 "field": [self.get_minion_data(m, include_can_attack=True) for m in player.field],
                 "can_end_turn": game.current_player == player,
                 "hero_power": hero_power_data,
+                "weapon": get_weapon_data(player.hero),
             },
             "opponent": {
                 "hero": str(opponent.hero),
                 "health": opponent.hero.health,
+                "max_health": opponent.hero.max_health,
+                "armor": getattr(opponent.hero, 'armor', 0),
+                "mana": opponent.mana,
+                "max_mana": opponent.max_mana,
+                "spell_power": getattr(opponent, 'spellpower', 0),
                 "deck": len(opponent.deck),
                 "hand_count": len(opponent.hand),
                 "field": [self.get_minion_data(m) for m in opponent.field],
-                "has_taunt": any(m.taunt for m in opponent.field)
-            }
+                "has_taunt": any(m.taunt for m in opponent.field),
+                "hero_power": {
+                    "name": str(opponent.hero.power),
+                    "cost": opponent.hero.power.cost,
+                    "is_usable": opponent.hero.power.is_usable() if hasattr(opponent.hero.power, 'is_usable') else False,
+                    "requires_target": opponent.hero.power.requires_target() if hasattr(opponent.hero.power, 'requires_target') else False,
+                    "description": str(opponent.hero.power.description) if hasattr(opponent.hero.power, 'description') else "",
+                },
+                "weapon": get_weapon_data(opponent.hero),
+            },
+            "logs": logs
         }
 
-    def _get_target_id(self, target):
-        """获取目标的唯一标识符"""
-        g = self.games.get(list(self.games.keys())[0]) if self.games else None
-        if not g:
-            return str(id(target))
 
-        player = g["players"][0]
-        opponent = g["players"][1]
-
-        # 英雄
-        if target == player.hero:
-            return "hero"
-        if target == opponent.hero:
-            return "opponent_hero"
-
-        # 随从
-        for i, m in enumerate(player.field):
-            if m == target:
-                return f"minion-{i}"
-        for i, m in enumerate(opponent.field):
-            if m == target:
-                return f"enemy_minion-{i}"
-
-        return str(id(target))
+    def log_event(self, game_id, log_type, message, details=None):
+        """记录游戏事件"""
+        if game_id in self.games:
+            logger = self.games[game_id].get("logger")
+            if logger:
+                logger.add_log(log_type, message, details)
 
     def get_target_by_id(self, game_id, target_id):
         """根据目标 ID 获取实际的游戏实体"""

@@ -237,6 +237,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .weapon-slot-empty, .hero-power-empty {
@@ -244,6 +245,74 @@
   height: 80%;
   border: 2px dashed #666;
   border-radius: 4px;
+}
+
+/* 武器槽样式 */
+.weapon-slot.has-weapon {
+  cursor: pointer;
+}
+
+.weapon-slot.has-weapon:hover {
+  transform: scale(1.05);
+}
+
+.weapon-slot.attacking {
+  animation: weapon-pulse 0.8s ease-in-out infinite;
+}
+
+@keyframes weapon-pulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 100, 100, 0.6);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 100, 100, 0.9);
+    transform: scale(1.1);
+  }
+}
+
+/* 已装备武器 */
+.weapon-equipped {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #4a4a4a 0%, #2a2a2a 100%);
+  border: 2px solid #888;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 2px;
+}
+
+.weapon-icon {
+  font-size: clamp(0.8rem, 2vw, 1.2rem);
+  filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.5));
+}
+
+.weapon-stats {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 4px;
+  font-size: clamp(0.5rem, 1.2vw, 0.7rem);
+  font-weight: bold;
+}
+
+.weapon-atk {
+  color: #ffcc00;
+}
+
+.weapon-durability {
+  color: #ccc;
+}
+
+/* 对手的武器槽 */
+.opponent-weapon-slot .weapon-equipped {
+  background: linear-gradient(180deg, #5a4a4a 0%, #3a2a2a 100%);
+  border-color: #a66;
+  opacity: 0.9;
 }
 
 /* 英雄头像 */
@@ -304,11 +373,55 @@
   white-space: nowrap;
 }
 
+.hero-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.2rem, 0.5vw, 0.5rem);
+}
+
 .hero-health {
   color: var(--red);
   font-size: clamp(0.9rem, 2vw, 1.3rem);
   font-weight: bold;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.hero-armor {
+  color: #ccc;
+  font-size: clamp(0.9rem, 2vw, 1.3rem);
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  background: rgba(128, 128, 128, 0.3);
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1px solid #888;
+  min-width: 40px;
+  text-align: center;
+}
+
+/* 法术伤害 */
+.spell-power {
+  color: #9b59b6;
+  font-size: clamp(0.8rem, 1.8vw, 1.1rem);
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  background: rgba(155, 89, 182, 0.2);
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1px solid #9b59b6;
+  min-width: 40px;
+  text-align: center;
+}
+
+.spell-power.opponent {
+  opacity: 0.9;
+  border-style: dashed;
+}
+
+/* 对手属性区域 */
+.opponent-stats {
+  opacity: 0.9;
 }
 
 /* 战场区域 */
@@ -358,6 +471,7 @@
   justify-content: space-between;
   padding: 8% 6%;
   position: relative;
+  z-index: 2;
 }
 
 /* 可攻击的随从 - 绿色边框 */
@@ -454,12 +568,13 @@
   transition: transform 0.2s, box-shadow 0.2s;
   position: relative;
   flex-shrink: 0;
+  cursor: default;
 }
 
 .card.playable {
   border: 3px solid #4CAF50;
   box-shadow: 0 0 12px rgba(76, 175, 80, 0.6);
-  cursor: pointer;
+  cursor: pointer !important;
 }
 
 .card.playable:hover {
@@ -483,6 +598,68 @@
   font-weight: bold;
   font-size: clamp(0.6rem, 1.5vw, 0.9rem);
   border: 2px solid var(--gold);
+}
+
+/* 吸血标识 */
+.card-lifesteal {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: clamp(1rem, 2.5vw, 1.4rem);
+  height: clamp(1rem, 2.5vw, 1.4rem);
+  background: linear-gradient(180deg, #e74c3c, #c0392b);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(0.5rem, 1.2vw, 0.75rem);
+  border: 2px solid var(--gold);
+  z-index: 2;
+}
+
+/* 剧毒标识 */
+.card-poisonous {
+  position: absolute;
+  top: -6px;
+  right: calc(clamp(1rem, 2.5vw, 1.4rem) + 2px);
+  width: clamp(1rem, 2.5vw, 1.4rem);
+  height: clamp(1rem, 2.5vw, 1.4rem);
+  background: linear-gradient(180deg, #27ae60, #1e8449);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(0.5rem, 1.2vw, 0.75rem);
+  border: 2px solid var(--gold);
+  z-index: 2;
+}
+
+/* 连击标识 */
+.card-combo {
+  position: absolute;
+  top: 20%;
+  left: -8px;
+  background: linear-gradient(180deg, #9b59b6, #8e44ad);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: clamp(0.35rem, 0.9vw, 0.6rem);
+  color: white;
+  font-weight: bold;
+  border: 1px solid var(--gold);
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: -1px;
+  z-index: 2;
+}
+
+/* 连击卡牌高亮效果 */
+.card.has-combo {
+  border-color: #9b59b6;
+}
+
+.card.has-combo.playable {
+  border: 3px solid #9b59b6;
+  box-shadow: 0 0 12px rgba(155, 89, 182, 0.6);
 }
 
 .card-name {
@@ -576,6 +753,24 @@
   padding: 2px 6px;
   font-size: clamp(0.5rem, 1vw, 0.75rem);
   color: #88ccff;
+}
+
+.mechanic-tag.lifesteal {
+  background: rgba(231, 76, 60, 0.3);
+  border-color: #e74c3c;
+  color: #ff9999;
+}
+
+.mechanic-tag.combo {
+  background: rgba(155, 89, 182, 0.3);
+  border-color: #9b59b6;
+  color: #d8a2e5;
+}
+
+.mechanic-tag.poisonous {
+  background: rgba(39, 174, 96, 0.3);
+  border-color: #27ae60;
+  color: #7ee8a8;
 }
 
 .tooltip-fixed .tooltip-stats {
@@ -695,10 +890,61 @@
 
 .log-entry {
   font-size: clamp(0.6rem, 1.2vw, 0.75rem);
-  color: #aaa;
-  padding: 3px 5px;
+  color: #ddd;
+  padding: 4px 6px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 3px;
+  border-left: 3px solid transparent;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+/* 不同类型日志的颜色 */
+.log-entry:has(🎮) {
+  border-left-color: #4CAF50;
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.log-entry:has(🃏) {
+  border-left-color: #2196F3;
+  background: rgba(33, 150, 243, 0.1);
+}
+
+.log-entry:has(⚡) {
+  border-left-color: #FF9800;
+  background: rgba(255, 152, 0, 0.1);
+}
+
+.log-entry:has(⚔️) {
+  border-left-color: #F44336;
+  background: rgba(244, 67, 54, 0.1);
+}
+
+.log-entry:has(💀) {
+  border-left-color: #9C27B0;
+  background: rgba(156, 39, 176, 0.1);
+  font-weight: bold;
+}
+
+.log-entry:has(⚔️) {
+  border-left-color: #F44336;
+  background: rgba(244, 67, 54, 0.1);
+}
+
+.log-entry:has(💔) {
+  border-left-color: #795548;
+  background: rgba(121, 85, 72, 0.1);
+  font-style: italic;
+}
+
+.log-entry:has(🔮) {
+  border-left-color: #00BCD4;
+  background: rgba(0, 188, 212, 0.1);
+}
+
+.log-entry:has(⏹️) {
+  border-left-color: #607D8B;
+  background: rgba(96, 125, 139, 0.1);
 }
 
 /* 中间控制按钮 */
@@ -740,6 +986,104 @@
 .card.dragging {
   opacity: 0.5;
   transform: scale(1.2);
+}
+
+/* 预放置的卡牌（在手牌中显示为灰色） */
+.card.staged {
+  filter: grayscale(0.8);
+  cursor: not-allowed;
+}
+
+.card-staged-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: #FFD700;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  z-index: 10;
+  border: 1px solid #FFD700;
+}
+
+/* 手牌区域有预放置卡牌时的样式 */
+.player-hand-area.has-staged-card {
+  cursor: crosshair;
+}
+
+/* 预放置随从占位符 */
+.staged-minion-placeholder {
+  opacity: 0.7;
+  animation: staged-pulse 1.5s ease-in-out infinite;
+}
+
+.staged-minion-placeholder .minion-body {
+  border: 2px dashed #4CAF50;
+  background: linear-gradient(180deg, rgba(74, 175, 80, 0.3) 0%, rgba(58, 58, 58, 0.8) 100%);
+}
+
+.staged-indicator {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: #4CAF50;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  border: 1px solid #4CAF50;
+  z-index: 10;
+  animation: staged-indicator-pulse 1s ease-in-out infinite;
+}
+
+@keyframes staged-pulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes staged-indicator-pulse {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.9);
+  }
+}
+
+/* 目标选择提示 */
+.targeting-hint {
+  position: fixed;
+  bottom: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: #FFD700;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 2px solid #FFD700;
+  z-index: 1000;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.targeting-hint .hint-text {
+  margin-bottom: 5px;
+}
+
+.targeting-hint .hint-subtext {
+  font-size: 0.75rem;
+  color: #aaa;
 }
 
 /* 卡牌详情弹窗 */
@@ -863,28 +1207,302 @@
   color: #fff;
 }
 
-/* 嘲讽随从 - 金色盾牌边框 */
-.minion.taunt .minion-body::before {
+/* 嘲讽随从 - 金色盾牌外框 (镂空边框效果) */
+.minion.taunt::before {
   content: '';
   position: absolute;
-  top: -10px;
-  left: -10px;
-  right: -10px;
-  bottom: -10px;
-  border: 4px solid #FFD700;
-  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5), inset 0 0 10px rgba(255, 215, 0, 0.2);
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% + 16px);
+  height: calc(100% + 20px);
+  background: no-repeat center/contain;
+  /* SVG 盾牌：只有边框，内部完全透明 */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120'%3E%3Cpath d='M50 2 L95 12 L90 80 L50 118 L10 80 L5 12 Z' fill='none' stroke='%23FFD700' stroke-width='3'/%3E%3C/svg%3E");
+  filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.9));
   pointer-events: none;
-  z-index: -1;
-  animation: taunt-glow 2s ease-in-out infinite;
+  z-index: 1;
 }
 
-@keyframes taunt-glow {
+/* 嘲讽随从发光动画 - 不影响内部 */
+.minion.taunt {
+  animation: taunt-pulse 2s ease-in-out infinite;
+}
+
+@keyframes taunt-pulse {
   0%, 100% {
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5), inset 0 0 10px rgba(255, 215, 0, 0.2);
+    filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.6));
   }
   50% {
-    box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), inset 0 0 15px rgba(255, 215, 0, 0.3);
+    filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.9));
+  }
+}
+
+/* 圣盾 - 白色气泡光晕效果 */
+.minion.divine-shield::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border: 2px solid rgba(200, 230, 255, 0.8);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(220, 240, 255, 0.3) 0%, rgba(200, 230, 255, 0.1) 50%, transparent 70%);
+  box-shadow:
+    0 0 15px rgba(200, 230, 255, 0.6),
+    inset 0 0 20px rgba(255, 255, 255, 0.2);
+  pointer-events: none;
+  z-index: 3;
+  animation: shield-bubble-pulse 2s ease-in-out infinite;
+}
+
+@keyframes shield-bubble-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+    box-shadow: 0 0 15px rgba(200, 230, 255, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+    box-shadow: 0 0 25px rgba(220, 240, 255, 0.9), inset 0 0 30px rgba(255, 255, 255, 0.4);
+  }
+}
+
+/* 潜行 - 半透明+烟雾效果 */
+.minion.stealth {
+  opacity: 0.75;
+}
+
+.minion.stealth::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -10%;
+  right: -10%;
+  height: 60%;
+  background: radial-gradient(ellipse at center, rgba(100, 50, 150, 0.4) 0%, rgba(80, 40, 120, 0.2) 40%, transparent 70%);
+  filter: blur(8px);
+  pointer-events: none;
+  z-index: 3;
+  animation: smoke-drift 3s ease-in-out infinite;
+}
+
+.minion.stealth::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 20px;
+  background: radial-gradient(ellipse at center, rgba(60, 30, 90, 0.5) 0%, transparent 70%);
+  filter: blur(5px);
+  pointer-events: none;
+  z-index: 3;
+  animation: smoke-puddle 2s ease-in-out infinite alternate;
+}
+
+@keyframes smoke-drift {
+  0%, 100% {
+    transform: translateY(0) scaleX(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-5px) scaleX(1.1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes smoke-puddle {
+  0% {
+    transform: translateX(-50%) scale(0.9);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateX(-50%) scale(1.1);
+    opacity: 0.7;
+  }
+}
+
+/* 风怒 - 旋风环绕动画效果 */
+.minion.windfury::before {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  right: -15px;
+  bottom: -15px;
+  border: none;
+  background: transparent;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* 风元素 - 使用多个旋转的椭圆模拟旋风 */
+.minion.windfury .minion-body::before,
+.minion.windfury .minion-body::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* 内层旋风 */
+.minion.windfury .minion-body::before {
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  border: 2px solid rgba(150, 220, 255, 0.6);
+  border-top-color: transparent;
+  border-bottom-color: rgba(100, 200, 255, 0.8);
+  animation: wind-spin-1 1.5s linear infinite;
+}
+
+/* 外层旋风 */
+.minion.windfury .minion-body::after {
+  top: -12px;
+  left: -12px;
+  right: -12px;
+  bottom: -12px;
+  border: 1px solid rgba(180, 230, 255, 0.4);
+  border-left-color: transparent;
+  border-right-color: rgba(120, 210, 255, 0.7);
+  animation: wind-spin-2 2s linear infinite reverse;
+}
+
+/* 风怒图标 */
+.windfury-icon {
+  position: absolute;
+  top: -18px;
+  right: -5px;
+  font-size: clamp(0.6rem, 1.2vw, 0.9rem);
+  filter: drop-shadow(0 0 3px rgba(100, 200, 255, 0.8));
+  z-index: 4;
+  animation: wind-icon-pulse 1s ease-in-out infinite;
+}
+
+/* 剧毒图标 */
+.poisonous-icon {
+  position: absolute;
+  bottom: -8px;
+  right: 5px;
+  font-size: clamp(0.6rem, 1.2vw, 0.9rem);
+  filter: drop-shadow(0 0 3px rgba(39, 174, 96, 0.8));
+  z-index: 4;
+  animation: poisonous-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes poisonous-pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 3px rgba(39, 174, 96, 0.8));
+  }
+  50% {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 6px rgba(39, 174, 96, 1));
+  }
+}
+
+@keyframes wind-spin-1 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes wind-spin-2 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes wind-icon-pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 3px rgba(100, 200, 255, 0.8));
+  }
+  50% {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 6px rgba(150, 220, 255, 1));
+  }
+}
+
+/* 冻结 - 冰霜覆盖效果 */
+.minion.frozen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(200, 230, 255, 0.6) 0%, transparent 25%),
+    radial-gradient(ellipse at 70% 20%, rgba(180, 220, 250, 0.5) 0%, transparent 20%),
+    radial-gradient(ellipse at 50% 70%, rgba(160, 210, 245, 0.4) 0%, transparent 30%),
+    radial-gradient(ellipse at 80% 60%, rgba(200, 230, 255, 0.5) 0%, transparent 15%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.minion.frozen::after {
+  content: '❄️';
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(0.7rem, 1.3vw, 1rem);
+  filter: drop-shadow(0 0 4px rgba(150, 200, 255, 0.9));
+  z-index: 4;
+  animation: snowflake-float 2s ease-in-out infinite;
+}
+
+.minion.frozen .minion-body {
+  filter: hue-rotate(180deg) saturate(0.7) brightness(1.1);
+  box-shadow: inset 0 0 20px rgba(100, 180, 255, 0.3);
+}
+
+@keyframes snowflake-float {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(-50%) translateY(-3px) rotate(15deg);
+    opacity: 0.8;
+  }
+}
+
+/* 亡语图标 */
+.deathrattle-icon {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(0.6rem, 1.5vw, 0.9rem);
+  filter: drop-shadow(0 0 3px rgba(128, 0, 128, 0.8));
+  pointer-events: none;
+  z-index: 2;
+  animation: deathrattle-pulse 2s ease-in-out infinite;
+}
+
+@keyframes deathrattle-pulse {
+  0%, 100% {
+    transform: translateX(-50%) scale(1);
+    filter: drop-shadow(0 0 3px rgba(128, 0, 128, 0.8));
+  }
+  50% {
+    transform: translateX(-50%) scale(1.1);
+    filter: drop-shadow(0 0 6px rgba(128, 0, 128, 1));
   }
 }
 
@@ -956,6 +1574,20 @@
 .hero-power.usable:hover .hero-power-icon {
   box-shadow: 0 0 15px rgba(76, 175, 80, 0.8);
   transform: scale(1.05);
+}
+
+/* 对手的英雄技能 - 禁用样式 */
+.opponent-hero-power {
+  opacity: 0.8;
+}
+
+.opponent-hero-power .hero-power-icon {
+  background: linear-gradient(180deg, #4a4a4a 0%, #2a2a2a 50%, #1a1a1a 100%);
+  border: 2px solid #666;
+}
+
+.opponent-hero-power:hover {
+  opacity: 1;
 }
 
 .hero-power-icon {

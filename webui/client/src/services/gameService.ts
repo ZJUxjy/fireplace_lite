@@ -11,6 +11,9 @@ export type CardData = {
   mechanics?: string[];
   requires_target?: boolean;
   valid_targets?: string[];
+  lifesteal?: boolean;
+  has_combo?: boolean;
+  poisonous?: boolean;
 };
 
 export type MinionData = {
@@ -19,9 +22,22 @@ export type MinionData = {
   health: number;
   can_attack?: boolean;
   taunt?: boolean;
+  has_deathrattle?: boolean;
+  divine_shield?: boolean;
+  stealth?: boolean;
+  windfury?: boolean;
+  frozen?: boolean;
+  poisonous?: boolean;
   text?: string;
   race?: string;
   mechanics?: string[];
+};
+
+export type WeaponData = {
+  name: string;
+  atk: number;
+  durability: number;
+  max_durability: number;
 };
 
 export type HeroPowerData = {
@@ -33,6 +49,13 @@ export type HeroPowerData = {
   valid_targets?: string[];
 };
 
+export type LogEntry = {
+  timestamp: string;
+  type: string;
+  message: string;
+  details?: Record<string, unknown>;
+};
+
 export type GameState = {
   turn: number;
   current_player: string;
@@ -40,28 +63,39 @@ export type GameState = {
     hero: string;
     health: number;
     max_health: number;
+    armor: number;
     mana: number;
     max_mana: number;
+    spell_power: number;
     deck: number;
     hand: CardData[];
     field: MinionData[];
     can_end_turn: boolean;
     hero_power: HeroPowerData;
+    weapon: WeaponData | null;
   };
   opponent: {
     hero: string;
     health: number;
+    max_health: number;
+    armor: number;
+    mana: number;
+    max_mana: number;
+    spell_power: number;
     deck: number;
     hand_count: number;
     field: MinionData[];
     has_taunt?: boolean;
+    hero_power: HeroPowerData;
+    weapon: WeaponData | null;
   };
+  logs: LogEntry[];
 };
 
 class GameService {
   private gameId: string | null = null;
 
-  createGame(mode: string, playerClass: string = 'random') {
+  createGame(mode: string, playerClass: string = 'random', testDeck: boolean = false) {
     socketService.connect();
     // 设置重连后重新加入房间的逻辑
     socketService.onReconnect(() => {
@@ -70,7 +104,7 @@ class GameService {
         socketService.emit('rejoin_game', { game_id: this.gameId });
       }
     });
-    socketService.emit('create_game', { mode, player_class: playerClass });
+    socketService.emit('create_game', { mode, player_class: playerClass, test_deck: testDeck });
   }
 
   endTurn() {
@@ -103,6 +137,15 @@ class GameService {
       socketService.emit('attack', {
         game_id: this.gameId,
         attacker_index: attackerIndex,
+        target_id: targetId
+      });
+    }
+  }
+
+  weaponAttack(targetId: string) {
+    if (this.gameId) {
+      socketService.emit('weapon_attack', {
+        game_id: this.gameId,
         target_id: targetId
       });
     }
