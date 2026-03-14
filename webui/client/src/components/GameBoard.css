@@ -740,6 +740,17 @@
   font-weight: bold;
 }
 
+.tooltip-silenced {
+  color: #888;
+  font-size: clamp(0.7rem, 1.4vw, 0.95rem);
+  font-style: italic;
+  margin: 8px 0;
+  padding: 4px 8px;
+  background: rgba(100, 100, 100, 0.2);
+  border-radius: 4px;
+  text-align: center;
+}
+
 .tooltip-mechanics {
   display: flex;
   flex-wrap: wrap;

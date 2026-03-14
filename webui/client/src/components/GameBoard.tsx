@@ -1072,10 +1072,14 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
             <span className="tooltip-atk">⚔️ {hoveredMinion.minion.atk}</span>
             <span className="tooltip-health">❤️ {hoveredMinion.minion.health}</span>
           </div>
-          {hoveredMinion.minion.text && (
+          {/* 被沉默的随从不显示卡牌文本和机制 */}
+          {!hoveredMinion.minion.silenced && hoveredMinion.minion.text && (
             <div className="tooltip-text" dangerouslySetInnerHTML={{ __html: hoveredMinion.minion.text }} />
           )}
-          {hoveredMinion.minion.mechanics && hoveredMinion.minion.mechanics.length > 0 && (
+          {hoveredMinion.minion.silenced && (
+            <div className="tooltip-silenced">🔇 已沉默</div>
+          )}
+          {!hoveredMinion.minion.silenced && hoveredMinion.minion.mechanics && hoveredMinion.minion.mechanics.length > 0 && (
             <div className="tooltip-mechanics">
               {hoveredMinion.minion.mechanics.map((m, idx) => (
                 <span key={idx} className="mechanic-tag">{m}</span>
