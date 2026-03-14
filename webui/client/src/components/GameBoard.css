@@ -2002,3 +2002,118 @@
   border-color: var(--gold);
   color: var(--gold);
 }
+
+/* 奥秘区域样式 */
+.secret-zone {
+  display: flex;
+  gap: clamp(2px, 0.5vw, 4px);
+  position: absolute;
+  z-index: 10;
+}
+
+/* 对手奥秘区域 - 在英雄上方 */
+.opponent-secret-zone {
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* 玩家奥秘区域 - 在武器槽旁边 */
+.player-secret-zone {
+  position: relative;
+  left: -10px;
+  top: 0;
+}
+
+/* 奥秘卡片样式 */
+.secret-card {
+  width: clamp(24px, 5vw, 32px);
+  height: clamp(32px, 6vw, 42px);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* 隐藏的奥秘（对手） */
+.secret-hidden {
+  background: linear-gradient(180deg, #4a0080 0%, #2a0040 100%);
+  border: 2px solid #9933ff;
+  box-shadow: 0 0 8px rgba(153, 51, 255, 0.6);
+}
+
+.secret-hidden::before {
+  content: '?';
+  color: #9933ff;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-weight: bold;
+  text-shadow: 0 0 4px rgba(153, 51, 255, 0.8);
+}
+
+/* 已揭示的奥秘（玩家自己） */
+.secret-revealed {
+  background: linear-gradient(180deg, #6a00a0 0%, #4a0080 100%);
+  border: 2px solid #bb66ff;
+  box-shadow: 0 0 8px rgba(187, 102, 255, 0.6);
+}
+
+.secret-revealed:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 0 12px rgba(187, 102, 255, 0.9);
+}
+
+.secret-icon {
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
+}
+
+/* 奥秘触发动画 */
+@keyframes secret-trigger {
+  0% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  25% {
+    transform: scale(1.3);
+    filter: brightness(2);
+    box-shadow: 0 0 30px rgba(187, 102, 255, 1);
+  }
+  50% {
+    transform: scale(1.2);
+    filter: brightness(1.5);
+  }
+  75% {
+    transform: scale(1.25);
+    filter: brightness(1.8);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+.secret-triggering {
+  animation: secret-trigger 0.8s ease-in-out;
+}
+
+/* 奥秘数量徽章 */
+.secret-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ff4444;
+  color: white;
+  border-radius: 50%;
+  width: clamp(14px, 3vw, 18px);
+  height: clamp(14px, 3vw, 18px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(0.6rem, 1.2vw, 0.75rem);
+  font-weight: bold;
+  border: 1px solid white;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+}

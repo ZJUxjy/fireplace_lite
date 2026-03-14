@@ -61,6 +61,12 @@ export type LogEntry = {
   details?: Record<string, unknown>;
 };
 
+export type SecretData = {
+  name: string;
+  id?: string;
+  text?: string;
+};
+
 export type GameState = {
   turn: number;
   current_player: string;
@@ -85,6 +91,8 @@ export type GameState = {
     max_hand_size?: number;
     field_size?: number;
     max_field_size?: number;
+    secrets?: SecretData[];
+    secret_count: number;
   };
   opponent: {
     hero: string;
@@ -101,6 +109,7 @@ export type GameState = {
     hero_power: HeroPowerData;
     weapon: WeaponData | null;
     fatigue_counter?: number;
+    secret_count: number;
   };
   logs: LogEntry[];
 };

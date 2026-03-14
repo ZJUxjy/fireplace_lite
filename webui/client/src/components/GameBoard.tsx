@@ -783,6 +783,14 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
               <div className="hero-class-icon">{getHeroClassIcon(gameState.opponent.hero)}</div>
               <div className="hero-name">{gameState.opponent.hero.split(' ')[0]}</div>
             </div>
+            {/* 对手奥秘区域 */}
+            {gameState.opponent.secret_count > 0 && (
+              <div className="secret-zone opponent-secret-zone" title={`对手有 ${gameState.opponent.secret_count} 个奥秘`}>
+                {Array(gameState.opponent.secret_count).fill(0).map((_, i) => (
+                  <div key={i} className="secret-card secret-hidden" />
+                ))}
+              </div>
+            )}
             <div className="hero-stats opponent-stats">
               <div className="mana-crystal">💎 {gameState.opponent.mana ?? 0}/{gameState.opponent.max_mana ?? 0}</div>
               <div className="hero-health">❤️ {gameState.opponent.health}</div>
@@ -932,6 +940,20 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
 
           {/* 玩家英雄区 */}
           <div className="hero-area player-hero-area">
+            {/* 玩家奥秘区域 */}
+            {(gameState.player.secret_count ?? 0) > 0 && (
+              <div className="secret-zone player-secret-zone">
+                {gameState.player.secrets?.map((secret, i) => (
+                  <div
+                    key={i}
+                    className="secret-card secret-revealed"
+                    title={`${secret.name}${secret.text ? ': ' + secret.text : ''}`}
+                  >
+                    <div className="secret-icon">🔮</div>
+                  </div>
+                ))}
+              </div>
+            )}
             <div
               className={`weapon-slot player-weapon-slot ${gameState.player.weapon ? 'has-weapon' : ''} ${weaponAttacking ? 'attacking' : ''}`}
               onMouseDown={handleWeaponMouseDown}

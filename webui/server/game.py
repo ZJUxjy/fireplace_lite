@@ -178,14 +178,14 @@ TEST_DECK_CARDS = {
     'MAGE': {
         'freeze': ['CS2_026', 'CS2_033'],  # 冰霜新星、水元素
         'spell_damage': ['CS2_155', 'EX1_584'],  # 大法师、食人魔法师
-        'secrets': ['EX1_294', 'EX1_295'],  # 寒冰屏障、寒冰护体
+        'secrets': ['EX1_294', 'EX1_295', 'EX1_287', 'EX1_289', 'EX1_594', 'ICC_082'],  # 寒冰屏障、寒冰护体、法术反制、寒冰护体(攻击)、蒸发、寒冰克隆
         'fire_spell': ['CS2_029', 'CS2_028'],  # 火球术、暴风雪
     },
     # 猎人
     'HUNTER': {
         'beast': ['CS2_172', 'EX1_534'],  # 血沼迅猛龙、长鬃草原狮
         'deathrattle': ['EX1_534', 'ICC_825'],  # 长鬃草原狮、熊鲨
-        'secrets': ['EX1_533', 'EX1_609'],  # 误导、爆炸陷阱
+        'secrets': ['EX1_533', 'EX1_609', 'EX1_610', 'EX1_611', 'EX1_554'],  # 误导、狙击、爆炸陷阱、冰冻陷阱、毒蛇陷阱
     },
     # 战士
     'WARRIOR': {
@@ -197,7 +197,7 @@ TEST_DECK_CARDS = {
     'PALADIN': {
         'divine_shield': ['EX1_008', 'CS2_122'],  # 银色侍从
         'hand_buff': ['UNG_950', 'CFM_650'],  # 剑龙骑术、适者生存
-        'secrets': ['EX1_130', 'EX1_136'],  # 复仇、以眼还眼
+        'secrets': ['EX1_130', 'EX1_136', 'EX1_132', 'EX1_379'],  # 崇高牺牲、救赎、以眼还眼、忏悔
         'immune': ['CS2_087'],  # 保护之手
     },
     # 潜行者
@@ -501,6 +501,22 @@ class GameManager:
             data["mechanics"] = [str(m) for m in minion.mechanics]
         return data
 
+    def get_secret_data(self, secret):
+        """获取奥秘信息（仅用于玩家自己的奥秘）"""
+        card_id = getattr(secret, 'card_id', None)
+        chinese_info = card_text_loader.get_card_info(card_id) if card_id else {}
+
+        name = chinese_info.get('name') or str(secret)
+        text = chinese_info.get('text')
+
+        data = {
+            "name": name,
+            "id": card_id,
+        }
+        if text:
+            data["text"] = text
+        return data
+
     def get_game_state(self, game_id):
         """获取游戏状态"""
         if game_id not in self.games:
@@ -578,6 +594,8 @@ class GameManager:
                 "max_hand_size": getattr(player, 'max_hand_size', 10),
                 "field_size": len(player.field),
                 "max_field_size": getattr(game, 'MAX_MINIONS_ON_FIELD', 7),
+                "secrets": [self.get_secret_data(s) for s in player.secrets],
+                "secret_count": len(player.secrets),
             },
             "opponent": {
                 "hero": str(opponent.hero),
@@ -600,6 +618,7 @@ class GameManager:
                     "description": str(opponent.hero.power.description) if hasattr(opponent.hero.power, 'description') else "",
                 },
                 "weapon": get_weapon_data(opponent.hero),
+                "secret_count": len(opponent.secrets),
             },
             "logs": logs
         }
