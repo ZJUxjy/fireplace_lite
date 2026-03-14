@@ -170,7 +170,7 @@ TEST_DECK_CARDS = {
         'poisonous': ['EX1_170', 'UNG_937'],  # 帝王眼镜蛇、翼手龙毒刺
         'lifesteal': ['ICC_855', 'BOT_423'],  # 鲜血掠夺者、鲁莽试验者
         'charge': ['CS2_103', 'EX1_084'],  # 冲锋、狼骑兵
-        'rush': ['BOT_502', 'GIL_580'],  # 猛禽、狩猎犬
+        'rush': ['AV_132', 'AV_215'],  # Troll Centurion, Frantic Hippogryph
         # 战吼
         'battlecry': ['CS2_141', 'CS2_189'],  # 侏儒发明家、精灵龙
     },
