@@ -441,6 +441,40 @@
 
 .player-field {
   background: rgba(64, 128, 64, 0.1);
+  position: relative;
+}
+
+/* 随从上限警告 */
+.minion-limit-warning {
+  position: absolute;
+  top: -1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 68, 68, 0.9);
+  color: white;
+  padding: 0.2rem 0.8rem;
+  border-radius: 4px;
+  font-size: clamp(0.6rem, 1.2vw, 0.8rem);
+  font-weight: bold;
+  white-space: nowrap;
+  animation: warning-pulse 1s ease-in-out infinite;
+  z-index: 10;
+}
+
+@keyframes warning-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateX(-50%) scale(1.05);
+  }
+}
+
+.player-field.field-full {
+  background: rgba(255, 68, 68, 0.15);
+  border: 2px dashed rgba(255, 68, 68, 0.5);
 }
 
 .field-placeholder {
@@ -533,6 +567,7 @@
   align-items: center;
   justify-content: center;
   background: linear-gradient(180deg, transparent 0%, rgba(200, 164, 92, 0.3) 50%, transparent 100%);
+  position: relative;
 }
 
 .turn-indicator {
@@ -543,6 +578,69 @@
   font-weight: bold;
   font-size: clamp(0.7rem, 1.5vw, 0.9rem);
   border: 1px solid var(--gold);
+}
+
+/* 烧绳动画容器 */
+.rope-burn-container {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 4px;
+  background: #333;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+/* 烧绳动画 */
+.rope-burn {
+  height: 100%;
+  background: linear-gradient(90deg, #ff6600, #ffcc00, #ff6600);
+  box-shadow: 0 0 10px rgba(255, 102, 0, 0.8);
+  animation: rope-burning 1s linear infinite;
+  width: var(--burn-progress, 100%);
+  transition: width 1s linear;
+}
+
+@keyframes rope-burning {
+  0% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.3);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
+/* 回合倒计时 */
+.turn-timer {
+  position: absolute;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  color: #aaa;
+  font-size: clamp(0.6rem, 1.2vw, 0.8rem);
+  border: 1px solid #555;
+}
+
+.turn-timer.warning {
+  color: #ff4444;
+  border-color: #ff4444;
+  background: rgba(255, 68, 68, 0.2);
+  animation: timer-pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes timer-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
 
 /* 手牌信息区域 */

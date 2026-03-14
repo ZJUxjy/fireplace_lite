@@ -96,6 +96,9 @@ def run_ai_turn(game_id):
     game.end_turn()
     print(f"[AI] Turn ended, current player: {game.current_player}")
 
+    # 更新回合开始时间（玩家回合开始）
+    manager.on_turn_start(game_id)
+
     # 发送最终游戏状态
     state = manager.get_game_state(game_id)
     print(f"[AI] Sending state, current_player in state: {state.get('current_player')}")
@@ -170,6 +173,9 @@ def register_socket_events(socketio):
 
             game.end_turn()
             print(f"[Server] Player ended turn, now is {game.current_player}")
+
+            # 更新回合开始时间
+            manager.on_turn_start(game_id)
 
             # 如果是 PVE 模式，执行 AI 回合
             if g["mode"] == "pve":

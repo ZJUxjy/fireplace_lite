@@ -170,7 +170,7 @@ TEST_DECK_CARDS = {
         'poisonous': ['EX1_170', 'UNG_937'],  # 帝王眼镜蛇、翼手龙毒刺
         'lifesteal': ['ICC_855', 'BOT_423'],  # 鲜血掠夺者、鲁莽试验者
         'charge': ['CS2_103', 'EX1_084'],  # 冲锋、狼骑兵
-        'rush': ['AV_132', 'AV_215'],  # Troll Centurion, Frantic Hippogryph
+        'rush': ['AV_132', 'AV_215', 'SCH_311'],  # Troll Centurion, Frantic Hippogryph, Animated Broomstick
         # 战吼
         'battlecry': ['CS2_141', 'CS2_189'],  # 侏儒发明家、精灵龙
     },
@@ -334,7 +334,9 @@ class GameManager:
             "mode": mode,
             "players": [player1, player2],
             "current": player1,
-            "logger": logger
+            "logger": logger,
+            "turn_start_time": datetime.now(),
+            "turn_timeout": player1.timeout
         }
 
         return game_id
@@ -450,7 +452,18 @@ class GameManager:
         }
         # 是否可攻击（仅玩家随从需要）
         if include_can_attack:
-            data["can_attack"] = minion.can_attack()
+            # 基础 can_attack 检查
+            can_attack = minion.can_attack()
+            # 对于 Charge/Rush 随从，在第一回合需要特殊处理
+            has_charge = getattr(minion, 'charge', False)
+            has_rush = getattr(minion, 'rush', False)
+            turns_in_play = getattr(minion, 'turns_in_play', 0)
+            num_attacks = getattr(minion, 'num_attacks', 0)
+            max_attacks = getattr(minion, 'max_attacks', 1)
+            # 如果随从有 Charge/Rush，是第一回合，且还可以攻击
+            if (has_charge or has_rush) and turns_in_play == 0 and num_attacks < max_attacks:
+                can_attack = True
+            data["can_attack"] = can_attack
         # 嘲讽
         data["taunt"] = minion.taunt
         # 亡语
@@ -535,9 +548,17 @@ class GameManager:
                 }
             return None
 
+        # 计算回合剩余时间
+        turn_start = g.get("turn_start_time")
+        timeout = g.get("turn_timeout", 75)
+        elapsed = (datetime.now() - turn_start).total_seconds() if turn_start else 0
+        turn_remaining = max(0, timeout - elapsed)
+
         return {
             "turn": game.turn,
             "current_player": "player1" if game.current_player == player else "player2",
+            "turn_remaining": int(turn_remaining),
+            "turn_timeout": timeout,
             "player": {
                 "hero": str(player.hero),
                 "health": player.hero.health,
@@ -555,6 +576,8 @@ class GameManager:
                 "fatigue_counter": getattr(player, 'fatigue_counter', 0),
                 "hand_size": len(player.hand),
                 "max_hand_size": getattr(player, 'max_hand_size', 10),
+                "field_size": len(player.field),
+                "max_field_size": getattr(game, 'MAX_MINIONS_ON_FIELD', 7),
             },
             "opponent": {
                 "hero": str(opponent.hero),
@@ -588,6 +611,15 @@ class GameManager:
             logger = self.games[game_id].get("logger")
             if logger:
                 logger.add_log(log_type, message, details)
+
+    def on_turn_start(self, game_id):
+        """回合开始时的回调，更新回合开始时间"""
+        if game_id in self.games:
+            g = self.games[game_id]
+            g["turn_start_time"] = datetime.now()
+            # 更新timeout为当前玩家的timeout
+            current_player = g["game"].current_player
+            g["turn_timeout"] = getattr(current_player, 'timeout', 75)
 
     def get_target_by_id(self, game_id, target_id):
         """根据目标 ID 获取实际的游戏实体"""

@@ -11,6 +11,12 @@ interface GameBoardProps {
 
 interface MinionData extends ServiceMinionData {}
 
+// 游戏常量
+const ROPE_BURN_THRESHOLD = 20; // 烧绳动画启动阈值（秒）
+const MAX_MINIONS = 7; // 随从上限
+const MAX_HAND_SIZE = 10; // 手牌上限
+const DEFAULT_TURN_TIMEOUT = 75; // 默认回合超时时间（秒）
+
 // 格式化日志条目
 function formatLogEntry(log: LogEntry): string {
   const timestamp = new Date(log.timestamp).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -847,10 +853,33 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
             <div className="turn-indicator">
               {t('game.turn')} {gameState.turn}
             </div>
+            {/* 烧绳动画 - 当剩余时间少于阈值时显示 */}
+            {isMyTurn && (gameState.turn_remaining ?? 0) <= ROPE_BURN_THRESHOLD && (gameState.turn_remaining ?? 0) > 0 && (
+              <div className="rope-burn-container">
+                <div
+                  className="rope-burn"
+                  style={{
+                    '--burn-progress': `${((gameState.turn_remaining ?? 0) / ROPE_BURN_THRESHOLD) * 100}%`
+                  } as React.CSSProperties}
+                />
+              </div>
+            )}
+            {/* 回合倒计时 */}
+            {isMyTurn && (
+              <div className={`turn-timer ${(gameState.turn_remaining ?? DEFAULT_TURN_TIMEOUT) <= ROPE_BURN_THRESHOLD ? 'warning' : ''}`}>
+                ⏱️ {gameState.turn_remaining ?? DEFAULT_TURN_TIMEOUT}s
+              </div>
+            )}
           </div>
 
           {/* 玩家随从区域 */}
-          <div className="field player-field">
+          <div className={`field player-field ${gameState.player.field.length >= (gameState.player.max_field_size || MAX_MINIONS) ? 'field-full' : ''}`}>
+            {/* 随从上限警告 */}
+            {gameState.player.field.length >= (gameState.player.max_field_size || MAX_MINIONS) && (
+              <div className="minion-limit-warning">
+                ⚠️ 随从已满 ({gameState.player.field.length}/{gameState.player.max_field_size || MAX_MINIONS})
+              </div>
+            )}
             {gameState.player.field.map((minion, i) => (
               <div
                 key={i}
@@ -956,8 +985,8 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
 
           {/* 玩家手牌区域 */}
           <div className="hand-info">
-            <span className={`hand-count ${gameState.player.hand.length >= 10 ? 'full' : ''}`}>
-              🎴 {gameState.player.hand.length}/10
+            <span className={`hand-count ${gameState.player.hand.length >= MAX_HAND_SIZE ? 'full' : ''}`}>
+              🎴 {gameState.player.hand.length}/{MAX_HAND_SIZE}
             </span>
             {gameState.player.deck === 0 && (
               <span className="deck-empty" title="牌库已空，将受到疲劳伤害">

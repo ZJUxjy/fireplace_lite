@@ -887,7 +887,7 @@ class Character(LiveEntity):
         targets = self.controller.opponent.characters
         if self.cannot_attack_heroes:
             targets = self.controller.opponent.field
-        if self.rush and not self.turns_in_play:
+        if self.rush and not self.charge and not self.turns_in_play:
             targets = self.controller.opponent.field
         targets = targets.filter(dormant=False)
 

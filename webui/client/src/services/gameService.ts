@@ -64,6 +64,8 @@ export type LogEntry = {
 export type GameState = {
   turn: number;
   current_player: string;
+  turn_remaining?: number;
+  turn_timeout?: number;
   player: {
     hero: string;
     health: number;
@@ -81,6 +83,8 @@ export type GameState = {
     fatigue_counter?: number;
     hand_size?: number;
     max_hand_size?: number;
+    field_size?: number;
+    max_field_size?: number;
   };
   opponent: {
     hero: string;
