@@ -28,6 +28,11 @@ export type MinionData = {
   windfury?: boolean;
   frozen?: boolean;
   poisonous?: boolean;
+  charge?: boolean;
+  rush?: boolean;
+  turns_in_play?: number;
+  immune?: boolean;
+  silenced?: boolean;
   text?: string;
   race?: string;
   mechanics?: string[];

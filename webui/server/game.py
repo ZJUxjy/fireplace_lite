@@ -170,6 +170,7 @@ TEST_DECK_CARDS = {
         'poisonous': ['EX1_170', 'UNG_937'],  # 帝王眼镜蛇、翼手龙毒刺
         'lifesteal': ['ICC_855', 'BOT_423'],  # 鲜血掠夺者、鲁莽试验者
         'charge': ['CS2_103', 'EX1_084'],  # 冲锋、狼骑兵
+        'rush': ['BOT_502', 'GIL_580'],  # 猛禽、狩猎犬
         # 战吼
         'battlecry': ['CS2_141', 'CS2_189'],  # 侏儒发明家、精灵龙
     },
@@ -462,6 +463,16 @@ class GameManager:
         data["frozen"] = getattr(minion, 'frozen', False)
         # 剧毒
         data["poisonous"] = getattr(minion, 'poisonous', False)
+        # 冲锋
+        data["charge"] = getattr(minion, 'charge', False)
+        # 突袭
+        data["rush"] = getattr(minion, 'rush', False)
+        # 登场回合数 (用于Charge/Rush判断)
+        data["turns_in_play"] = getattr(minion, 'turns_in_play', 0)
+        # 免疫
+        data["immune"] = getattr(minion, 'immune', False)
+        # 沉默
+        data["silenced"] = getattr(minion, 'silenced', False)
         # 卡牌描述
         if text:
             data["text"] = text

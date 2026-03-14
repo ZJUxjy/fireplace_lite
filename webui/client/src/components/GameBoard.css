@@ -1512,6 +1512,100 @@
   box-shadow: 0 0 12px rgba(76, 175, 80, 0.6);
 }
 
+/* 冲锋图标 */
+.charge-icon {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(0.6rem, 1.2vw, 0.9rem);
+  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.9));
+  z-index: 4;
+  animation: charge-pulse 1s ease-in-out infinite;
+}
+
+@keyframes charge-pulse {
+  0%, 100% {
+    transform: translateX(-50%) scale(1);
+    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.9));
+  }
+  50% {
+    transform: translateX(-50%) scale(1.2);
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 1));
+  }
+}
+
+/* 突袭图标 */
+.rush-icon {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(0.6rem, 1.2vw, 0.9rem);
+  filter: drop-shadow(0 0 4px rgba(100, 200, 100, 0.9));
+  z-index: 4;
+  animation: rush-pulse 1s ease-in-out infinite;
+}
+
+@keyframes rush-pulse {
+  0%, 100% {
+    transform: translateX(-50%) scale(1);
+    filter: drop-shadow(0 0 4px rgba(100, 200, 100, 0.9));
+  }
+  50% {
+    transform: translateX(-50%) scale(1.2);
+    filter: drop-shadow(0 0 8px rgba(100, 255, 100, 1));
+  }
+}
+
+/* 免疫图标 */
+.immune-icon {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  font-size: clamp(0.7rem, 1.3vw, 1rem);
+  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 1));
+  z-index: 4;
+  animation: immune-glow 1.5s ease-in-out infinite;
+}
+
+@keyframes immune-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.8));
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 1));
+  }
+}
+
+/* 免疫随从金色边框效果 */
+.minion:has(.immune-icon) .minion-body {
+  border-color: #FFD700;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+}
+
+/* 沉默图标 */
+.silenced-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  filter: drop-shadow(0 0 5px rgba(150, 150, 150, 0.9));
+  z-index: 5;
+  opacity: 0.8;
+}
+
+/* 沉默随从灰色遮罩 */
+.minion:has(.silenced-icon) .minion-body {
+  filter: grayscale(60%);
+}
+
+.minion:has(.silenced-icon) .minion-name {
+  color: #888;
+  font-style: italic;
+}
+
 /* 有效攻击目标高亮 */
 .minion.valid-target .minion-body {
   box-shadow: 0 0 20px rgba(255, 100, 100, 0.8);

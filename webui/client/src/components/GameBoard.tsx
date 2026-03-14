@@ -373,7 +373,12 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
   const getValidAttackTargets = () => {
     if (!gameState || attackingMinion === null) return { minions: [] as number[], canAttackHero: false };
 
+    const attacker = gameState.player.field[attackingMinion];
     const opponent = gameState.opponent;
+
+    // Rush 随从在第一回合只能攻击随从，不能攻击英雄
+    const isRushFirstTurn = attacker?.rush && attacker?.turns_in_play === 0;
+
     if (opponent.has_taunt) {
       return {
         minions: opponent.field
@@ -382,9 +387,10 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
         canAttackHero: false
       };
     }
+
     return {
       minions: opponent.field.map((_, i) => i),
-      canAttackHero: true
+      canAttackHero: !isRushFirstTurn  // Rush 随从第一回合不能攻击英雄
     };
   };
 
@@ -819,6 +825,18 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
                 {minion.poisonous && (
                   <div className="poisonous-icon" title="剧毒">🐍</div>
                 )}
+                {(minion.charge && minion.turns_in_play === 0) && (
+                  <div className="charge-icon" title="冲锋">⚡</div>
+                )}
+                {(minion.rush && minion.turns_in_play === 0) && (
+                  <div className="rush-icon" title="突袭">🌪️</div>
+                )}
+                {minion.immune && (
+                  <div className="immune-icon" title="免疫">🛡️</div>
+                )}
+                {minion.silenced && (
+                  <div className="silenced-icon" title="沉默">🔇</div>
+                )}
               </div>
             ))}
             {gameState.opponent.field.length === 0 && <div className="field-placeholder" />}
@@ -858,6 +876,18 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
                 )}
                 {minion.poisonous && (
                   <div className="poisonous-icon" title="剧毒">🐍</div>
+                )}
+                {(minion.charge && minion.turns_in_play === 0) && (
+                  <div className="charge-icon" title="冲锋">⚡</div>
+                )}
+                {(minion.rush && minion.turns_in_play === 0) && (
+                  <div className="rush-icon" title="突袭">🌪️</div>
+                )}
+                {minion.immune && (
+                  <div className="immune-icon" title="免疫">🛡️</div>
+                )}
+                {minion.silenced && (
+                  <div className="silenced-icon" title="沉默">🔇</div>
                 )}
               </div>
             ))}
