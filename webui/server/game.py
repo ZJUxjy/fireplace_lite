@@ -392,6 +392,14 @@ class GameManager:
         else:
             data["requires_target"] = False
 
+        # Choose One 抉择信息
+        if hasattr(card, 'must_choose_one') and card.must_choose_one:
+            data["must_choose_one"] = True
+            if hasattr(card, 'choose_cards') and card.choose_cards:
+                data["choose_cards"] = [self.get_card_data(c) for c in card.choose_cards]
+        else:
+            data["must_choose_one"] = False
+
         return data
 
     def _get_target_id(self, target):

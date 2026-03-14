@@ -14,6 +14,8 @@ export type CardData = {
   lifesteal?: boolean;
   has_combo?: boolean;
   poisonous?: boolean;
+  must_choose_one?: boolean;
+  choose_cards?: CardData[];
 };
 
 export type MinionData = {
@@ -136,12 +138,13 @@ class GameService {
     }
   }
 
-  playCard(cardIndex: number, targetId?: string) {
+  playCard(cardIndex: number, targetId?: string, chooseCardId?: string) {
     if (this.gameId) {
       socketService.emit('play_card', {
         game_id: this.gameId,
         card_index: cardIndex,
-        target_id: targetId
+        target_id: targetId,
+        choose_card_id: chooseCardId
       });
     }
   }

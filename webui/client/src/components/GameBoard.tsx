@@ -160,6 +160,7 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
     requiredCount: number;
     validTargets: string[];
     committed: boolean; // true 表示不能再取消
+    chooseCardId?: string; // Choose One 选择的卡牌ID
   } | null>(null);
 
   // 预放置/预施法状态（用于随从战吼和法术目标选择）
@@ -168,6 +169,13 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
     card: CardData;
     type: 'minion' | 'spell';
     validTargets: string[];
+  } | null>(null);
+
+  // Choose One 抉择状态
+  const [chooseOneState, setChooseOneState] = useState<{
+    cardIndex: number;
+    card: CardData;
+    options: CardData[];
   } | null>(null);
 
   const isMyTurn = gameState?.current_player === 'player1';
@@ -291,6 +299,17 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
     // 判断卡牌类型：有攻击力的是随从，没有的是法术
     const isMinion = card.atk !== undefined && card.health !== undefined;
 
+    // 检查是否需要 Choose One 抉择
+    if (card.must_choose_one && card.choose_cards && card.choose_cards.length > 0) {
+      setChooseOneState({
+        cardIndex,
+        card,
+        options: card.choose_cards,
+      });
+      setDraggedCard(null);
+      return;
+    }
+
     if (isMinion) {
       // ===== 随从牌逻辑 =====
       if (!isOnBattlefield) {
@@ -379,6 +398,49 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
       // 添加日志提示
       setActionLog(prev => ['[系统] 取消了卡牌打出', ...prev.slice(0, 29)]);
     }
+  };
+
+  // 处理 Choose One 选择
+  const handleChooseOne = (optionIndex: number) => {
+    if (!chooseOneState) return;
+
+    const { cardIndex, options } = chooseOneState;
+    const selectedOption = options[optionIndex];
+
+    // 检查选择后是否还需要目标
+    const card = gameState?.player.hand[cardIndex];
+    if (card) {
+      if (card.requires_target && card.valid_targets && card.valid_targets.length > 0) {
+        // 选择后还需要目标，进入 staged 状态
+        const isMinion = card.atk !== undefined && card.health !== undefined;
+        setStagedCard({
+          cardIndex,
+          card,
+          type: isMinion ? 'minion' : 'spell',
+          validTargets: card.valid_targets,
+        });
+        setPendingAction({
+          type: 'card',
+          cardIndex,
+          targets: [],
+          requiredCount: 1,
+          validTargets: card.valid_targets,
+          committed: false,
+          chooseCardId: selectedOption.id,
+        });
+      } else {
+        // 直接打出，带上选择
+        gameService.playCard(cardIndex, undefined, selectedOption.id);
+      }
+    }
+
+    setChooseOneState(null);
+  };
+
+  // 取消 Choose One 选择
+  const cancelChooseOne = () => {
+    setChooseOneState(null);
+    setActionLog(prev => ['[系统] 取消了抉择', ...prev.slice(0, 29)]);
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -470,9 +532,10 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
     if (!stagedCard) return;
 
     const { cardIndex } = stagedCard;
+    const chooseCardId = pendingAction?.chooseCardId;
 
     // 发送打出请求
-    gameService.playCard(cardIndex, targetId);
+    gameService.playCard(cardIndex, targetId, chooseCardId);
 
     // 清理状态
     setStagedCard(null);
@@ -1203,6 +1266,40 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
       {showTurnBanner && (
         <div className="turn-banner">
           {t('game.yourTurn')}
+        </div>
+      )}
+
+      {/* Choose One 抉择对话框 */}
+      {chooseOneState && (
+        <div className="choose-one-overlay" onClick={cancelChooseOne}>
+          <div className="choose-one-dialog" onClick={e => e.stopPropagation()}>
+            <h3 className="choose-one-title">🌿 抉择</h3>
+            <p className="choose-one-subtitle">选择一张卡牌效果</p>
+            <div className="choose-one-options">
+              {chooseOneState.options.map((option, index) => (
+                <div
+                  key={option.id || option.name}
+                  className="choose-one-card"
+                  onClick={() => handleChooseOne(index)}
+                >
+                  <div className="choose-one-card-cost">{option.cost}</div>
+                  <div className="choose-one-card-name">{option.name}</div>
+                  {option.text && (
+                    <div className="choose-one-card-text">{option.text}</div>
+                  )}
+                  {option.atk !== undefined && option.health !== undefined && (
+                    <div className="choose-one-card-stats">
+                      <span>{option.atk}</span>
+                      <span>{option.health}</span>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+            <button className="choose-one-cancel" onClick={cancelChooseOne}>
+              取消
+            </button>
+          </div>
         </div>
       )}
 

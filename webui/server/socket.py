@@ -210,6 +210,7 @@ def register_socket_events(socketio):
         game_id = data.get('game_id')
         card_index = data.get('card_index')
         target_id = data.get('target_id')
+        choose_card_id = data.get('choose_card_id')
 
         g = manager.games[game_id]
         player = g["players"][0]
@@ -226,6 +227,15 @@ def register_socket_events(socketio):
             if target_id and card.requires_target():
                 target = manager.get_target_by_id(game_id, target_id)
 
+            # 处理 Choose One 抉择
+            choose = None
+            if choose_card_id and hasattr(card, 'must_choose_one') and card.must_choose_one:
+                # 查找对应的抉择卡牌
+                for choose_card in card.choose_cards:
+                    if getattr(choose_card, 'id', str(choose_card)) == choose_card_id:
+                        choose = choose_card
+                        break
+
             try:
                 # 记录出牌日志
                 target_name = str(target) if target else None
@@ -240,7 +250,7 @@ def register_socket_events(socketio):
                 # 检查是否为奥秘
                 is_secret = hasattr(card, 'data') and hasattr(card.data, 'secret') and card.data.secret
 
-                card.play(target=target)
+                card.play(target=target, choose=choose)
 
                 # 记录战吼效果（如果有）
                 if hasattr(card, 'has_battlecry') and card.has_battlecry:
