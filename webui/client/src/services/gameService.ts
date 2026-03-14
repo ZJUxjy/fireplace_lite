@@ -78,6 +78,9 @@ export type GameState = {
     can_end_turn: boolean;
     hero_power: HeroPowerData;
     weapon: WeaponData | null;
+    fatigue_counter?: number;
+    hand_size?: number;
+    max_hand_size?: number;
   };
   opponent: {
     hero: string;
@@ -93,6 +96,7 @@ export type GameState = {
     has_taunt?: boolean;
     hero_power: HeroPowerData;
     weapon: WeaponData | null;
+    fatigue_counter?: number;
   };
   logs: LogEntry[];
 };

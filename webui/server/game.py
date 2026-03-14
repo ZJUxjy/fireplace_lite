@@ -198,6 +198,7 @@ TEST_DECK_CARDS = {
         'divine_shield': ['EX1_008', 'CS2_122'],  # 银色侍从
         'hand_buff': ['UNG_950', 'CFM_650'],  # 剑龙骑术、适者生存
         'secrets': ['EX1_130', 'EX1_136'],  # 复仇、以眼还眼
+        'immune': ['CS2_087'],  # 保护之手
     },
     # 潜行者
     'ROGUE': {
@@ -551,6 +552,9 @@ class GameManager:
                 "can_end_turn": game.current_player == player,
                 "hero_power": hero_power_data,
                 "weapon": get_weapon_data(player.hero),
+                "fatigue_counter": getattr(player, 'fatigue_counter', 0),
+                "hand_size": len(player.hand),
+                "max_hand_size": getattr(player, 'max_hand_size', 10),
             },
             "opponent": {
                 "hero": str(opponent.hero),
@@ -562,6 +566,7 @@ class GameManager:
                 "spell_power": getattr(opponent, 'spellpower', 0),
                 "deck": len(opponent.deck),
                 "hand_count": len(opponent.hand),
+                "fatigue_counter": getattr(opponent, 'fatigue_counter', 0),
                 "field": [self.get_minion_data(m) for m in opponent.field],
                 "has_taunt": any(m.taunt for m in opponent.field),
                 "hero_power": {

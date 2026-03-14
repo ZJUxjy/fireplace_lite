@@ -784,6 +784,12 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
               {gameState.opponent.spell_power > 0 && (
                 <div className="spell-power opponent">🔮 +{gameState.opponent.spell_power}</div>
               )}
+              {/* 疲劳计数器 - 只在有疲劳时显示 */}
+              {(gameState.opponent.fatigue_counter ?? 0) > 0 && (
+                <div className="fatigue-counter opponent" title="疲劳">
+                  😫 {gameState.opponent.fatigue_counter}
+                </div>
+              )}
             </div>
             <div
               className="hero-power opponent-hero-power"
@@ -939,6 +945,12 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
               {gameState.player.spell_power > 0 && (
                 <div className="spell-power">🔮 +{gameState.player.spell_power}</div>
               )}
+              {/* 疲劳计数器 - 只在有疲劳时显示 */}
+              {(gameState.player.fatigue_counter ?? 0) > 0 && (
+                <div className="fatigue-counter" title="疲劳">
+                  😫 {gameState.player.fatigue_counter}
+                </div>
+              )}
             </div>
             <div
               className={`hero-power player-hero-power ${isMyTurn && gameState.player.hero_power?.is_usable ? 'usable' : ''}`}
@@ -954,7 +966,17 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
             </div>
           </div>
 
-          {/* 玩家手牌 */}
+          {/* 玩家手牌区域 */}
+          <div className="hand-info">
+            <span className={`hand-count ${gameState.player.hand.length >= 10 ? 'full' : ''}`}>
+              🎴 {gameState.player.hand.length}/10
+            </span>
+            {gameState.player.deck === 0 && (
+              <span className="deck-empty" title="牌库已空，将受到疲劳伤害">
+                📭 牌库已空
+              </span>
+            )}
+          </div>
           <div className={`player-hand-area ${stagedCard ? 'has-staged-card' : ''}`}>
             {gameState.player.hand.map((card, i) => {
               const totalCards = gameState.player.hand.length;

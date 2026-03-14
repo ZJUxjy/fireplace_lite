@@ -545,6 +545,74 @@
   border: 1px solid var(--gold);
 }
 
+/* 手牌信息区域 */
+.hand-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: clamp(0.7rem, 1.4vw, 0.95rem);
+}
+
+.hand-count {
+  color: #aaa;
+  padding: 0.2rem 0.6rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 4px;
+  border: 1px solid #555;
+}
+
+.hand-count.full {
+  color: #ff4444;
+  border-color: #ff4444;
+  background: rgba(255, 68, 68, 0.2);
+  animation: hand-full-pulse 1s ease-in-out infinite;
+}
+
+@keyframes hand-full-pulse {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(255, 68, 68, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.8);
+  }
+}
+
+.deck-empty {
+  color: #ff8844;
+  padding: 0.2rem 0.6rem;
+  background: rgba(255, 136, 68, 0.2);
+  border-radius: 4px;
+  border: 1px solid #ff8844;
+  animation: deck-empty-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes deck-empty-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* 疲劳计数器 */
+.fatigue-counter {
+  color: #ff8844;
+  padding: 0.2rem 0.5rem;
+  background: rgba(255, 136, 68, 0.2);
+  border-radius: 4px;
+  border: 1px solid #ff8844;
+  font-weight: bold;
+}
+
+.fatigue-counter.opponent {
+  background: rgba(200, 100, 50, 0.2);
+  border-color: #c86432;
+  color: #c86432;
+}
+
 /* 玩家手牌区 */
 .player-hand-area {
   min-height: calc(var(--card-height) + 1rem);
