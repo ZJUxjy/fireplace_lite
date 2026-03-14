@@ -831,12 +831,6 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
                 {minion.poisonous && (
                   <div className="poisonous-icon" title="剧毒">🐍</div>
                 )}
-                {(minion.charge && minion.turns_in_play === 0) && (
-                  <div className="charge-icon" title="冲锋">⚡</div>
-                )}
-                {(minion.rush && minion.turns_in_play === 0) && (
-                  <div className="rush-icon" title="突袭">🌪️</div>
-                )}
                 {minion.immune && (
                   <div className="immune-icon" title="免疫">🛡️</div>
                 )}
@@ -861,7 +855,7 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
               <div
                 key={i}
                 data-index={i}
-                className={`minion ${minion.can_attack && isMyTurn ? 'can-attack' : ''} ${minion.taunt ? 'taunt' : ''} ${minion.divine_shield ? 'divine-shield' : ''} ${minion.stealth ? 'stealth' : ''} ${minion.windfury ? 'windfury' : ''} ${minion.frozen ? 'frozen' : ''}`}
+                className={`minion ${minion.can_attack && isMyTurn ? 'can-attack' : ''} ${minion.rush && minion.turns_in_play === 0 && minion.can_attack && isMyTurn ? 'rush-limited' : ''} ${minion.taunt ? 'taunt' : ''} ${minion.divine_shield ? 'divine-shield' : ''} ${minion.stealth ? 'stealth' : ''} ${minion.windfury ? 'windfury' : ''} ${minion.frozen ? 'frozen' : ''}`}
                 onMouseDown={(e) => handleAttackMouseDown(e, i)}
                 onMouseEnter={(e) => setHoveredMinion({ minion, x: e.clientX, y: e.clientY })}
                 onMouseLeave={() => setHoveredMinion(null)}
@@ -882,12 +876,6 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
                 )}
                 {minion.poisonous && (
                   <div className="poisonous-icon" title="剧毒">🐍</div>
-                )}
-                {(minion.charge && minion.turns_in_play === 0) && (
-                  <div className="charge-icon" title="冲锋">⚡</div>
-                )}
-                {(minion.rush && minion.turns_in_play === 0) && (
-                  <div className="rush-icon" title="突袭">🌪️</div>
                 )}
                 {minion.immune && (
                   <div className="immune-icon" title="免疫">🛡️</div>

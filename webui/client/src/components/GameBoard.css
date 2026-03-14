@@ -1591,50 +1591,51 @@
   box-shadow: 0 0 12px rgba(76, 175, 80, 0.6);
 }
 
-/* 冲锋图标 */
-.charge-icon {
-  position: absolute;
-  top: -18px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: clamp(0.6rem, 1.2vw, 0.9rem);
-  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.9));
-  z-index: 4;
-  animation: charge-pulse 1s ease-in-out infinite;
+/* 突袭限制状态 - 薄烟雾效果的绿框 */
+.minion.rush-limited .minion-body {
+  border: 2px solid rgba(76, 175, 80, 0.8);
+  box-shadow:
+    0 0 8px rgba(76, 175, 80, 0.4),
+    inset 0 0 12px rgba(76, 175, 80, 0.2);
+  animation: rush-smoke 2s ease-in-out infinite;
 }
 
-@keyframes charge-pulse {
+@keyframes rush-smoke {
   0%, 100% {
-    transform: translateX(-50%) scale(1);
-    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.9));
+    border-color: rgba(76, 175, 80, 0.6);
+    box-shadow:
+      0 0 6px rgba(76, 175, 80, 0.3),
+      inset 0 0 8px rgba(76, 175, 80, 0.15);
   }
   50% {
-    transform: translateX(-50%) scale(1.2);
-    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 1));
+    border-color: rgba(100, 200, 100, 0.9);
+    box-shadow:
+      0 0 12px rgba(76, 175, 80, 0.5),
+      inset 0 0 16px rgba(76, 175, 80, 0.25);
   }
 }
 
-/* 突袭图标 */
-.rush-icon {
+/* 突袭限制状态下的悬停提示 */
+.minion.rush-limited::after {
+  content: '仅可攻击随从';
   position: absolute;
-  top: -18px;
+  top: -28px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: clamp(0.6rem, 1.2vw, 0.9rem);
-  filter: drop-shadow(0 0 4px rgba(100, 200, 100, 0.9));
-  z-index: 4;
-  animation: rush-pulse 1s ease-in-out infinite;
+  font-size: clamp(0.5rem, 1vw, 0.75rem);
+  color: #4CAF50;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  z-index: 10;
 }
 
-@keyframes rush-pulse {
-  0%, 100% {
-    transform: translateX(-50%) scale(1);
-    filter: drop-shadow(0 0 4px rgba(100, 200, 100, 0.9));
-  }
-  50% {
-    transform: translateX(-50%) scale(1.2);
-    filter: drop-shadow(0 0 8px rgba(100, 255, 100, 1));
-  }
+.minion.rush-limited:hover::after {
+  opacity: 1;
 }
 
 /* 免疫图标 */
