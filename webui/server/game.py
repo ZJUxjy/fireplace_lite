@@ -178,7 +178,7 @@ TEST_DECK_CARDS = {
     'MAGE': {
         'freeze': ['CS2_026', 'CS2_033'],  # 冰霜新星、水元素
         'spell_damage': ['CS2_155', 'EX1_584'],  # 大法师、食人魔法师
-        'secrets': ['EX1_294', 'EX1_295', 'EX1_287', 'EX1_289', 'EX1_594', 'ICC_082'],  # 寒冰屏障、寒冰护体、法术反制、寒冰护体(攻击)、蒸发、寒冰克隆
+        'secrets': ['EX1_294', 'EX1_295', 'EX1_287', 'EX1_289', 'EX1_594', 'ICC_082'],  # 寒冰屏障、寒冰护体、法术反制、寒冰护体(受攻击时)、蒸发、寒冰克隆
         'fire_spell': ['CS2_029', 'CS2_028'],  # 火球术、暴风雪
     },
     # 猎人
@@ -596,6 +596,7 @@ class GameManager:
                 "max_field_size": getattr(game, 'MAX_MINIONS_ON_FIELD', 7),
                 "secrets": [self.get_secret_data(s) for s in player.secrets],
                 "secret_count": len(player.secrets),
+                "max_secrets": getattr(game, 'MAX_SECRETS_ON_PLAY', 5),
             },
             "opponent": {
                 "hero": str(opponent.hero),
@@ -639,6 +640,53 @@ class GameManager:
             # 更新timeout为当前玩家的timeout
             current_player = g["game"].current_player
             g["turn_timeout"] = getattr(current_player, 'timeout', 75)
+
+    def track_secrets(self, game_id):
+        """追踪奥秘状态，检测触发的奥秘"""
+        if game_id not in self.games:
+            return []
+        g = self.games[game_id]
+        player = g["players"][0]
+        opponent = g["players"][1]
+
+        # 获取当前奥秘列表
+        current_secrets = {str(s): s for s in player.secrets}
+        current_opponent_secrets = {str(s): s for s in opponent.secrets}
+
+        # 检查是否有之前记录的奥秘列表
+        if "prev_secrets" not in g:
+            g["prev_secrets"] = {}
+            g["prev_opponent_secrets"] = {}
+
+        prev_secrets = g["prev_secrets"]
+        prev_opponent_secrets = g["prev_opponent_secrets"]
+
+        triggered = []
+
+        # 检查玩家奥秘触发（被对手触发）
+        for secret_name, secret in prev_secrets.items():
+            if secret_name not in current_secrets:
+                # 奥秘已触发
+                triggered.append({
+                    'player': 'player',
+                    'secret_name': secret_name,
+                    'card_id': getattr(secret, 'id', None)
+                })
+
+        # 检查对手奥秘触发
+        for secret_name, secret in prev_opponent_secrets.items():
+            if secret_name not in current_opponent_secrets:
+                triggered.append({
+                    'player': 'opponent',
+                    'secret_name': secret_name,
+                    'card_id': getattr(secret, 'id', None)
+                })
+
+        # 更新记录的奥秘列表
+        g["prev_secrets"] = current_secrets
+        g["prev_opponent_secrets"] = current_opponent_secrets
+
+        return triggered
 
     def get_target_by_id(self, game_id, target_id):
         """根据目标 ID 获取实际的游戏实体"""

@@ -201,9 +201,24 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
       setActionLog(prev => [`Error: ${data.message}`, ...prev.slice(0, 20)]);
     };
 
+    const handleSecretTriggered = (data: { game_id: string; secret: { player: string; secret_name: string; card_id?: string } }) => {
+      // 显示奥秘触发动画
+      const secretZone = document.querySelector(data.secret.player === 'player' ? '.player-secret-zone' : '.opponent-secret-zone');
+      if (secretZone) {
+        const secretCards = secretZone.querySelectorAll('.secret-card');
+        secretCards.forEach(card => {
+          card.classList.add('secret-triggering');
+          setTimeout(() => card.classList.remove('secret-triggering'), 800);
+        });
+      }
+      // 添加到日志
+      setActionLog(prev => [`🔮 奥秘 "${data.secret.secret_name}" 被触发了！`, ...prev.slice(0, 30)]);
+    };
+
     gameService.createGame(mode, playerClass, useTestDeck);
     gameService.onGameState(handleGameState);
     gameService.onError(handleError);
+    gameService.onSecretTriggered(handleSecretTriggered);
 
     return () => {
       gameService.cleanup();
@@ -942,16 +957,22 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
           <div className="hero-area player-hero-area">
             {/* 玩家奥秘区域 */}
             {(gameState.player.secret_count ?? 0) > 0 && (
-              <div className="secret-zone player-secret-zone">
-                {gameState.player.secrets?.map((secret, i) => (
+              <div className={`secret-zone player-secret-zone ${(gameState.player.secret_count ?? 0) >= (gameState.player.max_secrets ?? 5) ? 'secrets-full' : ''}`}>
+                {gameState.player.secrets?.map((secret) => (
                   <div
-                    key={i}
+                    key={secret.id || secret.name}
                     className="secret-card secret-revealed"
                     title={`${secret.name}${secret.text ? ': ' + secret.text : ''}`}
                   >
                     <div className="secret-icon">🔮</div>
                   </div>
                 ))}
+                {/* 奥秘上限警告 */}
+                {(gameState.player.secret_count ?? 0) >= (gameState.player.max_secrets ?? 5) && (
+                  <div className="secret-limit-warning" title="奥秘数量已达上限">
+                    ⚠️ 5/5
+                  </div>
+                )}
               </div>
             )}
             <div

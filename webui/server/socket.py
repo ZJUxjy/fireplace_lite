@@ -101,6 +101,14 @@ def run_ai_turn(game_id):
 
     # 发送最终游戏状态
     state = manager.get_game_state(game_id)
+
+    # 检查奥秘触发
+    triggered_secrets = manager.track_secrets(game_id)
+    for secret_info in triggered_secrets:
+        manager.log_event(game_id, 'secret_triggered', f'奥秘 "{secret_info["secret_name"]}" 被触发了！', secret_info)
+        if _socketio:
+            _socketio.emit('secret_triggered', {'game_id': game_id, 'secret': secret_info}, room=game_id)
+
     print(f"[AI] Sending state, current_player in state: {state.get('current_player')}")
     if _socketio:
         _socketio.emit('game_state', {'game_id': game_id, 'state': state}, room=game_id)
@@ -188,6 +196,13 @@ def register_socket_events(socketio):
 
             # 发送切换到AI回合的状态
             state = manager.get_game_state(game_id)
+
+            # 检查奥秘触发
+            triggered_secrets = manager.track_secrets(game_id)
+            for secret_info in triggered_secrets:
+                manager.log_event(game_id, 'secret_triggered', f'奥秘 "{secret_info["secret_name"]}" 被触发了！', secret_info)
+                emit('secret_triggered', {'game_id': game_id, 'secret': secret_info})
+
             emit('game_state', {'game_id': game_id, 'state': state})
 
     @socketio.on('play_card')
@@ -222,6 +237,9 @@ def register_socket_events(socketio):
                     'cost': card.cost
                 })
 
+                # 检查是否为奥秘
+                is_secret = hasattr(card, 'data') and hasattr(card.data, 'secret') and card.data.secret
+
                 card.play(target=target)
 
                 # 记录战吼效果（如果有）
@@ -230,7 +248,22 @@ def register_socket_events(socketio):
                         'card': str(card)
                     })
 
+                # 记录奥秘使用效果
+                if is_secret:
+                    manager.log_event(game_id, 'secret_played', f'{player} 使用了奥秘 {card}', {
+                        'player': str(player),
+                        'card': str(card),
+                        'card_id': card.id if hasattr(card, 'id') else None
+                    })
+
                 state = manager.get_game_state(game_id)
+
+                # 检查奥秘触发
+                triggered_secrets = manager.track_secrets(game_id)
+                for secret_info in triggered_secrets:
+                    manager.log_event(game_id, 'secret_triggered', f'奥秘 "{secret_info["secret_name"]}" 被触发了！', secret_info)
+                    emit('secret_triggered', {'game_id': game_id, 'secret': secret_info})
+
                 emit('game_state', {'game_id': game_id, 'state': state})
 
                 # 如果是 PVE 模式且玩家打完牌后是 AI 回合，执行 AI
@@ -302,6 +335,13 @@ def register_socket_events(socketio):
                 })
 
             state = manager.get_game_state(game_id)
+
+            # 检查奥秘触发
+            triggered_secrets = manager.track_secrets(game_id)
+            for secret_info in triggered_secrets:
+                manager.log_event(game_id, 'secret_triggered', f'奥秘 "{secret_info["secret_name"]}" 被触发了！', secret_info)
+                emit('secret_triggered', {'game_id': game_id, 'secret': secret_info})
+
             emit('game_state', {'game_id': game_id, 'state': state})
 
             # 如果是 PVE 模式且玩家使用技能后是 AI 回合，执行 AI
@@ -380,6 +420,13 @@ def register_socket_events(socketio):
                 })
 
             state = manager.get_game_state(game_id)
+
+            # 检查奥秘触发
+            triggered_secrets = manager.track_secrets(game_id)
+            for secret_info in triggered_secrets:
+                manager.log_event(game_id, 'secret_triggered', f'奥秘 "{secret_info["secret_name"]}" 被触发了！', secret_info)
+                emit('secret_triggered', {'game_id': game_id, 'secret': secret_info})
+
             emit('game_state', {'game_id': game_id, 'state': state})
 
             # 如果是 PVE 模式且玩家攻击后是 AI 回合，执行 AI

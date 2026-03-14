@@ -2117,3 +2117,27 @@
   border: 1px solid white;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
 }
+
+/* 奥秘上限警告 */
+.secret-limit-warning {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 68, 68, 0.9);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: clamp(0.6rem, 1.2vw, 0.75rem);
+  font-weight: bold;
+  white-space: nowrap;
+  animation: warning-pulse 1s ease-in-out infinite;
+  z-index: 15;
+}
+
+.secret-zone.secrets-full {
+  border: 2px dashed rgba(255, 68, 68, 0.5);
+  border-radius: 8px;
+  padding: 4px;
+  background: rgba(255, 68, 68, 0.1);
+}

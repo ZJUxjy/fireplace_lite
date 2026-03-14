@@ -93,6 +93,7 @@ export type GameState = {
     max_field_size?: number;
     secrets?: SecretData[];
     secret_count: number;
+    max_secrets?: number;
   };
   opponent: {
     hero: string;
@@ -198,6 +199,10 @@ class GameService {
 
   onError(callback: (data: { message: string }) => void) {
     socketService.on('error', (data) => callback(data as { message: string }));
+  }
+
+  onSecretTriggered(callback: (data: { game_id: string; secret: { player: string; secret_name: string; card_id?: string } }) => void) {
+    socketService.on('secret_triggered', (data) => callback(data as { game_id: string; secret: { player: string; secret_name: string; card_id?: string } }));
   }
 
   cleanup() {
