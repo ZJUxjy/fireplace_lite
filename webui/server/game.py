@@ -285,7 +285,7 @@ class GameManager:
             cards.db.initialize()
             self._initialized = True
 
-    def create_game(self, player1_class, player2_class=None, mode="pve", test_deck=False):
+    def create_game(self, player1_class, player2_class=None, mode="pve", test_deck=False, custom_deck=None):
         """创建游戏返回 game_id
 
         Args:
@@ -293,6 +293,7 @@ class GameManager:
             player2_class: 玩家2职业 (PVE模式下对手职业)
             mode: 游戏模式 (pve/pvp)
             test_deck: 是否使用测试卡组（包含各种机制卡牌）
+            custom_deck: 可选，玩家1的自定义卡组（卡牌ID列表）
         """
         self.initialize()
         game_id = str(uuid.uuid4())
@@ -304,7 +305,11 @@ class GameManager:
             p2_class = random_class()
 
         # 选择卡组生成方式
-        if test_deck:
+        if custom_deck:
+            # 使用自定义卡组
+            p1_deck = custom_deck
+            p2_deck = filtered_random_draft(p2_class)
+        elif test_deck:
             p1_deck = create_test_deck(p1_class)
             p2_deck = create_test_deck(p2_class)
         else:
@@ -400,6 +405,17 @@ class GameManager:
         else:
             data["must_choose_one"] = False
 
+        # 卡牌类型（法术、随从等）
+        if hasattr(card, 'type'):
+            data["type"] = str(card.type).replace("Type.", "").lower()
+
+        # 法术伤害加成（用于显示）
+        if hasattr(card, 'type') and card.type == CardType.SPELL:
+            # 检查是否是伤害法术
+            if hasattr(card, 'damage'):
+                data["base_damage"] = card.damage
+                data["is_damage_spell"] = True
+
         return data
 
     def _get_target_id(self, target):
@@ -457,7 +473,12 @@ class GameManager:
             "name": name,
             "atk": minion.atk,
             "health": minion.health,
+            "max_health": minion.max_health,
         }
+        # 基础属性（用于判断是否有buff）
+        if hasattr(minion, 'data') and minion.data:
+            data["base_atk"] = minion.data.atk or 0
+            data["base_health"] = minion.data.health or 0
         # 是否可攻击（仅玩家随从需要）
         if include_can_attack:
             # 基础 can_attack 检查
@@ -551,6 +572,10 @@ class GameManager:
             "is_usable": hero_power.is_usable() if hasattr(hero_power, 'is_usable') else False,
             "requires_target": requires_target,
             "description": hero_power_description,
+            "is_summon": str(hero_power) == "Reinforce" or "summon" in hero_power_description.lower(),
+            "is_life_tap": str(hero_power) == "Life Tap" or "life tap" in hero_power_description.lower(),
+            "health_cost": 2 if str(hero_power) == "Life Tap" else 0,
+            "is_totemic_call": str(hero_power) == "Totemic Call" or "totem" in hero_power_description.lower(),
         }
         if requires_target and hasattr(hero_power, 'targets'):
             valid_targets = [self._get_target_id(t) for t in hero_power.targets]
@@ -578,6 +603,35 @@ class GameManager:
         elapsed = (datetime.now() - turn_start).total_seconds() if turn_start else 0
         turn_remaining = max(0, timeout - elapsed)
 
+        # 获取玩家选择状态（发现/抉择等）
+        choice_data = None
+        if player.choice:
+            choice_type = "discover"
+            if hasattr(player.choice, '__class__'):
+                class_name = player.choice.__class__.__name__
+                if 'Mulligan' in class_name:
+                    choice_type = "mulligan"
+                elif 'ChooseOne' in class_name:
+                    choice_type = "choose_one"
+                else:
+                    choice_type = "discover"
+
+            choice_cards = []
+            if hasattr(player.choice, 'cards') and player.choice.cards:
+                choice_cards = [self.get_card_data(c) for c in player.choice.cards]
+
+            # 获取触发来源
+            source_name = ""
+            if hasattr(player.choice, 'source') and player.choice.source:
+                source_name = str(player.choice.source)
+
+            choice_data = {
+                "type": choice_type,
+                "cards": choice_cards,
+                "source": source_name,
+            }
+            print(f"[GameState] Player has choice: type={choice_type}, cards={len(choice_cards)}, source={source_name}")
+
         return {
             "turn": game.turn,
             "current_player": "player1" if game.current_player == player else "player2",
@@ -591,6 +645,10 @@ class GameManager:
                 "mana": player.mana,
                 "max_mana": player.max_mana,
                 "spell_power": getattr(player, 'spellpower', 0),
+                "overload_locked": getattr(player, 'overload_locked', 0),
+                "overloaded": getattr(player, 'overloaded', 0),
+                "temp_mana": getattr(player, 'temp_mana', 0),
+                "used_mana": getattr(player, 'used_mana', 0),
                 "deck": len(player.deck),
                 "hand": [self.get_card_data(c) for c in player.hand],
                 "field": [self.get_minion_data(m, include_can_attack=True) for m in player.field],
@@ -605,6 +663,9 @@ class GameManager:
                 "secrets": [self.get_secret_data(s) for s in player.secrets],
                 "secret_count": len(player.secrets),
                 "max_secrets": getattr(game, 'MAX_SECRETS_ON_PLAY', 5),
+                "combo_active": getattr(player, 'cards_played_this_turn', 0) > 0,
+                "cards_played_this_turn": getattr(player, 'cards_played_this_turn', 0),
+                "choice": choice_data,
             },
             "opponent": {
                 "hero": str(opponent.hero),

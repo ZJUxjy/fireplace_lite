@@ -6,6 +6,7 @@ import './GameBoard.css';
 interface GameBoardProps {
   mode: string;
   playerClass?: string;
+  deckCode?: string;
   onBack: () => void;
 }
 
@@ -16,6 +17,32 @@ const ROPE_BURN_THRESHOLD = 20; // 烧绳动画启动阈值（秒）
 const MAX_MINIONS = 7; // 随从上限
 const MAX_HAND_SIZE = 10; // 手牌上限
 const DEFAULT_TURN_TIMEOUT = 75; // 默认回合超时时间（秒）
+
+// 获取随从属性颜色类名
+function getStatClassName(
+  currentValue: number,
+  baseValue: number | undefined,
+  maxHealth: number | undefined
+): string {
+  // 没有基础值信息时使用默认白色
+  if (baseValue === undefined || maxHealth === undefined) {
+    return '';
+  }
+
+  const isDamaged = currentValue < maxHealth;
+  const isBuffed = currentValue > baseValue;
+
+  // 受伤显示红色（优先级最高）
+  if (isDamaged) {
+    return 'stat-damaged';
+  }
+  // 有buff且未受伤显示绿色
+  if (isBuffed) {
+    return 'stat-buffed';
+  }
+  // 默认白色（无变化）
+  return '';
+}
 
 // 格式化日志条目
 function formatLogEntry(log: LogEntry): string {
@@ -45,6 +72,14 @@ function formatLogEntry(log: LogEntry): string {
       return `${prefix} ✨ ${log.message}`;
     case 'end_turn':
       return `${prefix} ⏹️ ${log.message}`;
+    case 'discover':
+      return `${prefix} 🔍 ${log.message}`;
+    case 'discover_choice':
+      return `${prefix} ✨ 发现: ${log.message}`;
+    case 'secret_played':
+      return `${prefix} 🤫 ${log.message}`;
+    case 'secret_triggered':
+      return `${prefix} 💥 ${log.message}`;
     default:
       return `${prefix} ${log.message}`;
   }
@@ -132,7 +167,7 @@ function AttackArrow({ start, end }: { start: { x: number; y: number }; end: { x
   );
 }
 
-export default function GameBoard({ mode, playerClass = 'random', onBack }: GameBoardProps) {
+export default function GameBoard({ mode, playerClass = 'random', deckCode, onBack }: GameBoardProps) {
   const { t, i18n } = useTranslation();
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [connecting, setConnecting] = useState(true);
@@ -176,6 +211,12 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
     cardIndex: number;
     card: CardData;
     options: CardData[];
+  } | null>(null);
+
+  // 发现状态
+  const [discoverState, setDiscoverState] = useState<{
+    cards: CardData[];
+    source: string;
   } | null>(null);
 
   const isMyTurn = gameState?.current_player === 'player1';
@@ -223,7 +264,7 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
       setActionLog(prev => [`🔮 奥秘 "${data.secret.secret_name}" 被触发了！`, ...prev.slice(0, 30)]);
     };
 
-    gameService.createGame(mode, playerClass, useTestDeck);
+    gameService.createGame(mode, playerClass, useTestDeck, deckCode);
     gameService.onGameState(handleGameState);
     gameService.onError(handleError);
     gameService.onSecretTriggered(handleSecretTriggered);
@@ -253,6 +294,19 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
       setHoveredMinion(null);
     }
   }, [gameState?.player.field, gameState?.opponent.field, hoveredMinion?.minion.name]);
+
+  // 监听发现/选择状态
+  useEffect(() => {
+    if (gameState?.player?.choice && gameState.player.choice.type === 'discover') {
+      console.log('[GameBoard] Discover state detected:', gameState.player.choice);
+      setDiscoverState({
+        cards: gameState.player.choice.cards,
+        source: gameState.player.choice.source,
+      });
+    } else {
+      setDiscoverState(null);
+    }
+  }, [gameState?.player?.choice]);
 
   const handleEndTurn = () => {
     gameService.endTurn();
@@ -441,6 +495,13 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
   const cancelChooseOne = () => {
     setChooseOneState(null);
     setActionLog(prev => ['[系统] 取消了抉择', ...prev.slice(0, 29)]);
+  };
+
+  // 处理发现选择
+  const handleDiscoverChoice = (cardIndex: number) => {
+    console.log('[GameBoard] Discover choice:', cardIndex);
+    gameService.makeChoice(cardIndex);
+    setDiscoverState(null);
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -870,11 +931,21 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
               </div>
             )}
             <div className="hero-stats opponent-stats">
-              <div className="mana-crystal">💎 {gameState.opponent.mana ?? 0}/{gameState.opponent.max_mana ?? 0}</div>
+              <div className="mana-crystal">
+                💎 {gameState.opponent.mana ?? 0}/{gameState.opponent.max_mana ?? 0}
+                {/* 过载锁定水晶显示 */}
+                {(gameState.opponent.overload_locked ?? 0) > 0 && (
+                  <span className="overload-locked" title={`对手下回合锁定 ${gameState.opponent.overload_locked} 个法力水晶`}>
+                    ⚡{gameState.opponent.overload_locked}
+                  </span>
+                )}
+              </div>
               <div className="hero-health">❤️ {gameState.opponent.health}</div>
               <div className="hero-armor">🛡️ {gameState.opponent.armor}</div>
               {gameState.opponent.spell_power > 0 && (
-                <div className="spell-power opponent">🔮 +{gameState.opponent.spell_power}</div>
+                <div className="spell-power opponent" title={`对手法术伤害 +${gameState.opponent.spell_power}`}>
+                  🔮 +{gameState.opponent.spell_power}
+                </div>
               )}
               {/* 疲劳计数器 - 只在有疲劳时显示 */}
               {(gameState.opponent.fatigue_counter ?? 0) > 0 && (
@@ -909,10 +980,23 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
               >
                 <div className="minion-body">
                   <div className="minion-stats">
-                    <span className="minion-atk">{minion.atk}</span>
-                    <span className="minion-health">{minion.health}</span>
+                    <span className={`minion-atk ${getStatClassName(minion.atk, minion.base_atk, minion.max_health)}`}>{minion.atk}</span>
+                    <span className={`minion-health ${getStatClassName(minion.health, minion.base_health, minion.max_health)}`}>{minion.health}</span>
                   </div>
                   <div className="minion-name">{minion.name}</div>
+                  {/* 种族标签 */}
+                  {minion.race && (
+                    <div className="minion-race-tag">
+                      {minion.race === 'BEAST' && '🐾 野兽'}
+                      {minion.race === 'DRAGON' && '🐉 龙'}
+                      {minion.race === 'DEMON' && '👹 恶魔'}
+                      {minion.race === 'MECHANICAL' && '⚙️ 机械'}
+                      {minion.race === 'MURLOC' && '🐟 鱼人'}
+                      {minion.race === 'PIRATE' && '⚓ 海盗'}
+                      {minion.race === 'ELEMENTAL' && '🔥 元素'}
+                      {minion.race === 'TOTEM' && '🎭 图腾'}
+                    </div>
+                  )}
                 </div>
                 {minion.has_deathrattle && (
                   <div className="deathrattle-icon" title="亡语">💀</div>
@@ -928,6 +1012,9 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
                 )}
                 {minion.silenced && (
                   <div className="silenced-icon" title="沉默">🔇</div>
+                )}
+                {minion.frozen && (
+                  <div className="frozen-icon" title="冻结">❄️</div>
                 )}
               </div>
             ))}
@@ -978,10 +1065,23 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
               >
                 <div className="minion-body">
                   <div className="minion-stats">
-                    <span className="minion-atk">{minion.atk}</span>
-                    <span className="minion-health">{minion.health}</span>
+                    <span className={`minion-atk ${getStatClassName(minion.atk, minion.base_atk, minion.max_health)}`}>{minion.atk}</span>
+                    <span className={`minion-health ${getStatClassName(minion.health, minion.base_health, minion.max_health)}`}>{minion.health}</span>
                   </div>
                   <div className="minion-name">{minion.name}</div>
+                  {/* 种族标签 */}
+                  {minion.race && (
+                    <div className="minion-race-tag">
+                      {minion.race === 'BEAST' && '🐾 野兽'}
+                      {minion.race === 'DRAGON' && '🐉 龙'}
+                      {minion.race === 'DEMON' && '👹 恶魔'}
+                      {minion.race === 'MECHANICAL' && '⚙️ 机械'}
+                      {minion.race === 'MURLOC' && '🐟 鱼人'}
+                      {minion.race === 'PIRATE' && '⚓ 海盗'}
+                      {minion.race === 'ELEMENTAL' && '🔥 元素'}
+                      {minion.race === 'TOTEM' && '🎭 图腾'}
+                    </div>
+                  )}
                 </div>
                 {minion.has_deathrattle && (
                   <div className="deathrattle-icon" title="亡语">💀</div>
@@ -997,6 +1097,9 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
                 )}
                 {minion.silenced && (
                   <div className="silenced-icon" title="沉默">🔇</div>
+                )}
+                {minion.frozen && (
+                  <div className="frozen-icon" title="冻结">❄️</div>
                 )}
               </div>
             ))}
@@ -1062,11 +1165,33 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
               <div className="hero-name">{gameState.player.hero.split(' ')[0]}</div>
             </div>
             <div className="hero-stats player-stats">
-              <div className="mana-crystal">💎 {gameState.player.mana}/{gameState.player.max_mana}</div>
+              <div className="mana-crystal">
+                💎 {gameState.player.mana}/{gameState.player.max_mana}
+                {/* 临时法力（激活/硬币） */}
+                {(gameState.player.temp_mana ?? 0) > 0 && (
+                  <span className="temp-mana" title={`临时法力: ${gameState.player.temp_mana}`}>
+                    +{gameState.player.temp_mana}✨
+                  </span>
+                )}
+                {/* 过载锁定水晶显示 */}
+                {(gameState.player.overload_locked ?? 0) > 0 && (
+                  <span className="overload-locked" title={`下回合锁定 ${gameState.player.overload_locked} 个法力水晶`}>
+                    ⚡{gameState.player.overload_locked}
+                  </span>
+                )}
+              </div>
               <div className="hero-health">❤️ {gameState.player.health}</div>
               <div className="hero-armor">🛡️ {gameState.player.armor}</div>
               {gameState.player.spell_power > 0 && (
-                <div className="spell-power">🔮 +{gameState.player.spell_power}</div>
+                <div className="spell-power" title={`法术伤害 +${gameState.player.spell_power}`}>
+                  🔮 +{gameState.player.spell_power}
+                </div>
+              )}
+              {/* 连击激活指示器 - 潜行者 */}
+              {gameState.player.combo_active && (
+                <div className="combo-indicator" title={`本回合已使用 ${gameState.player.cards_played_this_turn} 张牌，连击已激活！`}>
+                  ⚡ 连击!
+                </div>
               )}
               {/* 疲劳计数器 - 只在有疲劳时显示 */}
               {(gameState.player.fatigue_counter ?? 0) > 0 && (
@@ -1076,7 +1201,7 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
               )}
             </div>
             <div
-              className={`hero-power player-hero-power ${isMyTurn && gameState.player.hero_power?.is_usable ? 'usable' : ''}`}
+              className={`hero-power player-hero-power ${isMyTurn && gameState.player.hero_power?.is_usable ? 'usable' : ''} ${gameState.player.hero_power?.is_summon ? 'summon-power' : ''} ${gameState.player.hero_power?.is_life_tap ? 'life-tap-power' : ''} ${gameState.player.hero_power?.is_totemic_call ? 'totemic-call-power' : ''}`}
               onMouseDown={handleHeroPowerMouseDown}
               onMouseEnter={(e) => setHoveredHeroPower({ x: e.clientX, y: e.clientY, isOpponent: false })}
               onMouseLeave={() => setHoveredHeroPower(null)}
@@ -1084,8 +1209,26 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
             >
               <span className="hero-power-cost">{gameState.player.hero_power.cost}</span>
               <div className="hero-power-icon">
-                {gameState.player.hero_power.name}
+                {gameState.player.hero_power.is_summon ? '🛡️' :
+                 gameState.player.hero_power.is_life_tap ? '👹' :
+                 gameState.player.hero_power.is_totemic_call ? '🎭' :
+                 gameState.player.hero_power.name}
               </div>
+              {gameState.player.hero_power?.is_summon && (
+                <div className="hero-power-badge summon-badge" title="召唤一个1/1的白银之手新兵">
+                  +🛡️
+                </div>
+              )}
+              {gameState.player.hero_power?.is_life_tap && (
+                <div className="hero-power-badge life-tap-badge" title={`消耗 ${gameState.player.hero_power.health_cost} 点生命值，抽一张牌`}>
+                  -❤️{gameState.player.hero_power.health_cost}
+                </div>
+              )}
+              {gameState.player.hero_power?.is_totemic_call && (
+                <div className="hero-power-badge totem-badge" title="随机召唤一个图腾">
+                  +🎭
+                </div>
+              )}
             </div>
           </div>
 
@@ -1108,7 +1251,7 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
               return (
                 <div
                   key={i}
-                  className={`card ${isMyTurn && card.is_playable ? 'playable' : ''} ${draggedCard === i ? 'dragging' : ''} ${isStaged ? 'staged' : ''} ${card.has_combo ? 'has-combo' : ''}`}
+                  className={`card ${isMyTurn && card.is_playable ? 'playable' : ''} ${draggedCard === i ? 'dragging' : ''} ${isStaged ? 'staged' : ''} ${card.has_combo ? 'has-combo' : ''} ${card.has_combo && gameState.player.combo_active ? 'combo-active' : ''}`}
                   style={{ transform: `rotate(${angle}deg)`, opacity: isStaged ? 0.4 : 1 }}
                   draggable={isMyTurn && !!card.is_playable && !stagedCard}
                   onDragStart={(e) => handleDragStart(e, i, card)}
@@ -1129,6 +1272,19 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
                     <div className="card-combo" title="连击">连击</div>
                   )}
                   <div className="card-name">{card.name}</div>
+                  {/* 种族标签 */}
+                  {card.race && (
+                    <div className="card-race-tag">
+                      {card.race === 'BEAST' && '🐾'}
+                      {card.race === 'DRAGON' && '🐉'}
+                      {card.race === 'DEMON' && '👹'}
+                      {card.race === 'MECHANICAL' && '⚙️'}
+                      {card.race === 'MURLOC' && '🐟'}
+                      {card.race === 'PIRATE' && '⚓'}
+                      {card.race === 'ELEMENTAL' && '🔥'}
+                      {card.race === 'TOTEM' && '🎭'}
+                    </div>
+                  )}
                   {card.atk !== undefined && card.health !== undefined && (
                     <div className="card-footer">
                       <span className="card-atk">{card.atk}</span>
@@ -1188,7 +1344,34 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
               {hoveredCard.card.has_combo && <span className="mechanic-tag combo">连击</span>}
             </div>
           )}
-          {hoveredCard.card.race && <div className="tooltip-race">{hoveredCard.card.race}</div>}
+          {/* 法术类型和伤害加成显示 */}
+          {hoveredCard.card.type === 'spell' && (
+            <div className="tooltip-spell-type">
+              🔮 法术
+              {hoveredCard.card.is_damage_spell && gameState && (
+                <span className="spell-damage-bonus">
+                  {' '}
+                  (伤害: {hoveredCard.card.base_damage}+<span className="spell-power-bonus">{gameState.player.spell_power}</span> ={' '}
+                  <span className="total-damage">{(hoveredCard.card.base_damage || 0) + gameState.player.spell_power}</span>)
+                </span>
+              )}
+            </div>
+          )}
+          {hoveredCard.card.race && (
+            <div className="tooltip-race">
+              {hoveredCard.card.race === 'BEAST' && '🐾 野兽'}
+              {hoveredCard.card.race === 'DRAGON' && '🐉 龙'}
+              {hoveredCard.card.race === 'DEMON' && '👹 恶魔'}
+              {hoveredCard.card.race === 'MECHANICAL' && '⚙️ 机械'}
+              {hoveredCard.card.race === 'MURLOC' && '🐟 鱼人'}
+              {hoveredCard.card.race === 'PIRATE' && '⚓ 海盗'}
+              {hoveredCard.card.race === 'ELEMENTAL' && '🔥 元素'}
+              {hoveredCard.card.race === 'TOTEM' && '🎭 图腾'}
+              {hoveredCard.card.race === 'UNDEAD' && '💀 亡灵'}
+              {hoveredCard.card.race === 'ALL' && '✨ 全部'}
+              {!['BEAST', 'DRAGON', 'DEMON', 'MECHANICAL', 'MURLOC', 'PIRATE', 'ELEMENTAL', 'TOTEM', 'UNDEAD', 'ALL'].includes(hoveredCard.card.race) && hoveredCard.card.race}
+            </div>
+          )}
           {hoveredCard.card.text && (
             <div className="tooltip-text" dangerouslySetInnerHTML={{ __html: hoveredCard.card.text }} />
           )}
@@ -1212,10 +1395,24 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
           }}
         >
           <div className="tooltip-name">{hoveredMinion.minion.name}</div>
-          {hoveredMinion.minion.race && <div className="tooltip-race">{hoveredMinion.minion.race}</div>}
+          {hoveredMinion.minion.race && (
+            <div className="tooltip-race">
+              {hoveredMinion.minion.race === 'BEAST' && '🐾 野兽'}
+              {hoveredMinion.minion.race === 'DRAGON' && '🐉 龙'}
+              {hoveredMinion.minion.race === 'DEMON' && '👹 恶魔'}
+              {hoveredMinion.minion.race === 'MECHANICAL' && '⚙️ 机械'}
+              {hoveredMinion.minion.race === 'MURLOC' && '🐟 鱼人'}
+              {hoveredMinion.minion.race === 'PIRATE' && '⚓ 海盗'}
+              {hoveredMinion.minion.race === 'ELEMENTAL' && '🔥 元素'}
+              {hoveredMinion.minion.race === 'TOTEM' && '🎭 图腾'}
+              {hoveredMinion.minion.race === 'UNDEAD' && '💀 亡灵'}
+              {hoveredMinion.minion.race === 'ALL' && '✨ 全部'}
+              {!['BEAST', 'DRAGON', 'DEMON', 'MECHANICAL', 'MURLOC', 'PIRATE', 'ELEMENTAL', 'TOTEM', 'UNDEAD', 'ALL'].includes(hoveredMinion.minion.race) && hoveredMinion.minion.race}
+            </div>
+          )}
           <div className="tooltip-stats">
-            <span className="tooltip-atk">⚔️ {hoveredMinion.minion.atk}</span>
-            <span className="tooltip-health">❤️ {hoveredMinion.minion.health}</span>
+            <span className={`tooltip-atk ${getStatClassName(hoveredMinion.minion.atk, hoveredMinion.minion.base_atk, hoveredMinion.minion.max_health)}`}>⚔️ {hoveredMinion.minion.atk}</span>
+            <span className={`tooltip-health ${getStatClassName(hoveredMinion.minion.health, hoveredMinion.minion.base_health, hoveredMinion.minion.max_health)}`}>❤️ {hoveredMinion.minion.health}</span>
           </div>
           {/* 被沉默的随从不显示卡牌文本和机制 */}
           {!hoveredMinion.minion.silenced && hoveredMinion.minion.text && (
@@ -1252,6 +1449,9 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
                 <div className="tooltip-name">{heroPower.name}</div>
                 <div className="tooltip-stats">
                   <span className="tooltip-cost">💎 {heroPower.cost}</span>
+                  {heroPower.health_cost !== undefined && heroPower.health_cost > 0 && (
+                    <span className="tooltip-health-cost">❤️ -{heroPower.health_cost}</span>
+                  )}
                 </div>
                 {heroPower.description && (
                   <div className="tooltip-text" dangerouslySetInnerHTML={{ __html: heroPower.description }} />
@@ -1266,6 +1466,32 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
       {showTurnBanner && (
         <div className="turn-banner">
           {t('game.yourTurn')}
+        </div>
+      )}
+
+      {/* 游戏结束提示 */}
+      {gameState?.game_over && (
+        <div className="game-over-overlay">
+          <div className="game-over-dialog">
+            <h2 className="game-over-title">
+              {gameState.winner === 'Player1'
+                ? (i18n.language === 'zhCN' ? '🎉 胜利！' : '🎉 Victory!')
+                : (i18n.language === 'zhCN' ? '💔 失败' : '💔 Defeat')}
+            </h2>
+            <p className="game-over-message">
+              {i18n.language === 'zhCN'
+                ? `${gameState.winner || 'Unknown'} 获胜！`
+                : `${gameState.winner || 'Unknown'} wins!`}
+            </p>
+            <div className="game-over-actions">
+              <button className="game-over-btn new-game" onClick={handleNewGame}>
+                {i18n.language === 'zhCN' ? '再来一局' : 'Play Again'}
+              </button>
+              <button className="game-over-btn back-menu" onClick={onBack}>
+                {i18n.language === 'zhCN' ? '返回主菜单' : 'Main Menu'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -1299,6 +1525,48 @@ export default function GameBoard({ mode, playerClass = 'random', onBack }: Game
             <button className="choose-one-cancel" onClick={cancelChooseOne}>
               取消
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* 发现面板 */}
+      {discoverState && (
+        <div className="discover-overlay">
+          <div className="discover-panel">
+            <div className="discover-header">
+              <span className="discover-icon">🔍</span>
+              <span className="discover-title">发现</span>
+            </div>
+            {discoverState.source && (
+              <div className="discover-source">
+                来自「{discoverState.source}」
+              </div>
+            )}
+            <div className="discover-cards">
+              {discoverState.cards.map((card, index) => (
+                <div
+                  key={index}
+                  className="discover-card"
+                  onClick={() => handleDiscoverChoice(index)}
+                >
+                  <div className="discover-card-cost">{card.cost}</div>
+                  <div className="discover-card-name">{card.name}</div>
+                  {card.text && (
+                    <div className="discover-card-text">{card.text}</div>
+                  )}
+                  {card.atk !== undefined && card.health !== undefined && (
+                    <div className="discover-card-stats">
+                      <span className="discover-card-atk">{card.atk}</span>
+                      <span className="discover-card-health">{card.health}</span>
+                    </div>
+                  )}
+                  <div className="discover-card-type">
+                    {card.type === 'spell' ? '法术' : card.type === 'minion' ? '随从' : card.type === 'weapon' ? '武器' : card.type}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="discover-hint">点击选择一张卡牌</div>
           </div>
         </div>
       )}
