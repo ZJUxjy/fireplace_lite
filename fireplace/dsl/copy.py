@@ -1,4 +1,6 @@
+from __future__ import annotations
 from hearthstone.enums import CardType, GameTag
+from typing import List
 
 from ..logging import log
 from .lazynum import LazyValue
@@ -27,7 +29,7 @@ class Copy(LazyValue):
             new_entity.create_custom_card(new_entity)
         return new_entity
 
-    def evaluate(self, source) -> list[str]:
+    def evaluate(self, source) -> List[str]:
         if isinstance(self.selector, LazyValue):
             entity = self.selector.evaluate(source)
             entities = [entity] if entity else []

@@ -1,5 +1,5 @@
 from itertools import chain
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List
 
 from hearthstone.enums import CardType, GameTag, PlayState, Race, Zone
 
@@ -48,7 +48,7 @@ class Player(Entity, TargetableByAuras):
     murlocs_cost_health = slot_property("murlocs_cost_health")
     type = CardType.PLAYER
 
-    def __init__(self, name, deck: list[str], hero: str, is_standard=True):
+    def __init__(self, name, deck: List[str], hero: str, is_standard=True):
         self.game: Game = None
         self.opponent: Player = None
         self.first_player: bool = False
