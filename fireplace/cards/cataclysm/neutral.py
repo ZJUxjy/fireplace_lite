@@ -81,9 +81,11 @@ class CATA_190h:
 
 
 # CATA_206: 扭曲畸怪 (5费 6/5)
-# 巨型。在你的回合开始时，随机获得一张“变异”牌。
+# 巨型。在你的回合开始时，随机获得一张"变异"牌。
 class CATA_206:
-    """Hogger Galasun"""
+    """Twisted Monstrosity"""
+
+    tags = {GameTag.COLOSSAL_LIMB: True}
 
     # 巨型效果需要特殊实现，这里简化
     # 在手牌中时每回合随机具有两项额外效果
@@ -203,9 +205,11 @@ class CATA_612:
 class CATA_613:
     """Survivalist"""
 
-    # 简化实现：不做检查，始终有免疫
-    # 实际实现需要在受伤时检查
-    pass
+    # 简化实现：在你的回合开始时，如果控制其他随从则失去免疫，否则获得免疫
+    events = OWN_TURN_BEGIN.on(
+        (Count(FRIENDLY_MINIONS - SELF) == 0) & SetTag(SELF, {GameTag.IMMUNE: True}) |
+        (Count(FRIENDLY_MINIONS - SELF) > 0) & UnsetTag(SELF, {GameTag.IMMUNE: True})
+    )
 
 
 # CATA_614: 蔽影密探 (2费 2/2)
@@ -249,11 +253,10 @@ class CATA_616:
 # CATA_720: 战争大师黑角 (7费 6/6)
 # 战吼：摧毁双方玩家牌库中所有法力值消耗小于或等于（2）点的牌。
 class CATA_720:
-    """Doomguard"""
+    """Warmaster Blackhorn"""
 
     # 战吼：摧毁双方牌库中≤2费的牌
-    # 简化实现：不做任何效果
-    pass
+    play = Destroy(FRIENDLY_DECK + (COST <= 2)), Destroy(ENEMY_DECK + (COST <= 2))
 
 
 # CATA_721: 避难的幸存者 (3费 2/3)
@@ -318,11 +321,11 @@ CATA_897e = buff(cost=-1)
 # CATA_898: 鳞甲长矛手 (4费 6/6)
 # 所有敌方随从拥有嘲讽。
 class CATA_898:
-    """Hogger the Hamtastic"""
+    """Scaled Lancer"""
 
-    # 所有敌方随从嘲讽
-    # 需要使用aura来实现
-    pass
+    # 简化实现：战吼使所有敌方随从获得嘲讽
+    # 完整实现需要使用aura
+    play = Taunt(ENEMY_MINIONS)
 
 
 # CATA_999: 土石幼龙 (5费 4/4)

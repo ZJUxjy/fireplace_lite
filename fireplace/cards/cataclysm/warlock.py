@@ -175,18 +175,6 @@ CATA_725e = buff(+2, +2)
 CATA_725te = buff(+2, +2)
 
 
-# CATA_780: 着魔的技师 (3费 3/4)
-# 吸血。战吼：兆示{0}
-class CATA_780:
-    """Enslaved Felhound"""
-
-    tags = {GameTag.LIFESTEAL: True}
-
-    # 兆示：触发一次效果
-    # 简化实现：直接触发
-    # TODO: 实现完整的兆示机制
-
-
 ##
 # Spells
 
