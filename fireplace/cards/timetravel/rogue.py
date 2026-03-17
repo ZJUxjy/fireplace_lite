@@ -98,13 +98,18 @@ class TIME_039:
 
 
 # TIME_711: Flashback (2费 法术)
-# 奥秘：在一个敌人攻击后，将其移回对手的手牌
+# 召唤两个随机的1费随从。连击：获得+1攻击力
 class TIME_711:
     """Flashback"""
 
-    # 奥秘：当一个敌人攻击后，将其移回对手的手牌
-    # 简化实现
-    pass
+    # 召唤两个随机的1费随从
+    play = Summon(CONTROLLER, RandomMinion(cost=1)) * 2
+
+    # 连报：获得+1攻击力
+    combo = Buff(SELF, "TIME_711e")
+
+
+TIME_711e = buff(+1, 0)
 
 
 # TIME_712: Dethrone (7费 法术)

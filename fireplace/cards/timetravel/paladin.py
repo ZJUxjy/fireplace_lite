@@ -38,13 +38,16 @@ class TIME_009b:
 
 
 # TIME_015: Hardlight Protector (2费 2/1)
-# 圣盾
+# 圣盾。战吼：恢复3点生命值给你的英雄并使其获得圣盾
 class TIME_015:
     """Hardlight Protector"""
 
+    # 战吼：恢复3点生命值给你的英雄并使其获得圣盾
     tags = {
         GameTag.DIVINE_SHIELD: True,
     }
+
+    play = Heal(FRIENDLY_HERO, 3), SetTag(FRIENDLY_HERO, (GameTag.DIVINE_SHIELD,))
 
 
 # TIME_017: Tankgineer (4费 2/1)
@@ -76,6 +79,8 @@ class TIME_043:
     """PMM Infinitizer"""
 
     # 在你的回合结束时，将一个随机随从变为1/1并置入你的手牌
+    # No battlecry
+
     events = OWN_TURN_END.on(
         Give(CONTROLLER, RANDOM(FRIENDLY_MINIONS)).then(
             Buff(Give.CARD, "TIME_043e")
@@ -84,6 +89,23 @@ class TIME_043:
 
 
 TIME_043e = buff(0, 0)
+
+
+# TIME_044: Past Gnomeregan (2费 位置)
+# 使一个随从获得+2/+1
+class TIME_044:
+    """Past Gnomeregan"""
+
+    # 使一个随从获得+2/+1
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+
+    play = Buff(TARGET, "TIME_044e")
+
+
+TIME_044e = buff(+2, +1)
 
 
 # TIME_700: Chronological Aura (5费 法术)
@@ -139,3 +161,17 @@ class TIME_018:
 
     # 恢复你的英雄8点生命值
     play = Heal(TARGET, 8)
+
+
+# TIME_EVENT_998: Runi, Temporal Guardian (5费 5/5)
+# 战吼：将你手牌中的所有随从送入未来2个回合。它们返回时获得+5/+5
+class TIME_EVENT_998:
+    """Runi, Temporal Guardian"""
+
+    # 战吼：将手牌中的所有随从移回手牌并获得+5/+5
+    # Simplified: return all hand minions to hand with buff
+    play = Buff(FRIENDLY_HAND + MINION, "TIME_EVENT_998e")
+
+
+TIME_EVENT_998e = buff(+5, +5)
+

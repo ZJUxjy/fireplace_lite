@@ -54,13 +54,18 @@ TIME_209e = buff(+2, 0)
 
 
 # TIME_212: Lightning Rod (1费 法术)
-# 奥秘：当一个敌人攻击时，使其承受所有伤害
+# 对一个友方随从造成2点伤害以对一个随机敌人随从造成4点伤害
 class TIME_212:
     """Lightning Rod"""
 
-    # 奥秘：当一个敌人攻击时，使其承受所有伤害
-    # 简化实现
-    pass
+    # 对一个友方随从造成2点伤害以对一个随机敌人随从造成4点伤害
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+        PlayReq.REQ_FRIENDLY_TARGET: 0,
+    }
+
+    play = Hit(TARGET, 2), Hit(RANDOM(ENEMY_MINIONS), 4)
 
 
 # TIME_213: Primordial Overseer (2费 2/3)
@@ -69,6 +74,8 @@ class TIME_213:
     """Primordial Overseer"""
 
     # 在你的回合结束时，召唤一个2/2的元素
+    # No battlecry
+
     events = OWN_TURN_END.on(Summon(CONTROLLER, RandomMinion(race=Race.ELEMENTAL)))
 
 
@@ -78,6 +85,8 @@ class TIME_214:
     """Flux Revenant"""
 
     # 在你的回合结束时，获得一个空的法力水晶
+    # No battlecry
+
     events = OWN_TURN_END.on(GainEmptyMana(CONTROLLER, 1))
 
 

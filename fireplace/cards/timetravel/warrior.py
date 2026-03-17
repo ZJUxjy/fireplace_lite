@@ -19,6 +19,8 @@ class TIME_034:
     """Stadium Announcer"""
 
     # 在你的回合结束时，造成2点伤害
+    # No battlecry
+
     events = OWN_TURN_END.on(Hit(RANDOM(ENEMY_CHARACTERS), 2))
 
 
@@ -33,13 +35,22 @@ class TIME_714:
 
 
 # TIME_850: Lo'Gosh, Blood Fighter (7费 7/7)
-# 嘲讽
+# 传说，突袭。亡语：从你的手牌中召唤一个血战士。它获得+5/+5并随机攻击一个敌人
 class TIME_850:
     """Lo'Gosh, Blood Fighter"""
 
+    # 突袭
     tags = {
-        GameTag.TAUNT: True,
+        GameTag.RUSH: True,
     }
+
+    # 亡语：从手牌召唤一个随从并使其获得+5/+5
+    deathrattle = Summon(CONTROLLER, RANDOM(FRIENDLY_HAND + MINION)).then(
+        Buff(Summon.CARD, "TIME_850e")
+    )
+
+
+TIME_850e = buff(+5, +5)
 
 
 # TIME_870: Gladiatorial Combat (5费 法术)
@@ -71,13 +82,17 @@ TIME_871e = buff(+3, 0)
 
 
 # TIME_872: Undefeated Champion (8费 13/13)
-# 冲锋
+# 突袭。战吼：用随机的1费随从占满对手的战场
 class TIME_872:
     """Undefeated Champion"""
 
+    # 突袭
     tags = {
-        GameTag.CHARGE: True,
+        GameTag.RUSH: True,
     }
+
+    # 战吼：用随机的1费随从占满对手的战场
+    play = Summon(ENEMY_HAND, RandomMinion(cost=1)) * 7
 
 
 # TIME_715: For Glory! (5费 法术)
