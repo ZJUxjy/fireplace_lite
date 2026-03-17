@@ -15,6 +15,12 @@ class OG_023:
 OG_023t = buff(+1, +1)
 
 
+class OG_024:
+    """Flamewreathed Faceless"""
+
+    tags = {GameTag.OVERLOAD: 2}
+
+
 class OG_026:
     """Eternal Sentinel"""
 

@@ -72,3 +72,9 @@ class OG_033:
     """Tentacles for Arms"""
 
     deathrattle = Bounce(SELF)
+
+
+class OG_058:
+    """Rusty Hook"""
+
+    deathrattle = Summon(CONTROLLER, RandomMurloc(cost=1))

@@ -89,7 +89,22 @@ class OG_280:
     play = Hit(RANDOM_ENEMY_CHARACTER, 1) * ATK(SELF)
 
 
+class OG_279:
+    """C'Thun"""
+
+    # Non-collectible version, same effect as OG_280
+    play = Hit(RANDOM_ENEMY_CHARACTER, 1) * ATK(SELF)
+
+
 class OG_131:
     """Twin Emperor Vek'lor"""
 
+    play = CHECK_CTHUN & Summon(CONTROLLER, "OG_319")
+
+
+class OG_319:
+    """Twin Emperor Vek'nilash"""
+
+    # Non-collectible version
+    tags = {GameTag.TAUNT: True}
     play = CHECK_CTHUN & Summon(CONTROLLER, "OG_319")
