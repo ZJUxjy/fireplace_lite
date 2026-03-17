@@ -5,6 +5,12 @@ from ..utils import *
 # Minions
 
 
+class OG_082:
+    """Evolved Kobold"""
+
+    tags = {GameTag.SPELLPOWER: 1}
+
+
 class OG_109:
     """Darkshire Librarian"""
 
