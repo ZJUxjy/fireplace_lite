@@ -18,24 +18,25 @@ class EDR_001:
     """Hopeful Dryad"""
 
     divine_shield = True
+    play = Give(CONTROLLER, RandomCard())
 
 
 class EDR_102:
     """Treacherous Tormentor"""
 
-    deathrattle = Give(OPPONENT, RandomCard())
+    battlecry = Discover(RandomMinion(rarity=Rarity.LEGENDARY))
 
 
 class EDR_102t:
     """Dark Gift"""
 
-    pass
+    deathrattle = Buff(FRIENDLY_MINIONS, "+2/+2")
 
 
 class EDR_105:
     """Creature of Madness"""
 
-    update = CurrentPlayer(OPPONENT) & Refresh(SELF, {GameTag.ATK: +2})
+    battlecry = Discover(RandomMinion(cost=3))
 
 
 class EDR_110:
@@ -65,13 +66,19 @@ class EDR_260:
 class EDR_260t:
     """Illusion"""
 
+    taunt = True
+
+
+class EDR_260te:
+    """Illusion"""
+
     pass
 
 
 class EDR_453:
     """Briarspawn Drake"""
 
-    update = CurrentPlayer(OPPONENT) & Refresh(SELF, {GameTag.ATK: +4})
+    events = OWN_TURN_END.on(Damage(RANDOM_ENEMY_MINION, 1))
 
 
 class EDR_469:
@@ -112,19 +119,20 @@ class EDR_484e:
 class EDR_486:
     """Scorching Observer"""
 
-    deathrattle = Damage(ENEMY_HERO, 3)
+    rush = True
+    lifesteal = True
 
 
 class EDR_492:
     """Mother Duck"""
 
-    deathrattle = Summon(CONTROLLER, "EDR_492t")
+    play = Summon(CONTROLLER, "EDR_492t") * 3
 
 
 class EDR_492t:
     """Duckling"""
 
-    deathrattle = Summon(CONTROLLER, "CS2_101t")
+    rush = True
 
 
 class EDR_493e:
@@ -149,6 +157,7 @@ class EDR_500:
     """Fleeing Treant"""
 
     deathrattle = Summon(CONTROLLER, "CS2_101t")
+    events = OWN_TURN_END.on(Buff(SELF, "EDR_500e"))
 
 
 class EDR_500e:
@@ -160,19 +169,21 @@ class EDR_500e:
 class EDR_530:
     """Daydreaming Pixie"""
 
-    deathrattle = Draw(CONTROLLER)
+    events = OWN_TURN_END.on(Give(CONTROLLER, RandomSpell()))
 
 
 class EDR_571:
     """Fae Trickster"""
 
-    battlecry = Give(OPPONENT, RandomCard())
+    deathrattle = Give(CONTROLLER, RandomSpell(cost=5))
 
 
 class EDR_572:
     """Tormented Dreadwing"""
 
-    deathrattle = Damage(ALL_MINIONS, 1)
+    deathrattle = Draw(CONTROLLER).then(
+        Buff(Draw.TARGET, "-1")
+    ) * 2
 
 
 class EDR_598:
@@ -184,7 +195,13 @@ class EDR_598:
 class EDR_780:
     """Bloodthistle Illusionist"""
 
-    battlecry = Copy(RANDOM(ENEMY_HAND))
+    play = Summon(CONTROLLER, "EDR_780")
+
+
+class EDR_780e:
+    """Illusion?"""
+
+    pass
 
 
 class EDR_780e1:
@@ -198,6 +215,7 @@ class EDR_800:
 
     divine_shield = True
     taunt = True
+    battlecry = Summon(CONTROLLER, "CS2_101t")
 
 
 class EDR_812e:
@@ -216,6 +234,54 @@ class EDR_844:
     """Naralex, Herald of the Flights"""
 
     events = OWN_TURN_BEGIN.on(Summon(CONTROLLER, RandomMinion(cost=3)))
+
+
+class EDR_846t1:
+    """Corrupted Nightmare"""
+
+    play = Buff(TARGET, "+5/+5")
+
+
+class EDR_846t1e:
+    """Nightmare"""
+
+    pass
+
+
+class EDR_846t2:
+    """Corrupted Dream"""
+
+    deathrattle = Shuffle(TARGET, Copy(TARGET))
+
+
+class EDR_846t3:
+    """Corrupted Laughing Sister"""
+
+    elusive = True
+
+
+class EDR_846t3e:
+    """Laughing"""
+
+    pass
+
+
+class EDR_846t4:
+    """Corrupted Awakening"""
+
+    play = Damage(ENEMY_MINIONS + ENEMY_HERO, 5)
+
+
+class EDR_846t5:
+    """Corrupted Drake"""
+
+    deathrattle = Damage(ENEMY_MINIONS + ENEMY_HERO, 1)
+
+
+class EDR_846te2:
+    """Eternal Nightmare"""
+
+    pass
 
 
 class EDR_846:
@@ -248,19 +314,21 @@ class EDR_846te2:
 class EDR_849:
     """Dreambound Raptor"""
 
-    update = CurrentPlayer(OPPONENT) & Refresh(SELF, {GameTag.ATK: +2})
+    events = Play(ALL_MINIONS).on(Buff(Play.TARGET, "CS2_101e"))
 
 
 class EDR_852:
     """Bitterbloom Knight"""
 
-    deathrattle = Buff(FRIENDLY_MINIONS, "CS2_101e")
+    deathrattle = Summon(CONTROLLER, "CS2_101t")
 
 
 class EDR_856:
     """Nightmare Lord Xavius"""
 
-    update = CurrentPlayer(OPPONENT) & Refresh(SELF, {GameTag.ATK: +2})
+    battlecry = Discover(RANDOM_FRIENDLY_MINION).then(
+        Buff(Discover.TARGET, "CS2_101e")
+    )
 
 
 class EDR_860:
@@ -273,6 +341,7 @@ class EDR_861:
     """Tranquil Treant"""
 
     taunt = True
+    deathrattle = GainMana(CONTROLLER, 1), GainMana(OPPONENT, 1)
 
 
 class EDR_873:
@@ -284,13 +353,14 @@ class EDR_873:
 class EDR_888:
     """Malorne the Waywatcher"""
 
+    battlecry = Discover(RandomMinion(rarity=Rarity.LEGENDARY, race=Race.BEAST))
     deathrattle = Shuffle(CONTROLLER, "EDR_888")
 
 
 class EDR_889:
     """Petal Peddler"""
 
-    deathrattle = Draw(CONTROLLER)
+    events = OWN_TURN_END.on(Buff(RANDOM_OTHER_FRIENDLY_MINION, "CS2_101e"))
 
 
 class EDR_889e:
@@ -299,16 +369,30 @@ class EDR_889e:
     pass
 
 
+class EDR_940:
+    """Zaqali Flamemancer"""
+
+    events = Attack(SELF).on(Damage(ENEMY_MINIONS, 1))
+
+
 class EDR_942:
     """Curious Cumulus"""
 
     deathrattle = Summon(CONTROLLER, RandomMinion(cost=4))
+    events = OWN_TURN_END.on(GainArmor(FRIENDLY_HERO, 1))
 
 
 class EDR_971:
     """Critter Caretaker"""
 
-    deathrattle = Summon(CONTROLLER, RandomMinion(cost=1))
+    events = OWN_TURN_END.on(Heal(ALL_HEROES, 3))
+
+
+class EDR_978:
+    """Meadowstrider"""
+
+    taunt = True
+    deathrattle = Summon(CONTROLLER, "EDR_978")
 
 
 class EDR_978:
@@ -320,6 +404,7 @@ class EDR_978:
 class EDR_979:
     """Ancient of Yore"""
 
+    events = OWN_TURN_BEGIN.on(Buff(SELF, "+3/+3"))
     deathrattle = Draw(CONTROLLER) * 2
 
 
@@ -338,7 +423,7 @@ class EDR_979e2:
 class EDR_999:
     """Gnawing Greenfin"""
 
-    update = CurrentPlayer(OPPONENT) & Refresh(SELF, {GameTag.ATK: +1})
+    battlecry = Summon(CONTROLLER, RandomMurloc())
 
 
 class EDR_COIN1:
@@ -383,6 +468,12 @@ class FIR_921e:
     pass
 
 
+class FIR_921e:
+    """Mana Bloom"""
+
+    pass
+
+
 class FIR_929:
     """Living Flame"""
 
@@ -417,87 +508,106 @@ class EDR_060e:
 
 class EDR_100t:
     """Waking Terror"""
-    pass
+
+    lifesteal = True
+    events = Attack(SELF).on(Buff(SELF, "+3/+3"))
 
 
 class EDR_100t1:
     """Well Rested"""
-    pass
+
+    elusive = True
+    events = OWN_TURN_BEGIN.on(Buff(SELF, "+2/+2"))
 
 
 class EDR_100t13:
     """Harpy's Talons"""
-    pass
+
+    divine_shield = True
+    windfury = True
 
 
 class EDR_100t13e:
     """Harpy's Talons"""
+
     pass
 
 
 class EDR_100t2:
     """Short Claws"""
-    pass
+
+    events = OWN_TURN_BEGIN.on(Buff(SELF, "-2"))
 
 
 class EDR_100t3:
     """Bundled Up"""
-    pass
+
+    taunt = True
+    events = OWN_TURN_BEGIN.on(Buff(SELF, "+4"))
 
 
 class EDR_100t4:
     """Inner Demons"""
-    pass
+
+    deathrattle = Draw(CONTROLLER) * 2
 
 
 class EDR_100t5:
     """Living Nightmare"""
-    pass
+
+    events = Play(CONTROLLER).on(Summon(CONTROLLER, "EDR_100t5"))
 
 
 class EDR_100t5e2:
     """Tiny Nightmare"""
+
     pass
 
 
 class EDR_100t5e5:
     """Living Nightmare"""
+
     pass
 
 
 class EDR_100t6:
     """Sleepwalker"""
-    pass
+
+    charge = True
 
 
 class EDR_100t7:
     """Rude Awakening"""
-    pass
+
+    events = Play(CONTROLLER).on(Play.CARD)
 
 
 class EDR_100t8:
     """Sweet Dreams"""
-    pass
+
+    events = OWN_TURN_BEGIN.on(Buff(SELF, "+4/+5"))
 
 
 class EDR_100t9:
     """Persisting Horror"""
-    pass
+
+    reborn = True
 
 
 class EDR_100t1e:
     """Well Rested"""
-    pass
+    atk = 2
+    health = 2
 
 
 class EDR_100t2e:
     """Short Claws"""
-    pass
+    atk = -2
 
 
 class EDR_100t3e:
     """Bundled Up"""
-    pass
+    health = 4
 
 
 class EDR_100t4e:
@@ -512,7 +622,7 @@ class EDR_100t5e:
 
 class EDR_100t6e:
     """Sneaky Sleepwalking"""
-    pass
+    stealth = True
 
 
 class EDR_100t7e:
@@ -522,24 +632,25 @@ class EDR_100t7e:
 
 class EDR_100t8e:
     """Turtled Up"""
-    pass
+    health = 5
 
 
 class EDR_100t8e1:
     """Sweet Dreams"""
-    pass
+    atk = 4
+    health = 5
 
 
 class EDR_100t9e:
     """Persisting Horror"""
-    pass
+    reborn = True
 
 
 class EDR_100t10e:
     """Nightmare Scales"""
-    pass
+    divine_shield = True
 
 
 class EDR_100te:
     """Waking Terror"""
-    pass
+    lifesteal = True

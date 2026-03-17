@@ -16,12 +16,14 @@ class EDR_253:
     """Ursine Maul"""
 
     divine_shield = True
+    events = Attack(FRIENDLY_HERO).on(Draw(CONTROLLER))
 
 
 class EDR_256:
     """Dreamwarden"""
 
-    deathrattle = Draw(CONTROLLER)
+    taunt = True
+    play = Draw(CONTROLLER).then(Buff(Draw.TARGET, "+2/+2"))
 
 
 class EDR_257:
@@ -58,6 +60,7 @@ class EDR_258:
     """Toreth the Unbreaking"""
 
     divine_shield = True
+    taunt = True
 
 
 class EDR_259:
@@ -77,7 +80,13 @@ class EDR_451:
     """Goldpetal Drake"""
 
     divine_shield = True
-    taunt = True
+    deathrattle = Summon(CONTROLLER, "CS2_101t")
+
+
+class EDR_256e:
+    """Portalmancy"""
+
+    pass
 
 
 ##
@@ -123,7 +132,7 @@ class EDR_445p:
 class EDR_445pt3:
     """Emerald Portal"""
 
-    pass
+    deathrattle = Summon(CONTROLLER, RandomDragon())
 
 
 class FIR_914:
@@ -154,3 +163,21 @@ class FIR_961:
     """Ashleaf Pixie"""
 
     play = Buff(ALL_MINIONS, "CS2_101e")
+
+
+##
+# Minion Tokens
+
+
+class EDR_271t:
+    """Treant of Life"""
+
+    deathrattle = Summon(CONTROLLER, "CS2_101t")
+
+
+class EDR_272:
+    """Evergreen Stag"""
+
+    elusive = True
+    lifesteal = True
+    taunt = True
