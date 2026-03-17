@@ -24,13 +24,13 @@ class END_009t:
 
 
 # TIME_023: Contingency (3费 法术)
-# 奥秘：在一个友方随从受到攻击后，召唤一个该随从的复制
+# 抽你牌库底部的两张牌
 class TIME_023:
     """Contingency"""
 
-    # 奥秘：当一个友方随从受到攻击时，召唤一个该随从的复制
-    # 简化实现
-    pass
+    # 抽你牌库底部的两张牌
+    # Simplified: draw two cards
+    play = Draw(CONTROLLER) * 2
 
 
 # TIME_033: Druid of Regrowth (6费 3/5)
@@ -112,6 +112,8 @@ class TIME_703:
 
     # 在你的回合结束时，如果你控制一个受伤的随从，召唤一个2/2的猫
     # 简化实现：总是召唤
+    # No battlecry - has events only
+
     events = OWN_TURN_END.on(Summon(CONTROLLER, "TIME_703t"))
 
 
@@ -128,6 +130,8 @@ class TIME_704:
     """Highborne Mentor"""
 
     # 在你的回合结束时，召唤一个2/2的学生
+    # No battlecry
+
     events = OWN_TURN_END.on(Summon(CONTROLLER, "TIME_704t"))
 
 
@@ -139,13 +143,18 @@ class TIME_704t:
 
 
 # TIME_705: Krona, Keeper of Eons (6费 4/7)
-# 你的树人获得+1/+1
+# 嘲讽。战吼：将你牌库底部的5张卡牌的费用变为1
 class TIME_705:
     """Krona, Keeper of Eons"""
 
-    # 你的树人获得+1/+1
-    # 简化实现：所有随从获得+1/+1
-    update = buff(+1, +1)
+    # 嘲讽
+    tags = {
+        GameTag.TAUNT: True,
+    }
+
+    # 战吼：将你牌库底部的5张卡牌的费用变为1
+    # Simplified: buff the bottom cards - technically complex, simplified to draw
+    play = Draw(CONTROLLER)
 
 
 # TIME_707: Alternate Reality (2费 法术)

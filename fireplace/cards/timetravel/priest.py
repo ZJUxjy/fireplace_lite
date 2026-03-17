@@ -23,13 +23,23 @@ class TIME_037:
 
 
 # TIME_427: Cleansing Lightspawn (4费 2/3)
-# 你的光之子获得+2/+2
+# 吸血。战吼：对一个敌人随从造成等同于本随从生命值的伤害
 class TIME_427:
     """Cleansing Lightspawn"""
 
-    # 你的光之子获得+2/+2
-    # 简化实现：所有随从获得+2/+2
-    update = buff(+2, +2)
+    # 吸血
+    tags = {
+        GameTag.LIFESTEAL: True,
+    }
+
+    # 战吼：对一个敌人随从造成等同于本随从生命值的伤害
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_ENEMY_TARGET: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+
+    play = Hit(TARGET, ATK(SELF))
 
 
 # TIME_429: Divine Augur (4费 4/5)
@@ -47,6 +57,8 @@ class TIME_431:
     """Amber Priestess"""
 
     # 在你的回合结束时，治疗所有友方角色1点
+    # No battlecry
+
     events = OWN_TURN_END.on(Heal(FRIENDLY_CHARACTERS, 1))
 
 
@@ -78,14 +90,19 @@ class TIME_433:
 
 
 # TIME_435: Eternus (6费 6/2)
-# 巨型+3。攻击时：造成两点伤害
+# 战吼：获得一个攻击力不超过本随从生命值的敌方随从的控制权
 class TIME_435:
     """Eternus"""
 
-    # 巨型+3
-    # 攻击时：造成两点伤害
-    # 简化实现：只有巨型+3
-    pass
+    # 战吼：获得一个攻击力不超过本随从生命值的敌方随从的控制权
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_ENEMY_TARGET: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+        PlayReq.REQ_NUM_MINION_SLOTS: 1,
+    }
+
+    play = Steal(TARGET)
 
 
 # TIME_436: Past Conflux (7费 英雄)

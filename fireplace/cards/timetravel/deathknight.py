@@ -24,13 +24,16 @@ class TIME_610t2:
 
 
 # TIME_611: Timestop (2费 法术)
-# 奥秘：在一个敌人攻击后，使其移回拥有者的手牌
+# 造成$3点伤害。冻结两个随机敌人随从
 class TIME_611:
     """Timestop"""
 
-    # 奥秘：当一个敌人攻击后，将其移回拥有者的手牌
-    # 简化实现
-    pass
+    # 造成$3点伤害。冻结两个随机敌人随从
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+    }
+
+    play = Hit(TARGET, 3), Freeze(RANDOM(ENEMY_MINIONS) * 2)
 
 
 # TIME_612: Blood Draw (3费 法术)
@@ -52,6 +55,8 @@ class TIME_613:
     """Cryofrozen Champion"""
 
     # 亡语：获得一个空的法力水晶
+    # No battlecry
+
     deathrattle = GainEmptyMana(CONTROLLER, 1)
 
 
@@ -61,6 +66,8 @@ class TIME_614:
     """Liferender"""
 
     # 在你的回合结束时，恢复3点生命值
+    # No battlecry
+
     events = OWN_TURN_END.on(Heal(FRIENDLY_HERO, 3))
 
 
@@ -91,6 +98,8 @@ class TIME_617:
     """Chronochiller"""
 
     # 亡语：对所有敌人造成4点伤害
+    # No battlecry
+
     deathrattle = Hit(ENEMY_CHARACTERS, 4)
 
 

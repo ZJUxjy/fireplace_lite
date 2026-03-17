@@ -67,6 +67,8 @@ class TIME_856:
     """Algeth'ar Instructor"""
 
     # 在你的回合结束时，召唤一个4/4的构造体
+    # No battlecry
+
     events = OWN_TURN_END.on(Summon(CONTROLLER, RandomMinion(cost=4)))
 
 
@@ -131,4 +133,6 @@ class TIME_861:
     """Timelooper Toki"""
 
     # 在你的回合结束时，将一个随机随从洗入你的牌库
+    # No battlecry
+
     events = OWN_TURN_END.on(Shuffle(CONTROLLER, RandomMinion()))

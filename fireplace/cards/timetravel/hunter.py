@@ -20,6 +20,8 @@ class TIME_042:
     """King Maluk"""
 
     # 在你的回合结束时，使你的武器获得+1攻击力
+    # No battlecry
+
     events = OWN_TURN_END.on(Buff(FRIENDLY_WEAPON, "TIME_042e"))
 
 
@@ -83,17 +85,24 @@ class TIME_603:
     """Ticking Timebomb"""
 
     # 亡语：对所有敌人造成3点伤害
+    # No battlecry
+
     deathrattle = Hit(ENEMY_CHARACTERS, 3)
 
 
 # TIME_605: Epoch Stalker (6费 3/4)
-# 战吼：获得你手牌中所有野兽的冲锋
+# 突袭，嘲讽。战吼：召唤一个本随从的复制
 class TIME_605:
     """Epoch Stalker"""
 
-    # 战吼：使你手牌中的所有野兽获得冲锋
-    # 简化实现：没有效果
-    pass
+    # 突袭，嘲讽
+    tags = {
+        GameTag.RUSH: True,
+        GameTag.ELUSIVE: True,
+    }
+
+    # 战吼：召唤一个本随从的复制
+    play = Summon(CONTROLLER, "TIME_605")
 
 
 # TIME_606: Quel'dorei Fletcher (1费 1/3)
@@ -102,6 +111,8 @@ class TIME_606:
     """Quel'dorei Fletcher"""
 
     # 在你施放一个法术后，使一个友方野兽获得+1攻击力
+    # No battlecry
+
     events = OWN_SPELL_PLAY.on(Buff(RANDOM(FRIENDLY_MINIONS + BEAST), "TIME_606e"))
 
 

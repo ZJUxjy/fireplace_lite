@@ -37,6 +37,8 @@ class TIME_021:
     """Doomsday Prepper"""
 
     # 在你的回合结束时，获得一个空的法力水晶
+    # No battlecry
+
     events = OWN_TURN_END.on(GainEmptyMana(CONTROLLER, 1))
 
 
@@ -63,12 +65,28 @@ class TIME_441:
 
 
 # TIME_442: Timeway Warden (4费 2/6)
-# 你的随从获得+2攻击力
+# 战吼：使一个敌人随从休眠。亡语：唤醒它
 class TIME_442:
     """Timeway Warden"""
 
-    # 你的随从获得+2攻击力
-    update = buff(+2, 0)
+    # 战吼：使一个敌人随从休眠（简化实现：将其移回拥有者手牌）
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_ENEMY_TARGET: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+
+    # Simplified: Return to owner's hand
+    play = Bounce(TARGET)
+
+    # Deathrattle: Summon a copy (simplified awakening)
+    deathrattle = Summon(CONTROLLER, "TIME_442t")
+
+
+# TIME_442t: Imprisoned Minion
+class TIME_442t:
+    """Awakened Minion"""
+    pass
 
 
 # TIME_443: Hounds of Fury (4费 法术)

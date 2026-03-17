@@ -60,6 +60,8 @@ class TIME_002:
     """Aeon Wizard"""
 
     # 在你的回合结束时，对所有敌人造成2点伤害
+    # No battlecry
+
     events = OWN_TURN_END.on(Hit(ENEMY_CHARACTERS, 2))
 
 
@@ -146,6 +148,8 @@ class TIME_046:
     """Cyborg Patriarch"""
 
     # 在你的回合开始时，获得一个空的法力水晶
+    # No battlecry
+
     events = OWN_TURN_BEGIN.on(GainEmptyMana(CONTROLLER, 1))
 
 
@@ -319,12 +323,19 @@ class TIME_064:
 
 
 # TIME_100: Hourglass Attendant (4费 2/4)
-# 你的卡牌获得+1攻击力
+# 圣盾。在你的回合结束时，使你手牌中的所有随从获得+1/+1
 class TIME_100:
     """Hourglass Attendant"""
 
-    # 你的卡牌获得+1攻击力
-    update = buff(+1, 0)
+    tags = {
+        GameTag.DIVINE_SHIELD: True,
+    }
+
+    # 在你的回合结束时，使你手牌中的所有随从获得+1/+1
+    events = OWN_TURN_END.on(Buff(FRIENDLY_HAND + MINION, "TIME_100e"))
+
+
+TIME_100e = buff(+1, +1)
 
 
 # TIME_101: Misplaced Pyromancer (3费 4/3)
@@ -342,6 +353,8 @@ class TIME_102:
     """Circadiamancer"""
 
     # 在你的回合开始时，获得一个空的法力水晶
+    # No battlecry
+
     events = OWN_TURN_BEGIN.on(GainEmptyMana(CONTROLLER, 1))
 
 
@@ -352,6 +365,8 @@ class TIME_103:
 
     # 在你的回合结束时，将你的手牌翻倍
     # 简化实现：抽一张牌
+    # No battlecry
+
     events = OWN_TURN_END.on(Draw(CONTROLLER))
 
 
@@ -387,3 +402,48 @@ class TIME_720:
 
 
 TIME_720e = buff(+2, +2)
+
+
+# TIME_EVENT_300: Dark Iron Harbinger (4费 7/4)
+# 亡语：召唤一个0/7的末日预言者，在你的回合开始时消灭所有随从
+class TIME_EVENT_300:
+    """Dark Iron Harbinger"""
+
+    # 亡语：召唤一个末日预言者
+    deathrattle = Summon(CONTROLLER, "TIME_EVENT_300t")
+
+
+# TIME_EVENT_300t: Doomsayer
+class TIME_EVENT_300t:
+    """Doomsayer"""
+
+    # 在你的回合开始时，消灭所有随从
+    events = OWN_TURN_BEGIN.on(Destroy(ALL_MINIONS))
+
+
+# TIME_EVENT_301: Disciole of Demise (8费 8/8)
+# 战吼：随机消灭另一个随从。每持有一张龙牌，重复一次
+class TIME_EVENT_301:
+    """Disciple of Demise"""
+
+    # 战吼：随机消灭另一个随从
+    # Simplified: just destroy one minion
+    play = Destroy(RANDOM(ENEMY_MINIONS))
+
+
+# TIME_EVENT_997: Welcome Home! (3费 法术)
+# 重新打开一个位置。使其获得“亡语：召唤一个随机3费随从”
+class TIME_EVENT_997:
+    """Welcome Home!"""
+
+    # 重新打开一个位置（简化实现：抽一张牌）
+    play = Draw(CONTROLLER)
+
+
+# TIME_EVENT_999: Sands of Time (1费 法术)
+# 回响。发现一张任意职业的法术
+class TIME_EVENT_999:
+    """Sands of Time"""
+
+    # 回响，发现一张任意职业的法术
+    play = Discover(CONTROLLER, RandomCard())

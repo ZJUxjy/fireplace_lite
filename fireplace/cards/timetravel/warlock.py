@@ -114,4 +114,6 @@ class TIME_032:
     """Chronogor"""
 
     # 在你的回合开始时，造成2点伤害
+    # No battlecry
+
     events = OWN_TURN_BEGIN.on(Hit(RANDOM(ENEMY_CHARACTERS), 2))
