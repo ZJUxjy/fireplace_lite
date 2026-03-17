@@ -123,3 +123,13 @@ class FIR_927:
     """Emberscarred Whelp"""
 
     deathrattle = Damage(ALL_MINIONS, 1)
+
+
+##
+# Minion Tokens
+
+
+class EDR_233t2:
+    """Spirit Falcon"""
+
+    windfury = True

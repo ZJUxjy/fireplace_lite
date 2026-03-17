@@ -9,7 +9,7 @@ from ..utils import *
 class EDR_521:
     """Tricky Satyr"""
 
-    pass
+    deathrattle = Draw(CONTROLLER)
 
 
 class EDR_522:
@@ -27,7 +27,7 @@ class EDR_523:
 class EDR_523t:
     """Skittering Spiderling"""
 
-    deathrattle = Summon(CONTROLLER, "CS2_101t")
+    stealth = True
 
 
 class EDR_524:
@@ -103,6 +103,7 @@ class FIR_919:
     """Everburning Phoenix"""
 
     deathrattle = Summon(CONTROLLER, "CS2_101t")
+    events = OWN_TURN_BEGIN.on(Buff(SELF, "-1"))
 
 
 class FIR_920:

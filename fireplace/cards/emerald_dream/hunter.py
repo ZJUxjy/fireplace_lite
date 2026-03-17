@@ -117,7 +117,7 @@ class EDR_850p:
 class EDR_850pe:
     """Playful Pup"""
 
-    pass
+    rush = True
 
 
 class FIR_909:
@@ -136,3 +136,124 @@ class FIR_960:
     """Tending Dragonkin"""
 
     events = OWN_SPELL_PLAY.on(Buff(SELF, "CS2_101e"))
+
+
+##
+# Dream Cards (from EDR_100 and EDR_101)
+
+
+class EDR_100t10:
+    """Nightmare Scales"""
+
+    divine_shield = True
+
+
+class EDR_100t10e:
+    """Nightmare Scales"""
+
+    pass
+
+
+class EDR_101t:
+    """Blinding Carapace"""
+
+    divine_shield = True
+    rush = True
+
+
+class EDR_101t1:
+    """Blinding Carapace"""
+
+    divine_shield = True
+    lifesteal = True
+
+
+class EDR_101t2:
+    """Blinding Carapace"""
+
+    divine_shield = True
+    reborn = True
+
+
+class EDR_101t3:
+    """Blinding Carapace"""
+
+    divine_shield = True
+    taunt = True
+
+
+class EDR_101t4:
+    """Blinding Carapace"""
+
+    divine_shield = True
+    poisonous = True
+
+
+class EDR_101t5:
+    """Blinding Carapace"""
+
+    rush = True
+    lifesteal = True
+
+
+class EDR_101t6:
+    """Blinding Carapace"""
+
+    rush = True
+    reborn = True
+
+
+class EDR_101t7:
+    """Blinding Carapace"""
+
+    rush = True
+    taunt = True
+
+
+class EDR_101t8:
+    """Blinding Carapace"""
+
+    rush = True
+    poisonous = True
+
+
+class EDR_101t9:
+    """Blinding Carapace"""
+
+    lifesteal = True
+    reborn = True
+
+
+class EDR_101t10:
+    """Blinding Carapace"""
+
+    lifesteal = True
+    taunt = True
+
+
+class EDR_101t11:
+    """Blinding Carapace"""
+
+    lifesteal = True
+    poisonous = True
+
+
+class EDR_101t12:
+    """Blinding Carapace"""
+
+    reborn = True
+    taunt = True
+
+
+class EDR_101t13:
+    """Blinding Carapace"""
+
+    reborn = True
+    poisonous = True
+
+
+class EDR_101t14:
+    """Blinding Carapace"""
+
+    taunt = True
+    poisonous = True

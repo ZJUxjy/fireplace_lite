@@ -33,6 +33,7 @@ class EDR_460:
 class EDR_460t:
     """Wish of the Full Moon"""
 
+    lifesteal = True
     deathrattle = Draw(CONTROLLER)
 
 
@@ -45,13 +46,14 @@ class EDR_461:
 class EDR_461t:
     """Ritual of the Full Moon"""
 
-    deathrattle = Summon(CONTROLLER, "CS2_101t")
+    deathrattle = Summon(CONTROLLER, RandomMinion(cost=6)) * 2
 
 
 class EDR_462:
     """Selenic Drake"""
 
-    deathrattle = CastSpell("CS2_101e")
+    elusive = True
+    events = OWN_TURN_END.on(Give(CONTROLLER, RandomDragon()))
 
 
 class EDR_463:
@@ -123,8 +125,8 @@ class EDR_895t:
 class FIR_777:
     """Spirit of the Kaldorei"""
 
-    # TODO: Should return to hand when friendly minion dies
-    pass
+    taunt = True
+    lifesteal = True
 
 
 class FIR_916:
@@ -137,6 +139,12 @@ class FIR_918:
     """Light of the New Moon"""
 
     play = Summon(CONTROLLER, "FIR_918t")
+
+
+class EDR_476:
+    """Moonwell"""
+
+    play = Damage(ENEMY_MINIONS + ENEMY_HERO, 4), Heal(FRIENDLY_HERO, 4)
 
 
 class FIR_918t:

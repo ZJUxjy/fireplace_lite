@@ -9,10 +9,13 @@ from ..utils import *
 class EDR_060:
     """Ward of Earth"""
 
-    class Hand:
-        events = Death(FRIENDLY_MINIONS).on(
-            Buff(SELF, "EDR_060e")
-        )
+    play = GainArmor(FRIENDLY_HERO, 5), Summon(CONTROLLER, RandomMinion(cost=5))
+
+
+class EDR_060e:
+    """Ward of Earth"""
+
+    taunt = True
 
 
 class EDR_209:
@@ -111,7 +114,7 @@ class EDR_843b:
 class EDR_843t1:
     """Reforestation"""
 
-    pass
+    deathrattle = Draw(CONTROLLER) * 2
 
 
 class EDR_845:
@@ -149,19 +152,19 @@ class EDR_847p:
 class EDR_847pt2:
     """Plant Golem"""
 
-    pass
+    taunt = True
 
 
 class EDR_847pt3:
     """Plant Golem"""
 
-    pass
+    taunt = True
 
 
 class EDR_847pt4:
     """Plant Golem"""
 
-    pass
+    taunt = True
 
 
 class EDR_848:

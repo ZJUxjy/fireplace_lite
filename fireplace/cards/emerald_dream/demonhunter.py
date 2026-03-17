@@ -110,7 +110,7 @@ class EDR_840:
 class EDR_840t:
     """Hound Dreadseed"""
 
-    pass
+    taunt = True
 
 
 class EDR_840t1:
@@ -145,6 +145,12 @@ class EDR_840t2e1:
 
 class EDR_840te:
     """Hound's Fangs"""
+
+    pass
+
+
+class EDR_840te2:
+    """Eternal Nightmare"""
 
     pass
 

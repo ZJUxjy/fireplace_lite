@@ -10,6 +10,13 @@ class EDR_482:
     """Rotten Apple"""
 
     deathrattle = Summon(CONTROLLER, "CS2_101t")
+    events = OWN_TURN_END.on(Heal(FRIENDLY_HERO, 6))
+
+
+class EDR_482e:
+    """Fracture"""
+
+    pass
 
 
 class EDR_483:
@@ -117,6 +124,13 @@ class EDR_483e:
     """Delayed Mana"""
 
     pass
+
+
+class EDR_489e2:
+    """Corrupted Thorns"""
+
+    atk = 3
+    health = 3
 
 
 class FIR_924:

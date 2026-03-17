@@ -8,4 +8,5 @@ from .shaman import *
 from .warlock import *
 from .warrior import *
 from .demonhunter import *
+from .deathknight import *
 from .neutral import *
