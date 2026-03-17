@@ -96,12 +96,6 @@ class EDR_851p:
     play = Summon(CONTROLLER, "EDR_851t")
 
 
-class EDR_851t:
-    """Wisp"""
-
-    pass
-
-
 class EDR_874:
     """Stellar Balance"""
 
@@ -130,3 +124,19 @@ class FIR_913:
     """Inferno Herald"""
 
     deathrattle = Damage(RANDOM_ENEMY_CHARACTER, 3)
+
+
+##
+# Minion Tokens
+
+
+class EDR_851t:
+    """Wisp"""
+
+    deathrattle = Summon(CONTROLLER, "CS2_101t")
+
+
+class EDR_871:
+    """Spirit Gatherer"""
+
+    deathrattle = Summon(CONTROLLER, "CS2_101t")

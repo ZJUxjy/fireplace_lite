@@ -22,6 +22,7 @@ class EDR_456:
     """Darkrider"""
 
     charge = True
+    battlecry = Find(DRAGON + IN_HAND) & Discover(RandomCard())
 
 
 class EDR_457:
@@ -39,32 +40,34 @@ class EDR_457t:
 class EDR_459:
     """Afflicted Devastator"""
 
-    update = CurrentPlayer(OPPONENT) & Refresh(SELF, {GameTag.ATK: +2})
+    battlecry = Damage(FRIENDLY_MINIONS - SELF, 3)
 
 
 class EDR_465:
     """Ysondre"""
 
-    update = CurrentPlayer(OPPONENT) & Refresh(SELF, {GameTag.ATK: +2})
+    taunt = True
+    deathrattle = Summon(CONTROLLER, RandomDragon())
 
 
 class EDR_468:
     """Eggbasher"""
 
-    update = CurrentPlayer(OPPONENT) & Refresh(SELF, {GameTag.ATK: +2})
+    battlecry = Damage(TARGET, 1), Buff(TARGET, "+4/+4")
+
+
+class EDR_468e1:
+    """Scrambled Attack"""
+
+    pass
 
 
 class EDR_471:
     """Tortolla"""
 
     taunt = True
-    update = CurrentPlayer(OPPONENT) & Refresh(SELF, {GameTag.ATK: +4})
-
-
-class EDR_471e:
-    """Tortolla's Rage"""
-
-    pass
+    elusive = True
+    events = Damage(SELF).on(Buff(SELF, "+2/+2"))
 
 
 class FIR_928:
