@@ -30,8 +30,7 @@ class TIME_714:
     """Chrono-Lord Epoch"""
 
     # 战吼：将所有随从移回各自拥有者的手牌
-    # 简化实现：消灭所有随从
-    play = Destroy(ALL_MINIONS)
+    play = Bounce(ALL_MINIONS)
 
 
 # TIME_850: Lo'Gosh, Blood Fighter (7费 7/7)
@@ -92,7 +91,7 @@ class TIME_872:
     }
 
     # 战吼：用随机的1费随从占满对手的战场
-    play = Summon(ENEMY_HAND, RandomMinion(cost=1)) * 7
+    play = Summon(Opponent(), RandomMinion(cost=1)) * 7
 
 
 # TIME_715: For Glory! (5费 法术)

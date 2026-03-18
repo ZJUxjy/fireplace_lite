@@ -45,32 +45,6 @@ class CATA_160:
     )
 
 
-# CATA_190h: 灭世者死亡之翼 (10费 0/30 英雄)
-# 战吼：选择一种裂变来释放！
-# 简化实现：造成10点伤害，随机消灭一些随从
-class CATA_190h:
-    """Deathwing, Worldbreaker"""
-
-    # 战吼：对所有其他随从造成5点伤害，使你的英雄获得5点护甲
-    play = Hit(ALL_MINIONS - SELF, 5), GainArmor(FRIENDLY_HERO, 5)
-
-
-# CATA_497: 奥卓克希昂 (6费 6/7)
-# 战吼：兆示，将死亡之翼的费用减少(4)
-class CATA_497:
-    """Ultraxion"""
-
-    # 战吼：发现一张龙牌，使其获得+4/+4
-    # 简化实现：发现一张龙牌并使其获得+4/+4
-    play = Discover(CONTROLLER, RandomDragon()).then(
-        Give(CONTROLLER, Discover.CARD), Buff(Discover.CARD, "CATA_497e")
-    )
-
-
-CATA_497e = buff(+4, +4)
-
-
-# CATA_580t: 拉格纳罗斯的士兵 (1费 2/1)
 # 亡语：对一个随机敌人造成2点伤害
 class CATA_580t:
     """Soldier of Ragnaros"""
@@ -116,19 +90,6 @@ class CATA_591e:
     cost = SET(0)
 
 
-# CATA_722: 末世特使 (5费 5/4)
-# 嘲讽，战吼：兆示
-class CATA_722:
-    """Envoy of the End"""
-
-    tags = {GameTag.TAUNT: True}
-
-    # 战吼：造成4点伤害
-    # 简化实现：战吼，对一个随机敌人造成4点伤害
-    play = Hit(RANDOM(ENEMY_CHARACTERS), 4)
-
-
-##
 # Spells
 
 

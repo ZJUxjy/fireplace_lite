@@ -100,6 +100,69 @@ class UNG_928:
     update = CurrentPlayer(OPPONENT) & Refresh(SELF, {GameTag.ATK: +2})
 
 
+class UNG_071:
+    """Giant Mastodon"""
+
+    # 6/7 Beast with Taunt
+    play = Taunt(SELF)
+
+
+class UNG_806:
+    """Ultrasaur"""
+
+    # Vanilla 3/5 Beast - no special abilities
+    pass
+
+
+class UNG_808:
+    """Stubborn Gastropod"""
+
+    # 1/2 Beast with Taunt and Poisonous
+    play = Taunt(SELF), SetTag(SELF, (GameTag.POISONOUS,))
+
+
+class UNG_810:
+    """Stegodon"""
+
+    # Vanilla 3/5 Beast - no special abilities
+    pass
+
+
+class UNG_812:
+    """Sabretooth Stalker"""
+
+    # Vanilla 6/5 Beast - no special abilities
+    pass
+
+
+class UNG_813:
+    """Stormwatcher"""
+
+    # Vanilla 7/5 Beast - no special abilities
+    pass
+
+
+class UNG_814:
+    """Giant Wasp"""
+
+    # Vanilla 2/2 Beast - no special abilities
+    pass
+
+
+class UNG_844:
+    """Humongous Razorleaf"""
+
+    # 3/4 that can't attack
+    update = Refresh(SELF, {GameTag.CANT_ATTACK: True})
+
+
+class UNG_852:
+    """Tyrantus"""
+
+    # Vanilla 5/7 Beast - no special abilities
+    pass
+
+
 class UNG_937:
     """Primalfin Lookout"""
 

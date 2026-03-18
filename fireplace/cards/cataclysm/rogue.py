@@ -57,15 +57,6 @@ class CATA_158t:
     play = Discover(CONTROLLER, RandomSpell())
 
 
-# CATA_190h: Deathwing, Worldbreaker (10费 0/30 英雄)
-# 战吼: 选择一种裂变来释放！
-# 简化实现: 对所有其他随从造成5点伤害，使你的英雄获得5点护甲
-class CATA_190h:
-    """Deathwing, Worldbreaker"""
-
-    # 简化实现: 对所有其他随从造成5点伤害，使你的英雄获得5点护甲
-    play = Hit(ALL_MINIONS - SELF, 5), GainArmor(FRIENDLY_HERO, 5)
-
 
 # CATA_200: Agent of the Old Ones (1费 2/1 埃索达)
 # 战吼: 选择你手牌中的一张卡牌，将其变成一个幸运币
@@ -110,33 +101,6 @@ class CATA_481:
     # 亡语: 简化实现
     deathrattle = Hit(RANDOM_ENEMY_MINION, 2)
 
-
-# CATA_497: Ultraxion (6费 6/7 龙)
-# 战吼: 兆示，降低死亡之翼的费用
-# 简化实现: 战吼，发现一张龙牌，使其获得+4/+4
-class CATA_497:
-    """Ultraxion"""
-
-    # 简化实现: 战吼，发现一张龙牌并使其获得+4/+4
-    play = Discover(CONTROLLER, RandomDragon()).then(
-        Give(CONTROLLER, Discover.CARD), Buff(Discover.CARD, "CATA_497e")
-    )
-
-
-CATA_497e = buff(+4, +4)
-
-
-# CATA_722: Envoy of the End (5费 5/4)
-# 嘲讽
-# 战吼: 兆示
-# 简化实现: 嘲讽，战吼，对一个随机敌人造成4点伤害
-class CATA_722:
-    """Envoy of the End"""
-
-    tags = {GameTag.TAUNT: True}
-
-    # 简化实现: 战吼，对一个随机敌人造成4点伤害
-    play = Hit(RANDOM(ENEMY_CHARACTERS), 4)
 
 
 # CATA_786: Chaos Supplicant (4费 3/5)

@@ -382,6 +382,16 @@ class EDR_942:
     events = OWN_TURN_END.on(GainArmor(FRIENDLY_HERO, 1))
 
 
+class EDR_950:
+    """Sharp-Eyed Lookout"""
+
+    play = Draw(CONTROLLER).then(Buff(Draw.TARGET, "EDR_950e1"))
+
+
+class EDR_950e1:
+    tags = {GameTag.COST: -1}
+
+
 class EDR_971:
     """Critter Caretaker"""
 

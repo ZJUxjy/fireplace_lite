@@ -5,6 +5,13 @@ from ..utils import *
 # Minions
 
 
+class UNG_019:
+    """Air Elemental"""
+
+    # Vanilla 2/2 Elemental - no special abilities
+    pass
+
+
 class UNG_020:
     """Arcanologist"""
 

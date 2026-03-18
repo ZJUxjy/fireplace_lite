@@ -84,6 +84,7 @@ class UNG_934t2:
 class UNG_929:
     """Molten Blade"""
 
+    play = ()
     class Hand:
         events = OWN_TURN_BEGIN.on(
             Morph(SELF, RandomWeapon()).then(Buff(Morph.CARD, "UNG_929e"))
