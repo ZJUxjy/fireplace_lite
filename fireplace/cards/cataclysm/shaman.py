@@ -52,22 +52,6 @@ class CATA_153t1:
 CATA_153e1 = buff(+3, 0)
 
 
-# CATA_497: 奥卓克希昂 (6费 6/7)
-# 战吼：兆示
-class CATA_497:
-    """Ultraxion"""
-
-    tags = {
-        GameTag.CARD_SET: 1980,
-        GameTag.COST: 6,
-        GameTag.ATK: 6,
-        GameTag.HEALTH: 7,
-        GameTag.RARITY: 5,
-    }
-
-    # 简化实现：战吼，造成3点伤害
-    play = Hit(RANDOM(ENEMY_CHARACTERS), 3)
-
 
 # CATA_561: 能量仪式 (2费 法术)
 # 兆示，召唤2个1/1具有突袭的元素
@@ -249,23 +233,6 @@ class CATA_570:
     play = Draw(CONTROLLER)
 
 
-# CATA_722: 末世特使 (5费 5/4)
-# 嘲讽，战吼：兆示
-class CATA_722:
-    """Envoy of the End"""
-
-    tags = {
-        GameTag.CARD_SET: 1980,
-        GameTag.COST: 5,
-        GameTag.ATK: 5,
-        GameTag.HEALTH: 4,
-        GameTag.TAUNT: True,
-        GameTag.RARITY: 1,
-    }
-
-    # 简化实现：战吼，造成3点伤害
-    play = Hit(RANDOM(ENEMY_CHARACTERS), 3)
-
 
 # CATA_724: 缚风者 (4费 7/7)
 # 亡语：解锁你被过载的水晶，过载(3)
@@ -288,18 +255,3 @@ class CATA_724:
 CATA_724e = buff(+3, 0)
 
 
-# CATA_190h: 灭世者死亡之翼 (10费 0/30 英雄)
-# 战吼：选择一种裂变来释放
-class CATA_190h:
-    """Deathwing, Worldbreaker"""
-
-    tags = {
-        GameTag.CARD_SET: 1980,
-        GameTag.COST: 10,
-        GameTag.ATK: 0,
-        GameTag.HEALTH: 30,
-        GameTag.RARITY: 5,
-    }
-
-    # 简化实现：战吼，对所有其他随从造成5点伤害，使你的英雄获得5点护甲
-    play = Hit(ALL_MINIONS - SELF, 5), GainArmor(FRIENDLY_HERO, 5)
