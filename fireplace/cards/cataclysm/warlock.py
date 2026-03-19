@@ -124,6 +124,7 @@ class CATA_726:
 
     tags = {GameTag.ELITE: True}
 
+    colossal_limb_count = 2  # 巨型+2：手臂 + 士兵
     # 巨型+2：召唤手臂和士兵
     play = Summon(CONTROLLER, "CATA_726t"), Summon(CONTROLLER, "CATA_726t1")
 
@@ -135,6 +136,7 @@ class CATA_726t:
 
     tags = {
         GameTag.COLOSSAL_LIMB: True,
+        GameTag.COLOSSAL_LIMB_ON_LEFT: True,
     }
 
     events = OWN_TURN_END.on(

@@ -1145,6 +1145,8 @@ class Minion(Character):
         self.enrage = False
         self.silenced = False
         self._summon_index = None
+        self.colossal_limbs = []   # body holds: list of all limbs
+        self.colossal_body = None  # limb holds: reference to body
         self.dormant = False
         self.dormant_turns = data.scripts.dormant_turns
         self.reborn = False
@@ -1239,6 +1241,17 @@ class Minion(Character):
                 self.controller.field.append(self)
         elif value == Zone.GRAVEYARD and self.zone == Zone.PLAY:
             self.controller.minions_killed_this_turn += 1
+            # Colossal body death → kill all living limbs
+            for limb in list(self.colossal_limbs):
+                if limb.zone == Zone.PLAY:
+                    limb.zone = Zone.GRAVEYARD
+            self.colossal_limbs.clear()
+            # Colossal limb death → remove from body's limb list.
+            # We do NOT clear self.colossal_body here so the deathrattle
+            # (which fires after _set_zone) can still reference the body.
+            if self.colossal_body is not None:
+                if self in self.colossal_body.colossal_limbs:
+                    self.colossal_body.colossal_limbs.remove(self)
 
         if self.zone == Zone.PLAY:
             self.log("%r is removed from the field", self)
@@ -1267,7 +1280,9 @@ class Minion(Character):
 
     def is_summonable(self):
         summonable = super().is_summonable()
-        if len(self.controller.field) >= self.game.MAX_MINIONS_ON_FIELD:
+        colossal_value = getattr(self.data.scripts, "colossal_limb_count", 0)
+        # body + N limbs all need space on the field
+        if len(self.controller.field) + colossal_value >= self.game.MAX_MINIONS_ON_FIELD:
             return False
         return summonable
 

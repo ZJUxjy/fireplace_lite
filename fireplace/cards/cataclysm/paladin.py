@@ -11,7 +11,7 @@ from hearthstone.enums import SpellSchool
 class CATA_432:
     """Chromatus"""
 
-    # 巨型+4：召唤4个头颅
+    colossal_limb_count = 4  # 巨型+4：4个头颅（field slots needed beyond the body）
     # 绿、红、蓝、青铜头颅
     play = Summon(CONTROLLER, "CATA_432t1"), Summon(CONTROLLER, "CATA_432t2"), Summon(CONTROLLER, "CATA_432t3"), Summon(CONTROLLER, "CATA_432t4")
 
@@ -25,9 +25,10 @@ class CATA_432t1:
     tags = {
         GameTag.TAUNT: True,
         GameTag.COLOSSAL_LIMB: True,
+        GameTag.COLOSSAL_LIMB_ON_LEFT: True,
     }
 
-    deathrattle = SetTags(SELF, {GameTag.TAUNT: False})
+    deathrattle = SetTags(COLOSSAL_BODY, {GameTag.TAUNT: False})
 
 
 # CATA_432t2: 克洛玛图斯的红色头颅
@@ -39,9 +40,10 @@ class CATA_432t2:
     tags = {
         GameTag.LIFESTEAL: True,
         GameTag.COLOSSAL_LIMB: True,
+        GameTag.COLOSSAL_LIMB_ON_LEFT: True,
     }
 
-    deathrattle = SetTags(SELF, {GameTag.LIFESTEAL: False})
+    deathrattle = SetTags(COLOSSAL_BODY, {GameTag.LIFESTEAL: False})
 
 
 # CATA_432t3: 克洛玛图斯的蓝色头颅
@@ -55,7 +57,7 @@ class CATA_432t3:
         GameTag.COLOSSAL_LIMB: True,
     }
 
-    deathrattle = SetTags(SELF, {GameTag.ELUSIVE: False})
+    deathrattle = SetTags(COLOSSAL_BODY, {GameTag.ELUSIVE: False})
 
 
 # CATA_432t4: 克洛玛图斯的青铜头颅
@@ -69,7 +71,7 @@ class CATA_432t4:
         GameTag.COLOSSAL_LIMB: True,
     }
 
-    deathrattle = SetTags(SELF, {GameTag.DIVINE_SHIELD: False})
+    deathrattle = SetTags(COLOSSAL_BODY, {GameTag.DIVINE_SHIELD: False})
 
 
 # CATA_472: 灵感之槌
