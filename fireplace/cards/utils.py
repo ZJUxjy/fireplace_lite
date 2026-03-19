@@ -341,3 +341,14 @@ class ThresholdUtils:
     powered_up = Attr(
         CONTROLLER, Attr(SELF, GameTag.PLAYER_TAG_THRESHOLD_TAG_ID)
     ) >= Attr(SELF, GameTag.PLAYER_TAG_THRESHOLD_VALUE)
+
+
+# Colossal mechanic: reference the body from a limb's script
+COLOSSAL_BODY = FuncSelector(
+    lambda entities, source: (
+        [source.colossal_body]
+        if getattr(source, "colossal_body", None) is not None
+        and source.colossal_body.zone == Zone.PLAY
+        else []
+    )
+)
