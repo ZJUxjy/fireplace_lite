@@ -505,6 +505,11 @@ class Play(GameAction):
         if card.type == CardType.SPELL and card.twinspell:
             source.game.queue_actions(card, [Give(player, card.twinspell_copy)])
 
+        if card.type == CardType.MINION and card.data.tags.get(GameTag.MINIATURIZE):
+            mini_id = card.miniaturize_mini_id
+            if mini_id:
+                source.game.queue_actions(card, [Give(player, mini_id)])
+
         if card.type in (CardType.MINION, CardType.WEAPON):
             self.queue_broadcast(
                 summon_action, (player, EventListener.ON, player, card)
