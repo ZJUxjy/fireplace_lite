@@ -528,6 +528,27 @@ class GameManager:
         # 关键字
         if hasattr(minion, 'mechanics') and minion.mechanics:
             data["mechanics"] = [str(m) for m in minion.mechanics]
+        # 泰坦技能
+        titan_abilities = getattr(minion, 'titan_abilities', [])
+        if titan_abilities:
+            data["is_titan"] = True
+            data["titan_ability_cooldown"] = getattr(minion, 'titan_ability_cooldown', False)
+            titan_ability_used = getattr(minion, 'titan_ability_used', [])
+            abilities = []
+            for i, ab in enumerate(titan_abilities):
+                card_id = getattr(ab, 'card_id', None) or getattr(ab, 'id', None)
+                ab_chinese = card_text_loader.get_card_info(card_id) if card_id else {}
+                ab_name = ab_chinese.get('name') or str(ab)
+                ab_text = ab_chinese.get('text') or (str(ab.data.description) if getattr(ab, 'data', None) and ab.data.description else "")
+                abilities.append({
+                    "index": i,
+                    "name": ab_name,
+                    "text": ab_text,
+                    "is_used": titan_ability_used[i] if i < len(titan_ability_used) else False,
+                    "requires_target": ab.requires_target() if hasattr(ab, 'requires_target') else False,
+                    "valid_targets": [self._get_target_id(t) for t in ab.targets] if hasattr(ab, 'requires_target') and ab.requires_target() and hasattr(ab, 'targets') else [],
+                })
+            data["titan_abilities"] = abilities
         return data
 
     def get_secret_data(self, secret):

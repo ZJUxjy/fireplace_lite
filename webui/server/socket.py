@@ -451,6 +451,55 @@ def register_socket_events(socketio):
         except Exception as e:
             emit('error', {'message': str(e)})
 
+    @socketio.on('use_titan_ability')
+    def handle_use_titan_ability(data):
+        """使用泰坦技能"""
+        game_id = data.get('game_id')
+        minion_index = data.get('minion_index')
+        ability_index = data.get('ability_index')
+        target_id = data.get('target_id')
+
+        if game_id not in manager.games:
+            emit('error', {'message': 'Game not found'})
+            return
+
+        g = manager.games[game_id]
+        player = g["players"][0]
+        game = g["game"]
+
+        if game.current_player != player:
+            emit('error', {'message': 'Not your turn'})
+            return
+
+        if minion_index is None or minion_index < 0 or minion_index >= len(player.field):
+            emit('error', {'message': 'Invalid minion index'})
+            return
+
+        minion = player.field[minion_index]
+
+        if not getattr(minion, 'titan_abilities', None):
+            emit('error', {'message': 'Minion is not a Titan'})
+            return
+
+        target = None
+        if target_id:
+            target = manager.get_target_by_id(game_id, target_id)
+
+        try:
+            manager.log_event(game_id, 'titan_ability', f'{minion} 使用了泰坦技能 #{ability_index}', {
+                'minion': str(minion),
+                'ability_index': ability_index,
+                'target': str(target) if target else None,
+            })
+
+            minion.use_titan_ability(ability_index, target=target)
+
+            state = manager.get_game_state(game_id)
+            emit('game_state', {'game_id': game_id, 'state': state})
+
+        except Exception as e:
+            emit('error', {'message': str(e)})
+
     @socketio.on('weapon_attack')
     def handle_weapon_attack(data):
         """使用武器攻击目标"""
