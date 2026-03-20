@@ -1147,6 +1147,9 @@ class Minion(Character):
         self._summon_index = None
         self.colossal_limbs = []   # body holds: list of all limbs
         self.colossal_body = None  # limb holds: reference to body
+        self.titan_abilities = []      # list of ability cards (Spell, SETASIDE zone)
+        self.titan_ability_used = []   # parallel list of bool (permanent once-ever use)
+        self.titan_ability_cooldown = False  # reset each turn: only 1 ability per turn
         self.dormant = False
         self.dormant_turns = data.scripts.dormant_turns
         self.reborn = False
@@ -1159,6 +1162,18 @@ class Minion(Character):
         data["silenced"] = self.silenced
         data["dormant"] = self.dormant
         data["reborn"] = self.reborn
+        if self.titan_abilities:
+            data["titan_abilities"] = [
+                {
+                    "id": ab.id,
+                    "name": str(ab),
+                    "description": str(ab.data.description) if ab.data else "",
+                    "is_used": self.titan_ability_used[i],
+                    "requires_target": ab.requires_target(),
+                }
+                for i, ab in enumerate(self.titan_abilities)
+            ]
+            data["titan_ability_cooldown"] = self.titan_ability_cooldown
         return data
 
     @property
@@ -1239,6 +1254,11 @@ class Minion(Character):
                 self.controller.field.insert(self._summon_index, self)
             else:
                 self.controller.field.append(self)
+            # Initialize Titan abilities when entering play
+            for aid in getattr(self.data.scripts, "titan_abilities", []):
+                ability = self.controller.card(aid, source=self)
+                self.titan_abilities.append(ability)
+                self.titan_ability_used.append(False)
         elif value == Zone.GRAVEYARD and self.zone == Zone.PLAY:
             self.controller.minions_killed_this_turn += 1
             # Colossal body death → kill all living limbs
@@ -1252,6 +1272,10 @@ class Minion(Character):
             if self.colossal_body is not None:
                 if self in self.colossal_body.colossal_limbs:
                     self.colossal_body.colossal_limbs.remove(self)
+            # Clean up Titan ability state
+            self.titan_abilities.clear()
+            self.titan_ability_used.clear()
+            self.titan_ability_cooldown = False
 
         if self.zone == Zone.PLAY:
             self.log("%r is removed from the field", self)
@@ -1285,6 +1309,38 @@ class Minion(Character):
         if len(self.controller.field) + colossal_value >= self.game.MAX_MINIONS_ON_FIELD:
             return False
         return summonable
+
+    @property
+    def miniaturize_mini_id(self):
+        """Return the card ID of the 1/1 mini copy for this Miniaturize minion."""
+        # Script override for cards that lack COLLECTION_RELATED_CARD_DATABASE_ID tag
+        override = getattr(self.data.scripts, "miniaturize_mini", None)
+        if override:
+            return override
+        dbf_id = self.data.tags.get(GameTag.COLLECTION_RELATED_CARD_DATABASE_ID)
+        if dbf_id and dbf_id in cards.db.dbf:
+            return cards.db.dbf[dbf_id]
+        return None
+
+    def use_titan_ability(self, ability_index, target=None):
+        """Use a Titan ability by index (0, 1, 2). Each is once-ever; one per turn."""
+        if ability_index >= len(self.titan_abilities):
+            raise InvalidAction("Invalid titan ability index %d" % ability_index)
+        if self.titan_ability_used[ability_index]:
+            raise InvalidAction("Titan ability %d already used" % ability_index)
+        if self.titan_ability_cooldown:
+            raise InvalidAction("Already used a Titan ability this turn")
+        ability = self.titan_abilities[ability_index]
+        self.titan_ability_used[ability_index] = True
+        self.titan_ability_cooldown = True
+        ability.target = target
+        play_actions = ability.get_actions("play")
+        if play_actions:
+            self.game.main_power(ability, play_actions, target)
+        # Trigger "ability_used" script defined on the Titan body card
+        body_actions = self.get_actions("ability_used")
+        if body_actions:
+            self.game.trigger(self, body_actions, event_args=None)
 
     def silence(self):
         return self.game.cheat_action(self, [actions.Silence(self)])

@@ -405,6 +405,9 @@ class BaseGame(Entity):
             player.hero.power.activations_this_turn = 0
             player.hero.power.additional_activations_this_turn = 0
 
+        for minion in player.field:
+            minion.titan_ability_cooldown = False
+
         for character in self.characters:
             character.num_attacks = 0
             character.damaged_this_turn = 0

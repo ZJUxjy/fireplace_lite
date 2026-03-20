@@ -91,6 +91,7 @@ class CardDB(Dict[str, cardxml.CardXML]):
             "secret_deathrattles",
             "magnetic",
             "overkill",
+            "ability_used",
         )
 
         for script in scriptnames:
@@ -172,6 +173,11 @@ class CardDB(Dict[str, cardxml.CardXML]):
             card.scripts.dormant_turns = cardscript.dormant_turns
         else:
             card.scripts.dormant_turns = 0
+
+        if hasattr(cardscript, "titan_abilities"):
+            card.scripts.titan_abilities = list(cardscript.titan_abilities)
+        else:
+            card.scripts.titan_abilities = []
 
         if hasattr(cardscript, "cardtext_entity_0"):
             card.cardtext_entity_0 = cardscript.cardtext_entity_0
