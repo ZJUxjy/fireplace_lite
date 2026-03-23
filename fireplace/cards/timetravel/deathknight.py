@@ -10,8 +10,11 @@ class TIME_610:
     """Shadows of Yesterday"""
 
     # 将你的牌库中的所有随从置入你的手牌
-    # 简化实现：抽3张牌
-    play = Draw(CONTROLLER) * 3
+    def play(self):
+        minions = [c for c in self.controller.deck if c.type == CardType.MINION]
+        for card in list(minions):
+            sel = FuncSelector(lambda e, s, c=card: [c])
+            yield Draw(CONTROLLER, sel)
 
 
 # TIME_610t2: Anomalous Shade (2费 3/2)
@@ -170,8 +173,9 @@ class END_005:
     """Bygone Echoes"""
 
     # 将你的手牌翻倍
-    # 简化实现：抽3张牌
-    play = Draw(CONTROLLER) * 3
+    def play(self):
+        for card in list(self.controller.hand):
+            yield Give(CONTROLLER, card.id)
 
 
 # END_001: Jagged Edge of Time (3费 3/2)

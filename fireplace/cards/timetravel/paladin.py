@@ -65,17 +65,10 @@ class TIME_019:
     """Manifested Timeways"""
 
     # 战吼：获得等同于你手牌数量的攻击力
-    # 简化实现：获得+2攻击力
-    play = Buff(SELF, "TIME_019e")
-
-
-@custom_card
-class TIME_019e:
-    tags = {
-        GameTag.CARDNAME: "Timeways Empowerment",
-        GameTag.CARDTYPE: CardType.ENCHANTMENT,
-        GameTag.ATK: 2,
-    }
+    def play(self):
+        hand_count = len(self.controller.hand)
+        if hand_count > 0:
+            self._atk = getattr(self, "_atk", 0) + hand_count
 
 
 # TIME_043: PMM Infinitizer (6费 4/4)

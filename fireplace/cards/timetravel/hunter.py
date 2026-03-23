@@ -10,8 +10,7 @@ class END_015:
     """Triennium Rex"""
 
     # 你的野兽获得+2/+2
-    # 简化实现：所有随从获得+2/+2
-    update = buff(+2, +2)
+    update = Refresh(FRIENDLY_MINIONS + BEAST, {GameTag.ATK: 2, GameTag.HEALTH: 2})
 
 
 # TIME_042: King Maluk (4费 5/6)
@@ -36,16 +35,52 @@ class TIME_042t:
     choose = ("TIME_042ta", "TIME_042tb")
 
 
+@custom_card
 class TIME_042ta:
-    """First Option"""
+    tags = {
+        GameTag.CARDNAME: "Banana (+1/+1)",
+        GameTag.CARDTYPE: CardType.SPELL,
+    }
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
 
-    pass
+    play = Buff(TARGET, "TIME_042e1")
 
 
+@custom_card
+class TIME_042e1:
+    tags = {
+        GameTag.CARDNAME: "Banana Buff",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 1,
+        GameTag.HEALTH: 1,
+    }
+
+
+@custom_card
 class TIME_042tb:
-    """Second Option"""
+    tags = {
+        GameTag.CARDNAME: "Bunch of Bananas (+2/+1)",
+        GameTag.CARDTYPE: CardType.SPELL,
+    }
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
 
-    pass
+    play = Buff(TARGET, "TIME_042e2")
+
+
+@custom_card
+class TIME_042e2:
+    tags = {
+        GameTag.CARDNAME: "Bunch of Bananas Buff",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 2,
+        GameTag.HEALTH: 1,
+    }
 
 
 # TIME_601: Arrow Retriever (2费 3/1)

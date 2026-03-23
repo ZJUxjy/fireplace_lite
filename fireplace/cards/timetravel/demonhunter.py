@@ -10,8 +10,9 @@ class END_006:
     """Chronikar"""
 
     # 战吼：将你的手牌翻倍
-    # 简化实现：抽一张牌
-    play = Draw(CONTROLLER)
+    def play(self):
+        for card in list(self.controller.hand):
+            yield Give(CONTROLLER, card.id)
 
 
 # TIME_020: Broxigar (2费 12/12)

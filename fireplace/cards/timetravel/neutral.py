@@ -1,6 +1,18 @@
 from ..utils import *
 
 
+class _DoubleHandAction(TargetedAction):
+    """Give a copy of each card currently in the target player's hand."""
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        for card in list(target.hand):
+            Give(CONTROLLER, card.id).trigger(source)
+
+
+DOUBLE_HAND = _DoubleHandAction(CONTROLLER)
+
+
 ##
 # Minions
 
@@ -50,8 +62,9 @@ class END_037:
     """Endtime Murozond"""
 
     # 战吼：获得你手牌中所有卡牌的费用
-    # 简化实现：获得5点法力值
-    play = GainMana(CONTROLLER, 5)
+    def play(self):
+        total = sum(c.cost for c in self.controller.hand)
+        yield GainMana(CONTROLLER, total)
 
 
 # TIME_002: Aeon Wizard (5费 3/5)
@@ -89,8 +102,9 @@ class TIME_024:
     """Murozond, Unbounded"""
 
     # 战吼：获得你手牌中所有卡牌的费用
-    # 简化实现：获得5点法力值
-    play = GainMana(CONTROLLER, 5)
+    def play(self):
+        total = sum(c.cost for c in self.controller.hand)
+        yield GainMana(CONTROLLER, total)
 
 
 # TIME_035: Time Machine (6费 6/6)
@@ -228,8 +242,9 @@ class TIME_054:
     """Time Skipper"""
 
     # 战吼：将你的手牌翻倍
-    # 简化实现：抽一张牌
-    play = Draw(CONTROLLER)
+    def play(self):
+        for card in list(self.controller.hand):
+            yield Give(CONTROLLER, card.id)
 
 
 # TIME_055: Unknown Voyager (5费 4/5)
@@ -364,10 +379,7 @@ class TIME_103:
     """Chromie"""
 
     # 在你的回合结束时，将你的手牌翻倍
-    # 简化实现：抽一张牌
-    # No battlecry
-
-    events = OWN_TURN_END.on(Draw(CONTROLLER))
+    events = OWN_TURN_END.on(DOUBLE_HAND)
 
 
 # TIME_428: Yesterloc (2费 3/1)
@@ -426,9 +438,14 @@ class TIME_EVENT_300t:
 class TIME_EVENT_301:
     """Disciple of Demise"""
 
-    # 战吼：随机消灭另一个随从
-    # Simplified: just destroy one minion
-    play = Destroy(RANDOM(ENEMY_MINIONS))
+    # 战吼：随机消灭另一个随从；每持有一张龙牌，重复一次
+    def play(self):
+        dragon_count = sum(
+            1 for c in self.controller.hand
+            if Race.DRAGON in getattr(c, "races", [])
+        )
+        for _ in range(1 + dragon_count):
+            yield Destroy(RANDOM(ENEMY_MINIONS))
 
 
 # TIME_EVENT_997: Welcome Home! (3费 法术)
