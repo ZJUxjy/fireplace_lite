@@ -6,7 +6,7 @@ from fireplace import enums
 # Minions
 
 # TOY_501: Shudderblock (6费 6/6)
-# 微缩。战吼：你下一个战吼触发3次（简化：战吼触发额外一次，类似布兰）
+# 微缩。战吼：你下一个战吼触发3次（简化：所有战吼额外触发一次，类似布兰）
 class TOY_501:
     """Shudderblock"""
 
