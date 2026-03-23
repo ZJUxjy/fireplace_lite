@@ -20,7 +20,8 @@ class TOY_312:
 
     tags = {GameTag.RUSH: True}
 
-    events = OWN_TURN_BEGIN.on(Draw(CONTROLLER))  # 简化：每回合开始抽牌
+    # 本随从攻击后，如果防御方死亡，抽一张牌
+    events = Attack(SELF).after(Dead(Attack.DEFENDER) & Draw(CONTROLLER))
 
 
 # TOY_340: Nostalgic Initiate (2费 2/2)
@@ -39,7 +40,9 @@ TOY_340e = buff(+2, +2)
 class TOY_341:
     """Nostalgic Clown"""
 
-    play = SetTags(SELF, {GameTag.TAUNT: True, GameTag.DIVINE_SHIELD: True})
+    def play(self):
+        if self.controller.hero_power.activations_this_turn >= 1:
+            yield SetTags(SELF, {GameTag.TAUNT: True, GameTag.DIVINE_SHIELD: True})
 
 
 # TOY_601: Factory Assemblybot (5费 3/6)
