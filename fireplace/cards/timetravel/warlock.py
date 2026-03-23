@@ -10,8 +10,9 @@ class END_018:
     """Acolyte of Infinity"""
 
     # 亡语：将你的手牌翻倍
-    # 简化实现：随机抽一张牌
-    deathrattle = Draw(CONTROLLER)
+    def deathrattle(self):
+        for card in list(self.controller.hand):
+            yield Give(CONTROLLER, card.id)
 
 
 # TIME_005: Timethief Rafaam (10费 10/10)
@@ -29,8 +30,11 @@ class TIME_008:
     """Bygone Doomspeaker"""
 
     # 战吼：如果你有足够的法力值，造成5点伤害
-    # 简化实现：造成3点伤害
-    play = Hit(RANDOM(ENEMY_CHARACTERS), 3)
+    def play(self):
+        if self.controller.mana >= 5:
+            yield Hit(RANDOM(ENEMY_CHARACTERS), 5)
+        else:
+            yield Hit(RANDOM(ENEMY_CHARACTERS), 3)
 
 
 # TIME_025: Twilight Timehopper (2费 4/4)
@@ -39,8 +43,9 @@ class TIME_025:
     """Twilight Timehopper"""
 
     # 战吼：将你的手牌翻倍
-    # 简化实现：抽一张牌
-    play = Draw(CONTROLLER)
+    def play(self):
+        for card in list(self.controller.hand):
+            yield Give(CONTROLLER, card.id)
 
 
 # TIME_026: Entropic Continuity (1费 法术)
@@ -104,8 +109,11 @@ class TIME_031:
     """RAFAAM LADDER!!"""
 
     # 将你的牌库中的所有随从置入你的手牌
-    # 简化实现：抽3张牌
-    play = Draw(CONTROLLER) * 3
+    def play(self):
+        minions = [c for c in self.controller.deck if c.type == CardType.MINION]
+        for card in list(minions):
+            sel = FuncSelector(lambda e, s, c=card: [c])
+            yield Draw(CONTROLLER, sel)
 
 
 # TIME_032: Chronogor (6费 6/7)

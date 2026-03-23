@@ -53,8 +53,15 @@ class TIME_713t:
 class TIME_770:
     """Fast Forward"""
 
-    # 简化实现：抽3张牌
-    play = Draw(CONTROLLER) * 3
+    # 将你的手牌翻转为你的牌库
+    def play(self):
+        hand = list(self.controller.hand)
+        hand_count = len(hand)
+        for card in hand:
+            card.zone = Zone.DECK
+        self.controller.shuffle_deck()
+        for _ in range(hand_count):
+            yield Draw(CONTROLLER)
 
 
 # TIME_875: Garona Halforcen (4费 5/4)
@@ -93,8 +100,13 @@ class TIME_039:
     """Deja Vu"""
 
     # 将一张你本回合使用的卡牌置入你的手牌
-    # 简化实现：抽一张牌
-    play = Draw(CONTROLLER)
+    def play(self):
+        played = [
+            c for c in self.controller.cards_played_this_game
+            if c.turn_played == self.game.turn and c.id != "TIME_039"
+        ]
+        if played:
+            yield Give(CONTROLLER, played[-1].id)
 
 
 # TIME_711: Flashback (2费 法术)
@@ -118,5 +130,8 @@ class TIME_712:
     """Dethrone"""
 
     # 将你的牌库的底牌置入你的手牌
-    # 简化实现：抽一张牌
-    play = Draw(CONTROLLER)
+    def play(self):
+        if self.controller.deck:
+            card = self.controller.deck[0]  # deck[0] is the bottom card
+            sel = FuncSelector(lambda e, s, c=card: [c])
+            yield Draw(CONTROLLER, sel)

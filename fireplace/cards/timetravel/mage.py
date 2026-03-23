@@ -88,12 +88,12 @@ class TIME_858:
 
     # 巨型+3
     # 战吼：获得你手牌中所有法术的法力值消耗
-    play = Buff(CONTROLLER, "TIME_858e")
-
-
-class TIME_858e:
-    # 获得你手牌中所有法术的法力值消耗
-    pass
+    def play(self):
+        spell_cost = sum(
+            c.cost for c in self.controller.hand if c.type == CardType.SPELL
+        )
+        if spell_cost > 0:
+            self._atk = getattr(self, "_atk", 0) + spell_cost
 
 
 # TIME_859: Anomalize (7费 法术)
