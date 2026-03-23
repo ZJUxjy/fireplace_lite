@@ -56,7 +56,8 @@ class EDR_525B:
 
 class EDR_525e:
     """Barbed Upgrade"""
-    atk = 1
+
+    tags = {GameTag.ATK: 1}
 
 
 class EDR_526:

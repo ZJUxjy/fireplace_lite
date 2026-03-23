@@ -148,6 +148,6 @@ class CATA_308:
     # 对所有随从造成4点伤害
     play = Hit(ALL_MINIONS, 4)
 
-    # 简化实现：手动设置费用
-    # 实际实现需要在费用计算时检查是否有传说随从
-    pass
+    # 如果你控制着传说随从，费用降至1（即-4）
+    class Hand:
+        update = Find(FRIENDLY_MINIONS + LEGENDARY) & Refresh(SELF, {GameTag.COST: -4})

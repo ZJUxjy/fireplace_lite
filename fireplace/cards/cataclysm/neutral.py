@@ -1,5 +1,12 @@
 from ..utils import *
 
+_SELF_IF_ALONE = FuncSelector(
+    lambda entities, source: [source]
+    if source.zone == Zone.PLAY
+    and not any(m for m in source.controller.field if m is not source)
+    else []
+)
+
 
 ##
 # Minions
@@ -7,7 +14,7 @@ from ..utils import *
 # CATA_111: 晦鳞巢母 (3费 4/3 龙)
 # 战吼：如果你的手牌中有龙牌，复原两个法力水晶。
 class CATA_111:
-    """Darkshire Councilman"""
+    """Darkscale Broodmother"""
 
     # 战吼：如果手牌中有龙牌，复原两个法力水晶
     play = Find(FRIENDLY_HAND + DRAGON) & GainEmptyMana(CONTROLLER, 2)
@@ -205,11 +212,8 @@ class CATA_612:
 class CATA_613:
     """Survivalist"""
 
-    # 简化实现：在你的回合开始时，如果控制其他随从则失去免疫，否则获得免疫
-    events = OWN_TURN_BEGIN.on(
-        (Count(FRIENDLY_MINIONS - SELF) == 0) & SetTag(SELF, {GameTag.IMMUNE: True}) |
-        (Count(FRIENDLY_MINIONS - SELF) > 0) & UnsetTag(SELF, {GameTag.IMMUNE: True})
-    )
+    # 如果没有控制其他随从，则拥有免疫（持续光环）
+    update = Refresh(_SELF_IF_ALONE, {GameTag.IMMUNE: True})
 
 
 # CATA_614: 蔽影密探 (2费 2/2)
@@ -240,14 +244,21 @@ class CATA_615t:
     pass
 
 
+def _gruul_cost(entity, i):
+    """Gruul hand aura: cost decreases by the cost of the last card played."""
+    played = entity.controller.cards_played_this_game
+    if played:
+        return i - played[-1].data.cost
+    return i
+
+
 # CATA_616: 戈隆巨人 (9费 8/8)
 # 本随从的法力值消耗会随你使用的上一张牌的法力值消耗而降低。
 class CATA_616:
     """Gruul"""
 
-    # 简化实现：不做任何效果
-    # 实际实现需要根据上张使用的牌来降低费用
-    pass
+    class Hand:
+        update = Refresh(SELF, {GameTag.COST: _gruul_cost})
 
 
 # CATA_720: 战争大师黑角 (7费 6/6)
@@ -315,7 +326,13 @@ class CATA_897:
 
 
 # CATA_897e: 减费buff
-CATA_897e = buff(cost=-1)
+@custom_card
+class CATA_897e:
+    tags = {
+        GameTag.CARDNAME: "Jewel Discount",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.COST: -1,
+    }
 
 
 # CATA_898: 鳞甲长矛手 (4费 6/6)
@@ -323,9 +340,8 @@ CATA_897e = buff(cost=-1)
 class CATA_898:
     """Scaled Lancer"""
 
-    # 简化实现：战吼使所有敌方随从获得嘲讽
-    # 完整实现需要使用aura
-    play = Taunt(ENEMY_MINIONS)
+    # 所有敌方随从拥有嘲讽（持续光环）
+    update = Refresh(ENEMY_MINIONS, {GameTag.TAUNT: True})
 
 
 # CATA_999: 土石幼龙 (5费 4/4)

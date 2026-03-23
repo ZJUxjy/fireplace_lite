@@ -10,7 +10,7 @@ from ..utils import *
 class TOY_307:
     """Sweetened Snowflurry"""
 
-    play = Give(CONTROLLER, RandomSpell(spellschool=SpellSchool.FROST)) * 2
+    play = Give(CONTROLLER, RandomSpell(spell_school=SpellSchool.FROST)) * 2
 
 
 # TOY_312: Nostalgic Gnome (4费 4/4)

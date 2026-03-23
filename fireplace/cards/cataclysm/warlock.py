@@ -22,13 +22,12 @@ class CATA_490:
 
 
 # CATA_491: 怪异触手 (5费 5/4)
-# 对所有随从造成$3点伤害。重复
+# 对所有随从造成$3点伤害。重复（打出后回到手牌）
 class CATA_491:
     """Tentacle"""
 
-    # 对所有随从造成3点伤害
-    # 简化实现：一次性造成3点伤害
-    play = Hit(ALL_MINIONS, 3)
+    # 对所有随从造成3点伤害，然后回到手牌（重复）
+    play = Hit(ALL_MINIONS, 3), Give(CONTROLLER, "CATA_491")
 
 
 # CATA_492: 暮光神坛 (3费 2/5)
@@ -99,8 +98,10 @@ class CATA_498:
 class CATA_499:
     """Sacrificial Summoner"""
 
-    # 当使用或弃掉时，召唤两个1费随从
-    events = Play(CONTROLLER, SELF).after(Summon(CONTROLLER, RandomMinion(cost=1)) * 2)
+    # 战吼（使用时）：召唤两个1费随从
+    play = Summon(CONTROLLER, RandomMinion(cost=1)) * 2
+    # 弃掉时：也召唤两个1费随从
+    discard = Summon(CONTROLLER, RandomMinion(cost=1)) * 2
 
 
 # CATA_725: 暗誓信徒 (2费 2/1)
@@ -174,7 +175,16 @@ class CATA_725t:
 
 
 CATA_725e = buff(+2, +2)
-CATA_725te = buff(+2, +2)
+
+
+@custom_card
+class CATA_725te:
+    tags = {
+        GameTag.CARDNAME: "Gul'dan Soldier Buff",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 2,
+        GameTag.HEALTH: 2,
+    }
 
 
 ##
@@ -191,9 +201,8 @@ class CATA_791:
         PlayReq.REQ_MINION_TARGET: 0,
     }
 
-    # 对一个随从造成4点伤害
-    # 简化实现：一次性造成4点伤害
-    play = Hit(TARGET, 4)
+    # 对一个随从造成4点伤害，然后回到手牌（重复）
+    play = Hit(TARGET, 4), Give(CONTROLLER, Copy(SELF))
 
 
 # CATA_792: 暗影之怒 (6费 法术)

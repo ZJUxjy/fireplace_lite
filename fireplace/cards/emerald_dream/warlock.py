@@ -52,8 +52,7 @@ class EDR_489:
 class EDR_489e1:
     """Corrupted Thorns"""
 
-    atk = 2
-    health = 2
+    tags = {GameTag.ATK: 2, GameTag.HEALTH: 2}
 
 
 class EDR_490:
@@ -88,8 +87,8 @@ class EDR_491:
 
 class EDR_491e:
     """Devoured Soul"""
-    atk = 1
-    health = 1
+
+    tags = {GameTag.ATK: 1, GameTag.HEALTH: 1}
 
 
 class EDR_494:
@@ -106,8 +105,8 @@ class EDR_654:
 
 class EDR_654e:
     """Overgrown"""
-    atk = 1
-    health = 1
+
+    tags = {GameTag.ATK: 1, GameTag.HEALTH: 1}
 
 
 ##
@@ -129,8 +128,7 @@ class EDR_483e:
 class EDR_489e2:
     """Corrupted Thorns"""
 
-    atk = 3
-    health = 3
+    tags = {GameTag.ATK: 3, GameTag.HEALTH: 3}
 
 
 class FIR_924:

@@ -32,7 +32,14 @@ class CATA_551:
     play = powered_up & Buff(SELF, "CATA_551e")
 
 
-CATA_551e = buff(+3, +3)
+@custom_card
+class CATA_551e:
+    tags = {
+        GameTag.CARDNAME: "Stonetalon Strike",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 3,
+        GameTag.HEALTH: 3,
+    }
 
 
 # CATA_552: Ebonscale Scout (黑鳞斥候) - 6费 4/4
