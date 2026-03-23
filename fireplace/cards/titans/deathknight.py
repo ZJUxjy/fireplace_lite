@@ -11,10 +11,10 @@ class TTN_737:
     tags = {GameTag.ELITE: True}
 
     titan_abilities = ["TTN_737t", "TTN_737t2", "TTN_737t3"]
-    ability_used = Discover(RandomCard(card_class=CardClass.DEATHKNIGHT))
+    ability_used = Discover(CONTROLLER, RandomCard(card_class=CardClass.DEATHKNIGHT))
 
 
-# TTN_737t: Runes of Blood - Destroy an enemy minion; gain its health
+# TTN_737t: Runes of Blood - Destroy an enemy minion; restore health equal to its Health to your hero
 class TTN_737t:
     """Runes of Blood"""
 
@@ -25,17 +25,9 @@ class TTN_737t:
     }
 
     play = (
-        Buff(SELF, "TTN_737te"),
         Heal(FRIENDLY_HERO, Attr(TARGET, GameTag.HEALTH)),
         Destroy(TARGET),
     )
-
-
-class TTN_737te:
-    max_health = lambda self, at, current: current + Attr(self, GameTag.HEALTH).evaluate(self)
-
-
-TTN_737te = buff(0, +3)  # 简化：固定+3生命
 
 
 # TTN_737t2: Servant of the Primus - Summon a Reborn Taunt minion token
