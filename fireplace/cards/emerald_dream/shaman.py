@@ -21,8 +21,8 @@ class EDR_230:
 
 class EDR_230e:
     """Enchanted"""
-    atk = 2
-    health = 2
+
+    tags = {GameTag.ATK: 2, GameTag.HEALTH: 2}
 
 
 class EDR_231:

@@ -69,8 +69,13 @@ class TIME_019:
     play = Buff(SELF, "TIME_019e")
 
 
+@custom_card
 class TIME_019e:
-    atk = 2
+    tags = {
+        GameTag.CARDNAME: "Timeways Empowerment",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 2,
+    }
 
 
 # TIME_043: PMM Infinitizer (6费 4/4)

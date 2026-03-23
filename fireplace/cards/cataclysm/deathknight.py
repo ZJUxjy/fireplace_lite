@@ -67,12 +67,7 @@ class CATA_161:
 
     # 战吼：使目标随从获得等同于本随从攻击力的攻击力
     def play(self):
-        return Buff(TARGET, "CATA_161e", atk=self.atk)
-
-
-# CATA_161e: 梦魇
-class CATA_161e:
-    atk = 3
+        yield Buff(TARGET, "CATA_161e", atk=ATK(SELF))
 
 
 # CATA_464: 黑翼实验品 (2费 3/1 龙)
@@ -121,9 +116,7 @@ class CATA_467:
     )
 
 
-# CATA_467e: 命令之爪 buff
-class CATA_467e:
-    atk = 2
+# CATA_467e: 命令之爪 buff (atk=2 is already in CardDefs.xml; no override needed)
 
 
 # CATA_469: 多彩龙巢母 (4费 2/5 龙)
@@ -136,9 +129,8 @@ class CATA_469:
     }
 
     # 每当本随从攻击时，复原等同于本随从攻击力的法力水晶
-    # 简化实现：直接复原2个法力水晶
     events = Attack(SELF).after(
-        GainMana(CONTROLLER, 2)
+        FillMana(CONTROLLER, ATK(SELF))
     )
 
 
@@ -147,11 +139,22 @@ class CATA_469:
 class CATA_470:
     """Victor Nefarius"""
 
-    # 战吼：制造一条自定义的亡灵龙
-    # 简化实现：召唤一个1/1亡灵龙，如果手牌有龙则减3费
+    # 战吼：获取一条1/1亡灵龙。如果手牌中有龙牌，制造的龙的费用减少(3)点
     def play(self):
-        # 召唤1/1亡灵龙
-        return Summon(CONTROLLER, "CATA_470t1")
+        has_dragon = any(Race.DRAGON in card.races for card in self.controller.hand if hasattr(card, 'races'))
+        if has_dragon:
+            yield Give(CONTROLLER, "CATA_470t1").then(Buff(Give.CARD, "CATA_470e"))
+        else:
+            yield Give(CONTROLLER, "CATA_470t1")
+
+
+@custom_card
+class CATA_470e:
+    tags = {
+        GameTag.CARDNAME: "Crafted Dragon",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.COST: -3,
+    }
 
 
 # CATA_470t1: 奈法利安的造物 (1费 1/1 龙)
@@ -200,7 +203,6 @@ class CATA_156:
     """Experimental Animation"""
 
     # 对所有敌方随从造成4点伤害
-    # 简化实现：直接造成4点伤害
     play = Hit(ENEMY_MINIONS, 4)
 
 

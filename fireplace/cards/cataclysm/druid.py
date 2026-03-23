@@ -6,13 +6,17 @@ from ..utils import *
 
 # CATA_130: 炫晶小熊 (1费 1/2 野兽)
 # 每当你消耗掉最后一个法力水晶，获得+1/+1
-# 简化实现：每当你使用一张卡时触发
+_SELF_IF_MANA_EMPTY = FuncSelector(
+    lambda entities, source: [source] if source.controller.mana == 0 else []
+)
+
+
 class CATA_130:
     """Crystalspine Cub"""
 
-    # 简化实现：每当使用一张卡时触发
+    # 每当消耗掉最后一个法力水晶时触发
     events = Play(CONTROLLER).after(
-        Buff(SELF, "CATA_130e")
+        Buff(_SELF_IF_MANA_EMPTY, "CATA_130e")
     )
 
 
@@ -24,9 +28,12 @@ CATA_130e = buff(+1, +1)
 class CATA_131:
     """Felwood Treant"""
 
-    # 战吼：获得一个临时法力水晶
-    # 简化实现：直接获得一个临时水晶
-    play = GainEmptyMana(CONTROLLER, 1)
+    # 战吼：如果使用了4点法力，获得永久水晶；否则获得临时水晶
+    def play(self):
+        if self.controller.used_mana >= 4:
+            return [GainMana(CONTROLLER, 1)]
+        else:
+            return [ManaThisTurn(CONTROLLER, 1)]
 
 
 # CATA_132: 护巢龙 (4费 4/5 龙)
@@ -34,9 +41,12 @@ class CATA_131:
 class CATA_132:
     """Broodwatcher"""
 
-    # 战吼：获得两张衍生物卡
-    # 简化实现：直接召唤两个3/3嘲讽龙
-    play = Summon(CONTROLLER, "CATA_132t") * 2
+    # 战吼：获得两张衍生物卡；若本回合已消耗8点法力，则直接召唤
+    def play(self):
+        if self.controller.used_mana >= 8:
+            return [Summon(CONTROLLER, "CATA_132t"), Summon(CONTROLLER, "CATA_132t")]
+        else:
+            return [Give(CONTROLLER, "CATA_132t"), Give(CONTROLLER, "CATA_132t")]
 
 
 # CATA_132t: 翡翠龙雏 (3费 3/3 龙 嘲讽)
@@ -68,16 +78,13 @@ CATA_133e = buff(+1, +1)
 class CATA_135:
     """Mossbinding"""
 
-    # 召唤两个1/2元素
-    # 简化实现：直接召唤两个1/2元素并根据花费的水晶给它们buff
+    # 召唤两个1/2元素，并给它们+used_mana/+used_mana
     def play(self):
-        # 获得当前花费的水晶数
-        mana_spent = self.controller.mana_spent_this_turn
-        # 召唤两个1/2元素并buff
+        mana_spent = self.controller.used_mana
         return [
             Summon(CONTROLLER, "CATA_135t"),
             Summon(CONTROLLER, "CATA_135t"),
-            Buff(FRIENDLY_MINIONS + "CATA_135t", "CATA_135e", atk=mana_spent, health=mana_spent),
+            Buff(FRIENDLY_MINIONS + ID("CATA_135t"), "CATA_135e", atk=mana_spent, max_health=mana_spent),
         ]
 
 
@@ -137,13 +144,14 @@ CATA_139te = buff(+1, +1)
 
 
 # CATA_140: 梦境之龙麦琳瑟拉 (8费 4/12 龙)
-# 战吼：随机将龙牌填入你的手牌直到满。如果你使用25点法力，则改为1费
+# 战吼：随机将龙牌填入你的手牌直到满
 class CATA_140:
     """Merithra of the Dream"""
 
-    # 战吼：将随机龙牌填入你的手牌
-    # 简化实现：给3张随机龙牌
-    play = Give(CONTROLLER, RandomDragon()) * 3
+    # 战吼：将随机龙牌填入你的手牌直到满（10张上限）
+    def play(self):
+        count = 10 - len(self.controller.hand)
+        return [Give(CONTROLLER, RandomDragon()) for _ in range(max(0, count))]
 
 
 ##
@@ -173,15 +181,5 @@ CATA_134e = buff(deathrattle=Summon(CONTROLLER, "CATA_134t3"))
 class CATA_136:
     """Azshara's Triumph"""
 
-    # 洗入5张随机8+费随从并翻倍属性
-    # 简化实现：直接给5张随机高费随从并翻倍
-    def play(self):
-        cards = []
-        for _ in range(5):
-            card = RandomMinion(cost=8)
-            cards.append(Give(CONTROLLER, card))
-            cards.append(Buff(Give.CARD, "CATA_136e"))
-        return cards
-
-
-CATA_136e = buff(+1, +1)  # 翻倍通过使用两次实现
+    # 洗入5张随机8+费随从
+    play = Shuffle(CONTROLLER, RandomMinion(cost=8)) * 5

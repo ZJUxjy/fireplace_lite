@@ -78,8 +78,8 @@ class FIR_928:
 
 class FIR_928e:
     """Blazing Strength"""
-    atk = 2
-    health = 2
+
+    tags = {GameTag.ATK: 2, GameTag.HEALTH: 2}
 
 
 class FIR_956:
@@ -136,8 +136,8 @@ class EDR_570B:
 
 class EDR_570e:
     """Terror of the Night"""
-    atk = 2
-    health = 2
+
+    tags = {GameTag.ATK: 2, GameTag.HEALTH: 2}
 
 
 class EDR_468e1:

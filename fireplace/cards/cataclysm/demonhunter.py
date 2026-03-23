@@ -1,5 +1,15 @@
+import random as _random
+
 from ..utils import *
 from hearthstone.enums import SpellSchool
+
+# Selector: SPELL cards with fel school
+FEL_SPELL = SPELL + FuncSelector(
+    lambda entities, source: [
+        e for e in entities
+        if getattr(getattr(e, "data", None), "spell_school", None) == SpellSchool.FEL
+    ]
+)
 
 
 ##
@@ -13,16 +23,8 @@ class CATA_151:
     # 巨型+2：召唤2个触手
     play = Summon(CONTROLLER, "CATA_151t") * 2
 
-    # 你的英雄拥有风怒
-    # 简化实现：给英雄风怒buff
-    events = [
-        OWN_TURN_BEGIN.on(Buff(FRIENDLY_HERO, "CATA_151e"))
-    ]
-
-
-# CATA_151e: 艾萨拉的风怒
-class CATA_151e:
-    tags = {GameTag.WINDFURY: True}
+    # 你的英雄拥有风怒（持续光环）
+    update = Refresh(FRIENDLY_HERO, {GameTag.WINDFURY: True})
 
 
 # CATA_151t: 艾萨拉的触手 (1费 2/1)
@@ -37,8 +39,7 @@ class CATA_151t:
 
 
 class CATA_151te:
-    tags = {GameTag.WINDFURY: True}
-    atk = 1
+    tags = {GameTag.WINDFURY: True, GameTag.ATK: 1}
 
 
 # CATA_525: 装甲放血纳迦 (3费 3/1)
@@ -62,8 +63,13 @@ class CATA_525t:
     play = Buff(FRIENDLY_HERO, "CATA_525te")
 
 
+@custom_card
 class CATA_525te:
-    atk = 1
+    tags = {
+        GameTag.CARDNAME: "Azshara Mariner Buff",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 1,
+    }
 
 
 # CATA_527: 奈瑟匹拉，蒙难古灵 (3费 5/5)
@@ -72,13 +78,10 @@ class CATA_527:
     """Naga, the Dissenter"""
 
     # 造成1点伤害
-    def play(self):
-        return Hit(RANDOM(ENEMY_MINIONS | ENEMY_HERO), 1)
+    play = Hit(RANDOM(ENEMY_MINIONS | ENEMY_HERO), 1)
 
     # 在你施放一个邪能法术后，重新开启
-    # 简化实现：邪能法术后再次造成1点伤害
-    # 由于 SPELL_FEL 选择器不可用，简化为任何法术都触发
-    events = Play(CONTROLLER, SPELL).after(
+    events = Play(CONTROLLER, FEL_SPELL).after(
         Hit(RANDOM(ENEMY_MINIONS | ENEMY_HERO), 1)
     )
 
@@ -92,15 +95,19 @@ class CATA_527t2:
     """Naga, the Liberated"""
 
     # 在你施放一个邪能法术后，随机获取一张纳迦牌，费用为1
-    # 简化实现：任何法术都触发
-    events = Play(CONTROLLER, SPELL).after(
+    events = Play(CONTROLLER, FEL_SPELL).after(
         Give(CONTROLLER, RandomMinion(race=Race.NAGA)).then(
             Buff(Give.CARD, "CATA_527t2e")
         )
     )
 
 
+@custom_card
 class CATA_527t2e:
+    tags = {
+        GameTag.CARDNAME: "Naga Liberation Cost",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
     cost = SET(1)
 
 
@@ -110,14 +117,18 @@ class CATA_529:
     """Greedy Fel钓鱼者"""
 
     # 邪能法术后减少费用
-    # 简化实现：任何法术后减少费用
-    events = Play(CONTROLLER, SPELL).after(
+    events = Play(CONTROLLER, FEL_SPELL).after(
         Buff(SELF, "CATA_529e")
     )
 
 
+@custom_card
 class CATA_529e:
-    cost = -1
+    tags = {
+        GameTag.CARDNAME: "Fel Affinity",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.COST: -1,
+    }
 
 
 # CATA_697: 恶念变异体 (3费 3/4)
@@ -125,12 +136,16 @@ class CATA_529e:
 class CATA_697:
     """Fel Void Mutant"""
 
-    # 战吼：选择手牌中的一张邪能法术牌，获取复制
-    # 简化实现：从手牌中随机获取一张邪能法术的复制
+    # 战吼：从手牌中的邪能法术中随机选一张，获取一张复制
     def play(self):
-        # 寻找手牌中的邪能法术
-        # 简化实现：随机给一张邪能法术
-        return Give(CONTROLLER, RandomSpell(spellschool=SpellSchool.FEL))
+        fel_spells = [
+            c for c in self.controller.hand
+            if c.type == CardType.SPELL
+            and getattr(getattr(c, "data", None), "spell_school", None) == SpellSchool.FEL
+        ]
+        if fel_spells:
+            chosen = _random.choice(fel_spells)
+            yield Give(CONTROLLER, chosen.id)
 
 
 # CATA_699: 恐怖海兽 (9费 9/6)
@@ -145,11 +160,9 @@ class CATA_699:
         PlayReq.REQ_MINION_TARGET: 0,
     }
 
-    # 战吼：偷取目标3点生命值，触发3次
-    # 简化实现：造成9点伤害，给自己加9点生命
+    # 战吼：偷取目标3点生命值，触发3次（造成伤害并治疗英雄）
     def play(self):
         target = self.target
-        # 偷取3次，每次3点
         actions = []
         for _ in range(3):
             actions.append(Hit(target, 3))
@@ -166,25 +179,36 @@ class CATA_699:
 class CATA_526:
     """Blink Fox's Struggle"""
 
-    # 对所有随从造成1点伤害
-    # 简化实现：先造成伤害，然后抽牌
     def play(self):
-        # 对所有随从造成1点伤害
-        Hit(ALL_MINIONS, 1).trigger(self)
-        # 简化实现：抽一张牌
-        # 完整实现需要跟踪死亡随从数量
-        return Draw(CONTROLLER)
+        # Count minions that will die from 1 damage (health == 1, no divine shield)
+        deaths = sum(
+            1 for m in self.game.board
+            if m.health <= 1 and not m.divine_shield
+        )
+        yield Hit(ALL_MINIONS, 1)
+        for _ in range(deaths):
+            yield Draw(CONTROLLER)
 
 
 # CATA_528: 海洋咒符 (1费 法术)
 # 在你的下个回合开始时，召唤一个3/3并具有嘲讽的纳迦
+@custom_card
+class CATA_528e:
+    """Oceanic Sigil"""
+
+    tags = {
+        GameTag.CARDNAME: "Oceanic Sigil",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
+    # 在下个回合开始时召唤纳迦，然后销毁自身（一次性效果）
+    events = OWN_TURN_BEGIN.on(Summon(CONTROLLER, "CATA_528t"), Destroy(SELF))
+
+
 class CATA_528:
     """Oceanic Sigil"""
 
-    # 在下个回合开始时召唤3/3嘲讽纳迦
-    events = OWN_TURN_BEGIN.on(
-        Summon(CONTROLLER, "CATA_528t")
-    )
+    # 施放时给英雄添加一个下回合触发效果
+    play = Buff(FRIENDLY_HERO, "CATA_528e")
 
 
 # CATA_528t: 纳迦畸体 (3费 3/3 纳迦 嘲讽)
@@ -202,14 +226,19 @@ class CATA_528t:
 class CATA_530:
     """Fel Infusion"""
 
-    # 兆示效果（简化实现：直接触发效果）
-    # 简化实现：直接给英雄吸血
+    # 在本回合中，你的英雄拥有吸血（回合结束时移除）
     play = Buff(FRIENDLY_HERO, "CATA_530e")
 
 
-# CATA_530e: 邪能灌魔 buff
+# CATA_530e: 邪能灌魔 buff（仅本回合有效）
+@custom_card
 class CATA_530e:
-    tags = {GameTag.LIFESTEAL: True}
+    tags = {
+        GameTag.CARDNAME: "Fel Infusion",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.LIFESTEAL: True,
+    }
+    events = OWN_TURN_END.on(Destroy(SELF))
 
 
 # CATA_533: 涣漫洪流 (5费 法术)
@@ -218,20 +247,16 @@ class CATA_533:
     """Surging Tide"""
 
     # 对最左边和最右边的随从造成5点伤害
-    # 简化实现：直接对最左和最右敌人造成5点伤害
     def play(self):
-        # 获取敌方随从
         enemy_minions = self.controller.opponent.field
         if not enemy_minions:
-            return Hit(ENEMY_HERO, 5)
-        # 最左边
+            yield Hit(ENEMY_HERO, 5)
+            return
         left_target = enemy_minions[0]
-        # 最右边
         right_target = enemy_minions[-1]
-        actions = [Hit(left_target, 5)]
+        yield Hit(left_target, 5)
         if left_target != right_target:
-            actions.append(Hit(right_target, 5))
-        return actions
+            yield Hit(right_target, 5)
 
     # 流放：重复一次
     events = Play(CONTROLLER, PLAY_OUTCAST).after(

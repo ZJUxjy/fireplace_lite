@@ -15,7 +15,7 @@ class EDR_810:
 class EDR_810e:
     """Siphoned Strength"""
 
-    atk = 1
+    tags = {GameTag.ATK: 1}
 
 
 class EDR_810t:
@@ -84,11 +84,16 @@ class EDR_815:
     events = Summon(ENEMY_MINIONS).on(Buff(SELF, "EDR_815e"))
 
 
+@custom_card
 class EDR_815e:
     """Pestilence"""
 
-    atk = 1
-    health = 1
+    tags = {
+        GameTag.CARDNAME: "Pestilence",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 1,
+        GameTag.HEALTH: 1,
+    }
 
 
 class EDR_816:

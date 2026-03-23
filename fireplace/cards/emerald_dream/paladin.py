@@ -107,8 +107,8 @@ class EDR_252e:
 
 class EDR_252e1:
     """Might of Ursol"""
-    atk = 3
-    health = 3
+
+    tags = {GameTag.ATK: 3, GameTag.HEALTH: 3}
 
 
 class EDR_255:
@@ -143,8 +143,8 @@ class FIR_914:
 
 class FIR_914e:
     """Smoldering Strength"""
-    atk = 1
-    health = 1
+
+    tags = {GameTag.ATK: 1, GameTag.HEALTH: 1}
 
 
 class FIR_941:

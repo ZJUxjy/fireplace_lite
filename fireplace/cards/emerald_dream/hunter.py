@@ -62,8 +62,8 @@ class EDR_853:
 
 class EDR_853e:
     """Verdant Dreamsaber"""
-    atk = 1
-    health = 1
+
+    tags = {GameTag.ATK: 1, GameTag.HEALTH: 1}
 
 
 ##
