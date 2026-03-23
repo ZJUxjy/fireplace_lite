@@ -106,12 +106,18 @@ class CATA_474:
     """Spearhead Paladin"""
 
     events = OWN_TURN_END.on(
-        Give(CONTROLLER, RandomSpell(spellschool=SpellSchool.HOLY)),
+        Give(CONTROLLER, RandomSpell(spell_school=SpellSchool.HOLY)),
         Buff(Give.CARD, "CATA_474e")
     )
 
 
-CATA_474e = buff(cost=-3)
+@custom_card
+class CATA_474e:
+    tags = {
+        GameTag.CARDNAME: "Holy Spell Discount",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.COST: -3,
+    }
 
 
 # CATA_475: 破鳞盾卫
@@ -193,11 +199,12 @@ class CATA_480:
 
 
 # CATA_480e: 沙怒光环 buff
+@custom_card
 class CATA_480e:
-    # 持续3回合
-    max_turns = 3
-    # 简化实现：回合结束时触发两次效果
-    events = OWN_TURN_END.on(lambda self: None)  # 占位实现
+    tags = {
+        GameTag.CARDNAME: "Sandwind Aura",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
 
 
 # CATA_621: 格尔宾的胜利

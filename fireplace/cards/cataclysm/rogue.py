@@ -59,21 +59,15 @@ class CATA_158t:
 
 
 # CATA_200: Agent of the Old Ones (1费 2/1 埃索达)
-# 战吼: 选择你手牌中的一张卡牌，将其变成一个幸运币
+# 战吼: 将你手牌中的一张随机卡牌变成一个幸运币
 class CATA_200:
     """Agent of the Old Ones"""
 
-    # 简化实现: 发现一张卡，发现的卡费用变为0
-    # 简化实现: 随机将一张手牌变成幸运币
+    # 将手牌中一张随机卡弃掉，然后给一枚幸运币
     def play(self):
-        # 简化实现: 发现一张卡
-        yield Discover(CONTROLLER, RandomCard()).then(
-            Give(CONTROLLER, Discover.CARD), Buff(Discover.CARD, "CATA_200e")
-        )
-
-
-class CATA_200e:
-    cost = SET(0)
+        if not self.controller.hand:
+            return []
+        return [Discard(RANDOM(FRIENDLY_HAND)), Give(CONTROLLER, THE_COIN)]
 
 
 # CATA_201: Twilight Mistress (9费 4/12 龙)
@@ -164,7 +158,6 @@ class CATA_215:
 # CATA_785: Rite of Twilight (2费 法术)
 # 兆示
 # 连击: 造成3点伤害
-# 简化实现: 造成3点伤害
 class CATA_785:
     """Rite of Twilight"""
 
@@ -172,8 +165,5 @@ class CATA_785:
         PlayReq.REQ_TARGET_TO_PLAY: 0,
     }
 
-    # 简化实现: 造成3点伤害
+    # 连击: 造成3点伤害（无连击时的兆示效果未实现）
     combo = Hit(TARGET, 3)
-
-    # 战吼（如果没有连击）
-    play = Hit(TARGET, 3)

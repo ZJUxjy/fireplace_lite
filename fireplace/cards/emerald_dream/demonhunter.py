@@ -21,8 +21,7 @@ class EDR_493:
 class EDR_493e2:
     """Demon Form"""
 
-    atk = 3
-    health = 3
+    tags = {GameTag.ATK: 3, GameTag.HEALTH: 3}
 
 
 class EDR_521e1:

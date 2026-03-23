@@ -1,4 +1,5 @@
 from ..utils import *
+from hearthstone.enums import SpellSchool
 
 
 ##
@@ -12,12 +13,8 @@ class CATA_150:
     # 巨型+2：召唤2个手臂
     play = Summon(CONTROLLER, "CATA_150t") * 2
 
-    # 在你的回合结束时，触发你的随从的亡语
-    # 简化实现：使所有友方随从获得+1/+1
-    events = OWN_TURN_END.on(Buff(FRIENDLY_MINIONS, "CATA_150e"))
-
-
-CATA_150e = buff(+1, +1)
+    # 在你的回合结束时，触发你的随从的亡语（随从不死亡）
+    events = OWN_TURN_END.on(Deathrattle(FRIENDLY_MINIONS))
 
 
 class CATA_150t:
@@ -57,9 +54,17 @@ class CATA_580t:
 class CATA_584:
     """Erupting Volcano"""
 
-    # 简化实现：总是造成3点伤害
-    # 完整实现需要跟踪火焰法术的使用
-    play = Hit(RANDOM(ENEMY_CHARACTERS), 3) * 2
+    def play(self):
+        yield Hit(RANDOM(ENEMY_CHARACTERS), 3)
+        # 如果本回合使用过火焰法术，再造成3点伤害
+        fire_spells_this_turn = [
+            c for c in self.controller.cards_played_this_game
+            if c.type == CardType.SPELL
+            and c.turn_played == self.game.turn
+            and getattr(getattr(c, "data", None), "spell_school", None) == SpellSchool.FIRE
+        ]
+        if fire_spells_this_turn:
+            yield Hit(RANDOM(ENEMY_CHARACTERS), 3)
 
 
 # CATA_586: 毁灭之焰 (5费 3/3)
@@ -79,9 +84,8 @@ class CATA_586:
 class CATA_591:
     """Commander Geddon"""
 
-    # 战吼：发现一张费用为(0)的卡牌
-    # 简化实现：发现一张卡牌，使其费用变为0
-    play = Discover(CONTROLLER, RandomCard()).then(
+    # 战吼：发现一张卡牌，费用变为(0)
+    play = Discover(CONTROLLER, RandomCollectible()).then(
         Give(CONTROLLER, Discover.CARD), Buff(Discover.CARD, "CATA_591e")
     )
 
@@ -125,21 +129,23 @@ class CATA_585:
         PlayReq.REQ_DAMAGED_TARGET: 0,
     }
 
-    # 对目标造成6点伤害，将一张复制置入你的手牌
+    # 对目标造成6点伤害，将这张牌置入你的手牌；溢出伤害给英雄+X攻击力
     def play(self):
-        damage = 6
         target = self.target
-        # 如果伤害超过目标生命值，返还多余部分
-        actual_damage = min(damage, target.health)
-        leftover = damage - actual_damage
-        # 造成伤害
-        Hit(target, actual_damage).trigger(self)
-        # 将一张复制置入你的手牌
-        actions = [Give(CONTROLLER, "CATA_585")]
-        # 如果有剩余伤害，返还到英雄
+        leftover = max(0, 6 - target.health)
+        yield Hit(target, 6)
+        yield Give(CONTROLLER, "CATA_585")
         if leftover > 0:
-            actions.append(GainAttack(FRIENDLY_HERO, leftover))
-        return actions
+            yield Buff(FRIENDLY_HERO, "CATA_585te", atk=leftover)
+
+
+@custom_card
+class CATA_585te:
+    tags = {
+        GameTag.CARDNAME: "Torch Return",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 0,
+    }
 
 
 # CATA_610: 洛戈什的奋战 (5费 法术)

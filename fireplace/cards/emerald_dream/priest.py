@@ -112,8 +112,8 @@ class EDR_895:
 
 class EDR_895e:
     """Full Moon"""
-    atk = 2
-    health = 2
+
+    tags = {GameTag.ATK: 2, GameTag.HEALTH: 2}
 
 
 class EDR_895t:

@@ -19,9 +19,24 @@ class CATA_153:
         GameTag.WINDFURY: True,
     }
 
-    # 战吼：获取2个费用等于此随从攻击力的随从，费用变为(1)
-    # 简化实现：召唤2个费用为2的随机随从，费用变为1
-    play = Summon(CONTROLLER, RandomMinion(cost=2)) * 2
+    # 战吼：获取2个费用等于此随从攻击力的随机随从，费用变为(1)
+    def play(self):
+        cost = self.atk
+        return [
+            Give(CONTROLLER, RandomMinion(cost=cost)).then(Buff(Give.CARD, "CATA_153_cost1e")),
+            Give(CONTROLLER, RandomMinion(cost=cost)).then(Buff(Give.CARD, "CATA_153_cost1e")),
+        ]
+
+
+@custom_card
+class CATA_153_cost1e:
+    """Al'Akir Wind Cost"""
+
+    tags = {
+        GameTag.CARDNAME: "Al'Akir Wind Cost",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
+    cost = SET(1)
 
 
 # CATA_153e: 火花之怒 (buff)
@@ -49,7 +64,13 @@ class CATA_153t1:
     play = Buff(ADJACENT, "CATA_153e1")
 
 
-CATA_153e1 = buff(+3, 0)
+@custom_card
+class CATA_153e1:
+    tags = {
+        GameTag.CARDNAME: "Charged Hand Buff",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 3,
+    }
 
 
 
@@ -124,11 +145,14 @@ class CATA_564:
         GameTag.RARITY: 1,
     }
 
-    # 简化实现：战吼，使一个友方随从获得+2/+2
-    play = Buff(TARGET, "CATA_564e")
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_FRIENDLY_TARGET: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
 
-
-CATA_564e = buff(+2, +2)
+    # 战吼：给目标随从超级风怒
+    play = SetTags(TARGET, {GameTag.MEGA_WINDFURY: True})
 
 
 # CATA_565: 天空之墙哨兵 (2费 0/3)
@@ -229,8 +253,11 @@ class CATA_570:
         GameTag.RARITY: 5,
     }
 
-    # 简化实现：战吼，抽1张牌
-    play = Draw(CONTROLLER)
+    # 战吼：抽1张牌并减少其费用(10)
+    play = Draw(CONTROLLER).then(Buff(Draw.CARD, "CATA_570e"))
+
+
+CATA_570e = buff(cost=-10)
 
 
 
@@ -248,10 +275,7 @@ class CATA_724:
         GameTag.RARITY: 1,
     }
 
-    # 简化实现：亡语，使你的英雄获得+3攻击力
-    deathrattle = Buff(FRIENDLY_HERO, "CATA_724e")
-
-
-CATA_724e = buff(+3, 0)
+    # 亡语：解锁你被过载的水晶
+    deathrattle = UnlockOverload(CONTROLLER)
 
 

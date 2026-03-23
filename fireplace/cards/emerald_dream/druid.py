@@ -40,8 +40,8 @@ class EDR_209b:
 
 class EDR_209e2:
     """Guidance of the Forest"""
-    atk = 2
-    health = 2
+
+    tags = {GameTag.ATK: 2, GameTag.HEALTH: 2}
 
 
 class EDR_209t5:
@@ -58,8 +58,8 @@ class EDR_270:
 
 class EDR_270e:
     """Horn of Plenty"""
-    atk = 2
-    health = 2
+
+    tags = {GameTag.ATK: 2, GameTag.HEALTH: 2}
 
 
 class EDR_271:
@@ -125,8 +125,8 @@ class EDR_845:
 
 class EDR_845e1:
     """Runetotem's Favor"""
-    atk = 2
-    health = 2
+
+    tags = {GameTag.ATK: 2, GameTag.HEALTH: 2}
 
 
 class EDR_847:

@@ -89,8 +89,8 @@ class EDR_469:
 
 class EDR_469e:
     """Knighttime"""
-    atk = 1
-    health = 1
+
+    tags = {GameTag.ATK: 1, GameTag.HEALTH: 1}
 
 
 class EDR_470:
@@ -101,7 +101,8 @@ class EDR_470:
 
 class EDR_470e:
     """Alert"""
-    atk = 1
+
+    tags = {GameTag.ATK: 1}
 
 
 class EDR_484:
@@ -112,8 +113,8 @@ class EDR_484:
 
 class EDR_484e:
     """Scavenging"""
-    atk = 1
-    health = 1
+
+    tags = {GameTag.ATK: 1, GameTag.HEALTH: 1}
 
 
 class EDR_486:
@@ -606,18 +607,20 @@ class EDR_100t9:
 
 class EDR_100t1e:
     """Well Rested"""
-    atk = 2
-    health = 2
+
+    tags = {GameTag.ATK: 2, GameTag.HEALTH: 2}
 
 
 class EDR_100t2e:
     """Short Claws"""
-    atk = -2
+
+    tags = {GameTag.ATK: -2}
 
 
 class EDR_100t3e:
     """Bundled Up"""
-    health = 4
+
+    tags = {GameTag.HEALTH: 4}
 
 
 class EDR_100t4e:
@@ -642,13 +645,14 @@ class EDR_100t7e:
 
 class EDR_100t8e:
     """Turtled Up"""
-    health = 5
+
+    tags = {GameTag.HEALTH: 5}
 
 
 class EDR_100t8e1:
     """Sweet Dreams"""
-    atk = 4
-    health = 5
+
+    tags = {GameTag.ATK: 4, GameTag.HEALTH: 5}
 
 
 class EDR_100t9e:
