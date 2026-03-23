@@ -44,9 +44,29 @@ class TTN_960t3:
     play = Summon(CONTROLLER, "EX1_301") * 2  # 狱火恶魔 Infernal token
 
 
-# TTN_960t4: Legion Invasion! - Future demons get +2 health and Taunt (simplified)
+# TTN_960t4: Legion Invasion! - Your future Demons get +2 Health and Taunt
+@custom_card
+class TTN_960t4be:
+    tags = {
+        GameTag.CARDNAME: "Legion Invasion (Demon Buff)",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.HEALTH: 2,
+        GameTag.TAUNT: True,
+    }
+
+
+@custom_card
+class TTN_960t4e:
+    tags = {
+        GameTag.CARDNAME: "Legion Invasion",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
+    # Whenever the controller plays a demon, give it +2 health and Taunt
+    events = Play(CONTROLLER, DEMON).after(Buff(Play.CARD, "TTN_960t4be"))
+
+
 class TTN_960t4:
     """Legion Invasion!"""
 
-    # 简化：召唤两个3/4嘲讽恶魔
-    play = Summon(CONTROLLER, "TTN_960t1") * 2, SetTags(FRIENDLY_MINIONS - TAUNT, {GameTag.TAUNT: True})
+    # 将效果附加给英雄：之后打出的恶魔获得+2生命值和嘲讽
+    play = Buff(FRIENDLY_HERO, "TTN_960t4e")
