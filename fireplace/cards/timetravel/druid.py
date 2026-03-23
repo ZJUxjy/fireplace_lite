@@ -29,8 +29,11 @@ class TIME_023:
     """Contingency"""
 
     # 抽你牌库底部的两张牌
-    # Simplified: draw two cards
-    play = Draw(CONTROLLER) * 2
+    def play(self):
+        cards_to_draw = list(self.controller.deck[:2])  # snapshot bottom 2 before drawing
+        for card in cards_to_draw:
+            sel = FuncSelector(lambda e, s, c=card: [c])
+            yield Draw(CONTROLLER, sel)
 
 
 # TIME_033: Druid of Regrowth (6费 3/5)
@@ -50,7 +53,14 @@ class TIME_033a:
     play = Buff(TARGET, "TIME_033e")
 
 
-TIME_033e = buff(+2, +2)
+@custom_card
+class TIME_033e:
+    tags = {
+        GameTag.CARDNAME: "Regrowth Buff",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 2,
+        GameTag.HEALTH: 2,
+    }
 
 
 class TIME_033b:
@@ -59,7 +69,15 @@ class TIME_033b:
     play = Buff(TARGET, "TIME_033e2")
 
 
-TIME_033e2 = buff(+2, +2, taunt=True)
+@custom_card
+class TIME_033e2:
+    tags = {
+        GameTag.CARDNAME: "Renewed Growth Buff",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 2,
+        GameTag.HEALTH: 2,
+        GameTag.TAUNT: True,
+    }
 
 
 # TIME_211: Lady Azshara (5费 5/5)
@@ -98,11 +116,22 @@ class TIME_702:
         PlayReq.REQ_MINION_TARGET: 0,
     }
 
-    # 使目标随从获得+1/+1
-    play = Buff(TARGET, "TIME_702e")
+    # 使目标随从获得+1/+1；如果你操控一个树人，再获得+1/+1
+    def play(self):
+        yield Buff(self.target, "TIME_702e")
+        has_treant = any(Race.TREANT in getattr(m, "races", []) for m in self.controller.field)
+        if has_treant:
+            yield Buff(self.target, "TIME_702e")
 
 
-TIME_702e = buff(+1, +1)
+@custom_card
+class TIME_702e:
+    tags = {
+        GameTag.CARDNAME: "Ebb and Flow Buff",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 1,
+        GameTag.HEALTH: 1,
+    }
 
 
 # TIME_703: Endangered Dodo (5费 5/5)
@@ -111,17 +140,18 @@ class TIME_703:
     """Endangered Dodo"""
 
     # 在你的回合结束时，如果你控制一个受伤的随从，召唤一个2/2的猫
-    # 简化实现：总是召唤
-    # No battlecry - has events only
-
-    events = OWN_TURN_END.on(Summon(CONTROLLER, "TIME_703t"))
+    events = OWN_TURN_END.on(Find(FRIENDLY_MINIONS + DAMAGED) & Summon(CONTROLLER, "TIME_703t"))
 
 
 # TIME_703t: Endangered Dodo (2费 2/2)
+@custom_card
 class TIME_703t:
-    """Dodo"""
-
-    pass
+    tags = {
+        GameTag.CARDNAME: "Dodo",
+        GameTag.CARDTYPE: CardType.MINION,
+        GameTag.ATK: 2,
+        GameTag.HEALTH: 2,
+    }
 
 
 # TIME_704: Highborne Mentor (7费 6/6)
@@ -153,8 +183,18 @@ class TIME_705:
     }
 
     # 战吼：将你牌库底部的5张卡牌的费用变为1
-    # Simplified: buff the bottom cards - technically complex, simplified to draw
-    play = Draw(CONTROLLER)
+    def play(self):
+        for card in list(self.controller.deck[:5]):
+            Buff(FuncSelector(lambda e, s, c=card: [c]), "TIME_705e").trigger(self)
+
+
+@custom_card
+class TIME_705e:
+    tags = {
+        GameTag.CARDNAME: "Krona's Discount",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
+    cost = SET(1)
 
 
 # TIME_707: Alternate Reality (2费 法术)

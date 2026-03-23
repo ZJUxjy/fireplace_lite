@@ -132,9 +132,12 @@ class TIME_750:
         PlayReq.REQ_TARGET_TO_PLAY: 0,
     }
 
-    # 对目标造成3点伤害
-    # 简化实现：总是造成3点伤害
-    play = Hit(TARGET, 3)
+    # 对目标造成3点伤害；如果手牌中有武器，将一张此牌复制置入手牌
+    def play(self):
+        yield Hit(self.target, 3)
+        has_weapon = any(c.type == CardType.WEAPON for c in self.controller.hand)
+        if has_weapon:
+            yield Give(CONTROLLER, "TIME_750")
 
 
 # TIME_873: Unleash the Crocolisks (2费 法术)
