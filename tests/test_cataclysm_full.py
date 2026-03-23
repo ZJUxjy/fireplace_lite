@@ -776,7 +776,7 @@ def test_plume_of_vulcanos_gives_fire_spell_on_damage():
     # The given spell should be a fire spell and cost reduced by 3
     given_spell = game.player1.hand[-1]
     assert getattr(given_spell.data, "spell_school", None) == SpellSchool.FIRE
-    assert given_spell.cost == given_spell.data.cost - 3
+    assert given_spell.cost == max(0, given_spell.data.cost - 3)
 
 
 ##

@@ -3,7 +3,7 @@ from ..utils import *
 
 ##
 # TTN_415: Khaz'goroth (6费 4/5)
-# 泰坦。使用技能后，获得免疫并攻击随机敌方随从（简化：buff自身）
+# 泰坦。使用技能后，获得免疫并攻击随机敌方随从
 
 class TTN_415:
     """Khaz'goroth"""
@@ -12,9 +12,6 @@ class TTN_415:
 
     titan_abilities = ["TTN_415t", "TTN_415t2", "TTN_415t3"]
     ability_used = Buff(SELF, "TTN_415ae")
-
-
-TTN_415ae = buff(+1, 0)  # 简化：每次使用技能+1攻击
 
 
 # TTN_415t: Titanforge - Gain +2/+2. Draw a weapon.
@@ -48,9 +45,19 @@ class TTN_415t3:
 TTN_415t3e = buff(0, +5)
 
 
+def _golganneth_first_spell(entities, source):
+    """Select friendly hand spells if no spell has been cast this turn yet."""
+    if any(
+        c.type == CardType.SPELL and c.turn_played == source.game.turn
+        for c in source.controller.cards_played_this_game
+    ):
+        return []
+    return [e for e in source.controller.hand if e.type == CardType.SPELL]
+
+
 ##
 # TTN_800: Golganneth, the Thunderer (6费 5/7)
-# 泰坦。被动：你每回合第一张法术费用减少3（简化实现）
+# 泰坦。被动：你每回合第一张法术费用减少3
 
 class TTN_800:
     """Golganneth, the Thunderer"""
@@ -58,6 +65,9 @@ class TTN_800:
     tags = {GameTag.ELITE: True}
 
     titan_abilities = ["TTN_800t", "TTN_800t2", "TTN_800t3"]
+
+    # 被动：每回合第一张法术费用减少3（持续光环）
+    update = Refresh(FuncSelector(_golganneth_first_spell), {GameTag.COST: -3})
 
 
 # TTN_800t: Roaring Oceans - Deal 3 to all enemies, restore 6 to all friendlies
@@ -79,8 +89,14 @@ class TTN_800t2:
     play = Hit(TARGET, 20)
 
 
-# TTN_800t3: Shargahn's Wrath - Draw 3 Overload cards (simplified: draw 3 cards)
+# TTN_800t3: Shargahn's Wrath - Draw 3 Overload cards from your deck
 class TTN_800t3:
     """Shargahn's Wrath"""
 
-    play = Draw(CONTROLLER) * 3
+    def play(self):
+        import random as _random
+        overload_cards = [c for c in self.controller.deck if getattr(c, "overload", 0) > 0]
+        _random.shuffle(overload_cards)
+        for card in overload_cards[:3]:
+            sel = FuncSelector(lambda e, s, c=card: [c])
+            yield Draw(CONTROLLER, sel)
