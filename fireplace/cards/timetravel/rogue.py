@@ -133,5 +133,4 @@ class TIME_712:
     def play(self):
         if self.controller.deck:
             card = self.controller.deck[0]  # deck[0] is the bottom card
-            sel = FuncSelector(lambda e, s, c=card: [c])
-            yield Draw(CONTROLLER, sel)
+            yield Draw(CONTROLLER, CARD(card))
