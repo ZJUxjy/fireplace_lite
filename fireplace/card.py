@@ -1169,7 +1169,7 @@ class Minion(Character):
                     "name": str(ab),
                     "description": str(ab.data.description) if ab.data else "",
                     "is_used": self.titan_ability_used[i],
-                    "requires_target": ab.requires_target(),
+                    "requires_target": PlayReq.REQ_TARGET_TO_PLAY in ab.requirements,
                 }
                 for i, ab in enumerate(self.titan_abilities)
             ]
@@ -1324,7 +1324,7 @@ class Minion(Character):
 
     def use_titan_ability(self, ability_index, target=None):
         """Use a Titan ability by index (0, 1, 2). Each is once-ever; one per turn."""
-        if ability_index >= len(self.titan_abilities):
+        if ability_index < 0 or ability_index >= len(self.titan_abilities):
             raise InvalidAction("Invalid titan ability index %d" % ability_index)
         if self.titan_ability_used[ability_index]:
             raise InvalidAction("Titan ability %d already used" % ability_index)
