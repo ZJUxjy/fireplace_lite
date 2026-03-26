@@ -98,5 +98,4 @@ class TTN_800t3:
         overload_cards = [c for c in self.controller.deck if getattr(c, "overload", 0) > 0]
         _random.shuffle(overload_cards)
         for card in overload_cards[:3]:
-            sel = FuncSelector(lambda e, s, c=card: [c])
-            yield Draw(CONTROLLER, sel)
+            yield Draw(CONTROLLER, CARD(card))

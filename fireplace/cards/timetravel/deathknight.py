@@ -13,8 +13,7 @@ class TIME_610:
     def play(self):
         minions = [c for c in self.controller.deck if c.type == CardType.MINION]
         for card in list(minions):
-            sel = FuncSelector(lambda e, s, c=card: [c])
-            yield Draw(CONTROLLER, sel)
+            yield Draw(CONTROLLER, CARD(card))
 
 
 # TIME_610t2: Anomalous Shade (2费 3/2)

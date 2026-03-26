@@ -32,8 +32,7 @@ class TIME_023:
     def play(self):
         cards_to_draw = list(self.controller.deck[:2])  # snapshot bottom 2 before drawing
         for card in cards_to_draw:
-            sel = FuncSelector(lambda e, s, c=card: [c])
-            yield Draw(CONTROLLER, sel)
+            yield Draw(CONTROLLER, CARD(card))
 
 
 # TIME_033: Druid of Regrowth (6费 3/5)
@@ -184,8 +183,8 @@ class TIME_705:
 
     # 战吼：将你牌库底部的5张卡牌的费用变为1
     def play(self):
-        for card in list(self.controller.deck[:5]):
-            Buff(FuncSelector(lambda e, s, c=card: [c]), "TIME_705e").trigger(self)
+        for card in self.controller.deck[:5]:
+            Buff(CARD(card), "TIME_705e").trigger(self)
 
 
 @custom_card

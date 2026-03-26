@@ -523,6 +523,11 @@ TREANT = FuncSelector(
     ]
 )  # Race.`TREANT` is not defined yet.
 
+
+def CARD(c):
+    """Selector factory: targets a specific card instance."""
+    return FuncSelector(lambda entities, source, _c=c: [_c])
+
 COMMON = EnumSelector(Rarity.COMMON)
 RARE = EnumSelector(Rarity.RARE)
 EPIC = EnumSelector(Rarity.EPIC)

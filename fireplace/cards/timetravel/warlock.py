@@ -112,8 +112,7 @@ class TIME_031:
     def play(self):
         minions = [c for c in self.controller.deck if c.type == CardType.MINION]
         for card in list(minions):
-            sel = FuncSelector(lambda e, s, c=card: [c])
-            yield Draw(CONTROLLER, sel)
+            yield Draw(CONTROLLER, CARD(card))
 
 
 # TIME_032: Chronogor (6费 6/7)
