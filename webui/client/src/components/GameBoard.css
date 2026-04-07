@@ -1452,19 +1452,32 @@
 
 .card-cost {
   position: absolute;
-  top: -6px;
-  left: -6px;
-  width: clamp(1.2rem, 3vw, 1.75rem);
-  height: clamp(1.2rem, 3vw, 1.75rem);
-  background: linear-gradient(180deg, var(--blue), #2266dd);
-  border-radius: 50%;
+  top: -8px;
+  left: -8px;
+  width: clamp(1.4rem, 3.5vw, 2rem);
+  height: clamp(1.4rem, 3.5vw, 2rem);
+  background: linear-gradient(
+    135deg,
+    var(--blue) 0%,
+    #66aaff 35%,
+    var(--blue-dark) 100%
+  );
+  /* Diamond shape via clip-path */
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   font-weight: bold;
-  font-size: clamp(0.6rem, 1.5vw, 0.9rem);
-  border: 2px solid var(--gold);
+  font-size: clamp(0.65rem, 1.6vw, 1rem);
+  border: none;
+  /* Facet highlight - simulates light reflection on crystal */
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.25),
+    0 0 8px rgba(68, 136, 255, 0.3);
+  /* Subtle gold rim */
+  filter: drop-shadow(0 0 1px rgba(200, 164, 92, 0.5));
 }
 
 /* 吸血标识 */
