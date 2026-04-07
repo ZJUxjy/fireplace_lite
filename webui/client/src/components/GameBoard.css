@@ -1,26 +1,112 @@
-/* CSS 变量 */
+/* ========================================
+   DESIGN TOKEN SYSTEM - Phase 1
+   Hierarchical color palette with gold tiers,
+   atmospheric zones, and per-class themes
+   ======================================== */
+
 :root {
-  --bg-primary: #1a1410;
-  --bg-secondary: #2d261e;
-  --bg-card: #3a3020;
+  /* ---- Core Neutrals ---- */
+  --bg-deepest: #0a0810;
+  --bg-primary: #12101a;
+  --bg-secondary: #1a1622;
+  --bg-tertiary: #251e2a;
+  --bg-card: #2d2436;
+  --bg-card-hover: #3a2d48;
+  --bg-surface: rgba(255, 255, 255, 0.03);
+  --bg-surface-hover: rgba(255, 255, 255, 0.07);
+
+  /* ---- Gold Palette (4-tier for depth) ---- */
+  --gold-bright: #f0d878;
   --gold: #c8a45c;
   --gold-dim: #8b7355;
+  --gold-dark: #5a4a32;
+  --gold-glow: rgba(240, 216, 120, 0.35);
+  --gold-subtle: rgba(200, 164, 92, 0.15);
+
+  /* ---- Semantic Colors ---- */
   --red: #ff4444;
+  --red-glow: rgba(255, 68, 68, 0.4);
+  --red-dark: #cc2222;
   --yellow: #ffcc00;
+  --yellow-glow: rgba(255, 204, 0, 0.35);
   --blue: #4488ff;
+  --blue-glow: rgba(68, 136, 255, 0.35);
+  --blue-dark: #2266dd;
   --green-player: #408040;
   --green-light: rgba(64, 128, 64, 0.2);
-  --red-opponent: #8b4040;
-  --red-light: rgba(139, 64, 64, 0.2);
+  --green-glow: rgba(76, 175, 80, 0.5);
+  --red-opponent: #8b3030;
+  --red-light: rgba(139, 48, 48, 0.18);
+  --purple: #9b59b6;
+  --purple-glow: rgba(155, 89, 182, 0.35);
 
+  /* ---- Zone Atmosphere Colors ---- */
+  /* Opponent zone: deep crimson-violet */
+  --zone-opponent-bg: linear-gradient(
+    180deg,
+    rgba(80, 20, 50, 0.25) 0%,
+    rgba(50, 15, 35, 0.2) 40%,
+    rgba(30, 10, 25, 0.12) 100%
+  );
+  --zone-opponent-border: rgba(180, 60, 90, 0.25);
+  --zone-opponent-accent: #c85070;
+
+  /* Player zone: deep forest-emerald */
+  --zone-player-bg: linear-gradient(
+    180deg,
+    rgba(15, 50, 30, 0.2) 0%,
+    rgba(10, 35, 22, 0.15) 40%,
+    rgba(8, 25, 18, 0.1) 100%
+  );
+  --zone-player-border: rgba(60, 150, 90, 0.25);
+  --zone-player-accent: #40a060;
+
+  /* Center divider: neutral warm */
+  --zone-center-bg: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(200, 164, 92, 0.06) 40%,
+    rgba(200, 164, 92, 0.1) 50%,
+    rgba(200, 164, 92, 0.06) 60%,
+    transparent 100%
+  );
+
+  /* ---- Per-Class Theme Colors ---- */
+  --class-druid: #ff7d0a;
+  --class-hunter: #abd473;
+  --class-mage: #69ccf0;
+  --class-paladin: #f58cba;
+  --class-priest: #ffffff;
+  --class-shaman: #0070de;
+  --class-warrior: #c79c6e;
+  --class-rogue: #fff569;
+  --class-warlock: #9482c9;
+  --class-demonhunter: #a330c9;
+  --class-neutral: #999999;
+
+  /* ---- Layout Tokens ---- */
   --header-height: 3rem;
-  --log-width: clamp(150px, 20vw, 200px);
+  --log-width: clamp(160px, 20vw, 220px);
 
+  /* ---- Card/Minion Sizing ---- */
   --card-width: clamp(60px, 12vw, 100px);
   --card-height: clamp(84px, 16.8vw, 140px);
   --minion-width: clamp(50px, 10vw, 80px);
   --minion-height: clamp(62px, 13vw, 100px);
   --hero-size: clamp(3rem, 8vw, 5rem);
+
+  /* ---- Border/Shadow Tokens ---- */
+  --border-subtle: 1px solid rgba(200, 164, 92, 0.12);
+  --border-normal: 1px solid rgba(200, 164, 92, 0.25);
+  --border-strong: 2px solid var(--gold-dim);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-gold: 0 0 20px var(--gold-subtle);
+  --inner-glow: inset 0 0 20px rgba(200, 164, 92, 0.05);
+
+  /* ---- Texture Overlay (SVG noise filter) ---- */
+  --noise-opacity: 0.03;
 }
 
 /* 游戏容器 */
