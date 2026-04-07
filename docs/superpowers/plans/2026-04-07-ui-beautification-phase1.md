@@ -146,7 +146,7 @@ Run the dev server and open the game board in browser. Confirm:
 - All existing elements are visible (no `var()` reference errors)
 - The overall color scheme shifted darker/richer but nothing broke
 
-Run: `cd /home/xu/code/hstone/hearthstone/fireplace/webui/client && npm run dev`
+Run: `cd /home/ubuntu/code/fireplace_lite/webui/client && npm run dev`
 Expected: Dev server starts, page loads without CSS parse errors
 
 - [ ] **Step 3: Commit**
@@ -1853,7 +1853,6 @@ Find `.app h1` (around line 32) and replace:
 .app h1 {
   font-size: clamp(3rem, 10vw, 5rem);
   margin: 0;
-  color: var(--gold); /* will inherit from GameBoard.css if loaded, else fallback */
   color: #c8a45c;
   text-shadow:
     0 0 30px rgba(240, 216, 120, 0.3),
