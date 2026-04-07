@@ -1368,6 +1368,7 @@
   padding: clamp(0.3rem, 1vw, 0.8rem) clamp(0.5rem, 3vw, 2rem);
   gap: clamp(0.2rem, 0.5vw, 0.5rem);
   position: relative;
+  perspective: 1000px;
 }
 
 .player-hand-area::before {
@@ -1493,13 +1494,22 @@
 }
 
 .card.playable:hover {
-  transform: scale(1.4) translateY(-20px);
-  box-shadow:
-    0 0 20px rgba(76, 175, 80, 0.5),
-    0 0 40px rgba(76, 175, 80, 0.2),
-    0 4px 20px rgba(0, 0, 0, 0.4);
+  transform:
+    scale(1.45)
+    translateY(-24px)
+    rotateX(8deg)
+    rotateZ(-2deg);
   z-index: 100;
-  border-color: #6acf80;
+
+  box-shadow:
+    0 20px 40px rgba(76, 175, 80, 0.35),
+    0 8px 20px rgba(76, 175, 80, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 0 1px rgba(76, 175, 80, 0.5);
+
+  border-color: #7ddf80;
+  /* Slight brighten on hover to simulate light catch */
+  filter: brightness(1.05);
 }
 
 .card-cost {
