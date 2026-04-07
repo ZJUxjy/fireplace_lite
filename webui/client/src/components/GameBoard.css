@@ -1067,7 +1067,7 @@
   font-size: 1.5rem;
 }
 
-/* 随从 - 竖椭圆形 */
+/* 随从 - 迷你卡牌样式 */
 .minion {
   width: var(--minion-width);
   height: var(--minion-height);
@@ -1085,15 +1085,14 @@
 .minion-body {
   width: 100%;
   height: 100%;
-  /* Mini-card shape: rounded rectangle like hand cards */
-  background: linear-gradient(
-    160deg,
-    rgba(70, 58, 45, 0.97) 0%,
-    rgba(52, 42, 33, 0.99) 40%,
-    rgba(38, 30, 24, 1) 100%
-  );
-  /* Inner frame line like cards */
+  /* Base fill + inner frame line as comma-separated layers */
   background-image:
+    linear-gradient(
+      160deg,
+      rgba(70, 58, 45, 0.97) 0%,
+      rgba(52, 42, 33, 0.99) 40%,
+      rgba(38, 30, 24, 1) 100%
+    ),
     linear-gradient(
       to bottom,
       transparent 52%,
@@ -1114,8 +1113,6 @@
     0 3px 8px rgba(0, 0, 0, 0.35),
     0 1px 0 rgba(255, 255, 255, 0.05),
     inset 0 -1px 0 rgba(0, 0, 0, 0.2);
-  /* Slightly wider than tall to feel card-like */
-  aspect-ratio: 0.82;
 }
 
 /* 可攻击的随从 - 绿色边框 */
