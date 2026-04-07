@@ -133,31 +133,6 @@
   background-color: var(--bg-primary);
 }
 
-/* Ambient glow effect on game container */
-.game-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 0;
-
-  background: radial-gradient(
-    ellipse 80% 60% at 50% 48%,
-    rgba(200, 164, 92, 0.04) 0%,
-    rgba(200, 164, 92, 0.02) 30%,
-    transparent 70%
-  );
-}
-
-/* Ensure content sits above the ambient layer */
-.game-container > * {
-  position: relative;
-  z-index: 1;
-}
-
 /* 顶部标题栏 */
 .game-header {
   height: var(--header-height);
@@ -220,7 +195,7 @@
   cursor: pointer;
   color: var(--gold);
   padding: 0.3rem 0.5rem;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   width: 2rem;
   height: 2rem;
   display: flex;
@@ -272,7 +247,7 @@
   cursor: pointer;
   margin-bottom: 0.3rem;
   font-size: 0.85rem;
-  transition: all 0.15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
 .header-settings-menu button:hover {
@@ -385,6 +360,7 @@
   padding: clamp(0.3rem, 1vw, 0.8rem);
   position: relative;
   overflow-y: auto;
+  overflow-x: hidden;
 
   background:
     url("data:image/svg+xml,%3Csvg viewBox='0 0 128 128' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.035'/%3E%3C/svg%3E"),
@@ -438,7 +414,6 @@
   width: clamp(1.5rem, 4vw, 2.5rem);
   height: clamp(2rem, 5.5vw, 3.5rem);
   background:
-    /* Base dark blue gradient */
     linear-gradient(145deg, #162a45 0%, #0d2040 45%, #081830 100%),
     /* Horizontal stripe pattern (Hearthstone card-back style) */
     repeating-linear-gradient(
@@ -459,7 +434,6 @@
   overflow: hidden;
 }
 
-/* Central ornament on card back */
 .card-back-small::before {
   content: '';
   position: absolute;
@@ -634,7 +608,6 @@
 .hero-portrait {
   width: var(--hero-size);
   height: var(--hero-size);
-  /* Shield/octagonal shape via clip-path */
   clip-path: polygon(
     50% 0%,
     93% 7%,
@@ -648,6 +621,7 @@
     7% 7%
   );
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
@@ -659,7 +633,6 @@
     rgba(18, 14, 12, 1) 100%
   );
 
-  /* Outer ornate gold frame (pseudo-element ring) */
   margin: 4px; /* space for the frame */
   box-shadow:
     0 0 0 3px var(--gold-dim),
@@ -671,7 +644,6 @@
   content: '';
   position: absolute;
   inset: -5px;
-  /* Match the shield clip-path shape */
   clip-path: polygon(
     50% 0%,
     95% 5%,
@@ -740,13 +712,6 @@
 }
 .hero-portrait.hero-neutral {
   background: radial-gradient(circle at 40% 35%, rgba(153, 153, 153, 0.25) 0%, rgba(100, 100, 100, 0.12) 40%, #333 100%);
-}
-
-.hero-initial {
-  font-size: calc(var(--hero-size) * 0.5);
-  font-weight: bold;
-  color: #fff;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .hero-stats {
@@ -859,7 +824,7 @@
   min-width: 42px;
   text-align: center;
   box-shadow: 0 0 10px rgba(140, 170, 200, 0.15);
-  transition: all 0.3s ease;
+  transition: box-shadow 0.3s ease;
   font-variant-numeric: tabular-nums;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
@@ -1077,7 +1042,6 @@
 .minion-body {
   width: 100%;
   height: 100%;
-  /* Base fill + inner frame line as comma-separated layers */
   background-image:
     linear-gradient(
       160deg,
@@ -1157,7 +1121,7 @@
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
 
-.minion-atk.stat-buffed {
+.stat-buffed {
   color: #00ff00;
   text-shadow: 0 0 4px rgba(0, 255, 0, 0.5);
 }
@@ -1174,12 +1138,7 @@
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
 
-.minion-health.stat-buffed {
-  color: #00ff00;
-  text-shadow: 0 0 4px rgba(0, 255, 0, 0.5);
-}
-
-.minion-health.stat-damaged {
+.stat-damaged {
   color: var(--red);
   text-shadow: 0 0 4px rgba(255, 0, 0, 0.5);
 }
@@ -1420,14 +1379,15 @@
 
 /* 玩家手牌区 */
 .player-hand-area {
-  min-height: calc(var(--card-height) + 1rem);
+  min-height: calc(var(--card-height) * 1.5 + 1rem);
   display: flex;
   align-items: flex-end;
   justify-content: center;
   padding: clamp(0.3rem, 1vw, 0.8rem) clamp(0.5rem, 3vw, 2rem);
-  gap: clamp(0.2rem, 0.5vw, 0.5rem);
+  gap: 0;
   position: relative;
   perspective: 1000px;
+  isolation: isolate;
 }
 
 .player-hand-area::before {
@@ -1452,7 +1412,6 @@
   width: var(--card-width);
   height: var(--card-height);
   background:
-    /* Main card body - warm leather/parchment tone */
     linear-gradient(
       160deg,
       rgba(62, 50, 38, 0.97) 0%,
@@ -1484,6 +1443,7 @@
   position: relative;
   flex-shrink: 0;
   cursor: default;
+  transform-origin: bottom center;
   box-shadow:
     var(--shadow-sm),
     0 1px 0 rgba(255, 255, 255, 0.06),
@@ -1549,7 +1509,7 @@
     0 0 12px rgba(76, 175, 80, 0.35),
     0 0 24px rgba(76, 175, 80, 0.15),
     inset 0 0 15px rgba(76, 175, 80, 0.08);
-  cursor: pointer !important;
+  cursor: pointer;
 }
 
 .card.playable:hover {
@@ -1567,7 +1527,6 @@
     0 0 1px rgba(76, 175, 80, 0.5);
 
   border-color: #7ddf80;
-  /* Slight brighten on hover to simulate light catch */
   filter: brightness(1.05);
 }
 
@@ -1583,7 +1542,6 @@
     #66aaff 35%,
     var(--blue-dark) 100%
   );
-  /* Diamond shape via clip-path */
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   display: flex;
   align-items: center;
@@ -1592,7 +1550,6 @@
   font-weight: bold;
   font-size: clamp(0.65rem, 1.6vw, 1rem);
   border: none;
-  /* Facet highlight - simulates light reflection on crystal */
   box-shadow:
     inset 0 2px 4px rgba(255, 255, 255, 0.25);
   /* Subtle gold rim + outer shadows (drop-shadow survives clip-path) */
@@ -1718,7 +1675,6 @@
 }
 
 .card-atk {
-  /* Diamond shape for attack value */
   width: clamp(0.9rem, 2.2vw, 1.3rem);
   height: clamp(0.9rem, 2.2vw, 1.3rem);
   background: linear-gradient(
@@ -1740,7 +1696,6 @@
 }
 
 .card-health {
-  /* Diamond shape for health value */
   width: clamp(0.9rem, 2.2vw, 1.3rem);
   height: clamp(0.9rem, 2.2vw, 1.3rem);
   background: linear-gradient(
@@ -1907,29 +1862,9 @@
   font-weight: bold;
 }
 
-.tooltip-fixed .tooltip-atk.stat-buffed {
-  color: #00ff00;
-  text-shadow: 0 0 4px rgba(0, 255, 0, 0.5);
-}
-
 .tooltip-fixed .tooltip-health {
   color: white;
   font-weight: bold;
-}
-
-.tooltip-fixed .tooltip-health.stat-buffed {
-  color: #00ff00;
-  text-shadow: 0 0 4px rgba(0, 255, 0, 0.5);
-}
-
-.tooltip-fixed .tooltip-health.stat-damaged {
-  color: #ff4444;
-  text-shadow: 0 0 4px rgba(255, 0, 0, 0.5);
-}
-
-/* 控制面板 - 已移至中间 game-controls */
-.control-panel {
-  display: none;
 }
 
 .end-turn-btn {
@@ -1952,7 +1887,7 @@
     0 3px 10px rgba(176, 48, 37, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.15),
     inset 0 -2px 0 rgba(0, 0, 0, 0.2);
-  transition: all 0.2s ease;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   position: relative;
   overflow: hidden;
 }
@@ -2011,7 +1946,7 @@
   border-radius: 8px;
   color: var(--gold-dim);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
   font-size: clamp(0.6rem, 1.4vw, 0.85rem);
   letter-spacing: 0.02em;
 }
@@ -2065,7 +2000,7 @@
   color: #f0d878; /* --gold-bright */
   font-size: clamp(1.1rem, 3vw, 1.8rem);
   font-weight: bold;
-  border: 2px solid #c8a45c; /* --gold */
+  border: 2px solid var(--gold); /* --gold */
   z-index: 50;
   animation: fadeInOut 2s ease-in-out forwards;
   letter-spacing: 0.15em;
@@ -2110,7 +2045,7 @@
     rgba(45, 36, 28, 0.98) 0%,
     rgba(28, 22, 18, 0.99) 100%
   );
-  border: 3px solid #c8a45c; /* --gold */
+  border: 3px solid var(--gold); /* --gold */
   border-radius: 16px;
   padding: clamp(1.5rem, 4vw, 2.5rem);
   text-align: center;
@@ -2153,7 +2088,7 @@
   font-size: clamp(0.9rem, 2vw, 1rem);
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
   border: 2px solid transparent;
 }
 
@@ -2358,7 +2293,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .header-back-btn:hover {
@@ -2469,142 +2404,6 @@
 .targeting-hint .hint-subtext {
   font-size: 0.75rem;
   color: #aaa;
-}
-
-/* 卡牌详情弹窗 */
-.card-tooltip {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-}
-
-.card-tooltip-content {
-  background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
-  border: 3px solid var(--gold);
-  border-radius: 12px;
-  padding: 1.5rem;
-  min-width: 280px;
-  max-width: 90vw;
-  position: relative;
-}
-
-.card-tooltip-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.card-tooltip-cost {
-  width: 36px;
-  height: 36px;
-  background: linear-gradient(180deg, var(--blue), #2266dd);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-  font-size: 1.2rem;
-  border: 2px solid var(--gold);
-}
-
-.card-tooltip-name {
-  flex: 1;
-  color: var(--gold);
-  font-size: 1.1rem;
-  font-weight: bold;
-}
-
-.card-tooltip-body {
-  color: #ccc;
-  font-size: 0.9rem;
-}
-
-.card-tooltip-body .tooltip-race {
-  color: #888;
-  font-size: 0.85rem;
-  margin-bottom: 0.5rem;
-}
-
-.card-tooltip-body .tooltip-stats {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 0.8rem;
-  font-size: 1rem;
-}
-
-.card-tooltip-body .tooltip-atk {
-  color: white;
-  font-weight: bold;
-}
-
-.card-tooltip-body .tooltip-atk.stat-buffed {
-  color: #00ff00;
-  text-shadow: 0 0 4px rgba(0, 255, 0, 0.5);
-}
-
-.card-tooltip-body .tooltip-health {
-  color: white;
-  font-weight: bold;
-}
-
-.card-tooltip-body .tooltip-health.stat-buffed {
-  color: #00ff00;
-  text-shadow: 0 0 4px rgba(0, 255, 0, 0.5);
-}
-
-.card-tooltip-body .tooltip-health.stat-damaged {
-  color: #ff4444;
-  text-shadow: 0 0 4px rgba(255, 0, 0, 0.5);
-}
-
-.card-tooltip-body .tooltip-text {
-  color: #ddd;
-  line-height: 1.5;
-  margin-bottom: 0.8rem;
-}
-
-.card-tooltip-body .tooltip-text b {
-  color: #ffcc00;
-  font-weight: bold;
-}
-
-.card-tooltip-body .tooltip-text i {
-  color: #88ccff;
-  font-style: italic;
-}
-
-.card-tooltip-body .tooltip-mechanics {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.card-tooltip-close {
-  position: absolute;
-  top: 0.3rem;
-  right: 0.3rem;
-  background: none;
-  border: none;
-  color: #999;
-  font-size: 1.1rem;
-  cursor: pointer;
-  width: 24px;
-  height: 24px;
-  line-height: 20px;
-  text-align: center;
-}
-
-.card-tooltip-close:hover {
-  color: #fff;
 }
 
 /* 嘲讽随从 - 金色盾牌外框 (镂空边框效果) */
@@ -2726,20 +2525,6 @@
   }
 }
 
-/* 风怒 - 旋风环绕动画效果 */
-.minion.windfury::before {
-  content: '';
-  position: absolute;
-  top: -15px;
-  left: -15px;
-  right: -15px;
-  bottom: -15px;
-  border: none;
-  background: transparent;
-  pointer-events: none;
-  z-index: 3;
-}
-
 /* 风元素 - 使用多个旋转的椭圆模拟旋风 */
 .minion.windfury .minion-body::before,
 .minion.windfury .minion-body::after {
@@ -2781,7 +2566,6 @@
   right: -4px;
   width: 18px;
   height: 18px;
-  /* Swirl/vortex icon */
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M12 4c-4 0-7 2.5-7 6 0 2 1 4 3 5l-4 4m4-4c3 0 5-2 5-5s-2-5-5-5' stroke='%2366ccff' stroke-width='2.5' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='14' r='2' fill='%2366ccff'/%3E%3Ccircle cx='7' cy='9' r='1.5' fill='%2366ccff'/%3E%3Ccircle cx='17' cy='9' r='1.5' fill='%2366ccff'/%3E%3C/svg%3E") center/contain no-repeat;
   font-size: 0;
   filter: drop-shadow(0 0 4px rgba(100, 200, 255, 0.9))
@@ -2797,7 +2581,6 @@
   right: 4px;
   width: 16px;
   height: 16px;
-  /* Skull-crossbones icon */
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Ccircle cx='12' cy='8' r='4' stroke='%2327ae60' stroke-width='2'/%3E%3Cpath d='M8 15l8 8M16 15L8 23' stroke='%2327ae60' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat;
   font-size: 0;
   filter: drop-shadow(0 0 4px rgba(39, 174, 96, 0.9))
@@ -2872,7 +2655,6 @@
   transform: translateX(-50%);
   width: 18px;
   height: 18px;
-  /* Snowflake icon */
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M12 2v8m0 4v8M2 12h8m4 0h8' stroke='%2366ccff' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M12 6l-3 3m3-3l3 3M6 12l3 3m-3-3l-3 3' stroke='%2366ccff' stroke-width='1.5' stroke-linecap='round' opacity='0.6'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%2366ccff'/%3E%3Ccircle cx='7' cy='7' r='1.5' fill='%2366ccff' opacity='0.7'/%3E%3Ccircle cx='17' cy='17' r='1.5' fill='%2366ccff' opacity='0.7'/%3E%3C/svg%3E") center/contain no-repeat;
   font-size: 0;
   filter: drop-shadow(0 0 4px rgba(100, 200, 255, 0.9))
@@ -2883,7 +2665,8 @@
 
 .minion.frozen .minion-body {
   filter: hue-rotate(180deg) saturate(0.7) brightness(1.1);
-  box-shadow: inset 0 0 20px rgba(100, 180, 255, 0.3);
+  border-color: #64c8ff;
+  box-shadow: 0 0 15px rgba(100, 200, 255, 0.5), inset 0 0 10px rgba(100, 200, 255, 0.2);
 }
 
 @keyframes snowflake-float {
@@ -2905,7 +2688,6 @@
   transform: translateX(-50%);
   width: 16px;
   height: 16px;
-  /* Skull icon - clean stroke-based design */
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Ccircle cx='12' cy='9' r='6' stroke='%23a020a0' stroke-width='2'/%3E%3Cellipse cx='9' cy='7' rx='1.5' ry='2' fill='%23a020a0'/%3E%3Cellipse cx='15' cy='7' rx='1.5' ry='2' fill='%23a020a0'/%3E%3Cpath d='M8 15c0 2 1.8 4 4 4s4-2 4-4-1.8-4-4-4z' fill='%23a020a0'/%3E%3C/svg%3E") center/contain no-repeat;
   font-size: 0;
   filter: drop-shadow(0 0 4px rgba(160, 32, 160, 0.9))
@@ -2985,7 +2767,6 @@
   left: -5px;
   width: 18px;
   height: 18px;
-  /* Shield with star */
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M12 2L4 10l2 10h12l2-10L12 2z' stroke='%23ffd700' stroke-width='2' stroke-linejoin='round' fill='none'/%3E%3Ccircle cx='12' cy='12' r='3' fill='%23ffd700'/%3E%3C/svg%3E") center/contain no-repeat;
   font-size: 0;
   filter: drop-shadow(0 0 4px rgba(255, 215, 0, 1))
@@ -3017,7 +2798,6 @@
   transform: translate(-50%, -50%);
   width: 20px;
   height: 20px;
-  /* Silence slash circle */
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='9' fill='none' stroke='%23888888' stroke-width='2.5'/%3E%3Cline x1='5' y1='5' x2='19' y2='19' stroke='%23888888' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat;
   font-size: 0;
   filter: drop-shadow(0 0 4px rgba(150, 150, 150, 0.9))
@@ -3051,15 +2831,6 @@
   }
 }
 
-/* 英雄头像改进 */
-.hero-portrait {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
 .hero-class-icon {
   font-size: clamp(1.4rem, 3.8vw, 2.3rem);
   filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.6))
@@ -3091,12 +2862,9 @@
   animation: pulse-target 0.8s ease-in-out infinite;
 }
 
-/* Performance hints for animated elements */
-.minion.taunt { will-change: transform, box-shadow; }
-.minion.divine-shield { will-change: transform, box-shadow, filter; }
-.card.playable { will-change: transform, box-shadow, z-index, filter; }
-.hero-portrait.valid-target { will-change: box-shadow; }
-.end-turn-btn:not(:disabled) { will-change: box-shadow; }
+.minion.taunt { will-change: transform; }
+.minion.divine-shield { will-change: transform, filter; }
+.card.playable { will-change: transform, filter; }
 
 /* 英雄技能样式 */
 .hero-power {
@@ -3212,7 +2980,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
   overflow: hidden;
   font-size: clamp(0.6rem, 1.1vw, 0.75rem);
   color: #ccc;
@@ -3277,69 +3045,6 @@
   .game-sidebar {
     display: none;
   }
-}
-
-/* 目标选择遮罩 */
-.targeting-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 900;
-}
-
-.targeting-prompt {
-  position: absolute;
-  bottom: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.9);
-  border: 2px solid var(--gold);
-  border-radius: 8px;
-  padding: clamp(0.5rem, 1.5vw, 1rem) clamp(1rem, 3vw, 1.5rem);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  pointer-events: auto;
-  z-index: 901;
-}
-
-.targeting-prompt p {
-  color: var(--gold);
-  font-size: clamp(0.8rem, 1.5vw, 1rem);
-  margin: 0;
-  text-align: center;
-}
-
-.targeting-prompt .btn {
-  padding: clamp(0.3rem, 1vw, 0.5rem) clamp(0.8rem, 2vw, 1.2rem);
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid #666;
-  border-radius: 4px;
-  color: #ccc;
-  cursor: pointer;
-  font-size: clamp(0.7rem, 1.2vw, 0.85rem);
-  transition: all 0.2s;
-}
-
-.targeting-prompt .btn:hover {
-  border-color: var(--gold);
-  color: var(--gold);
-}
-
-/* 通用按钮样式 */
-.btn-secondary {
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid #888;
-  color: #ccc;
-}
-
-.btn-secondary:hover {
-  border-color: var(--gold);
-  color: var(--gold);
 }
 
 /* 奥秘区域样式 */
@@ -3436,25 +3141,6 @@
 
 .secret-triggering {
   animation: secret-trigger 0.8s ease-in-out;
-}
-
-/* 奥秘数量徽章 */
-.secret-count {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background: #ff4444;
-  color: white;
-  border-radius: 50%;
-  width: clamp(14px, 3vw, 18px);
-  height: clamp(14px, 3vw, 18px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: clamp(0.6rem, 1.2vw, 0.75rem);
-  font-weight: bold;
-  border: 1px solid white;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
 }
 
 /* 奥秘上限警告 */
@@ -3646,35 +3332,13 @@
   color: #ccc;
   cursor: pointer;
   font-size: clamp(0.8rem, 2vw, 1rem);
-  transition: all 0.2s;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
 }
 
 .choose-one-cancel:hover {
   border-color: #ff4444;
   color: #ff4444;
   background: rgba(255, 68, 68, 0.1);
-}
-
-/* 冻结图标 */
-.frozen-icon {
-  display: none;
-}
-
-@keyframes frozen-shimmer {
-  0%, 100% {
-    filter: drop-shadow(0 0 4px rgba(100, 200, 255, 0.6));
-    transform: scale(1);
-  }
-  50% {
-    filter: drop-shadow(0 0 8px rgba(100, 200, 255, 1));
-    transform: scale(1.1);
-  }
-}
-
-/* 冻结随从蓝色边框效果 */
-.minion.frozen .minion-body {
-  border-color: #64c8ff;
-  box-shadow: 0 0 15px rgba(100, 200, 255, 0.5), inset 0 0 10px rgba(100, 200, 255, 0.2);
 }
 
 .minion.frozen .minion-name {
@@ -3775,7 +3439,7 @@
   padding: 12px 14px;
   padding-top: 16px;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
   position: relative;
   overflow: hidden;
   box-shadow:
