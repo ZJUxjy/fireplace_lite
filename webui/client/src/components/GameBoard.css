@@ -109,14 +109,53 @@
   --noise-opacity: 0.03;
 }
 
-/* 游戏容器 */
+/* 游戏容器 - Rich atmospheric background */
 .game-container {
   width: 100%;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
   overflow: hidden;
+  position: relative;
+
+  background:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse 120% 100% at 50% 50%, transparent 40%, var(--bg-deepest) 100%),
+    linear-gradient(
+      180deg,
+      #0e0a14 0%,
+      #151020 15%,
+      #1a1525 35%,
+      #1a1820 55%,
+      #171a18 75%,
+      #0e1410 100%
+    );
+  background-color: var(--bg-primary);
+}
+
+/* Ambient glow effect on game container */
+.game-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 48%,
+    rgba(200, 164, 92, 0.04) 0%,
+    rgba(200, 164, 92, 0.02) 30%,
+    transparent 70%
+  );
+}
+
+/* Ensure content sits above the ambient layer */
+.game-container > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* 顶部标题栏 */
@@ -273,7 +312,7 @@
   50% { opacity: 1; }
 }
 
-/* 游戏棋盘 */
+/* 游戏棋盘 - Textured playing surface */
 .game-board {
   flex: 1;
   display: flex;
@@ -281,6 +320,26 @@
   padding: clamp(0.3rem, 1vw, 0.8rem);
   position: relative;
   overflow-y: auto;
+
+  background:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 128 128' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.035'/%3E%3C/svg%3E"),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 2px,
+      rgba(200, 164, 92, 0.008) 2px,
+      rgba(200, 164, 92, 0.008) 3px
+    ),
+    linear-gradient(
+      180deg,
+      rgba(30, 25, 35, 0.4) 0%,
+      rgba(25, 22, 30, 0.3) 50%,
+      rgba(20, 28, 25, 0.35) 100%
+    );
+
+  box-shadow:
+    inset 0 0 60px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 /* 对手手牌区 */
