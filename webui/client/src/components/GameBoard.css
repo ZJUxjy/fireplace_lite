@@ -2923,9 +2923,9 @@
   transform: translateX(-50%);
   width: 16px;
   height: 16px;
-  /* Skull icon using pure CSS (SVG background) */
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M12 4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2 .9-2-2zm0 14c-3.3 0-6-2.7-6-6 0-1.5.5-2.8 1.4-3.8.9-.7 2-1.2 3.3-1.4C11.7 7.5 12 7 12 7s.3.5.6 1.2c1.3.2 2.4.7 3.3 1.4 1 1 1.4 2.3 1.4 3.8 0 3.3-2.7 6-6 6z' fill='%23a020a0'/%3E%3C/svg%3E") center/contain no-repeat;
-  font-size: 0; /* hide emoji text */
+  /* Skull icon - clean stroke-based design */
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Ccircle cx='12' cy='9' r='6' stroke='%23a020a0' stroke-width='2'/%3E%3Cellipse cx='9' cy='7' rx='1.5' ry='2' fill='%23a020a0'/%3E%3Cellipse cx='15' cy='7' rx='1.5' ry='2' fill='%23a020a0'/%3E%3Cpath d='M8 15c0 2 1.8 4 4 4s4-2 4-4-1.8-4-4-4z' fill='%23a020a0'/%3E%3C/svg%3E") center/contain no-repeat;
+  font-size: 0;
   filter: drop-shadow(0 0 4px rgba(160, 32, 160, 0.9))
           drop-shadow(0 0 8px rgba(160, 32, 160, 0.5));
   z-index: 4;
@@ -3668,13 +3668,7 @@
 
 /* 冻结图标 */
 .frozen-icon {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  font-size: clamp(0.7rem, 1.3vw, 1rem);
-  filter: drop-shadow(0 0 4px rgba(100, 200, 255, 0.8));
-  z-index: 4;
-  animation: frozen-shimmer 2s ease-in-out infinite;
+  display: none;
 }
 
 @keyframes frozen-shimmer {
