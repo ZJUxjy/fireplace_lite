@@ -3091,6 +3091,13 @@
   animation: pulse-target 0.8s ease-in-out infinite;
 }
 
+/* Performance hints for animated elements */
+.minion.taunt { will-change: transform, box-shadow; }
+.minion.divine-shield { will-change: transform, box-shadow, filter; }
+.card.playable { will-change: transform, box-shadow, z-index, filter; }
+.hero-portrait.valid-target { will-change: box-shadow; }
+.end-turn-btn:not(:disabled) { will-change: box-shadow; }
+
 /* 英雄技能样式 */
 .hero-power {
   position: relative;
