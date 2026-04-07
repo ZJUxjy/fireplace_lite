@@ -629,33 +629,88 @@
   width: var(--hero-size);
   height: var(--hero-size);
   border-radius: 50%;
-  border: 4px solid var(--gold);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   flex-shrink: 0;
+
+  border: 3px solid var(--gold-dim);
+  box-shadow:
+    0 0 15px rgba(0, 0, 0, 0.4),
+    inset 0 0 10px rgba(0, 0, 0, 0.3),
+    0 0 8px var(--gold-subtle);
+}
+
+.hero-portrait::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 1px solid rgba(200, 164, 92, 0.2);
+  pointer-events: none;
 }
 
 .hero-portrait.opponent {
-  border-color: var(--red-opponent);
+  border-color: var(--zone-opponent-accent);
+  box-shadow:
+    0 0 15px rgba(0, 0, 0, 0.4),
+    inset 0 0 10px rgba(0, 0, 0, 0.3),
+    0 0 12px rgba(200, 80, 112, 0.2);
 }
 
 .hero-portrait.player {
-  border-color: var(--green-player);
+  border-color: var(--zone-player-accent);
+  box-shadow:
+    0 0 15px rgba(0, 0, 0, 0.4),
+    inset 0 0 10px rgba(0, 0, 0, 0.3),
+    0 0 12px rgba(64, 160, 96, 0.2);
 }
 
-.hero-portrait.hero-hunter { background: linear-gradient(180deg, #8B4513 0%, #5D2E0C 100%); }
-.hero-portrait.hero-mage { background: linear-gradient(180deg, #3498db 0%, #1a5276 100%); }
-.hero-portrait.hero-priest { background: linear-gradient(180deg, #999 0%, #555 100%); }
-.hero-portrait.hero-shaman { background: linear-gradient(180deg, #1e90ff 0%, #104E8B 100%); }
-.hero-portrait.hero-paladin { background: linear-gradient(180deg, #f39c12 0%, #d68910 100%); }
-.hero-portrait.hero-warrior { background: linear-gradient(180deg, #c0392b 0%, #7b241c 100%); }
-.hero-portrait.hero-rogue { background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%); }
-.hero-portrait.hero-warlock { background: linear-gradient(180deg, #6c3483 0%, #4a235a 100%); }
-.hero-portrait.hero-druid { background: linear-gradient(180deg, #27ae60 0%, #1e8449 100%); }
-.hero-portrait.hero-demonhunter { background: linear-gradient(180deg, #943126 0%, #641e16 100%); }
-.hero-portrait.hero-neutral { background: linear-gradient(180deg, #5d6d7e 0%, #34495e 100%); }
+.hero-portrait.hero-hunter {
+  background: radial-gradient(circle at 40% 35%, rgba(171, 212, 115, 0.4) 0%, rgba(139, 172, 82, 0.2) 40%, #5D4A1C 100%);
+  border-color: var(--class-hunter);
+}
+.hero-portrait.hero-mage {
+  background: radial-gradient(circle at 40% 35%, rgba(105, 204, 240, 0.4) 0%, rgba(105, 204, 240, 0.2) 40%, #1a3a5c 100%);
+  border-color: var(--class-mage);
+}
+.hero-portrait.hero-priest {
+  background: radial-gradient(circle at 40% 35%, rgba(255, 255, 255, 0.2) 0%, rgba(200, 200, 200, 0.1) 40%, #444 100%);
+  border-color: var(--class-priest);
+}
+.hero-portrait.hero-shaman {
+  background: radial-gradient(circle at 40% 35%, rgba(0, 112, 222, 0.4) 0%, rgba(0, 112, 222, 0.2) 40%, #104060 100%);
+  border-color: var(--class-shaman);
+}
+.hero-portrait.hero-paladin {
+  background: radial-gradient(circle at 40% 35%, rgba(245, 140, 186, 0.4) 0%, rgba(245, 140, 186, 0.2) 40%, #6B3048 100%);
+  border-color: var(--class-paladin);
+}
+.hero-portrait.hero-warrior {
+  background: radial-gradient(circle at 40% 35%, rgba(199, 156, 110, 0.4) 0%, rgba(199, 156, 110, 0.2) 40%, #5C3520 100%);
+  border-color: var(--class-warrior);
+}
+.hero-portrait.hero-rogue {
+  background: radial-gradient(circle at 40% 35%, rgba(255, 245, 105, 0.35) 0%, rgba(255, 245, 105, 0.15) 40%, #2a3020 100%);
+  border-color: var(--class-rogue);
+}
+.hero-portrait.hero-warlock {
+  background: radial-gradient(circle at 40% 35%, rgba(148, 130, 201, 0.4) 0%, rgba(148, 130, 201, 0.2) 40%, #3a2048 100%);
+  border-color: var(--class-warlock);
+}
+.hero-portrait.hero-druid {
+  background: radial-gradient(circle at 40% 35%, rgba(255, 125, 10, 0.4) 0%, rgba(255, 125, 10, 0.2) 40%, #2a4015 100%);
+  border-color: var(--class-druid);
+}
+.hero-portrait.hero-demonhunter {
+  background: radial-gradient(circle at 40% 35%, rgba(163, 48, 201, 0.4) 0%, rgba(163, 48, 201, 0.2) 40%, #401830 100%);
+  border-color: var(--class-demonhunter);
+}
+.hero-portrait.hero-neutral {
+  background: radial-gradient(circle at 40% 35%, rgba(153, 153, 153, 0.25) 0%, rgba(100, 100, 100, 0.12) 40%, #333 100%);
+  border-color: var(--class-neutral);
+}
 
 .hero-initial {
   font-size: calc(var(--hero-size) * 0.5);
@@ -2587,17 +2642,28 @@
 }
 
 .hero-class-icon {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
-  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+  font-size: clamp(1.4rem, 3.8vw, 2.3rem);
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.6))
+          drop-shadow(0 0 8px rgba(0, 0, 0, 0.3));
+  transition: filter 0.3s ease;
+}
+
+.hero-portrait:hover .hero-class-icon {
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.6))
+          drop-shadow(0 0 12px rgba(0, 0, 0, 0.4));
 }
 
 .hero-name {
   position: absolute;
-  bottom: -20px;
-  font-size: clamp(0.5rem, 1.2vw, 0.7rem);
+  bottom: -22px;
+  font-size: clamp(0.45rem, 1.1vw, 0.65rem);
   color: var(--gold);
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  text-shadow:
+    0 0 6px rgba(200, 164, 92, 0.4),
+    0 1px 3px rgba(0, 0, 0, 0.9);
   white-space: nowrap;
+  letter-spacing: 0.05em;
+  font-weight: 600;
 }
 
 /* 英雄作为有效目标 */
