@@ -1391,25 +1391,44 @@
 .card {
   width: var(--card-width);
   height: var(--card-height);
-  background: linear-gradient(
-    145deg,
-    rgba(58, 46, 34, 0.95) 0%,
-    rgba(45, 36, 28, 0.98) 50%,
-    rgba(35, 28, 22, 1) 100%
-  );
+  background:
+    /* Main card body - warm leather/parchment tone */
+    linear-gradient(
+      160deg,
+      rgba(62, 50, 38, 0.97) 0%,
+      rgba(48, 38, 30, 0.99) 40%,
+      rgba(36, 28, 22, 1) 100%
+    ),
+    /* Inner decorative frame line (simulates card inset border) */
+    linear-gradient(
+      to bottom,
+      transparent 58%,
+      rgba(200, 164, 92, 0.08) 58%,
+      rgba(200, 164, 92, 0.08) 62%,
+      transparent 62%
+    ),
+    linear-gradient(
+      to right,
+      transparent 48%,
+      rgba(200, 164, 92, 0.06) 48%,
+      rgba(200, 164, 92, 0.06) 52%,
+      transparent 52%
+    );
   border: 2px solid var(--gold-dim);
-  border-radius: 10px;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   padding: 4px;
+  padding-top: 8px; /* extra top padding for cost gem overflow */
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   position: relative;
   flex-shrink: 0;
   cursor: default;
   box-shadow:
     var(--shadow-sm),
+    0 1px 0 rgba(255, 255, 255, 0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
 }
 
 .card.playable {
