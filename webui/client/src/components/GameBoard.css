@@ -1185,7 +1185,7 @@
 }
 
 .minion-name {
-  font-size: clamp(0.35rem, 0.9vw, 0.55rem);
+  font-size: clamp(0.6rem, 1.2vw, 0.75rem);
   color: rgba(255, 255, 255, 0.9);
   text-align: center;
   overflow: hidden;
@@ -1209,7 +1209,7 @@
   background: linear-gradient(180deg, rgba(139, 105, 20, 0.3), rgba(90, 68, 10, 0.2));
   padding: 1px 4px;
   border-radius: 4px;
-  font-size: clamp(0.2rem, 0.6vw, 0.35rem);
+  font-size: clamp(0.55rem, 1vw, 0.7rem);
   color: var(--gold);
   border: 1px solid var(--gold-dark);
   white-space: nowrap;
@@ -1643,7 +1643,7 @@
   background: linear-gradient(180deg, #9b59b6, #8e44ad);
   padding: 2px 6px;
   border-radius: 4px;
-  font-size: clamp(0.35rem, 0.9vw, 0.6rem);
+  font-size: clamp(0.6rem, 1.2vw, 0.8rem);
   color: white;
   font-weight: bold;
   border: 1px solid var(--gold);
@@ -1685,7 +1685,7 @@
 }
 
 .card-name {
-  font-size: clamp(0.4rem, 1vw, 0.7rem);
+  font-size: clamp(0.6rem, 1.3vw, 0.85rem);
   color: white;
   text-align: center;
   margin-top: clamp(1rem, 3vw, 1.5rem);
@@ -1703,7 +1703,7 @@
   background: linear-gradient(180deg, #4a3728, #2a1f18);
   padding: 0.05rem 0.2rem;
   border-radius: 6px;
-  font-size: clamp(0.4rem, 1vw, 0.6rem);
+  font-size: clamp(0.6rem, 1.2vw, 0.8rem);
   border: 1px solid var(--gold-dim);
   z-index: 2;
 }
@@ -3075,7 +3075,7 @@
 .hero-name {
   position: absolute;
   bottom: -22px;
-  font-size: clamp(0.45rem, 1.1vw, 0.65rem);
+  font-size: clamp(0.6rem, 1.3vw, 0.85rem);
   color: var(--gold);
   text-shadow:
     0 0 6px rgba(200, 164, 92, 0.4),
@@ -3214,7 +3214,7 @@
   justify-content: center;
   transition: all 0.2s;
   overflow: hidden;
-  font-size: clamp(0.4rem, 0.8vw, 0.55rem);
+  font-size: clamp(0.6rem, 1.1vw, 0.75rem);
   color: #ccc;
   text-align: center;
   padding: 4px;
@@ -3919,4 +3919,12 @@
 @keyframes discover-fade {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
+}
+
+/* Ultra-wide screen constraint */
+@media (min-width: 1800px) {
+  .game-board {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
 }
