@@ -1511,7 +1511,7 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
                   <div className="choose-one-card-cost">{option.cost}</div>
                   <div className="choose-one-card-name">{option.name}</div>
                   {option.text && (
-                    <div className="choose-one-card-text">{option.text}</div>
+                    <div className="choose-one-card-text" dangerouslySetInnerHTML={{ __html: option.text }} />
                   )}
                   {option.atk !== undefined && option.health !== undefined && (
                     <div className="choose-one-card-stats">
@@ -1552,7 +1552,7 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
                   <div className="discover-card-cost">{card.cost}</div>
                   <div className="discover-card-name">{card.name}</div>
                   {card.text && (
-                    <div className="discover-card-text">{card.text}</div>
+                    <div className="discover-card-text" dangerouslySetInnerHTML={{ __html: card.text }} />
                   )}
                   {card.atk !== undefined && card.health !== undefined && (
                     <div className="discover-card-stats">
