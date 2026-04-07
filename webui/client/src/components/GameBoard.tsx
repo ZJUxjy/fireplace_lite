@@ -18,6 +18,43 @@ const MAX_MINIONS = 7; // 随从上限
 const MAX_HAND_SIZE = 10; // 手牌上限
 const DEFAULT_TURN_TIMEOUT = 75; // 默认回合超时时间（秒）
 
+/**
+ * 炉石风格手牌扇形展开算法
+ * 根据卡牌数量动态计算：旋转角度、弧形偏移、缩放比例、层级
+ */
+function computeFanTransform(index: number, totalCards: number): {
+  angle: number; tx: number; ty: number; scale: number; zIndex: number;
+} {
+  if (totalCards <= 1) {
+    return { angle: 0, tx: 0, ty: 0, scale: 1, zIndex: 1 };
+  }
+
+  // 动态总展开角度：少牌紧凑，多牌展开（参考真实炉石）
+  const totalSpread = totalCards <= 3
+    ? 30 + (totalCards - 2) * 10          // 2→30°, 3→40°
+    : Math.min(40 + 12 * Math.pow(totalCards - 3, 1.15), 140); // 4→52°, 8→104°, 10→129°
+
+  // 每张牌的归一化位置 (-0.5 左边缘 ~ +0.5 右边缘)
+  const t = index / (totalCards - 1) - 0.5;
+  const angle = t * totalSpread;
+
+  // 弧形偏移：模拟从手牌区下方焦点辐射的扇形
+  const rad = angle * Math.PI / 180;
+  const tx = Math.sin(rad) * 420 * 0.55;   // 半径 ≈ 3倍卡高，系数调优重叠效果
+  const ty = Math.abs(angle) > 12
+    ? -(1 - Math.cos(rad)) * 140 * 0.06   // 外侧牌轻微上提，保持底部对齐
+    : 0;
+
+  // 缩放：牌多时边缘牌略小（>5张时生效）
+  let scale = 1;
+  if (totalCards > 5) {
+    const maxReduction = Math.min(0.12, (totalCards - 5) * 0.024);
+    scale = 1 - Math.abs(t) * 2 * maxReduction;
+  }
+
+  return { angle, tx, ty, scale, zIndex: index + 1 };
+}
+
 // 获取随从属性颜色类名
 function getStatClassName(
   currentValue: number,
@@ -100,6 +137,35 @@ const HERO_CLASSES: Record<string, string> = {
 
 function getHeroClass(heroName: string): string {
   return HERO_CLASSES[heroName] || 'neutral';
+}
+
+// 种族标签映射（emoji + 中文名称）
+function raceLabel(race: string | undefined): string {
+  if (!race) return '';
+  const map: Record<string, string> = {
+    BEAST: '🐾 野兽',
+    DRAGON: '🐉 龙',
+    DEMON: '👹 恶魔',
+    MECHANICAL: '⚙️ 机械',
+    MURLOC: '🐟 鱼人',
+    PIRATE: '⚓ 海盗',
+    ELEMENTAL: '🔥 元素',
+    TOTEM: '🎭 图腾',
+    UNDEAD: '💀 亡灵',
+    ALL: '✨ 全部',
+  };
+  return map[race] || race;
+}
+
+// 种族 emoji（仅图标）
+function raceEmoji(race: string | undefined): string {
+  if (!race) return '';
+  const map: Record<string, string> = {
+    BEAST: '🐾', DRAGON: '🐉', DEMON: '👹', MECHANICAL: '⚙️',
+    MURLOC: '🐟', PIRATE: '⚓', ELEMENTAL: '🔥', TOTEM: '🎭',
+    UNDEAD: '💀', ALL: '✨',
+  };
+  return map[race] || '';
 }
 
 // 职业图标映射
@@ -987,14 +1053,7 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
                   {/* 种族标签 */}
                   {minion.race && (
                     <div className="minion-race-tag">
-                      {minion.race === 'BEAST' && '🐾 野兽'}
-                      {minion.race === 'DRAGON' && '🐉 龙'}
-                      {minion.race === 'DEMON' && '👹 恶魔'}
-                      {minion.race === 'MECHANICAL' && '⚙️ 机械'}
-                      {minion.race === 'MURLOC' && '🐟 鱼人'}
-                      {minion.race === 'PIRATE' && '⚓ 海盗'}
-                      {minion.race === 'ELEMENTAL' && '🔥 元素'}
-                      {minion.race === 'TOTEM' && '🎭 图腾'}
+                      {raceLabel(minion.race)}
                     </div>
                   )}
                 </div>
@@ -1072,14 +1131,7 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
                   {/* 种族标签 */}
                   {minion.race && (
                     <div className="minion-race-tag">
-                      {minion.race === 'BEAST' && '🐾 野兽'}
-                      {minion.race === 'DRAGON' && '🐉 龙'}
-                      {minion.race === 'DEMON' && '👹 恶魔'}
-                      {minion.race === 'MECHANICAL' && '⚙️ 机械'}
-                      {minion.race === 'MURLOC' && '🐟 鱼人'}
-                      {minion.race === 'PIRATE' && '⚓ 海盗'}
-                      {minion.race === 'ELEMENTAL' && '🔥 元素'}
-                      {minion.race === 'TOTEM' && '🎭 图腾'}
+                      {raceLabel(minion.race)}
                     </div>
                   )}
                 </div>
@@ -1246,13 +1298,17 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
           <div className={`player-hand-area ${stagedCard ? 'has-staged-card' : ''}`}>
             {gameState.player.hand.map((card, i) => {
               const totalCards = gameState.player.hand.length;
-              const angle = totalCards > 1 ? ((i / (totalCards - 1)) - 0.5) * 30 : 0;
+              const fan = computeFanTransform(i, totalCards);
               const isStaged = stagedCard?.cardIndex === i;
               return (
                 <div
                   key={i}
                   className={`card ${isMyTurn && card.is_playable ? 'playable' : ''} ${draggedCard === i ? 'dragging' : ''} ${isStaged ? 'staged' : ''} ${card.has_combo ? 'has-combo' : ''} ${card.has_combo && gameState.player.combo_active ? 'combo-active' : ''}`}
-                  style={{ transform: `rotate(${angle}deg)`, opacity: isStaged ? 0.4 : 1 }}
+                  style={{
+                    transform: `rotate(${fan.angle}deg) translateX(${fan.tx}px) translateY(${fan.ty}px) scale(${fan.scale})`,
+                    zIndex: fan.zIndex,
+                    opacity: isStaged ? 0.4 : 1,
+                  }}
                   draggable={isMyTurn && !!card.is_playable && !stagedCard}
                   onDragStart={(e) => handleDragStart(e, i, card)}
                   onDragEnd={handleDragEnd}
@@ -1275,14 +1331,7 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
                   {/* 种族标签 */}
                   {card.race && (
                     <div className="card-race-tag">
-                      {card.race === 'BEAST' && '🐾'}
-                      {card.race === 'DRAGON' && '🐉'}
-                      {card.race === 'DEMON' && '👹'}
-                      {card.race === 'MECHANICAL' && '⚙️'}
-                      {card.race === 'MURLOC' && '🐟'}
-                      {card.race === 'PIRATE' && '⚓'}
-                      {card.race === 'ELEMENTAL' && '🔥'}
-                      {card.race === 'TOTEM' && '🎭'}
+                      {raceEmoji(card.race)}
                     </div>
                   )}
                   {card.atk !== undefined && card.health !== undefined && (
@@ -1359,17 +1408,7 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
           )}
           {hoveredCard.card.race && (
             <div className="tooltip-race">
-              {hoveredCard.card.race === 'BEAST' && '🐾 野兽'}
-              {hoveredCard.card.race === 'DRAGON' && '🐉 龙'}
-              {hoveredCard.card.race === 'DEMON' && '👹 恶魔'}
-              {hoveredCard.card.race === 'MECHANICAL' && '⚙️ 机械'}
-              {hoveredCard.card.race === 'MURLOC' && '🐟 鱼人'}
-              {hoveredCard.card.race === 'PIRATE' && '⚓ 海盗'}
-              {hoveredCard.card.race === 'ELEMENTAL' && '🔥 元素'}
-              {hoveredCard.card.race === 'TOTEM' && '🎭 图腾'}
-              {hoveredCard.card.race === 'UNDEAD' && '💀 亡灵'}
-              {hoveredCard.card.race === 'ALL' && '✨ 全部'}
-              {!['BEAST', 'DRAGON', 'DEMON', 'MECHANICAL', 'MURLOC', 'PIRATE', 'ELEMENTAL', 'TOTEM', 'UNDEAD', 'ALL'].includes(hoveredCard.card.race) && hoveredCard.card.race}
+              {raceLabel(hoveredCard.card.race)}
             </div>
           )}
           {hoveredCard.card.text && (
@@ -1397,17 +1436,7 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
           <div className="tooltip-name">{hoveredMinion.minion.name}</div>
           {hoveredMinion.minion.race && (
             <div className="tooltip-race">
-              {hoveredMinion.minion.race === 'BEAST' && '🐾 野兽'}
-              {hoveredMinion.minion.race === 'DRAGON' && '🐉 龙'}
-              {hoveredMinion.minion.race === 'DEMON' && '👹 恶魔'}
-              {hoveredMinion.minion.race === 'MECHANICAL' && '⚙️ 机械'}
-              {hoveredMinion.minion.race === 'MURLOC' && '🐟 鱼人'}
-              {hoveredMinion.minion.race === 'PIRATE' && '⚓ 海盗'}
-              {hoveredMinion.minion.race === 'ELEMENTAL' && '🔥 元素'}
-              {hoveredMinion.minion.race === 'TOTEM' && '🎭 图腾'}
-              {hoveredMinion.minion.race === 'UNDEAD' && '💀 亡灵'}
-              {hoveredMinion.minion.race === 'ALL' && '✨ 全部'}
-              {!['BEAST', 'DRAGON', 'DEMON', 'MECHANICAL', 'MURLOC', 'PIRATE', 'ELEMENTAL', 'TOTEM', 'UNDEAD', 'ALL'].includes(hoveredMinion.minion.race) && hoveredMinion.minion.race}
+              {raceLabel(hoveredMinion.minion.race)}
             </div>
           )}
           <div className="tooltip-stats">
