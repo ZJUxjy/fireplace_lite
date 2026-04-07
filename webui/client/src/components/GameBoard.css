@@ -771,7 +771,7 @@
   font-variant-numeric: tabular-nums;
   letter-spacing: 1px;
   white-space: nowrap;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 2px;
   box-shadow:
