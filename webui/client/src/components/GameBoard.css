@@ -2795,10 +2795,15 @@
 /* 风怒图标 */
 .windfury-icon {
   position: absolute;
-  top: -18px;
-  right: -5px;
-  font-size: clamp(0.6rem, 1.2vw, 0.9rem);
-  filter: drop-shadow(0 0 3px rgba(100, 200, 255, 0.8));
+  top: -16px;
+  right: -4px;
+  width: 18px;
+  height: 18px;
+  /* Swirl/vortex icon */
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M12 4c-4 0-7 2.5-7 6 0 2 1 4 3 5l-4 4m4-4c3 0 5-2 5-5s-2-5-5-5' stroke='%2366ccff' stroke-width='2.5' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='14' r='2' fill='%2366ccff'/%3E%3Ccircle cx='7' cy='9' r='1.5' fill='%2366ccff'/%3E%3Ccircle cx='17' cy='9' r='1.5' fill='%2366ccff'/%3E%3C/svg%3E") center/contain no-repeat;
+  font-size: 0;
+  filter: drop-shadow(0 0 4px rgba(100, 200, 255, 0.9))
+          drop-shadow(0 0 8px rgba(100, 200, 255, 0.5));
   z-index: 4;
   animation: wind-icon-pulse 1s ease-in-out infinite;
 }
@@ -2806,10 +2811,15 @@
 /* 剧毒图标 */
 .poisonous-icon {
   position: absolute;
-  bottom: -8px;
-  right: 5px;
-  font-size: clamp(0.6rem, 1.2vw, 0.9rem);
-  filter: drop-shadow(0 0 3px rgba(39, 174, 96, 0.8));
+  bottom: -6px;
+  right: 4px;
+  width: 16px;
+  height: 16px;
+  /* Skull-crossbones icon */
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Ccircle cx='12' cy='8' r='4' stroke='%2327ae60' stroke-width='2'/%3E%3Cpath d='M8 15l8 8M16 15L8 23' stroke='%2327ae60' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat;
+  font-size: 0;
+  filter: drop-shadow(0 0 4px rgba(39, 174, 96, 0.9))
+          drop-shadow(0 0 8px rgba(39, 174, 96, 0.5));
   z-index: 4;
   animation: poisonous-pulse 1.5s ease-in-out infinite;
 }
@@ -2873,13 +2883,18 @@
 }
 
 .minion.frozen::after {
-  content: '❄️';
+  content: '';
   position: absolute;
-  top: -15px;
+  top: -16px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: clamp(0.7rem, 1.3vw, 1rem);
-  filter: drop-shadow(0 0 4px rgba(150, 200, 255, 0.9));
+  width: 18px;
+  height: 18px;
+  /* Snowflake icon */
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M12 2v8m0 4v8M2 12h8m4 0h8' stroke='%2366ccff' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M12 6l-3 3m3-3l3 3M6 12l3 3m-3-3l-3 3' stroke='%2366ccff' stroke-width='1.5' stroke-linecap='round' opacity='0.6'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%2366ccff'/%3E%3Ccircle cx='7' cy='7' r='1.5' fill='%2366ccff' opacity='0.7'/%3E%3Ccircle cx='17' cy='17' r='1.5' fill='%2366ccff' opacity='0.7'/%3E%3C/svg%3E") center/contain no-repeat;
+  font-size: 0;
+  filter: drop-shadow(0 0 4px rgba(100, 200, 255, 0.9))
+          drop-shadow(0 0 8px rgba(100, 200, 255, 0.5));
   z-index: 4;
   animation: snowflake-float 2s ease-in-out infinite;
 }
@@ -2903,13 +2918,17 @@
 /* 亡语图标 */
 .deathrattle-icon {
   position: absolute;
-  bottom: -8px;
+  bottom: -6px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: clamp(0.6rem, 1.5vw, 0.9rem);
-  filter: drop-shadow(0 0 3px rgba(128, 0, 128, 0.8));
-  pointer-events: none;
-  z-index: 2;
+  width: 16px;
+  height: 16px;
+  /* Skull icon using pure CSS (SVG background) */
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M12 4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2 .9-2-2zm0 14c-3.3 0-6-2.7-6-6 0-1.5.5-2.8 1.4-3.8.9-.7 2-1.2 3.3-1.4C11.7 7.5 12 7 12 7s.3.5.6 1.2c1.3.2 2.4.7 3.3 1.4 1 1 1.4 2.3 1.4 3.8 0 3.3-2.7 6-6 6z' fill='%23a020a0'/%3E%3C/svg%3E") center/contain no-repeat;
+  font-size: 0; /* hide emoji text */
+  filter: drop-shadow(0 0 4px rgba(160, 32, 160, 0.9))
+          drop-shadow(0 0 8px rgba(160, 32, 160, 0.5));
+  z-index: 4;
   animation: deathrattle-pulse 2s ease-in-out infinite;
 }
 
@@ -2982,8 +3001,13 @@
   position: absolute;
   top: -5px;
   left: -5px;
-  font-size: clamp(0.7rem, 1.3vw, 1rem);
-  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 1));
+  width: 18px;
+  height: 18px;
+  /* Shield with star */
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M12 2L4 10l2 10h12l2-10L12 2z' stroke='%23ffd700' stroke-width='2' stroke-linejoin='round' fill='none'/%3E%3Ccircle cx='12' cy='12' r='3' fill='%23ffd700'/%3E%3C/svg%3E") center/contain no-repeat;
+  font-size: 0;
+  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 1))
+          drop-shadow(0 0 8px rgba(255, 215, 0, 0.5));
   z-index: 4;
   animation: immune-glow 1.5s ease-in-out infinite;
 }
@@ -3009,10 +3033,15 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: clamp(1rem, 2vw, 1.5rem);
-  filter: drop-shadow(0 0 5px rgba(150, 150, 150, 0.9));
+  width: 20px;
+  height: 20px;
+  /* Silence slash circle */
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='9' fill='none' stroke='%23888888' stroke-width='2.5'/%3E%3Cline x1='5' y1='5' x2='19' y2='19' stroke='%23888888' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat;
+  font-size: 0;
+  filter: drop-shadow(0 0 4px rgba(150, 150, 150, 0.9))
+          drop-shadow(0 0 8px rgba(150, 150, 150, 0.5));
   z-index: 5;
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 /* 沉默随从灰色遮罩 */
