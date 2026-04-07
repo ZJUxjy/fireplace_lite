@@ -1102,6 +1102,24 @@
   justify-content: center;
   padding: clamp(0.3rem, 1vw, 0.8rem) clamp(0.5rem, 3vw, 2rem);
   gap: clamp(0.2rem, 0.5vw, 0.5rem);
+  position: relative;
+}
+
+.player-hand-area::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--zone-player-accent),
+    transparent
+  );
+  opacity: 0.3;
+  filter: blur(2px);
 }
 
 /* 卡牌 */
