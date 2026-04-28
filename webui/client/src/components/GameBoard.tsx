@@ -125,6 +125,8 @@ function formatLogEntry(log: LogEntry): string {
       return `${prefix} 😫 ${log.message}`;
     case 'card_burned':
       return `${prefix} 🔥 ${log.message}`;
+    case 'discard':
+      return `${prefix} 🗑️ ${log.message}`;
     default:
       return `${prefix} ${log.message}`;
   }
@@ -1123,6 +1125,9 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
                 )}
                 {minion.silenced && (
                   <div className="silenced-icon" title="沉默">🔇</div>
+                )}
+                {minion.enraged && (
+                  <div className="enrage-icon" title="激怒">😡</div>
                 )}
                 {minion.frozen && (
                   <div className="frozen-icon" title="冻结">❄️</div>
