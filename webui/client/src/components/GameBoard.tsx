@@ -121,6 +121,8 @@ function formatLogEntry(log: LogEntry): string {
       return `${prefix} 🔇 ${log.message}`;
     case 'auto_end_turn':
       return `${prefix} ⏰ ${log.message}`;
+    case 'fatigue':
+      return `${prefix} 😫 ${log.message}`;
     default:
       return `${prefix} ${log.message}`;
   }
@@ -296,6 +298,7 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
     side: 'player' | 'opponent';
   };
   const [revealedSecret, setRevealedSecret] = useState<SecretReveal | null>(null);
+  const [fatigueFlash, setFatigueFlash] = useState<{ side: 'player' | 'opponent'; damage: number } | null>(null);
   const secretQueueRef = useRef<SecretReveal[]>([]);
   const secretTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -371,6 +374,13 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
     gameService.onGameState(handleGameState);
     gameService.onError(handleError);
     gameService.onSecretTriggered(handleSecretTriggered);
+    gameService.onFatigueDamage((data) => {
+      setFatigueFlash({
+        side: data.fatigue.player === 'player' ? 'player' : 'opponent',
+        damage: data.fatigue.damage,
+      });
+      setTimeout(() => setFatigueFlash(null), 1500);
+    });
 
     return () => {
       if (secretTimerRef.current) clearTimeout(secretTimerRef.current);
@@ -1608,6 +1618,18 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
           <div className="secret-reveal-icon">🔮</div>
           <div className="secret-reveal-name">{revealedSecret.name}</div>
           <div className="secret-reveal-subtitle">奥秘触发</div>
+        </div>
+      )}
+
+      {fatigueFlash && (
+        <div
+          className={`fatigue-flash fatigue-flash-${fatigueFlash.side}`}
+          role="status"
+          aria-live="polite"
+        >
+          <div className="fatigue-flash-icon">😫</div>
+          <div className="fatigue-flash-damage">-{fatigueFlash.damage}</div>
+          <div className="fatigue-flash-subtitle">疲劳伤害</div>
         </div>
       )}
 

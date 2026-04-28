@@ -110,6 +110,7 @@ def run_ai_turn(game_id):
 
     # 检查奥秘触发
     emit_triggered_secrets(game_id, use_room=True)
+    emit_fatigue_events(game_id, use_room=True)
 
     print(f"[AI] Sending state, current_player in state: {state.get('current_player')}")
     if _socketio:
@@ -143,6 +144,20 @@ def emit_triggered_secrets(game_id, *, use_room=False):
         else:
             emit("secret_triggered", {"game_id": game_id, "secret": secret_info})
     return triggered
+
+
+def emit_fatigue_events(game_id, *, use_room=False):
+    """检测并广播疲劳伤害事件"""
+    events = manager.track_fatigue(game_id)
+    for evt in events:
+        manager.log_event(game_id, 'fatigue', evt['message'], evt)
+        payload = {'game_id': game_id, 'fatigue': evt}
+        if use_room:
+            if _socketio:
+                _socketio.emit('fatigue_damage', payload, room=game_id)
+        else:
+            emit('fatigue_damage', payload)
+    return events
 
 
 def schedule_timeout_check(game_id):
@@ -181,6 +196,7 @@ def schedule_timeout_check(game_id):
 
         state = manager.get_game_state(game_id)
         emit_triggered_secrets(game_id, use_room=True)
+        emit_fatigue_events(game_id, use_room=True)
 
         if _socketio:
             _socketio.emit('game_state', {'game_id': game_id, 'state': state}, room=game_id)
@@ -288,6 +304,7 @@ def register_socket_events(socketio):
 
             # 检查奥秘触发
             emit_triggered_secrets(game_id)
+            emit_fatigue_events(game_id)
 
             emit('game_state', {'game_id': game_id, 'state': state})
 
@@ -364,6 +381,7 @@ def register_socket_events(socketio):
 
                 # 检查奥秘触发
                 emit_triggered_secrets(game_id)
+                emit_fatigue_events(game_id)
 
                 emit('game_state', {'game_id': game_id, 'state': state})
 
@@ -439,6 +457,7 @@ def register_socket_events(socketio):
 
             # 检查奥秘触发
             emit_triggered_secrets(game_id)
+            emit_fatigue_events(game_id)
 
             emit('game_state', {'game_id': game_id, 'state': state})
 
@@ -521,6 +540,7 @@ def register_socket_events(socketio):
 
             # 检查奥秘触发
             emit_triggered_secrets(game_id)
+            emit_fatigue_events(game_id)
 
             emit('game_state', {'game_id': game_id, 'state': state})
 
