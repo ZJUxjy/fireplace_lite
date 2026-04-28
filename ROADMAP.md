@@ -54,53 +54,53 @@
 
 ---
 
-### Phase 3: 职业特色机制
+### Phase 3: 职业特色机制 ✅ 已完成
 **目标: 每个职业有独特玩法**
 
-#### 3.1 德鲁伊 (Druid)
-- [ ] 抉择 (Choose One) - 双效果选择
-- [ ] 法力加速 (Ramp) - 获得额外水晶
-- [ ] 变形 (Transform) - 英雄技能变化
+#### 3.1 德鲁伊 (Druid) ✅
+- [x] 抉择 (Choose One) - 双效果选择（引擎 ✅ + WebUI 抉择弹窗）
+- [x] 法力加速 (Ramp) - 获得额外水晶
+- [x] 变形 (Transform) - 随从变形（英雄牌变形见 Phase 4）
 
-#### 3.2 猎人 (Hunter)
-- [ ] 追踪术 (Tracking) - 发现牌库
-- [ ] 野兽协同 (Beast Synergy) - 野兽标签加成
-- [ ] 亡语猎体系
+#### 3.2 猎人 (Hunter) ✅
+- [x] 追踪术 (Tracking) - 发现牌库
+- [x] 野兽协同 (Beast Synergy) - 野兽标签加成
+- [x] 亡语猎体系
 
-#### 3.3 法师 (Mage)
-- [ ] 发现法术 (Spell Discovery)
-- [ ] 冻结控制体系
-- [ ] 火球/炎爆直伤体系
+#### 3.3 法师 (Mage) ✅
+- [x] 发现法术 (Spell Discovery)（引擎 ✅ + WebUI 发现面板）
+- [x] 冻结控制体系
+- [x] 火球/炎爆直伤体系
 
-#### 3.4 圣骑士 (Paladin)
-- [ ] 白银之手新兵 (Silver Hand Recruit)
-- [ ] 圣盾光环
-- [ ] 手牌buff (Hand Buff)
+#### 3.4 圣骑士 (Paladin) ✅
+- [x] 白银之手新兵 (Silver Hand Recruit)
+- [x] 圣盾光环
+- [x] 手牌buff (Hand Buff)
 
-#### 3.5 牧师 (Priest)
-- [ ] 偷牌 (Mind Vision/Thoughtsteal)
-- [ ] 治疗体系
-- [ ] 暗影形态 (Shadowform) - 改变英雄技能
+#### 3.5 牧师 (Priest) ✅
+- [x] 偷牌 (Mind Vision/Thoughtsteal)
+- [x] 治疗体系
+- [x] 暗影形态 (Shadowform) - 改变英雄技能
 
-#### 3.6 潜行者 (Rogue)
-- [ ] 连击 (Combo) - 已部分实现，需完善
-- [ ] 祈求 (Invoke Galakrond)
-- [ ] 发掘 (Excavate)
+#### 3.6 潜行者 (Rogue) ✅
+- [x] 连击 (Combo)（引擎 ✅ + WebUI 连击指示器 + 卡牌高亮）
+- [x] 祈求 (Invoke Galakrond)
+- [ ] 发掘 (Excavate) — 延迟实现（扩展包特殊机制）
 
-#### 3.7 萨满 (Shaman)
-- [ ] 图腾召唤 (Totemic Call)
-- [ ] 过载 (Overload) - 下回合锁定水晶
-- [ ] 进化 (Evolve)
+#### 3.7 萨满 (Shaman) ✅
+- [x] 图腾召唤 (Totemic Call)
+- [x] 过载 (Overload) - 下回合锁定水晶（引擎 ✅ + WebUI 过载显示）
+- [x] 进化 (Evolve)
 
-#### 3.8 术士 (Warlock)
-- [ ] 抽牌 (Life Tap)
-- [ ] 弃牌 (Discard) 体系
-- [ ] 恶魔协同
+#### 3.8 术士 (Warlock) ✅
+- [x] 抽牌 (Life Tap)
+- [x] 弃牌 (Discard) 体系（引擎 ✅ + WebUI 弃牌通知）
+- [x] 恶魔协同
 
-#### 3.9 战士 (Warrior)
-- [ ] 护甲堆积 (Armor Up)
-- [ ] 激怒 (Enrage) 体系
-- [ ] 冲锋 (Charge) 体系
+#### 3.9 战士 (Warrior) ✅
+- [x] 护甲堆积 (Armor Up)
+- [x] 激怒 (Enrage) 体系（引擎 ✅ + WebUI 😡 激怒图标）
+- [x] 冲锋 (Charge) 体系
 
 ---
 
