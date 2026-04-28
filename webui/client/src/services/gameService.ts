@@ -252,6 +252,10 @@ class GameService {
     socketService.on('secret_triggered', (data) => callback(data as { game_id: string; secret: { player: string; secret_name: string; card_id?: string } }));
   }
 
+  onFatigueDamage(callback: (data: { game_id: string; fatigue: { player: string; damage: number; counter: number; message: string } }) => void) {
+    socketService.on('fatigue_damage', callback);
+  }
+
   cleanup() {
     socketService.disconnect();
     this.gameId = null;

@@ -791,6 +791,28 @@ class GameManager:
 
         return triggered
 
+    def track_fatigue(self, game_id):
+        """检测疲劳伤害事件"""
+        if game_id not in self.games:
+            return []
+        g = self.games[game_id]
+        player = g["players"][0]
+        opponent = g["players"][1]
+        prev_p = g.get("prev_player_fatigue", 0)
+        prev_o = g.get("prev_opponent_fatigue", 0)
+        cur_p = getattr(player, 'fatigue_counter', 0)
+        cur_o = getattr(opponent, 'fatigue_counter', 0)
+        events = []
+        if cur_p > prev_p:
+            events.append({"player": "player", "damage": cur_p, "counter": cur_p,
+                           "message": f"疲劳！受到 {cur_p} 点伤害"})
+        if cur_o > prev_o:
+            events.append({"player": "opponent", "damage": cur_o, "counter": cur_o,
+                           "message": f"对手疲劳！受到 {cur_o} 点伤害"})
+        g["prev_player_fatigue"] = cur_p
+        g["prev_opponent_fatigue"] = cur_o
+        return events
+
     def get_target_by_id(self, game_id, target_id):
         """根据目标 ID 获取实际的游戏实体"""
         if game_id not in self.games:
