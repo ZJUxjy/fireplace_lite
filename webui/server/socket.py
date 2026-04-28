@@ -103,11 +103,7 @@ def run_ai_turn(game_id):
     state = manager.get_game_state(game_id)
 
     # 检查奥秘触发
-    triggered_secrets = manager.track_secrets(game_id)
-    for secret_info in triggered_secrets:
-        manager.log_event(game_id, 'secret_triggered', f'奥秘 "{secret_info["secret_name"]}" 被触发了！', secret_info)
-        if _socketio:
-            _socketio.emit('secret_triggered', {'game_id': game_id, 'secret': secret_info}, room=game_id)
+    emit_triggered_secrets(game_id, use_room=True)
 
     print(f"[AI] Sending state, current_player in state: {state.get('current_player')}")
     if _socketio:
@@ -115,6 +111,32 @@ def run_ai_turn(game_id):
         print(f"[AI] State emitted to room {game_id}")
     else:
         print(f"[AI] Warning: _socketio not initialized")
+
+
+def emit_triggered_secrets(game_id, *, use_room=False):
+    """检测并广播本次操作触发的奥秘。
+
+    use_room=True 用于 run_ai_turn 这类不在 socket handler 内的调用点（必须用 room 路由）；
+    其余 socket handler 内调用 emit() 即可（已有上下文）。
+    """
+    triggered = manager.track_secrets(game_id)
+    for secret_info in triggered:
+        manager.log_event(
+            game_id,
+            "secret_triggered",
+            f'奥秘 "{secret_info["secret_name"]}" 被触发了！',
+            secret_info,
+        )
+        if use_room:
+            if _socketio:
+                _socketio.emit(
+                    "secret_triggered",
+                    {"game_id": game_id, "secret": secret_info},
+                    room=game_id,
+                )
+        else:
+            emit("secret_triggered", {"game_id": game_id, "secret": secret_info})
+    return triggered
 
 
 def register_socket_events(socketio):
@@ -198,10 +220,7 @@ def register_socket_events(socketio):
             state = manager.get_game_state(game_id)
 
             # 检查奥秘触发
-            triggered_secrets = manager.track_secrets(game_id)
-            for secret_info in triggered_secrets:
-                manager.log_event(game_id, 'secret_triggered', f'奥秘 "{secret_info["secret_name"]}" 被触发了！', secret_info)
-                emit('secret_triggered', {'game_id': game_id, 'secret': secret_info})
+            emit_triggered_secrets(game_id)
 
             emit('game_state', {'game_id': game_id, 'state': state})
 
@@ -269,10 +288,7 @@ def register_socket_events(socketio):
                 state = manager.get_game_state(game_id)
 
                 # 检查奥秘触发
-                triggered_secrets = manager.track_secrets(game_id)
-                for secret_info in triggered_secrets:
-                    manager.log_event(game_id, 'secret_triggered', f'奥秘 "{secret_info["secret_name"]}" 被触发了！', secret_info)
-                    emit('secret_triggered', {'game_id': game_id, 'secret': secret_info})
+                emit_triggered_secrets(game_id)
 
                 emit('game_state', {'game_id': game_id, 'state': state})
 
@@ -347,10 +363,7 @@ def register_socket_events(socketio):
             state = manager.get_game_state(game_id)
 
             # 检查奥秘触发
-            triggered_secrets = manager.track_secrets(game_id)
-            for secret_info in triggered_secrets:
-                manager.log_event(game_id, 'secret_triggered', f'奥秘 "{secret_info["secret_name"]}" 被触发了！', secret_info)
-                emit('secret_triggered', {'game_id': game_id, 'secret': secret_info})
+            emit_triggered_secrets(game_id)
 
             emit('game_state', {'game_id': game_id, 'state': state})
 
@@ -432,10 +445,7 @@ def register_socket_events(socketio):
             state = manager.get_game_state(game_id)
 
             # 检查奥秘触发
-            triggered_secrets = manager.track_secrets(game_id)
-            for secret_info in triggered_secrets:
-                manager.log_event(game_id, 'secret_triggered', f'奥秘 "{secret_info["secret_name"]}" 被触发了！', secret_info)
-                emit('secret_triggered', {'game_id': game_id, 'secret': secret_info})
+            emit_triggered_secrets(game_id)
 
             emit('game_state', {'game_id': game_id, 'state': state})
 
