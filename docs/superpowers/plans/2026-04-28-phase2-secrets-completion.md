@@ -132,6 +132,10 @@ def test_all_roadmap_secrets_load_from_carddb():
         assert getattr(card.data, "secret", False), (
             f"{card_id} ({_name}) is not flagged as secret in CardDefs.xml"
         )
+        # Drop from hand so the next give() doesn't hit the 10-card hand limit
+        # (prepare_game starts the player with ~4 cards from mulligan; the loop
+        # adds 15 more, which would otherwise burn 9 cards and break give()).
+        card.destroy()
 ```
 
 - [ ] **Step 3: Run the test to verify it passes**
