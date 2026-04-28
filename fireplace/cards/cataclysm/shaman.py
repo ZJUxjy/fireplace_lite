@@ -19,9 +19,24 @@ class CATA_153:
         GameTag.WINDFURY: True,
     }
 
-    # 战吼：获取2个费用等于此随从攻击力的随从，费用变为(1)
-    # 简化实现：召唤2个费用为2的随机随从，费用变为1
-    play = Summon(CONTROLLER, RandomMinion(cost=2)) * 2
+    # 战吼：获取2个费用等于此随从攻击力的随机随从，费用变为(1)
+    def play(self):
+        cost = self.atk
+        return [
+            Give(CONTROLLER, RandomMinion(cost=cost)).then(Buff(Give.CARD, "CATA_153_cost1e")),
+            Give(CONTROLLER, RandomMinion(cost=cost)).then(Buff(Give.CARD, "CATA_153_cost1e")),
+        ]
+
+
+@custom_card
+class CATA_153_cost1e:
+    """Al'Akir Wind Cost"""
+
+    tags = {
+        GameTag.CARDNAME: "Al'Akir Wind Cost",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
+    cost = SET(1)
 
 
 # CATA_153e: 火花之怒 (buff)
@@ -49,24 +64,14 @@ class CATA_153t1:
     play = Buff(ADJACENT, "CATA_153e1")
 
 
-CATA_153e1 = buff(+3, 0)
-
-
-# CATA_497: 奥卓克希昂 (6费 6/7)
-# 战吼：兆示
-class CATA_497:
-    """Ultraxion"""
-
+@custom_card
+class CATA_153e1:
     tags = {
-        GameTag.CARD_SET: 1980,
-        GameTag.COST: 6,
-        GameTag.ATK: 6,
-        GameTag.HEALTH: 7,
-        GameTag.RARITY: 5,
+        GameTag.CARDNAME: "Charged Hand Buff",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 3,
     }
 
-    # 简化实现：战吼，造成3点伤害
-    play = Hit(RANDOM(ENEMY_CHARACTERS), 3)
 
 
 # CATA_561: 能量仪式 (2费 法术)
@@ -140,11 +145,14 @@ class CATA_564:
         GameTag.RARITY: 1,
     }
 
-    # 简化实现：战吼，使一个友方随从获得+2/+2
-    play = Buff(TARGET, "CATA_564e")
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_FRIENDLY_TARGET: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
 
-
-CATA_564e = buff(+2, +2)
+    # 战吼：给目标随从超级风怒
+    play = SetTags(TARGET, {GameTag.MEGA_WINDFURY: True})
 
 
 # CATA_565: 天空之墙哨兵 (2费 0/3)
@@ -245,26 +253,12 @@ class CATA_570:
         GameTag.RARITY: 5,
     }
 
-    # 简化实现：战吼，抽1张牌
-    play = Draw(CONTROLLER)
+    # 战吼：抽1张牌并减少其费用(10)
+    play = Draw(CONTROLLER).then(Buff(Draw.CARD, "CATA_570e"))
 
 
-# CATA_722: 末世特使 (5费 5/4)
-# 嘲讽，战吼：兆示
-class CATA_722:
-    """Envoy of the End"""
+CATA_570e = buff(cost=-10)
 
-    tags = {
-        GameTag.CARD_SET: 1980,
-        GameTag.COST: 5,
-        GameTag.ATK: 5,
-        GameTag.HEALTH: 4,
-        GameTag.TAUNT: True,
-        GameTag.RARITY: 1,
-    }
-
-    # 简化实现：战吼，造成3点伤害
-    play = Hit(RANDOM(ENEMY_CHARACTERS), 3)
 
 
 # CATA_724: 缚风者 (4费 7/7)
@@ -281,25 +275,7 @@ class CATA_724:
         GameTag.RARITY: 1,
     }
 
-    # 简化实现：亡语，使你的英雄获得+3攻击力
-    deathrattle = Buff(FRIENDLY_HERO, "CATA_724e")
+    # 亡语：解锁你被过载的水晶
+    deathrattle = UnlockOverload(CONTROLLER)
 
 
-CATA_724e = buff(+3, 0)
-
-
-# CATA_190h: 灭世者死亡之翼 (10费 0/30 英雄)
-# 战吼：选择一种裂变来释放
-class CATA_190h:
-    """Deathwing, Worldbreaker"""
-
-    tags = {
-        GameTag.CARD_SET: 1980,
-        GameTag.COST: 10,
-        GameTag.ATK: 0,
-        GameTag.HEALTH: 30,
-        GameTag.RARITY: 5,
-    }
-
-    # 简化实现：战吼，对所有其他随从造成5点伤害，使你的英雄获得5点护甲
-    play = Hit(ALL_MINIONS - SELF, 5), GainArmor(FRIENDLY_HERO, 5)

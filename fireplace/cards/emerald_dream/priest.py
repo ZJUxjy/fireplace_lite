@@ -1,0 +1,153 @@
+# Priest cards from EMERALD_DREAM expansion
+from ..utils import *
+
+
+##
+# Minions
+
+
+class EDR_449:
+    """Lunarwing Messenger"""
+
+    deathrattle = CastSpell("EDR_449e")
+
+
+class EDR_449e:
+    """Fleeting Magic"""
+
+    play = Bounce(ALL_MINIONS)
+
+
+class EDR_449p:
+    """Blessing of the Moon"""
+
+    play = Buff(RANDOM_FRIENDLY_MINION, "EDR_449e")
+
+
+class EDR_460:
+    """Wish of the New Moon"""
+
+    play = Summon(CONTROLLER, "EDR_460t")
+
+
+class EDR_460t:
+    """Wish of the Full Moon"""
+
+    lifesteal = True
+    deathrattle = Draw(CONTROLLER)
+
+
+class EDR_461:
+    """Ritual of the New Moon"""
+
+    play = Summon(CONTROLLER, "EDR_461t")
+
+
+class EDR_461t:
+    """Ritual of the Full Moon"""
+
+    deathrattle = Summon(CONTROLLER, RandomMinion(cost=6)) * 2
+
+
+class EDR_462:
+    """Selenic Drake"""
+
+    elusive = True
+    events = OWN_TURN_END.on(Give(CONTROLLER, RandomDragon()))
+
+
+class EDR_463:
+    """Twilight Influence"""
+
+    play = Choice(CONTROLLER, ["EDR_463a", "EDR_463b"]).then(Battlecry(Choice.CARD, None))
+
+
+class EDR_463a:
+    """Constricting Thorns"""
+
+    play = Damage(ENEMY_MINIONS, 2)
+
+
+class EDR_463b:
+    """Controlling Vines"""
+
+    play = Freeze(ENEMY_MINIONS)
+
+
+class EDR_464:
+    """Tyrande"""
+
+    play = Buff(FRIENDLY_MINIONS, "EDR_464e2")
+
+
+class EDR_464e2:
+    """Pull of the Moon"""
+
+    events = OWN_TURN_END.on(Heal(FRIENDLY_HERO, 2))
+
+
+class EDR_472:
+    """Weaver of the Cycle"""
+
+    events = Draw(CONTROLLER).on(Buff(SELF, "CS2_101e"))
+
+
+class EDR_970:
+    """Kaldorei Priestess"""
+
+    battlecry = Damage(TARGET, 1)
+
+
+class EDR_970e:
+    """Pacified"""
+
+    pass
+
+
+class EDR_895:
+    """Aviana, Elune's Chosen"""
+
+    play = Buff(FRIENDLY_MINIONS, "EDR_895e")
+
+
+class EDR_895e:
+    """Full Moon"""
+
+    tags = {GameTag.ATK: 2, GameTag.HEALTH: 2}
+
+
+class EDR_895t:
+    """Moon Cycle"""
+
+    pass
+
+
+class FIR_777:
+    """Spirit of the Kaldorei"""
+
+    taunt = True
+    lifesteal = True
+
+
+class FIR_916:
+    """Smoldering Ascent"""
+
+    play = Damage(ENEMY_MINIONS, 1)
+
+
+class FIR_918:
+    """Light of the New Moon"""
+
+    play = Summon(CONTROLLER, "FIR_918t")
+
+
+class EDR_476:
+    """Moonwell"""
+
+    play = Damage(ENEMY_MINIONS + ENEMY_HERO, 4), Heal(FRIENDLY_HERO, 4)
+
+
+class FIR_918t:
+    """Light of the Full Moon"""
+
+    deathrattle = Heal(FRIENDLY_HERO, 3)
