@@ -1,8 +1,8 @@
-"""WebUI-layer integration tests for the secret system.
+"""Audit + integration tests for the WebUI secret system.
 
-These tests exercise webui.server.game.GameManager.track_secrets() against
-real engine games, confirming each ROADMAP-listed secret can be played and
-its trigger is detected by the WebUI's diff-based tracker.
+This module starts with a sanity check that every ROADMAP-listed secret loads
+from the CardDefs DB. Later tasks add parametrized tests that exercise
+webui.server.game.GameManager.track_secrets() with simulated triggers.
 """
 import pytest
 from hearthstone.enums import CardClass
