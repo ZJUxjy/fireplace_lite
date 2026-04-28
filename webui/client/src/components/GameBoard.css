@@ -2760,6 +2760,27 @@
   opacity: 1;
 }
 
+/* Charge glow indicator */
+.minion.has-charge .minion-body {
+  box-shadow:
+    0 0 8px rgba(76, 175, 80, 0.6),
+    inset 0 0 6px rgba(76, 175, 80, 0.3);
+  animation: charge-pulse 1.8s ease-in-out infinite;
+}
+.charge-icon {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  font-size: 14px;
+  line-height: 1;
+  filter: drop-shadow(0 0 4px rgba(255, 235, 59, 0.8));
+  z-index: 5;
+}
+@keyframes charge-pulse {
+  0%, 100% { box-shadow: 0 0 6px rgba(76, 175, 80, 0.5), inset 0 0 4px rgba(76, 175, 80, 0.2); }
+  50% { box-shadow: 0 0 14px rgba(76, 175, 80, 0.8), inset 0 0 8px rgba(76, 175, 80, 0.4); }
+}
+
 /* 免疫图标 */
 .immune-icon {
   position: absolute;
