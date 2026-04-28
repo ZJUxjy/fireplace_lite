@@ -185,16 +185,23 @@ def test_track_secrets_handles_two_same_name_secrets():
 
     Old impl keyed prev_secrets by str(secret) which collapses duplicates,
     so when one fires the diff sees zero deletions.
+
+    We bypass the engine's "no duplicate secrets" uniqueness check by directly
+    appending to player.secrets — the purpose here is purely to exercise the
+    track_secrets() diff logic, not the engine trigger plumbing.
     """
     from webui.server.game import manager
 
     game = prepare_game(CardClass.MAGE, CardClass.MAGE)
     game_id = _register_managed_game(game, "dup-secret-test")
     try:
-        s1 = game.player1.give("EX1_294")  # Mirror Entity
-        s2 = game.player1.give("EX1_294")  # Mirror Entity (second copy)
-        s1.play()
-        s2.play()
+        s1 = game.player1.give("EX1_294")  # Mirror Entity (entity_id assigned at give())
+        s2 = game.player1.give("EX1_294")  # Mirror Entity (second copy, distinct entity_id)
+        # Directly inject both into the secrets zone, bypassing the engine's
+        # is_summonable() "only one of each secret" guard. This lets us test
+        # track_secrets() in isolation without wiring up trigger plumbing.
+        game.player1.secrets.append(s1)
+        game.player1.secrets.append(s2)
         assert len(game.player1.secrets) == 2
 
         # Initialize tracker baseline
