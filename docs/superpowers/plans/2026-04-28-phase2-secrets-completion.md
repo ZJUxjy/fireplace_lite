@@ -4,7 +4,7 @@
 
 **Goal:** Close the gap between fireplace's already-implemented engine-level secret cards and the WebUI's secret-handling layer — fix a duplicate-name detection bug, eliminate four-way DRY violation in socket emit code, prove every ROADMAP-listed secret triggers correctly through the WebUI manager, add deterministic trigger-order coverage, and reveal a fired opponent secret's name briefly to the player.
 
-**Architecture:** All 14 ROADMAP-listed secrets are already implemented in `fireplace/cards/classic/{mage,hunter,paladin,rogue}.py` and one in `fireplace/cards/icecrown/mage.py`. This plan does NOT add card scripts. Work splits into three layers:
+**Architecture:** All 15 ROADMAP-listed secrets are already implemented in `fireplace/cards/classic/{mage,hunter,paladin,rogue}.py` and one in `fireplace/cards/icecrown/mage.py`. This plan does NOT add card scripts. Work splits into three layers:
 1. **WebUI server (`webui/server/game.py`, `socket.py`)**: refactor `track_secrets` to key diffs by stable `entity_id` instead of `str(secret)` (handles duplicates), centralize the four duplicated emit blocks into a single helper.
 2. **Tests (`tests/test_webui_secrets.py` — new)**: register games into `manager.games` directly, parametrize one test per ROADMAP secret, plus one trigger-order test. Uses existing `prepare_game()` from `tests/utils.py`.
 3. **WebUI client (`webui/client/src/components/GameBoard.tsx`, `GameBoard.css`)**: when a `secret_triggered` event arrives, render a brief "secret reveal" flash card that shows the fired secret's name, fading after ~1.6s.
@@ -18,7 +18,7 @@
 ## Current State Summary
 
 ### Already Implemented
-- All 14 ROADMAP secrets exist as engine card scripts (verified via grep on card IDs).
+- All 15 ROADMAP secrets exist as engine card scripts (verified via grep on card IDs).
 - WebUI `game.py` exposes per-player `secrets` (revealed name+text for self), `secret_count`, `max_secrets`.
 - WebUI `track_secrets()` diffs prev vs current secret lists each tick.
 - WebUI `socket.py` emits `secret_triggered` event in 4 places (after AI turn, after end_turn, after play_card, after attack, after hero_power).
@@ -29,7 +29,7 @@
 |---|---|
 | `track_secrets` keys by `str(secret)` — duplicate-name secrets collapse | Key by `entity_id`, return secret name+id in payload |
 | Same 6-line emit block duplicated 4× in socket.py | Extract `emit_triggered_secrets(game_id)` helper |
-| Zero WebUI-layer tests for any secret | New `tests/test_webui_secrets.py`: 14 parametrized cases + order test |
+| Zero WebUI-layer tests for any secret | New `tests/test_webui_secrets.py`: 15 parametrized cases + order test |
 | ROADMAP §2.3 trigger priority untested | Dedicated test: 2 secrets armed, single triggering action, verify both detected in deterministic order |
 | Reveal UX: only blinks zone, no name shown | Client renders flash card with secret name on `secret_triggered` event |
 

@@ -285,12 +285,27 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
     source: string;
   } | null>(null);
 
-  // 奥秘揭示闪烁卡状态
-  const [revealedSecret, setRevealedSecret] = useState<{
+  // 奥秘揭示队列：多个奥秘同一 tick 触发时逐个展示，而非覆盖
+  type SecretReveal = {
     name: string;
     cardId?: string;
     side: 'player' | 'opponent';
-  } | null>(null);
+  };
+  const [revealedSecret, setRevealedSecret] = useState<SecretReveal | null>(null);
+  const secretQueueRef = useRef<SecretReveal[]>([]);
+  const secretTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const showNextSecret = (item: SecretReveal) => {
+    setRevealedSecret(item);
+    secretTimerRef.current = setTimeout(() => {
+      if (secretQueueRef.current.length > 0) {
+        showNextSecret(secretQueueRef.current.shift()!);
+      } else {
+        setRevealedSecret(null);
+        secretTimerRef.current = null;
+      }
+    }, 1600);
+  };
 
   const isMyTurn = gameState?.current_player === 'player1';
 
@@ -333,13 +348,17 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
           setTimeout(() => card.classList.remove('secret-triggering'), 800);
         });
       }
-      // 揭示卡名（短暂悬浮卡片）
-      setRevealedSecret({
+      // 揭示卡名（队列逐个展示）
+      const item: SecretReveal = {
         name: data.secret.secret_name,
         cardId: data.secret.card_id,
         side: data.secret.player === 'player' ? 'player' : 'opponent',
-      });
-      window.setTimeout(() => setRevealedSecret(null), 1600);
+      };
+      if (revealedSecret || secretTimerRef.current) {
+        secretQueueRef.current.push(item);
+      } else {
+        showNextSecret(item);
+      }
       // 日志
       setActionLog(prev => [`🔮 奥秘 "${data.secret.secret_name}" 被触发了！`, ...prev.slice(0, 30)]);
     };
@@ -350,6 +369,8 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
     gameService.onSecretTriggered(handleSecretTriggered);
 
     return () => {
+      if (secretTimerRef.current) clearTimeout(secretTimerRef.current);
+      secretQueueRef.current = [];
       gameService.cleanup();
     };
   }, [mode]);
