@@ -269,7 +269,15 @@ def register_socket_events(socketio):
                 # 检查是否为奥秘
                 is_secret = hasattr(card, 'data') and hasattr(card.data, 'secret') and card.data.secret
 
+                opponent = player.opponent
+                silenced_before = {id(m): getattr(m, 'silenced', False) for m in list(player.field) + list(opponent.field)}
+
                 card.play(target=target, choose=choose)
+
+                # 检测沉默事件
+                for m in list(player.field) + list(opponent.field):
+                    if not silenced_before.get(id(m), False) and getattr(m, 'silenced', False):
+                        manager.log_event(game_id, 'silence', f'{m} 被沉默了', {'minion': str(m), 'card_id': getattr(m, 'id', None)})
 
                 # 记录战吼效果（如果有）
                 if hasattr(card, 'has_battlecry') and card.has_battlecry:
