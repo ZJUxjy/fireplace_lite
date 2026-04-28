@@ -42,6 +42,7 @@ export type MinionData = {
   turns_in_play?: number;
   immune?: boolean;
   silenced?: boolean;
+  enraged?: boolean;
   text?: string;
   race?: string;
   mechanics?: string[];
