@@ -285,6 +285,13 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
     source: string;
   } | null>(null);
 
+  // 奥秘揭示闪烁卡状态
+  const [revealedSecret, setRevealedSecret] = useState<{
+    name: string;
+    cardId?: string;
+    side: 'player' | 'opponent';
+  } | null>(null);
+
   const isMyTurn = gameState?.current_player === 'player1';
 
   useEffect(() => {
@@ -316,8 +323,8 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
       setActionLog(prev => [`Error: ${data.message}`, ...prev.slice(0, 20)]);
     };
 
-    const handleSecretTriggered = (data: { game_id: string; secret: { player: string; secret_name: string; card_id?: string } }) => {
-      // 显示奥秘触发动画
+    const handleSecretTriggered = (data: { game_id: string; secret: { player: string; secret_name: string; card_id?: string; entity_id?: number } }) => {
+      // 区域高亮动画
       const secretZone = document.querySelector(data.secret.player === 'player' ? '.player-secret-zone' : '.opponent-secret-zone');
       if (secretZone) {
         const secretCards = secretZone.querySelectorAll('.secret-card');
@@ -326,7 +333,14 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
           setTimeout(() => card.classList.remove('secret-triggering'), 800);
         });
       }
-      // 添加到日志
+      // 揭示卡名（短暂悬浮卡片）
+      setRevealedSecret({
+        name: data.secret.secret_name,
+        cardId: data.secret.card_id,
+        side: data.secret.player === 'player' ? 'player' : 'opponent',
+      });
+      window.setTimeout(() => setRevealedSecret(null), 1600);
+      // 日志
       setActionLog(prev => [`🔮 奥秘 "${data.secret.secret_name}" 被触发了！`, ...prev.slice(0, 30)]);
     };
 
@@ -1555,6 +1569,18 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
               取消
             </button>
           </div>
+        </div>
+      )}
+
+      {revealedSecret && (
+        <div
+          className={`secret-reveal-flash secret-reveal-${revealedSecret.side}`}
+          role="status"
+          aria-live="polite"
+        >
+          <div className="secret-reveal-icon">🔮</div>
+          <div className="secret-reveal-name">{revealedSecret.name}</div>
+          <div className="secret-reveal-subtitle">奥秘触发</div>
         </div>
       )}
 
