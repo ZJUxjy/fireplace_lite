@@ -18,6 +18,8 @@ def run_ai_turn(game_id):
         print(f"[AI] Game {game_id} not found")
         return
 
+    hand_snap = take_hand_snapshot(game_id)
+
     g = manager.games[game_id]
     game = g["game"]
     ai_player = g["players"][1]  # AI 是第二个玩家
@@ -112,6 +114,12 @@ def run_ai_turn(game_id):
     emit_triggered_secrets(game_id, use_room=True)
     emit_fatigue_events(game_id, use_room=True)
 
+    # 检测烧牌
+    for burn in check_overdraw(game_id, hand_snap):
+        manager.log_event(game_id, 'card_burned', burn['message'], burn)
+        if _socketio:
+            _socketio.emit('card_burned', {'game_id': game_id, 'burn': burn}, room=game_id)
+
     print(f"[AI] Sending state, current_player in state: {state.get('current_player')}")
     if _socketio:
         _socketio.emit('game_state', {'game_id': game_id, 'state': state}, room=game_id)
@@ -160,6 +168,31 @@ def emit_fatigue_events(game_id, *, use_room=False):
     return events
 
 
+def take_hand_snapshot(game_id):
+    """拍摄手牌/牌库快照，用于检测烧牌"""
+    if game_id not in manager.games:
+        return None
+    g = manager.games[game_id]
+    p = g["players"][0]
+    return {"hand": len(p.hand), "deck": len(p.deck), "max_hand": p.max_hand_size}
+
+
+def check_overdraw(game_id, snapshot):
+    """对比快照检测烧牌事件"""
+    if not snapshot or game_id not in manager.games:
+        return []
+    g = manager.games[game_id]
+    p = g["players"][0]
+    cur_deck = len(p.deck)
+    cur_hand = len(p.hand)
+    burned = []
+    if snapshot["deck"] > cur_deck and cur_hand >= snapshot["max_hand"]:
+        deck_diff = snapshot["deck"] - cur_deck
+        for _ in range(deck_diff):
+            burned.append({"player": "player", "message": "手牌已满，一张牌被烧毁了！"})
+    return burned
+
+
 def schedule_timeout_check(game_id):
     """启动后台线程，在回合超时后自动结束回合"""
     if game_id not in manager.games:
@@ -191,12 +224,20 @@ def schedule_timeout_check(game_id):
             return
 
         manager.log_event(game_id, 'auto_end_turn', '回合超时，自动结束回合', {'turn': game.turn})
+
+        hand_snap = take_hand_snapshot(game_id)
         game.end_turn()
         manager.on_turn_start(game_id)
 
         state = manager.get_game_state(game_id)
         emit_triggered_secrets(game_id, use_room=True)
         emit_fatigue_events(game_id, use_room=True)
+
+        # 检测烧牌
+        for burn in check_overdraw(game_id, hand_snap):
+            manager.log_event(game_id, 'card_burned', burn['message'], burn)
+            if _socketio:
+                _socketio.emit('card_burned', {'game_id': game_id, 'burn': burn}, room=game_id)
 
         if _socketio:
             _socketio.emit('game_state', {'game_id': game_id, 'state': state}, room=game_id)
@@ -280,6 +321,7 @@ def register_socket_events(socketio):
                 'turn': game.turn
             })
 
+            hand_snap = take_hand_snapshot(game_id)
             game.end_turn()
             print(f"[Server] Player ended turn, now is {game.current_player}")
 
@@ -305,6 +347,11 @@ def register_socket_events(socketio):
             # 检查奥秘触发
             emit_triggered_secrets(game_id)
             emit_fatigue_events(game_id)
+
+            # 检测烧牌
+            for burn in check_overdraw(game_id, hand_snap):
+                manager.log_event(game_id, 'card_burned', burn['message'], burn)
+                emit('card_burned', {'game_id': game_id, 'burn': burn})
 
             emit('game_state', {'game_id': game_id, 'state': state})
 
@@ -356,6 +403,7 @@ def register_socket_events(socketio):
                 opponent = player.opponent
                 silenced_before = {id(m): getattr(m, 'silenced', False) for m in list(player.field) + list(opponent.field)}
 
+                hand_snap = take_hand_snapshot(game_id)
                 card.play(target=target, choose=choose)
 
                 # 检测沉默事件
@@ -382,6 +430,11 @@ def register_socket_events(socketio):
                 # 检查奥秘触发
                 emit_triggered_secrets(game_id)
                 emit_fatigue_events(game_id)
+
+                # 检测烧牌
+                for burn in check_overdraw(game_id, hand_snap):
+                    manager.log_event(game_id, 'card_burned', burn['message'], burn)
+                    emit('card_burned', {'game_id': game_id, 'burn': burn})
 
                 emit('game_state', {'game_id': game_id, 'state': state})
 
