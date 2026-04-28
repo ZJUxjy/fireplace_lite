@@ -102,3 +102,50 @@ def test_track_secrets_handles_two_same_name_secrets():
         assert triggered[0]["entity_id"] == s1.entity_id
     finally:
         manager.games.pop(game_id, None)
+
+
+def _arm_and_simulate_trigger(game, card_id):
+    """Play `card_id` as a secret on player1.
+
+    We test the WebUI tracker, NOT every secret's trigger condition
+    (which is covered exhaustively by tests/test_secrets.py at the engine level).
+    """
+    secret = game.player1.give(card_id)
+    secret.play()
+    assert secret in game.player1.secrets, f"{card_id} did not enter secrets zone"
+    return secret
+
+
+def _fire(secret):
+    """Simulate the engine removing a fired secret from the secrets CardList."""
+    secret.controller.secrets.remove(secret)
+
+
+@pytest.mark.parametrize("card_id,name", ROADMAP_SECRETS)
+def test_secret_fires_through_webui_tracker(card_id, name):
+    """Every ROADMAP secret, when removed from the secrets zone, surfaces as a
+    triggered event with the correct entity_id and card_id from track_secrets.
+    """
+    from webui.server.game import manager
+
+    # Pick a class that can play this secret. EX1_* mage secrets need MAGE etc.
+    # All hunter/paladin/mage/rogue secrets play fine via give() + play() regardless
+    # of class because give() bypasses class restrictions; but Mulligan needs both
+    # players to have a valid class. MAGE works for everything.
+    game = prepare_game(CardClass.MAGE, CardClass.MAGE)
+    game_id = _register_managed_game(game, f"sec-{card_id}")
+    try:
+        secret = _arm_and_simulate_trigger(game, card_id)
+        manager.track_secrets(game_id)  # baseline
+
+        _fire(secret)
+        triggered = manager.track_secrets(game_id)
+
+        assert len(triggered) == 1, f"{card_id}: expected 1 trigger, got {triggered}"
+        t = triggered[0]
+        assert t["player"] == "player"
+        assert t["card_id"] == card_id
+        assert t["entity_id"] == secret.entity_id
+        assert t["secret_name"], f"{card_id}: secret_name should be non-empty"
+    finally:
+        manager.games.pop(game_id, None)
