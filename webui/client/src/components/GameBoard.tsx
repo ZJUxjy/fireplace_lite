@@ -117,6 +117,8 @@ function formatLogEntry(log: LogEntry): string {
       return `${prefix} 🤫 ${log.message}`;
     case 'secret_triggered':
       return `${prefix} 💥 ${log.message}`;
+    case 'silence':
+      return `${prefix} 🔇 ${log.message}`;
     default:
       return `${prefix} ${log.message}`;
   }
@@ -1074,7 +1076,7 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
               <div
                 key={i}
                 data-index={i}
-                className={`minion ${minion.taunt ? 'taunt' : ''} ${minion.divine_shield ? 'divine-shield' : ''} ${minion.stealth ? 'stealth' : ''} ${minion.windfury ? 'windfury' : ''} ${minion.frozen ? 'frozen' : ''} ${(validAttackTargets.minions.includes(i) || validWeaponTargets.minions.includes(i) || heroPowerValidTargets.minions.includes(i)) ? 'valid-target' : ''}`}
+                className={`minion ${minion.taunt ? 'taunt' : ''} ${minion.divine_shield ? 'divine-shield' : ''} ${minion.stealth ? 'stealth' : ''} ${minion.windfury ? 'windfury' : ''} ${minion.frozen ? 'frozen' : ''} ${minion.charge ? 'has-charge' : ''} ${(validAttackTargets.minions.includes(i) || validWeaponTargets.minions.includes(i) || heroPowerValidTargets.minions.includes(i)) ? 'valid-target' : ''}`}
                 onMouseEnter={(e) => setHoveredMinion({ minion, x: e.clientX, y: e.clientY })}
                 onMouseLeave={() => setHoveredMinion(null)}
                 onMouseMove={(e) => hoveredMinion && setHoveredMinion({ minion, x: e.clientX, y: e.clientY })}
@@ -1151,7 +1153,7 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
               <div
                 key={i}
                 data-index={i}
-                className={`minion ${minion.can_attack && isMyTurn ? 'can-attack' : ''} ${minion.rush && minion.turns_in_play === 0 && minion.can_attack && isMyTurn ? 'rush-limited' : ''} ${minion.taunt ? 'taunt' : ''} ${minion.divine_shield ? 'divine-shield' : ''} ${minion.stealth ? 'stealth' : ''} ${minion.windfury ? 'windfury' : ''} ${minion.frozen ? 'frozen' : ''}`}
+                className={`minion ${minion.can_attack && isMyTurn ? 'can-attack' : ''} ${minion.rush && minion.turns_in_play === 0 && minion.can_attack && isMyTurn ? 'rush-limited' : ''} ${minion.taunt ? 'taunt' : ''} ${minion.divine_shield ? 'divine-shield' : ''} ${minion.stealth ? 'stealth' : ''} ${minion.windfury ? 'windfury' : ''} ${minion.frozen ? 'frozen' : ''} ${minion.charge ? 'has-charge' : ''}`}
                 onMouseDown={(e) => handleAttackMouseDown(e, i)}
                 onMouseEnter={(e) => setHoveredMinion({ minion, x: e.clientX, y: e.clientY })}
                 onMouseLeave={() => setHoveredMinion(null)}
