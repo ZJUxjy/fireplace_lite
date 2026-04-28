@@ -1103,6 +1103,7 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
                 {minion.poisonous && (
                   <div className="poisonous-icon" title="剧毒">🐍</div>
                 )}
+                {minion.charge && (<div className="charge-icon" title="冲锋">⚡</div>)}
                 {minion.immune && (
                   <div className="immune-icon" title="免疫">🛡️</div>
                 )}
@@ -1181,6 +1182,7 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
                 {minion.poisonous && (
                   <div className="poisonous-icon" title="剧毒">🐍</div>
                 )}
+                {minion.charge && (<div className="charge-icon" title="冲锋">⚡</div>)}
                 {minion.immune && (
                   <div className="immune-icon" title="免疫">🛡️</div>
                 )}
