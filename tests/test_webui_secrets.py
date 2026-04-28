@@ -149,3 +149,64 @@ def test_secret_fires_through_webui_tracker(card_id, name):
         assert t["secret_name"], f"{card_id}: secret_name should be non-empty"
     finally:
         manager.games.pop(game_id, None)
+
+
+def test_track_secrets_returns_player_secrets_before_opponent():
+    """ROADMAP §2.3: when secrets fire on both sides in the same tick,
+    track_secrets must surface them in deterministic order (player first,
+    then opponent), so the client renders reveal flashes left-to-right
+    in a stable sequence.
+    """
+    from webui.server.game import manager
+
+    game = prepare_game(CardClass.MAGE, CardClass.MAGE)
+    game_id = _register_managed_game(game, "order-test")
+    try:
+        my_secret = game.player1.give("EX1_289")  # Ice Barrier
+        opp_secret = game.player2.give("EX1_295")  # Ice Block
+        my_secret.play()
+        game.end_turn()
+        opp_secret.play()
+        game.end_turn()
+
+        manager.track_secrets(game_id)  # baseline
+
+        # Fire both in same tick
+        _fire(my_secret)
+        _fire(opp_secret)
+
+        triggered = manager.track_secrets(game_id)
+        assert len(triggered) == 2
+        # Player's own secrets are reported first; opponent's after.
+        assert triggered[0]["player"] == "player"
+        assert triggered[1]["player"] == "opponent"
+
+    finally:
+        manager.games.pop(game_id, None)
+
+
+def test_track_secrets_preserves_arming_order_within_one_side():
+    """When two secrets on the same side fire on the same tick, the order
+    should match the order they were armed (FIFO over the secrets list)."""
+    from webui.server.game import manager
+
+    game = prepare_game(CardClass.MAGE, CardClass.MAGE)
+    game_id = _register_managed_game(game, "order-fifo-test")
+    try:
+        first = game.player1.give("EX1_287")  # Counterspell
+        second = game.player1.give("EX1_289")  # Ice Barrier
+        first.play()
+        second.play()
+
+        manager.track_secrets(game_id)  # baseline
+
+        _fire(first)
+        _fire(second)
+
+        triggered = manager.track_secrets(game_id)
+        names = [t["entity_id"] for t in triggered]
+        assert names == [first.entity_id, second.entity_id], (
+            f"expected FIFO order, got {names}"
+        )
+    finally:
+        manager.games.pop(game_id, None)
