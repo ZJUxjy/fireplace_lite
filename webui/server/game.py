@@ -517,6 +517,8 @@ class GameManager:
         data["immune"] = getattr(minion, 'immune', False)
         # 沉默
         data["silenced"] = getattr(minion, 'silenced', False)
+        # 激怒
+        data["enraged"] = getattr(minion, 'enraged', False)
         # 卡牌描述
         if text:
             data["text"] = text
@@ -696,6 +698,8 @@ class GameManager:
                 "mana": opponent.mana,
                 "max_mana": opponent.max_mana,
                 "spell_power": getattr(opponent, 'spellpower', 0),
+                "overload_locked": getattr(opponent, 'overload_locked', 0),
+                "overloaded": getattr(opponent, 'overloaded', 0),
                 "deck": len(opponent.deck),
                 "hand_count": len(opponent.hand),
                 "fatigue_counter": getattr(opponent, 'fatigue_counter', 0),
