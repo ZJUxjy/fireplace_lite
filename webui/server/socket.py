@@ -193,6 +193,35 @@ def check_overdraw(game_id, snapshot):
     return burned
 
 
+def take_hand_cards_snapshot(game_id):
+    """快照手牌卡牌，用于检测弃牌"""
+    if game_id not in manager.games:
+        return None
+    g = manager.games[game_id]
+    p = g["players"][0]
+    return [(id(c), str(c), getattr(c, 'id', None)) for c in p.hand]
+
+
+def check_discard(game_id, snapshot):
+    """对比快照检测弃牌事件（术士弃牌机制）"""
+    if not snapshot or game_id not in manager.games:
+        return []
+    g = manager.games[game_id]
+    p = g["players"][0]
+    current_ids = {id(c) for c in p.hand}
+    discarded = []
+    for obj_id, card_name, card_data_id in snapshot:
+        if obj_id not in current_ids:
+            discarded.append({
+                "_obj_id": obj_id,
+                "player": "player",
+                "card_name": card_name,
+                "card_id": card_data_id,
+                "message": f"弃置了 {card_name}",
+            })
+    return discarded
+
+
 def schedule_timeout_check(game_id):
     """启动后台线程，在回合超时后自动结束回合"""
     if game_id not in manager.games:
@@ -404,6 +433,8 @@ def register_socket_events(socketio):
                 silenced_before = {id(m): getattr(m, 'silenced', False) for m in list(player.field) + list(opponent.field)}
 
                 hand_snap = take_hand_snapshot(game_id)
+                hand_cards_snap = take_hand_cards_snapshot(game_id)
+                played_card_obj_id = id(card)
                 card.play(target=target, choose=choose)
 
                 # 检测沉默事件
@@ -435,6 +466,13 @@ def register_socket_events(socketio):
                 for burn in check_overdraw(game_id, hand_snap):
                     manager.log_event(game_id, 'card_burned', burn['message'], burn)
                     emit('card_burned', {'game_id': game_id, 'burn': burn})
+
+                # 检测弃牌（术士机制）
+                for d in check_discard(game_id, hand_cards_snap):
+                    if d["_obj_id"] == played_card_obj_id:
+                        continue  # skip the played card itself
+                    manager.log_event(game_id, 'discard', d['message'], {'card_name': d['card_name'], 'card_id': d['card_id']})
+                    emit('discard', {'game_id': game_id, 'discard': {'player': d['player'], 'card_name': d['card_name'], 'card_id': d['card_id'], 'message': d['message']}})
 
                 emit('game_state', {'game_id': game_id, 'state': state})
 
