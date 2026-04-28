@@ -2,6 +2,8 @@ from flask_socketio import emit, join_room
 from .game import manager
 import random
 import time
+import threading
+from datetime import datetime
 
 # 全局 socketio 实例
 _socketio = None
@@ -99,6 +101,10 @@ def run_ai_turn(game_id):
     # 更新回合开始时间（玩家回合开始）
     manager.on_turn_start(game_id)
 
+    # Schedule timeout check for human player's turn
+    if game.current_player == g["players"][0]:
+        schedule_timeout_check(game_id)
+
     # 发送最终游戏状态
     state = manager.get_game_state(game_id)
 
@@ -137,6 +143,57 @@ def emit_triggered_secrets(game_id, *, use_room=False):
         else:
             emit("secret_triggered", {"game_id": game_id, "secret": secret_info})
     return triggered
+
+
+def schedule_timeout_check(game_id):
+    """启动后台线程，在回合超时后自动结束回合"""
+    if game_id not in manager.games:
+        return
+    g = manager.games[game_id]
+    timeout = g.get("turn_timeout", 75)
+
+    def _timeout_worker():
+        turn_start = g.get("turn_start_time")
+        if not turn_start:
+            return
+        elapsed = (datetime.now() - turn_start).total_seconds()
+        remaining = timeout - elapsed
+        if remaining > 0:
+            time.sleep(remaining + 0.5)
+
+        # Re-check after sleep
+        if game_id not in manager.games:
+            return
+        if not manager.check_turn_timeout(game_id):
+            return
+
+        g2 = manager.games[game_id]
+        game = g2["game"]
+        player = g2["players"][0]
+
+        # Only auto-end if it's still the human player's turn
+        if game.current_player != player:
+            return
+
+        manager.log_event(game_id, 'auto_end_turn', '回合超时，自动结束回合', {'turn': game.turn})
+        game.end_turn()
+        manager.on_turn_start(game_id)
+
+        state = manager.get_game_state(game_id)
+        emit_triggered_secrets(game_id, use_room=True)
+
+        if _socketio:
+            _socketio.emit('game_state', {'game_id': game_id, 'state': state}, room=game_id)
+
+        # If PVE and now AI's turn, run AI
+        if g2["mode"] == "pve" and game.current_player == g2["players"][1]:
+            ai_thread = threading.Thread(target=run_ai_turn, args=(game_id,))
+            ai_thread.daemon = True
+            ai_thread.start()
+
+    t = threading.Thread(target=_timeout_worker)
+    t.daemon = True
+    t.start()
 
 
 def register_socket_events(socketio):
@@ -184,6 +241,12 @@ def register_socket_events(socketio):
                 ai_thread.daemon = True
                 ai_thread.start()
 
+        # Schedule timeout check for human player's turn
+        g = manager.games[game_id]
+        game = g["game"]
+        if game.current_player == g["players"][0]:
+            schedule_timeout_check(game_id)
+
         state = manager.get_game_state(game_id)
         emit('game_state', {'game_id': game_id, 'state': state})
 
@@ -206,6 +269,10 @@ def register_socket_events(socketio):
 
             # 更新回合开始时间
             manager.on_turn_start(game_id)
+
+            # Schedule timeout check for human player's turn
+            if game.current_player == g["players"][0]:
+                schedule_timeout_check(game_id)
 
             # 如果是 PVE 模式，执行 AI 回合
             if g["mode"] == "pve":

@@ -119,6 +119,8 @@ function formatLogEntry(log: LogEntry): string {
       return `${prefix} 💥 ${log.message}`;
     case 'silence':
       return `${prefix} 🔇 ${log.message}`;
+    case 'auto_end_turn':
+      return `${prefix} ⏰ ${log.message}`;
     default:
       return `${prefix} ${log.message}`;
   }

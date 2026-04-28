@@ -731,6 +731,18 @@ class GameManager:
             current_player = g["game"].current_player
             g["turn_timeout"] = getattr(current_player, 'timeout', 75)
 
+    def check_turn_timeout(self, game_id):
+        """检查当前回合是否已超时"""
+        if game_id not in self.games:
+            return False
+        g = self.games[game_id]
+        turn_start = g.get("turn_start_time")
+        timeout = g.get("turn_timeout", 75)
+        if not turn_start:
+            return False
+        elapsed = (datetime.now() - turn_start).total_seconds()
+        return elapsed >= timeout
+
     def track_secrets(self, game_id):
         """追踪奥秘状态，检测触发的奥秘。
 
