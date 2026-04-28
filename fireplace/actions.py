@@ -505,6 +505,11 @@ class Play(GameAction):
         if card.type == CardType.SPELL and card.twinspell:
             source.game.queue_actions(card, [Give(player, card.twinspell_copy)])
 
+        if card.type == CardType.MINION and card.data.tags.get(GameTag.MINIATURIZE):
+            mini_id = card.miniaturize_mini_id
+            if mini_id:
+                source.game.queue_actions(card, [Give(player, mini_id)])
+
         if card.type in (CardType.MINION, CardType.WEAPON):
             self.queue_broadcast(
                 summon_action, (player, EventListener.ON, player, card)
@@ -1692,7 +1697,24 @@ class Summon(TargetedAction):
                 if source.type == CardType.MINION:
                     if source.zone == Zone.PLAY:
                         source_index = source.controller.field.index(source)
-                        card._summon_index = self.get_summon_index(source_index)
+                        is_limb = bool(card.data.tags.get(GameTag.COLOSSAL_LIMB))
+                        is_limb_on_left = bool(card.data.tags.get(GameTag.COLOSSAL_LIMB_ON_LEFT))
+                        if is_limb:
+                            if is_limb_on_left:
+                                # Always insert immediately to the left of the body.
+                                # source_index already reflects the body's current position
+                                # (shifted right by each prior left limb insertion).
+                                card._summon_index = source_index
+                            else:
+                                right_count = sum(
+                                    1 for l in source.colossal_limbs
+                                    if l.zone == Zone.PLAY and not bool(l.data.tags.get(GameTag.COLOSSAL_LIMB_ON_LEFT))
+                                )
+                                card._summon_index = source_index + 1 + right_count
+                            source.colossal_limbs.append(card)
+                            card.colossal_body = source
+                        else:
+                            card._summon_index = self.get_summon_index(source_index)
                     elif source.zone == Zone.GRAVEYARD:
                         card._summon_index = getattr(source, "_dead_position", None)
                         if card._summon_index is not None:

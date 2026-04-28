@@ -516,11 +516,17 @@ MURLOC = EnumSelector(Race.MURLOC)
 PIRATE = EnumSelector(Race.PIRATE)
 TOTEM = EnumSelector(Race.TOTEM)
 ELEMENTAL = EnumSelector(Race.ELEMENTAL)
+UNDEAD = EnumSelector(Race.UNDEAD)
 TREANT = FuncSelector(
     lambda entities, src: [
         e for e in entities if getattr(e, "name_enUS", "").endswith("Treant")
     ]
 )  # Race.`TREANT` is not defined yet.
+
+
+def CARD(c):
+    """Selector factory: targets a specific card instance."""
+    return FuncSelector(lambda entities, source, _c=c: [_c])
 
 COMMON = EnumSelector(Rarity.COMMON)
 RARE = EnumSelector(Rarity.RARE)

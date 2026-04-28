@@ -57,32 +57,17 @@ class CATA_158t:
     play = Discover(CONTROLLER, RandomSpell())
 
 
-# CATA_190h: Deathwing, Worldbreaker (10费 0/30 英雄)
-# 战吼: 选择一种裂变来释放！
-# 简化实现: 对所有其他随从造成5点伤害，使你的英雄获得5点护甲
-class CATA_190h:
-    """Deathwing, Worldbreaker"""
-
-    # 简化实现: 对所有其他随从造成5点伤害，使你的英雄获得5点护甲
-    play = Hit(ALL_MINIONS - SELF, 5), GainArmor(FRIENDLY_HERO, 5)
-
 
 # CATA_200: Agent of the Old Ones (1费 2/1 埃索达)
-# 战吼: 选择你手牌中的一张卡牌，将其变成一个幸运币
+# 战吼: 将你手牌中的一张随机卡牌变成一个幸运币
 class CATA_200:
     """Agent of the Old Ones"""
 
-    # 简化实现: 发现一张卡，发现的卡费用变为0
-    # 简化实现: 随机将一张手牌变成幸运币
+    # 将手牌中一张随机卡弃掉，然后给一枚幸运币
     def play(self):
-        # 简化实现: 发现一张卡
-        yield Discover(CONTROLLER, RandomCard()).then(
-            Give(CONTROLLER, Discover.CARD), Buff(Discover.CARD, "CATA_200e")
-        )
-
-
-class CATA_200e:
-    cost = SET(0)
+        if not self.controller.hand:
+            return []
+        return [Discard(RANDOM(FRIENDLY_HAND)), Give(CONTROLLER, THE_COIN)]
 
 
 # CATA_201: Twilight Mistress (9费 4/12 龙)
@@ -110,33 +95,6 @@ class CATA_481:
     # 亡语: 简化实现
     deathrattle = Hit(RANDOM_ENEMY_MINION, 2)
 
-
-# CATA_497: Ultraxion (6费 6/7 龙)
-# 战吼: 兆示，降低死亡之翼的费用
-# 简化实现: 战吼，发现一张龙牌，使其获得+4/+4
-class CATA_497:
-    """Ultraxion"""
-
-    # 简化实现: 战吼，发现一张龙牌并使其获得+4/+4
-    play = Discover(CONTROLLER, RandomDragon()).then(
-        Give(CONTROLLER, Discover.CARD), Buff(Discover.CARD, "CATA_497e")
-    )
-
-
-CATA_497e = buff(+4, +4)
-
-
-# CATA_722: Envoy of the End (5费 5/4)
-# 嘲讽
-# 战吼: 兆示
-# 简化实现: 嘲讽，战吼，对一个随机敌人造成4点伤害
-class CATA_722:
-    """Envoy of the End"""
-
-    tags = {GameTag.TAUNT: True}
-
-    # 简化实现: 战吼，对一个随机敌人造成4点伤害
-    play = Hit(RANDOM(ENEMY_CHARACTERS), 4)
 
 
 # CATA_786: Chaos Supplicant (4费 3/5)
@@ -200,7 +158,6 @@ class CATA_215:
 # CATA_785: Rite of Twilight (2费 法术)
 # 兆示
 # 连击: 造成3点伤害
-# 简化实现: 造成3点伤害
 class CATA_785:
     """Rite of Twilight"""
 
@@ -208,8 +165,5 @@ class CATA_785:
         PlayReq.REQ_TARGET_TO_PLAY: 0,
     }
 
-    # 简化实现: 造成3点伤害
+    # 连击: 造成3点伤害（无连击时的兆示效果未实现）
     combo = Hit(TARGET, 3)
-
-    # 战吼（如果没有连击）
-    play = Hit(TARGET, 3)

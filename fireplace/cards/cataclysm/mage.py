@@ -1,4 +1,7 @@
+import random as _random
+
 from ..utils import *
+from hearthstone.enums import SpellSchool
 
 
 ##
@@ -10,8 +13,10 @@ class CATA_458:
     """Archmage Kalec"""
 
     # 战吼：使你手牌和牌库中所有法术牌获得法术伤害+1
-    # 简化实现：使你的英雄获得法术伤害+1
-    play = Refresh(CONTROLLER, {GameTag.SPELLPOWER: 1})
+    play = Buff(FRIENDLY_HAND + SPELL, "CATA_458e"), Buff(FRIENDLY_DECK + SPELL, "CATA_458e")
+
+
+CATA_458e = buff(spellpower=1)
 
 
 # CATA_483: 不稳定的施法者 (4费 2/5)
@@ -23,8 +28,13 @@ class CATA_483:
     update = Refresh(CONTROLLER, {GameTag.SPELLPOWER: 1})
 
     # 战吼：如果你在本回合中用法术造成过伤害，召唤一个复制
-    # 简化实现：总是触发战吼效果
-    play = Summon(CONTROLLER, "CATA_483")
+    def play(self):
+        spells_this_turn = [
+            c for c in self.controller.cards_played_this_game
+            if c.type == CardType.SPELL and c.turn_played == self.game.turn
+        ]
+        if spells_this_turn:
+            yield Summon(CONTROLLER, Copy(SELF))
 
 
 # CATA_484: 冬泉雏龙 (1费 1/2)
@@ -41,9 +51,23 @@ class CATA_484:
 class CATA_487:
     """Raincaller"""
 
-    # 每回合第一次用法术造成伤害时，获得+2攻击力
-    # 简化实现：在施放法术后获得+2攻击力
-    events = Play(CONTROLLER, SPELL).after(Buff(SELF, "CATA_487e"))
+    # 每回合第一次施放法术时获得+2攻击力（方法回调，保证每回合只触发一次）
+    def _on_spell(self, *args):
+        # trigger_event calls callable actions twice if result is iterable,
+        # so return a single Action (not a list) to avoid double-execution
+        if not getattr(self, "_rain_triggered", False):
+            self._rain_triggered = True
+            return Buff(SELF, "CATA_487e")
+        return None
+
+    def _reset_rain(self, *args):
+        self._rain_triggered = False
+        return None
+
+    events = [
+        Play(CONTROLLER, SPELL).after(_on_spell),
+        OWN_TURN_BEGIN.on(_reset_rain),
+    ]
 
 
 CATA_487e = buff(+2, 0)
@@ -66,14 +90,19 @@ class CATA_488:
 class CATA_488t:
     """Plume of Vulcanos"""
 
-    # 每当本随从受到伤害，获取一张随机法术牌，费用减少3
-    # 简化实现：获取随机法术
-    events = SELF_DAMAGE.on(Give(CONTROLLER, RandomSpell()).then(
+    # 每当本随从受到伤害，获取一张随机火焰法术牌，费用减少3
+    events = SELF_DAMAGE.on(Give(CONTROLLER, RandomSpell(spell_school=SpellSchool.FIRE)).then(
         Buff(Give.CARD, "CATA_488te")
     ))
 
 
-CATA_488te = buff(cost=-3)
+@custom_card
+class CATA_488te:
+    tags = {
+        GameTag.CARDNAME: "Plume Spell Discount",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.COST: -3,
+    }
 
 
 # CATA_979: 咒术专家 (3费 3/4)
@@ -81,9 +110,16 @@ CATA_488te = buff(cost=-3)
 class CATA_979:
     """Conjuration Specialist"""
 
-    # 简化实现：直接给两张随机法术牌
-    # 完整实现需要选择目标和复制
-    play = Give(CONTROLLER, RandomSpell()) * 2
+    def play(self):
+        spells = [c for c in self.controller.hand if c.type == CardType.SPELL]
+        if not spells:
+            return
+        chosen = _random.choice(spells)
+        cost = chosen.cost
+        chosen_sel = FuncSelector(lambda entities, source, c=chosen: [c])
+        yield Discard(chosen_sel)
+        yield Give(CONTROLLER, RandomSpell(cost=cost))
+        yield Give(CONTROLLER, RandomSpell(cost=cost))
 
 
 ##
@@ -148,15 +184,16 @@ class CATA_978:
         PlayReq.REQ_MINION_TARGET: 0,
     }
 
-    # 对目标造成8点伤害，超出部分减少手牌费用
+    # 对目标造成8点伤害，超出部分减少手牌费用（减少量等于溢出伤害）
     def play(self):
         target = self.target
-        damage = 8
-        actual_damage = min(damage, target.health)
-        overflow = damage - actual_damage
-        yield Hit(target, damage)
-        if overflow > 0:
-            yield Buff(RANDOM(FRIENDLY_HAND), "CATA_978e")
+        overflow = max(0, 8 - target.health)
+        yield Hit(target, 8)
+        if overflow > 0 and self.controller.hand:
+            chosen = _random.choice(list(self.controller.hand))
+            _sel = FuncSelector(lambda ents, src, c=chosen: [c])
+            for _ in range(overflow):
+                yield Buff(_sel, "CATA_978e")
 
 
-CATA_978e = buff(cost=-3)  # 简化实现：固定减少3点费用
+CATA_978e = buff(cost=-1)  # -1 cost per application; apply overflow times
