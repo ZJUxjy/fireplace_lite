@@ -123,6 +123,8 @@ function formatLogEntry(log: LogEntry): string {
       return `${prefix} ⏰ ${log.message}`;
     case 'fatigue':
       return `${prefix} 😫 ${log.message}`;
+    case 'card_burned':
+      return `${prefix} 🔥 ${log.message}`;
     default:
       return `${prefix} ${log.message}`;
   }
