@@ -732,49 +732,50 @@ class GameManager:
             g["turn_timeout"] = getattr(current_player, 'timeout', 75)
 
     def track_secrets(self, game_id):
-        """追踪奥秘状态，检测触发的奥秘"""
+        """追踪奥秘状态，检测触发的奥秘。
+
+        通过 entity_id 进行身份比对（而非 str(secret)），可正确处理同名重复奥秘。
+        每个触发条目包含: player ('player'|'opponent'), secret_name, card_id, entity_id。
+        """
         if game_id not in self.games:
             return []
         g = self.games[game_id]
         player = g["players"][0]
         opponent = g["players"][1]
 
-        # 获取当前奥秘列表
-        current_secrets = {str(s): s for s in player.secrets}
-        current_opponent_secrets = {str(s): s for s in opponent.secrets}
+        # entity_id -> secret 实体
+        current_player = {s.entity_id: s for s in player.secrets}
+        current_opponent = {s.entity_id: s for s in opponent.secrets}
 
-        # 检查是否有之前记录的奥秘列表
         if "prev_secrets" not in g:
             g["prev_secrets"] = {}
             g["prev_opponent_secrets"] = {}
 
-        prev_secrets = g["prev_secrets"]
-        prev_opponent_secrets = g["prev_opponent_secrets"]
+        prev_player = g["prev_secrets"]
+        prev_opponent = g["prev_opponent_secrets"]
 
         triggered = []
 
-        # 检查玩家奥秘触发（被对手触发）
-        for secret_name, secret in prev_secrets.items():
-            if secret_name not in current_secrets:
-                # 奥秘已触发
+        for entity_id, secret in prev_player.items():
+            if entity_id not in current_player:
                 triggered.append({
-                    'player': 'player',
-                    'secret_name': secret_name,
-                    'card_id': getattr(secret, 'id', None)
+                    "player": "player",
+                    "secret_name": str(secret),
+                    "card_id": getattr(secret, "id", None),
+                    "entity_id": entity_id,
                 })
 
-        # 检查对手奥秘触发
-        for secret_name, secret in prev_opponent_secrets.items():
-            if secret_name not in current_opponent_secrets:
+        for entity_id, secret in prev_opponent.items():
+            if entity_id not in current_opponent:
                 triggered.append({
-                    'player': 'opponent',
-                    'secret_name': secret_name,
-                    'card_id': getattr(secret, 'id', None)
+                    "player": "opponent",
+                    "secret_name": str(secret),
+                    "card_id": getattr(secret, "id", None),
+                    "entity_id": entity_id,
                 })
 
-        # 更新记录的奥秘列表
-        g["prev_secrets"] = current_secrets
-        g["prev_opponent_secrets"] = current_opponent_secrets
+        g["prev_secrets"] = current_player
+        g["prev_opponent_secrets"] = current_opponent
 
         return triggered
 
