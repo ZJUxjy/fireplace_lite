@@ -3866,3 +3866,170 @@
   z-index: 7;
   pointer-events: none;
 }
+
+/* Miniaturize indicator */
+.card-miniaturize {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  font-size: 14px;
+  background: rgba(40, 20, 50, 0.85);
+  border: 1px solid #b070d0;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  text-align: center;
+  line-height: 18px;
+  color: #d8b8ff;
+  z-index: 7;
+  pointer-events: none;
+}
+
+/* Quickdraw indicator */
+.card-quickdraw {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  font-size: 14px;
+  background: rgba(50, 30, 5, 0.85);
+  border: 1px solid #888;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  text-align: center;
+  line-height: 18px;
+  color: #aaa;
+  z-index: 7;
+  pointer-events: none;
+}
+.card-quickdraw.active {
+  border-color: #ffd86b;
+  color: #ffd86b;
+  box-shadow: 0 0 8px rgba(255, 220, 100, 0.7);
+  animation: quickdraw-pulse 1.5s ease-in-out infinite;
+}
+@keyframes quickdraw-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(255, 220, 100, 0.7); }
+  50% { box-shadow: 0 0 14px rgba(255, 220, 100, 1); }
+}
+
+/* Outcast indicator */
+.card-outcast {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  font-size: 13px;
+  background: rgba(40, 5, 60, 0.85);
+  border: 1px solid #888;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  text-align: center;
+  line-height: 18px;
+  color: #aaa;
+  z-index: 7;
+  pointer-events: none;
+}
+.card-outcast.active {
+  border-color: #c060ff;
+  color: #e0b0ff;
+  box-shadow: 0 0 8px rgba(180, 80, 240, 0.7);
+}
+.card.outcast-active {
+  box-shadow: 0 0 12px rgba(180, 80, 240, 0.6);
+}
+
+/* Corrupt indicator */
+.card-corrupt {
+  position: absolute;
+  top: 4px;
+  right: 28px;
+  font-size: 13px;
+  background: rgba(20, 0, 30, 0.85);
+  border: 1px solid #803090;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  text-align: center;
+  line-height: 18px;
+  color: #c080e0;
+  z-index: 7;
+  pointer-events: none;
+}
+
+/* Infuse counter */
+.card-infuse {
+  position: absolute;
+  bottom: 30px;
+  left: 4px;
+  font-size: 10px;
+  background: rgba(20, 0, 30, 0.85);
+  border: 1px solid #803090;
+  border-radius: 6px;
+  padding: 1px 4px;
+  color: #c080e0;
+  z-index: 7;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.card-infuse.ready {
+  border-color: #ff80ff;
+  color: #ffd0ff;
+  box-shadow: 0 0 8px rgba(255, 100, 255, 0.7);
+  animation: infuse-pulse 1.4s ease-in-out infinite;
+}
+@keyframes infuse-pulse {
+  0%, 100% { box-shadow: 0 0 6px rgba(255, 100, 255, 0.5); }
+  50% { box-shadow: 0 0 14px rgba(255, 100, 255, 1); }
+}
+
+/* Location slot */
+.location-slot {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin: 0 4px;
+}
+.location-card {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #2a1a40 0%, #1a0a30 100%);
+  border: 2px solid #6a4090;
+  position: relative;
+  cursor: not-allowed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 6px rgba(120, 80, 200, 0.4);
+}
+.location-card.cooldown {
+  opacity: 0.5;
+}
+.location-card.usable {
+  cursor: pointer;
+  border-color: #ffd86b;
+  box-shadow: 0 0 12px rgba(255, 220, 100, 0.7);
+  animation: location-pulse 1.4s ease-in-out infinite;
+}
+.location-card.usable:hover {
+  transform: scale(1.08);
+}
+.location-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+.location-durability {
+  position: absolute;
+  bottom: 2px;
+  right: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #c060ff;
+  text-shadow: 0 0 4px black;
+}
+@keyframes location-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(255, 220, 100, 0.7); }
+  50% { box-shadow: 0 0 16px rgba(255, 220, 100, 1); }
+}

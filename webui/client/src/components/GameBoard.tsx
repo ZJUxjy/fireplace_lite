@@ -1357,6 +1357,31 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
                 <div className="weapon-slot-empty" />
               )}
             </div>
+            {gameState.player.locations && gameState.player.locations.length > 0 && (
+              <div className="location-slot player-location-slot">
+                {gameState.player.locations.map((loc, i) => (
+                  <div
+                    key={i}
+                    className={`location-card ${loc.is_usable && isMyTurn ? 'usable' : ''} ${loc.cooldown ? 'cooldown' : ''}`}
+                    title={`${loc.name}\n耐久 ${loc.durability}/${loc.max_durability}${loc.cooldown ? '\n冷却中' : ''}\n${loc.text || ''}`}
+                    onClick={() => {
+                      if (!loc.is_usable || !isMyTurn) return;
+                      if (loc.requires_target) {
+                        // For simplicity: prompt user with first valid target — full
+                        // arrow-targeting could be added by reusing the existing flow.
+                        const tgt = loc.valid_targets && loc.valid_targets[0];
+                        gameService.useLocation(i, tgt);
+                      } else {
+                        gameService.useLocation(i);
+                      }
+                    }}
+                  >
+                    <div className="location-icon">🏛️</div>
+                    <div className="location-durability">{loc.durability}</div>
+                  </div>
+                ))}
+              </div>
+            )}
             <div
               className={`hero-portrait player hero-${getHeroClass(gameState.player.hero, gameState.player.hero_id)}${heroTransformed ? ' hero-transform-flash' : ''}`}
               title={gameState.player.hero}
@@ -1455,10 +1480,11 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
               const totalCards = gameState.player.hand.length;
               const fan = computeFanTransform(i, totalCards);
               const isStaged = stagedCard?.cardIndex === i;
+              const isOutermost = card.has_outcast && (i === 0 || i === totalCards - 1);
               return (
                 <div
                   key={i}
-                  className={`card ${card.is_hero_card ? 'hero-card' : ''} ${isMyTurn && card.is_playable ? 'playable' : ''} ${card.is_tradeable ? 'tradeable' : ''} ${draggedCard === i ? 'dragging' : ''} ${isStaged ? 'staged' : ''} ${card.has_combo ? 'has-combo' : ''} ${card.has_combo && gameState.player.combo_active ? 'combo-active' : ''}`}
+                  className={`card ${card.is_hero_card ? 'hero-card' : ''} ${isMyTurn && card.is_playable ? 'playable' : ''} ${card.is_tradeable ? 'tradeable' : ''} ${isOutermost ? 'outcast-active' : ''} ${draggedCard === i ? 'dragging' : ''} ${isStaged ? 'staged' : ''} ${card.has_combo ? 'has-combo' : ''} ${card.has_combo && gameState.player.combo_active ? 'combo-active' : ''}`}
                   style={{
                     transform: `rotate(${fan.angle}deg) translateX(${fan.tx}px) translateY(${fan.ty}px) scale(${fan.scale})`,
                     zIndex: fan.zIndex,
@@ -1491,6 +1517,23 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
                   {card.is_tradeable && (
                     <div className="card-tradeable" title="可交易：右键花 1 费换 1 张牌">💱</div>
                   )}
+                  {card.is_miniaturize && (
+                    <div className="card-miniaturize" title="微缩：登场时往手牌添加一个 1/1 迷你版本">🪄</div>
+                  )}
+                  {card.has_quickdraw && (
+                    <div className={`card-quickdraw ${card.quickdraw_active ? 'active' : ''}`} title={card.quickdraw_active ? "快枪激活：本回合首次打出会触发额外效果" : "快枪：本回合首次打出时触发"}>⚡</div>
+                  )}
+                  {card.has_outcast && (
+                    <div className={`card-outcast ${isOutermost ? 'active' : ''}`} title={isOutermost ? "流放激活：从手牌最左/最右打出会触发额外效果" : "流放：从手牌最左或最右打出时触发"}>👁</div>
+                  )}
+                  {card.has_corrupt && (
+                    <div className="card-corrupt" title="腐蚀：每当你打出更高费的牌，此牌升级">🔮</div>
+                  )}
+                  {card.has_infuse && card.infuse_threshold ? (
+                    <div className={`card-infuse ${(card.infuse_progress ?? 0) >= card.infuse_threshold ? 'ready' : ''}`} title={`灌注：你方第 ${card.infuse_threshold} 个随从死亡后升级`}>
+                      💀 {card.infuse_progress ?? 0}/{card.infuse_threshold}
+                    </div>
+                  ) : null}
                   <div className="card-name">{card.name}</div>
                   {/* 种族标签 */}
                   {card.race && (

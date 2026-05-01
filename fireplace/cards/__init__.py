@@ -92,6 +92,8 @@ class CardDB(Dict[str, cardxml.CardXML]):
             "magnetic",
             "overkill",
             "ability_used",
+            "quickdraw",
+            "location_action",
         )
 
         for script in scriptnames:

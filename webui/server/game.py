@@ -6,7 +6,7 @@ from fireplace.game import Game
 from fireplace.player import Player
 from fireplace.utils import random_class
 from fireplace.deck import Deck
-from hearthstone.enums import CardClass as CardClassEnum, CardType
+from hearthstone.enums import CardClass as CardClassEnum, CardType, GameTag
 
 # 游戏日志收集器
 class GameLogger:
@@ -379,6 +379,19 @@ class GameManager:
             "cost": card.cost,
             "is_playable": card.is_playable() if hasattr(card, 'is_playable') else False,
             "is_tradeable": bool(getattr(card, 'is_tradeable', False)),
+            "is_miniaturize": bool(getattr(card, 'data', None) and card.data.tags.get(GameTag.MINIATURIZE)),
+            "has_quickdraw": bool(getattr(card, 'data', None) and card.data.tags.get(GameTag.QUICKDRAW)),
+            "quickdraw_active": bool(
+                getattr(card, 'data', None)
+                and card.data.tags.get(GameTag.QUICKDRAW)
+                and getattr(card, 'controller', None)
+                and card.controller.cards_played_this_turn == 0
+            ),
+            "has_outcast": bool(getattr(card, 'data', None) and card.data.tags.get(GameTag.OUTCAST)),
+            "has_corrupt": bool(getattr(card, 'data', None) and card.data.tags.get(GameTag.CORRUPT)),
+            "has_infuse": bool(getattr(card, 'data', None) and card.data.tags.get(GameTag.INFUSE)),
+            "infuse_progress": int(getattr(card, 'progress', 0)) if (getattr(card, 'data', None) and card.data.tags.get(GameTag.INFUSE)) else 0,
+            "infuse_threshold": int(getattr(card, 'progress_total', 0)) if (getattr(card, 'data', None) and card.data.tags.get(GameTag.INFUSE)) else 0,
         }
         # 随从才有攻击力和血量
         if hasattr(card, 'atk') and hasattr(card, 'health'):
@@ -654,6 +667,24 @@ class GameManager:
                 }
             return None
 
+        def get_locations_data(p):
+            result = []
+            for loc in getattr(p, 'location_zone', []):
+                cid = loc.id
+                ch = card_text_loader.get_card_info(cid) if cid else {}
+                result.append({
+                    "id": cid,
+                    "name": ch.get('name') or str(loc),
+                    "text": ch.get('text') or (str(loc.description) if hasattr(loc, 'description') and loc.description else ""),
+                    "durability": getattr(loc, 'durability', 0),
+                    "max_durability": getattr(loc, 'max_durability', 0),
+                    "cooldown": getattr(loc, 'cooldown', False),
+                    "is_usable": loc.is_usable() if hasattr(loc, 'is_usable') else False,
+                    "requires_target": loc.location_requires_target() if hasattr(loc, 'location_requires_target') else False,
+                    "valid_targets": [self._get_target_id(t) for t in loc.targets] if hasattr(loc, 'location_requires_target') and loc.location_requires_target() and hasattr(loc, 'targets') else [],
+                })
+            return result
+
         # 计算回合剩余时间
         turn_start = g.get("turn_start_time")
         timeout = g.get("turn_timeout", 75)
@@ -713,6 +744,7 @@ class GameManager:
                 "can_end_turn": game.current_player == player,
                 "hero_power": hero_power_data,
                 "weapon": get_weapon_data(player.hero),
+                "locations": get_locations_data(player),
                 "fatigue_counter": getattr(player, 'fatigue_counter', 0),
                 "hand_size": len(player.hand),
                 "max_hand_size": getattr(player, 'max_hand_size', 10),
@@ -749,6 +781,7 @@ class GameManager:
                     "description": str(opponent.hero.power.description) if hasattr(opponent.hero.power, 'description') else "",
                 },
                 "weapon": get_weapon_data(opponent.hero),
+                "locations": get_locations_data(opponent),
                 "secret_count": len(opponent.secrets),
             },
             "logs": logs

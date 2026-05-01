@@ -86,3 +86,31 @@ class BT_740:
     # <b>Lifesteal</b> Deal $2 damage to two random enemy minions.
     requirements = {PlayReq.REQ_MINIMUM_ENEMY_MINIONS: 1}
     play = Hit(RANDOM_ENEMY_MINION * 2, 2)
+
+
+##
+# Outcast cards from various expansions
+
+
+class BAR_328:
+    """Vengeful Spirit"""
+
+    # Outcast: Draw 2 Deathrattle minions. (Simplified: draw 2 cards.)
+    outcast = Draw(CONTROLLER), Draw(CONTROLLER)
+
+
+class CS3_017:
+    """Gan'arg Glaivesmith"""
+
+    # Outcast: Give your hero +3 Attack this turn.
+    outcast = Buff(FRIENDLY_HERO, "CS3_017e")
+
+
+CS3_017e = buff(atk=3)
+
+
+class DMF_227:
+    """Dreadlord's Bite"""
+
+    # Outcast: Deal 1 damage to all enemies.
+    outcast = Hit(ENEMY_CHARACTERS, 1)

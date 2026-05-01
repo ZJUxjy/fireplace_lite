@@ -502,6 +502,38 @@ def register_socket_events(socketio):
             except Exception as e:
                 emit('error', {'message': str(e)})
 
+    @socketio.on('use_location')
+    def handle_use_location(data):
+        """使用地标：触发其 location_action 效果（消耗 1 耐久并进入冷却）"""
+        game_id = data.get('game_id')
+        location_index = data.get('location_index')
+        target_id = data.get('target_id')
+
+        if game_id not in manager.games:
+            emit('error', {'message': 'Game not found'})
+            return
+        g = manager.games[game_id]
+        player = g["players"][0]
+        if g["game"].current_player != player:
+            emit('error', {'message': 'Not your turn'})
+            return
+        locations = list(getattr(player, 'location_zone', []))
+        if location_index is None or location_index < 0 or location_index >= len(locations):
+            emit('error', {'message': 'Invalid location index'})
+            return
+        loc = locations[location_index]
+        target = manager.get_target_by_id(game_id, target_id) if target_id else None
+        try:
+            manager.log_event(game_id, 'use_location', f'{player} 激活 {loc}', {
+                'player': str(player), 'location': str(loc), 'card_id': loc.id,
+                'target': str(target) if target else None,
+            })
+            loc.use(target=target)
+            state = manager.get_game_state(game_id)
+            emit('game_state', {'game_id': game_id, 'state': state})
+        except Exception as e:
+            emit('error', {'message': str(e)})
+
     @socketio.on('trade_card')
     def handle_trade_card(data):
         """交易：将手牌中的可交易卡放回牌库并抽1张"""

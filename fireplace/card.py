@@ -41,7 +41,7 @@ def Card(id):
         CardType.ENCHANTMENT: Enchantment,
         CardType.WEAPON: Weapon,
         CardType.HERO_POWER: HeroPower,
-        CardType.LOCATION: Spell,  # Location cards use Spell logic
+        CardType.LOCATION: Location,
     }.get(data.type, Spell)
     if subclass is Spell:
         if data.secret:
@@ -383,6 +383,24 @@ class PlayableCard(BaseCard, Entity, TargetableByAuras):
     @property
     def play_outcast(self):
         return self.play_left_most or self.play_right_most
+
+    @property
+    def play_quickdraw(self):
+        """Quickdraw triggers when this is the first card played this turn."""
+        return self.controller.cards_played_this_turn == 0
+
+    @property
+    def corrupt_form_id(self):
+        """Card ID of the corrupted form, if any (for CORRUPT-tagged cards)."""
+        if not self.data.tags.get(GameTag.CORRUPT):
+            return None
+        override = getattr(self.data.scripts, "corrupt_form", None)
+        if override:
+            return override
+        dbf_id = self.data.tags.get(GameTag.COLLECTION_RELATED_CARD_DATABASE_ID)
+        if dbf_id and dbf_id in cards.db.dbf:
+            return cards.db.dbf[dbf_id]
+        return None
 
     @property
     def zone_position(self):
@@ -1818,3 +1836,95 @@ class HeroPower(PlayableCard):
         if self.passive_hero_power:
             return False
         return super().is_playable()
+
+
+class Location(PlayableCard):
+    """
+    Location card type (Murder at Castle Nathria onwards).
+
+    Locations are deployed to a dedicated Location zone. Each turn they can be
+    Used once: the location_action effect fires, durability drops by 1, and the
+    location enters cooldown until the start of the controller's next turn.
+    Locations cannot attack and cannot be attacked.
+    """
+
+    def __init__(self, data):
+        self._max_durability = 0
+        self.cooldown = False
+        super().__init__(data)
+        self.health = 0  # populated below from data
+        # Locations use HEALTH tag as durability
+        durability = data.tags.get(GameTag.HEALTH, 0)
+        self._max_durability = durability
+        self.damage = 0
+
+    @property
+    def durability(self):
+        return max(0, self._max_durability - self.damage)
+
+    @property
+    def max_durability(self):
+        return self._max_durability
+
+    def dump(self):
+        data = super().dump()
+        data["durability"] = self.durability
+        data["max_durability"] = self.max_durability
+        data["cooldown"] = self.cooldown
+        return data
+
+    def _set_zone(self, value):
+        old_zone = self.zone
+        super()._set_zone(value)
+        if value == Zone.PLAY:
+            # Replace existing location (only one location at a time per side)
+            existing = list(self.controller.location_zone)
+            for old in existing:
+                old.zone = Zone.GRAVEYARD
+            self.controller.location_zone.append(self)
+            self.cooldown = True  # cannot use the turn it's placed
+        elif old_zone == Zone.PLAY and self in self.controller.location_zone:
+            self.controller.location_zone.remove(self)
+
+    def is_usable(self):
+        if self.zone != Zone.PLAY:
+            return False
+        if self.cooldown:
+            return False
+        if self.durability <= 0:
+            return False
+        if self.controller.choice:
+            return False
+        if not self.controller.current_player:
+            return False
+        return True
+
+    def use(self, target=None):
+        """Activate the location's effect, taking 1 durability and entering cooldown."""
+        if not self.is_usable():
+            raise InvalidAction("%r cannot be used right now." % self)
+        actions = self.get_actions("location_action")
+        if actions:
+            if self.location_requires_target():
+                if not target:
+                    raise InvalidAction("%r requires a target." % self)
+                self.target = target
+            self.game.queue_actions(self, actions)
+        self.target = None
+        self.damage += 1
+        self.cooldown = True
+        if self.durability <= 0:
+            self.zone = Zone.GRAVEYARD
+
+    def location_requires_target(self):
+        """Whether the location_action effect needs a target."""
+        location_reqs = getattr(self.data.scripts, "location_requirements", {})
+        return PlayReq.REQ_TARGET_TO_PLAY in location_reqs
+
+    def requires_target(self):
+        # Placement (play) never requires a target — the location_action does.
+        return False
+
+    @property
+    def attackable(self):
+        return False

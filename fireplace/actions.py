@@ -526,6 +526,10 @@ class Play(GameAction):
                     card, [Battlecry(battlecry_card, card.target)]
                 )
 
+            # Quickdraw fires additionally when this is the first card played this turn
+            if card.play_quickdraw and card.get_actions("quickdraw"):
+                source.game.trigger(card, card.get_actions("quickdraw"), event_args=None)
+
             if card.echo:
                 source.game.queue_actions(
                     card, [Give(player, Buff(Copy(SELF), "GIL_000"))]
@@ -557,6 +561,18 @@ class Play(GameAction):
         player.cards_played_this_game.append(card)
         card.turn_played = source.game.turn
         card.choose = None
+
+        # CORRUPT: any hand cards with the CORRUPT tag morph into their
+        # corrupted form when their controller plays a higher-cost card.
+        for hand_card in list(player.hand):
+            if not hand_card.data.tags.get(GameTag.CORRUPT):
+                continue
+            if card.cost <= hand_card.cost:
+                continue
+            corrupt_id = hand_card.corrupt_form_id
+            if corrupt_id:
+                corrupt_card = player.card(corrupt_id, source=hand_card)
+                source.game.queue_actions(card, [Morph(hand_card, corrupt_card)])
 
 
 class Activate(GameAction):

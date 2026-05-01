@@ -63,6 +63,7 @@ class Player(Entity, TargetableByAuras):
         self.deck = Deck()
         self.hand = CardList["PlayableCard"]()
         self.field = CardList["Minion"]()
+        self.location_zone = CardList()
         self.graveyard = CardList["PlayableCard"]()
         self.secrets = CardList["Secret | Quest | SideQuest"]()
         self.choice = None

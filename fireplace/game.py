@@ -408,6 +408,10 @@ class BaseGame(Entity):
         for minion in player.field:
             minion.titan_ability_cooldown = False
 
+        # Reset location cooldowns at turn start
+        for loc in player.location_zone:
+            loc.cooldown = False
+
         for character in self.characters:
             character.num_attacks = 0
             character.damaged_this_turn = 0

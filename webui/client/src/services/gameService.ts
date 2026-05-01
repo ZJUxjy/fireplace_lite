@@ -23,6 +23,14 @@ export type CardData = {
   is_hero_card?: boolean;
   summon_as_minion?: boolean;
   is_tradeable?: boolean;
+  is_miniaturize?: boolean;
+  has_quickdraw?: boolean;
+  quickdraw_active?: boolean;
+  has_outcast?: boolean;
+  has_corrupt?: boolean;
+  has_infuse?: boolean;
+  infuse_progress?: number;
+  infuse_threshold?: number;
 };
 
 export type TitanAbilityData = {
@@ -68,6 +76,18 @@ export type WeaponData = {
   atk: number;
   durability: number;
   max_durability: number;
+};
+
+export type LocationData = {
+  id?: string;
+  name: string;
+  text?: string;
+  durability: number;
+  max_durability: number;
+  cooldown: boolean;
+  is_usable: boolean;
+  requires_target: boolean;
+  valid_targets?: string[];
 };
 
 export type HeroPowerData = {
@@ -128,6 +148,7 @@ export type GameState = {
     can_end_turn: boolean;
     hero_power: HeroPowerData;
     weapon: WeaponData | null;
+    locations?: LocationData[];
     fatigue_counter?: number;
     hand_size?: number;
     max_hand_size?: number;
@@ -159,6 +180,7 @@ export type GameState = {
     has_taunt?: boolean;
     hero_power: HeroPowerData;
     weapon: WeaponData | null;
+    locations?: LocationData[];
     fatigue_counter?: number;
     secret_count: number;
     overload_locked?: number;
@@ -250,6 +272,16 @@ class GameService {
       socketService.emit('trade_card', {
         game_id: this.gameId,
         card_index: cardIndex,
+      });
+    }
+  }
+
+  useLocation(locationIndex: number, targetId?: string) {
+    if (this.gameId) {
+      socketService.emit('use_location', {
+        game_id: this.gameId,
+        location_index: locationIndex,
+        target_id: targetId,
       });
     }
   }
