@@ -435,7 +435,21 @@ def register_socket_events(socketio):
                 hand_snap = take_hand_snapshot(game_id)
                 hand_cards_snap = take_hand_cards_snapshot(game_id)
                 played_card_obj_id = id(card)
+                prev_hero_id = player.hero.id
                 card.play(target=target, choose=choose)
+
+                # 检测英雄变身（英雄牌效果）
+                if player.hero.id != prev_hero_id:
+                    manager.log_event(game_id, 'hero_transformed', f'{player} 英雄变身为 {player.hero}', {
+                        'hero_id': player.hero.id,
+                        'hero_name': str(player.hero),
+                    })
+                    emit('hero_transformed', {
+                        'game_id': game_id,
+                        'player': 'player1',
+                        'hero_id': player.hero.id,
+                        'hero_name': str(player.hero),
+                    })
 
                 # 检测沉默事件
                 for m in list(player.field) + list(opponent.field):
@@ -493,6 +507,7 @@ def register_socket_events(socketio):
         """使用英雄技能"""
         game_id = data.get('game_id')
         target_id = data.get('target_id')
+        choose_card_id = data.get('choose_card_id')
 
         if game_id not in manager.games:
             emit('error', {'message': 'Game not found'})
@@ -509,6 +524,11 @@ def register_socket_events(socketio):
 
         heropower = player.hero.power
 
+        # 被动技能不可手动激活
+        if getattr(heropower, 'passive_hero_power', False):
+            emit('error', {'message': 'Passive hero power cannot be activated manually'})
+            return
+
         # 检查技能是否可用
         if not heropower.is_usable():
             emit('error', {'message': 'Hero power is not usable'})
@@ -524,6 +544,14 @@ def register_socket_events(socketio):
                 emit('error', {'message': 'Valid target required'})
                 return
 
+        # 处理抉择技能（如玛法里奥）
+        choose = None
+        if choose_card_id and getattr(heropower, 'must_choose_one', False):
+            for c in getattr(heropower, 'choose_cards', []):
+                if getattr(c, 'id', str(c)) == choose_card_id:
+                    choose = c
+                    break
+
         try:
             # 记录英雄技能使用
             target_name = str(target) if target else None
@@ -534,7 +562,7 @@ def register_socket_events(socketio):
                 'cost': heropower.cost
             })
 
-            heropower.use(target=target)
+            heropower.use(target=target, choose=choose)
             print(f"[Server] Hero power used: {heropower} -> {target}")
 
             # 记录技能效果

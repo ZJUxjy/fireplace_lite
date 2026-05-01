@@ -176,6 +176,7 @@ TEST_DECK_CARDS = {
     },
     # 法师
     'MAGE': {
+        'hero_card': ['ICC_833'],  # 冰霜女巫吉安娜
         'freeze': ['CS2_026', 'CS2_033'],  # 冰霜新星、水元素
         'spell_damage': ['CS2_155', 'EX1_584'],  # 大法师、食人魔法师
         'secrets': ['EX1_294', 'EX1_295', 'EX1_287', 'EX1_289', 'EX1_594', 'ICC_082'],  # 寒冰屏障、寒冰护体、法术反制、寒冰护体(受攻击时)、蒸发、寒冰克隆
@@ -183,18 +184,21 @@ TEST_DECK_CARDS = {
     },
     # 猎人
     'HUNTER': {
+        'hero_card': ['ICC_828'],  # 死亡猎手雷克萨
         'beast': ['CS2_172', 'EX1_534'],  # 血沼迅猛龙、长鬃草原狮
         'deathrattle': ['EX1_534', 'ICC_825'],  # 长鬃草原狮、熊鲨
         'secrets': ['EX1_533', 'EX1_609', 'EX1_610', 'EX1_611', 'EX1_554'],  # 误导、狙击、爆炸陷阱、冰冻陷阱、毒蛇陷阱
     },
     # 战士
     'WARRIOR': {
+        'hero_card': ['ICC_834'],  # 天灾领主加尔鲁什
         'armor': ['EX1_402', 'EX1_606'],  # 炽炎战斧、盾牌格挡
         'enrage': ['EX1_393', 'EX1_412'],  # 阿曼尼狂战士、暴怒的狼人
         'charge': ['CS2_103', 'EX1_084'],  # 冲锋、狼骑兵
     },
     # 圣骑士
     'PALADIN': {
+        'hero_card': ['ICC_829'],  # 黑锋骑士乌瑟尔
         'divine_shield': ['EX1_008', 'CS2_122'],  # 银色侍从
         'hand_buff': ['UNG_950', 'CFM_650'],  # 剑龙骑术、适者生存
         'secrets': ['EX1_130', 'EX1_136', 'EX1_132', 'EX1_379'],  # 崇高牺牲、救赎、以眼还眼、忏悔
@@ -202,6 +206,7 @@ TEST_DECK_CARDS = {
     },
     # 潜行者
     'ROGUE': {
+        'hero_card': ['ICC_827'],  # 虚空之影瓦莉拉
         'combo': ['EX1_131', 'CS2_073', 'CS2_072'],  # 军情七处特工、冷血、背刺
         'stealth': ['NEW1_014', 'EX1_522'],  # 猢狲战士、耐心的刺客
         'weapon': ['CS2_080', 'EX1_133'],  # 刺客之刃、毁灭之刃
@@ -209,24 +214,28 @@ TEST_DECK_CARDS = {
     },
     # 牧师
     'PRIEST': {
+        'hero_card': ['ICC_830'],  # 暗影收割者安度因
         'heal': ['CS1_130', 'CS2_004'],  # 神圣惩击、真言术：盾
         'buff': ['CS2_236', 'EX1_339'],  # 神圣之灵、暗言术：痛
         'silence': ['EX1_332'],  # 沉默
     },
     # 德鲁伊
     'DRUID': {
+        'hero_card': ['ICC_832'],  # 污染者玛法里奥
         'choose_one': ['EX1_164', 'EX1_165'],  # 滋养、丛林守护者
         'ramp': ['CS2_013', 'EX1_169'],  # 野性成长、激活（可能为技能）
         'taunt': ['EX1_093', 'CS2_179'],  # 阿古斯之盾、森金持盾卫士
     },
     # 萨满
     'SHAMAN': {
+        'hero_card': ['GIL_504'],  # 女巫哈加莎
         'overload': ['EX1_248', 'EX1_251'],  # 野性狼魂、闪电风暴
         'totem': ['CS2_050', 'UNG_201'],  # 石爪图腾、原始融合
         'windfury': ['EX1_259', 'UNG_938'],  # 风暴看守、雷霆万钧
     },
     # 术士
     'WARLOCK': {
+        'hero_card': ['ICC_831'],  # 血怒者古尔丹
         'demon': ['CS2_064', 'EX1_306'],  # 恐惧地狱火、魅魔
         'discard': ['EX1_308', 'EX1_310'],  # 灵魂之火、末日守卫
         'spell_damage': ['EX1_597', 'NEW1_021'],  # 古拉巴什狂暴者、狂野炎术师
@@ -244,16 +253,17 @@ def create_test_deck(card_class):
 
     # 1. 添加本职业机制卡牌
     if class_name in TEST_DECK_CARDS:
-        for mechanic, cards in TEST_DECK_CARDS[class_name].items():
-            # 每种机制最多2张
-            for card_id in cards[:2]:
-                if len(deck) < 30:
+        for mechanic, mechanic_cards in TEST_DECK_CARDS[class_name].items():
+            # 英雄牌传说只能带1张；其他机制最多2张
+            limit = 1 if mechanic == 'hero_card' else 2
+            for card_id in mechanic_cards[:limit]:
+                if len(deck) < 30 and deck.count(card_id) < limit:
                     deck.append(card_id)
 
     # 2. 添加中立机制卡牌补足
     neutral_cards = []
-    for mechanic, cards in TEST_DECK_CARDS['NEUTRAL'].items():
-        neutral_cards.extend(cards)
+    for mechanic, mechanic_cards in TEST_DECK_CARDS['NEUTRAL'].items():
+        neutral_cards.extend(mechanic_cards)
 
     # 随机打乱，确保不同测试卡组有变化
     import random
@@ -356,6 +366,7 @@ class GameManager:
         text = chinese_info.get('text')
 
         data = {
+            "id": getattr(card, 'id', None),
             "name": name,
             "cost": card.cost,
             "is_playable": card.is_playable() if hasattr(card, 'is_playable') else False,
@@ -408,6 +419,11 @@ class GameManager:
         # 卡牌类型（法术、随从等）
         if hasattr(card, 'type'):
             data["type"] = str(card.type).replace("Type.", "").lower()
+
+        # 英雄牌标记
+        if hasattr(card, 'type') and card.type == CardType.HERO:
+            data["is_hero_card"] = True
+            data["summon_as_minion"] = getattr(card.data.scripts, 'summon_as_minion', False) if hasattr(card, 'data') else False
 
         # 法术伤害加成（用于显示）
         if hasattr(card, 'type') and card.type == CardType.SPELL:
@@ -589,12 +605,21 @@ class GameManager:
         if hasattr(hero_power, 'description') and hero_power.description:
             hero_power_description = str(hero_power.description)
 
+        is_passive_power = bool(getattr(hero_power, 'passive_hero_power', False))
         hero_power_data = {
+            "id": getattr(hero_power, 'id', ''),
             "name": str(hero_power),
             "cost": hero_power.cost,
-            "is_usable": hero_power.is_usable() if hasattr(hero_power, 'is_usable') else False,
+            "is_usable": (hero_power.is_usable() if hasattr(hero_power, 'is_usable') else False) and not is_passive_power,
             "requires_target": requires_target,
             "description": hero_power_description,
+            "is_passive": is_passive_power,
+            "must_choose_one": bool(getattr(hero_power, 'must_choose_one', False)),
+            "choose_cards": (
+                [self.get_card_data(c) for c in hero_power.choose_cards]
+                if getattr(hero_power, 'must_choose_one', False) and hasattr(hero_power, 'choose_cards')
+                else []
+            ),
             "is_summon": str(hero_power) == "Reinforce" or "summon" in hero_power_description.lower(),
             "is_life_tap": str(hero_power) == "Life Tap" or "life tap" in hero_power_description.lower(),
             "health_cost": 2 if str(hero_power) == "Life Tap" else 0,
@@ -662,6 +687,7 @@ class GameManager:
             "turn_timeout": timeout,
             "player": {
                 "hero": str(player.hero),
+                "hero_id": player.hero.id,
                 "health": player.hero.health,
                 "max_health": player.hero.max_health,
                 "armor": getattr(player.hero, 'armor', 0),
@@ -692,6 +718,7 @@ class GameManager:
             },
             "opponent": {
                 "hero": str(opponent.hero),
+                "hero_id": opponent.hero.id,
                 "health": opponent.hero.health,
                 "max_health": opponent.hero.max_health,
                 "armor": getattr(opponent.hero, 'armor', 0),

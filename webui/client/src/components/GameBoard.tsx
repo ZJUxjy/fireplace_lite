@@ -145,7 +145,15 @@ const HERO_CLASSES: Record<string, string> = {
   'Illidan Stormrage': 'demonhunter',
 };
 
-function getHeroClass(heroName: string): string {
+function getHeroClass(heroName: string, heroId?: string): string {
+  if (heroId) {
+    const byId: Record<string, string> = {
+      'ICC_828': 'hunter', 'ICC_827': 'rogue',  'ICC_829': 'paladin',
+      'ICC_830': 'priest', 'ICC_831': 'warlock', 'ICC_832': 'druid',
+      'ICC_833': 'mage',   'ICC_834': 'warrior', 'GIL_504': 'shaman',
+    };
+    if (byId[heroId]) return byId[heroId];
+  }
   return HERO_CLASSES[heroName] || 'neutral';
 }
 
@@ -192,7 +200,14 @@ const HERO_ICONS: Record<string, string> = {
   'Illidan Stormrage': '👁️',
 };
 
-function getHeroClassIcon(heroName: string): string {
+const HERO_CARD_ICONS: Record<string, string> = {
+  'ICC_828': '💀🏹', 'ICC_827': '🌑🗡️', 'ICC_829': '💀⚔️',
+  'ICC_830': '🌑✨', 'ICC_831': '💀👹', 'ICC_832': '💀🌿',
+  'ICC_833': '❄️🔮', 'ICC_834': '💀🛡️', 'GIL_504': '🧙🌩️',
+};
+
+function getHeroClassIcon(heroName: string, heroId?: string): string {
+  if (heroId && HERO_CARD_ICONS[heroId]) return HERO_CARD_ICONS[heroId];
   return HERO_ICONS[heroName] || '❓';
 }
 
@@ -303,6 +318,8 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
   };
   const [revealedSecret, setRevealedSecret] = useState<SecretReveal | null>(null);
   const [fatigueFlash, setFatigueFlash] = useState<{ side: 'player' | 'opponent'; damage: number } | null>(null);
+  const [heroTransformed, setHeroTransformed] = useState(false);
+  const [chooseHeroPowerState, setChooseHeroPowerState] = useState<{ options: CardData[] } | null>(null);
   const secretQueueRef = useRef<SecretReveal[]>([]);
   const secretTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -384,6 +401,13 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
         damage: data.fatigue.damage,
       });
       setTimeout(() => setFatigueFlash(null), 1500);
+    });
+    gameService.onHeroTransformed((data) => {
+      if (data.player === 'player1') {
+        setHeroTransformed(true);
+        setTimeout(() => setHeroTransformed(false), 1500);
+      }
+      setActionLog(prev => [`✨ 英雄变身为 ${data.hero_name}！`, ...prev.slice(0, 30)]);
     });
 
     return () => {
@@ -733,6 +757,12 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
     const heroPower = gameState.player.hero_power;
     console.log('[HeroPower] MouseDown - requires_target:', heroPower.requires_target, 'valid_targets:', heroPower.valid_targets);
 
+    // 抉择英雄技能（如玛法里奥）— 先弹出选择框
+    if (heroPower.must_choose_one && heroPower.choose_cards?.length) {
+      setChooseHeroPowerState({ options: heroPower.choose_cards });
+      return;
+    }
+
     // 法师技能需要目标，按下就开始拖动选择
     if (heroPower.requires_target) {
       setPendingAction({
@@ -1035,10 +1065,10 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
               )}
             </div>
             <div
-              className={`hero-portrait opponent hero-${getHeroClass(gameState.opponent.hero)} ${(validAttackTargets.canAttackHero || validWeaponTargets.canAttackHero || heroPowerValidTargets.canTargetHero) ? 'valid-target' : ''}`}
+              className={`hero-portrait opponent hero-${getHeroClass(gameState.opponent.hero, gameState.opponent.hero_id)} ${(validAttackTargets.canAttackHero || validWeaponTargets.canAttackHero || heroPowerValidTargets.canTargetHero) ? 'valid-target' : ''}`}
               title={gameState.opponent.hero}
             >
-              <div className="hero-class-icon">{getHeroClassIcon(gameState.opponent.hero)}</div>
+              <div className="hero-class-icon">{getHeroClassIcon(gameState.opponent.hero, gameState.opponent.hero_id)}</div>
               <div className="hero-name">{gameState.opponent.hero.split(' ')[0]}</div>
             </div>
             {/* 对手奥秘区域 */}
@@ -1271,10 +1301,10 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
               )}
             </div>
             <div
-              className={`hero-portrait player hero-${getHeroClass(gameState.player.hero)}`}
+              className={`hero-portrait player hero-${getHeroClass(gameState.player.hero, gameState.player.hero_id)}${heroTransformed ? ' hero-transform-flash' : ''}`}
               title={gameState.player.hero}
             >
-              <div className="hero-class-icon">{getHeroClassIcon(gameState.player.hero)}</div>
+              <div className="hero-class-icon">{getHeroClassIcon(gameState.player.hero, gameState.player.hero_id)}</div>
               <div className="hero-name">{gameState.player.hero.split(' ')[0]}</div>
             </div>
             <div className="hero-stats player-stats">
@@ -1314,19 +1344,26 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
               )}
             </div>
             <div
-              className={`hero-power player-hero-power ${isMyTurn && gameState.player.hero_power?.is_usable ? 'usable' : ''} ${gameState.player.hero_power?.is_summon ? 'summon-power' : ''} ${gameState.player.hero_power?.is_life_tap ? 'life-tap-power' : ''} ${gameState.player.hero_power?.is_totemic_call ? 'totemic-call-power' : ''}`}
-              onMouseDown={handleHeroPowerMouseDown}
+              className={`hero-power player-hero-power ${gameState.player.hero_power?.is_passive ? 'passive-power' : (isMyTurn && gameState.player.hero_power?.is_usable ? 'usable' : '')} ${gameState.player.hero_power?.is_summon ? 'summon-power' : ''} ${gameState.player.hero_power?.is_life_tap ? 'life-tap-power' : ''} ${gameState.player.hero_power?.is_totemic_call ? 'totemic-call-power' : ''}`}
+              onMouseDown={gameState.player.hero_power?.is_passive ? undefined : handleHeroPowerMouseDown}
               onMouseEnter={(e) => setHoveredHeroPower({ x: e.clientX, y: e.clientY, isOpponent: false })}
               onMouseLeave={() => setHoveredHeroPower(null)}
               onMouseMove={(e) => hoveredHeroPower && setHoveredHeroPower({ x: e.clientX, y: e.clientY, isOpponent: false })}
             >
-              <span className="hero-power-cost">{gameState.player.hero_power.cost}</span>
+              {!gameState.player.hero_power?.is_passive && (
+                <span className="hero-power-cost">{gameState.player.hero_power.cost}</span>
+              )}
               <div className="hero-power-icon">
                 {gameState.player.hero_power.is_summon ? '🛡️' :
                  gameState.player.hero_power.is_life_tap ? '👹' :
                  gameState.player.hero_power.is_totemic_call ? '🎭' :
                  gameState.player.hero_power.name}
               </div>
+              {gameState.player.hero_power?.is_passive && (
+                <div className="hero-power-badge passive-badge" title="被动技能，自动触发">
+                  被动
+                </div>
+              )}
               {gameState.player.hero_power?.is_summon && (
                 <div className="hero-power-badge summon-badge" title="召唤一个1/1的白银之手新兵">
                   +🛡️
@@ -1364,7 +1401,7 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
               return (
                 <div
                   key={i}
-                  className={`card ${isMyTurn && card.is_playable ? 'playable' : ''} ${draggedCard === i ? 'dragging' : ''} ${isStaged ? 'staged' : ''} ${card.has_combo ? 'has-combo' : ''} ${card.has_combo && gameState.player.combo_active ? 'combo-active' : ''}`}
+                  className={`card ${card.is_hero_card ? 'hero-card' : ''} ${isMyTurn && card.is_playable ? 'playable' : ''} ${draggedCard === i ? 'dragging' : ''} ${isStaged ? 'staged' : ''} ${card.has_combo ? 'has-combo' : ''} ${card.has_combo && gameState.player.combo_active ? 'combo-active' : ''}`}
                   style={{
                     transform: `rotate(${fan.angle}deg) translateX(${fan.tx}px) translateY(${fan.ty}px) scale(${fan.scale})`,
                     zIndex: fan.zIndex,
@@ -1581,6 +1618,37 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
                 {i18n.language === 'zhCN' ? '返回主菜单' : 'Main Menu'}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* 英雄技能抉择对话框（如玛法里奥） */}
+      {chooseHeroPowerState && (
+        <div className="choose-one-overlay" onClick={() => setChooseHeroPowerState(null)}>
+          <div className="choose-one-dialog" onClick={e => e.stopPropagation()}>
+            <h3 className="choose-one-title">✨ 英雄技能：抉择</h3>
+            <p className="choose-one-subtitle">选择一种效果</p>
+            <div className="choose-one-options">
+              {chooseHeroPowerState.options.map((option) => (
+                <div
+                  key={option.id || option.name}
+                  className="choose-one-card"
+                  onClick={() => {
+                    setChooseHeroPowerState(null);
+                    gameService.useHeroPower(undefined, option.id);
+                  }}
+                >
+                  <div className="choose-one-card-cost">{option.cost}</div>
+                  <div className="choose-one-card-name">{option.name}</div>
+                  {option.text && (
+                    <div className="choose-one-card-text" dangerouslySetInnerHTML={{ __html: option.text }} />
+                  )}
+                </div>
+              ))}
+            </div>
+            <button className="choose-one-cancel" onClick={() => setChooseHeroPowerState(null)}>
+              取消
+            </button>
           </div>
         </div>
       )}

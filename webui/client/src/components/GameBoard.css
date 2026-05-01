@@ -3756,3 +3756,38 @@
   0%, 100% { transform: scale(1); filter: drop-shadow(0 0 3px rgba(255, 80, 30, 0.5)); }
   50% { transform: scale(1.15); filter: drop-shadow(0 0 6px rgba(255, 50, 20, 0.8)); }
 }
+
+/* Hero card in hand */
+.card.hero-card {
+  border: 2px solid #d4af37;
+  background: linear-gradient(135deg, #2a1a0a 0%, #1a0a0a 100%);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+}
+.card.hero-card .card-footer {
+  display: none;
+}
+
+/* Passive hero power */
+.hero-power.passive-power {
+  cursor: default;
+  opacity: 0.9;
+  border: 2px solid #8a6;
+}
+.hero-power-badge.passive-badge {
+  font-size: 9px;
+  background: #3a6a3a;
+  color: #aef;
+  border-radius: 3px;
+  padding: 1px 3px;
+  text-align: center;
+}
+
+/* Hero transform flash */
+@keyframes heroFlash {
+  0%, 100% { box-shadow: none; }
+  25% { box-shadow: 0 0 30px 10px gold; }
+  75% { box-shadow: 0 0 20px 8px gold; }
+}
+.hero-portrait.hero-transform-flash {
+  animation: heroFlash 1.5s ease-in-out;
+}

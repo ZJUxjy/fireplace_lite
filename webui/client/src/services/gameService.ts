@@ -20,6 +20,8 @@ export type CardData = {
   type?: string;
   base_damage?: number;
   is_damage_spell?: boolean;
+  is_hero_card?: boolean;
+  summon_as_minion?: boolean;
 };
 
 export type MinionData = {
@@ -56,12 +58,16 @@ export type WeaponData = {
 };
 
 export type HeroPowerData = {
+  id?: string;
   name: string;
   cost: number;
   is_usable: boolean;
   requires_target: boolean;
   description: string;
   valid_targets?: string[];
+  is_passive?: boolean;
+  must_choose_one?: boolean;
+  choose_cards?: CardData[];
   is_summon?: boolean;
   is_life_tap?: boolean;
   health_cost?: number;
@@ -96,6 +102,7 @@ export type GameState = {
   winner?: string;
   player: {
     hero: string;
+    hero_id?: string;
     health: number;
     max_health: number;
     armor: number;
@@ -126,6 +133,7 @@ export type GameState = {
   };
   opponent: {
     hero: string;
+    hero_id?: string;
     health: number;
     max_health: number;
     armor: number;
@@ -184,11 +192,12 @@ class GameService {
     }
   }
 
-  useHeroPower(targetId?: string) {
+  useHeroPower(targetId?: string, chooseCardId?: string) {
     if (this.gameId) {
       socketService.emit('use_hero_power', {
         game_id: this.gameId,
-        target_id: targetId
+        target_id: targetId,
+        choose_card_id: chooseCardId,
       });
     }
   }
@@ -255,6 +264,10 @@ class GameService {
 
   onFatigueDamage(callback: (data: { game_id: string; fatigue: { player: string; damage: number; counter: number; message: string } }) => void) {
     socketService.on('fatigue_damage', callback);
+  }
+
+  onHeroTransformed(callback: (data: { game_id: string; player: string; hero_id: string; hero_name: string }) => void) {
+    socketService.on('hero_transformed', (data) => callback(data as { game_id: string; player: string; hero_id: string; hero_name: string }));
   }
 
   cleanup() {
