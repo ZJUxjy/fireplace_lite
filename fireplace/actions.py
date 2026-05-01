@@ -1441,6 +1441,23 @@ class HitExcessDamage(TargetedAction):
         return 0
 
 
+class Overheal(TargetedAction):
+    """
+    Broadcast-only event fired when a Heal request exceeds the target's
+    missing health. The excess is the AMOUNT. State change happens in Heal;
+    this action exists purely as a trigger anchor so card scripts can write
+    `events = Overheal(SELF).on(...)`.
+    """
+
+    TARGET = ActionArg()
+    AMOUNT = IntArg()
+
+    def do(self, source, target, amount):
+        log.info("%r overheals %r by %i", source, target, amount)
+        source.game.manager.targeted_action(self, source, target, amount)
+        self.broadcast(source, EventListener.ON, target, amount)
+
+
 class Heal(TargetedAction):
     """
     Heal character targets by \a amount.
@@ -1453,16 +1470,19 @@ class Heal(TargetedAction):
         if source.controller.healing_as_damage:
             return source.game.queue_actions(source.controller, [Hit(target, amount)])
 
-        amount = source.get_heal(amount, target)
-        amount = min(amount, target.damage)
-        if amount:
+        requested = source.get_heal(amount, target)
+        actual = min(requested, target.damage)
+        overheal = requested - actual
+        if actual:
             # Undamaged targets do not receive heals
-            log.info("%r heals %r for %i", source, target, amount)
-            target.damage -= amount
-            source.game.manager.targeted_action(self, source, target, amount)
-            self.queue_broadcast(self, (source, EventListener.ON, target, amount))
-            target.healed_this_turn += amount
-            source.controller.healed_this_game += amount
+            log.info("%r heals %r for %i", source, target, actual)
+            target.damage -= actual
+            source.game.manager.targeted_action(self, source, target, actual)
+            self.queue_broadcast(self, (source, EventListener.ON, target, actual))
+            target.healed_this_turn += actual
+            source.controller.healed_this_game += actual
+        if overheal > 0:
+            source.game.queue_actions(source, [Overheal(target, overheal)])
 
 
 class ManaThisTurn(TargetedAction):

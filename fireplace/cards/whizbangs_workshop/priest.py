@@ -21,3 +21,11 @@ class TOY_380t2:
     """Clay Whelp"""
 
     tags = {GameTag.ELUSIVE: True}
+
+
+class WW_381:
+    """Injured Hauler"""
+
+    # Battlecry: Deal 4 damage to this minion. Overheal: Deal 2 damage to all enemy minions.
+    play = Hit(SELF, 4)
+    events = Overheal(SELF).on(Hit(ENEMY_MINIONS, 2))

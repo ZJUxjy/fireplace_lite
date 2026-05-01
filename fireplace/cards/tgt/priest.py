@@ -8,7 +8,7 @@ from ..utils import *
 class AT_011:
     """Holy Champion"""
 
-    events = Heal().on(Buff(SELF, "AT_011e"))
+    events = Overheal(SELF).on(Buff(SELF, "AT_011e"))
 
 
 AT_011e = buff(atk=2)

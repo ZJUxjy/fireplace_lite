@@ -335,3 +335,9 @@ class EX1_197:
 
     # Destroy all minions with 5 or more Attack.
     play = Destroy(ALL_MINIONS + (ATK >= 5))
+
+
+class CS3_014:
+    """Crimson Clergy"""
+
+    events = Overheal(SELF).on(Draw(CONTROLLER))

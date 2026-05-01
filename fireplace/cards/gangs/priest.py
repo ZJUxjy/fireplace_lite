@@ -27,7 +27,7 @@ class CFM_605:
 class CFM_606:
     """Mana Geode"""
 
-    events = Heal(SELF).on(Summon(CONTROLLER, "CFM_606t"))
+    events = Overheal(SELF).on(Summon(CONTROLLER, "CFM_606t"))
 
 
 class CFM_626:
