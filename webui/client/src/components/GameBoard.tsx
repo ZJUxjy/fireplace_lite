@@ -411,6 +411,9 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
       }
       setActionLog(prev => [`✨ 英雄变身为 ${data.hero_name}！`, ...prev.slice(0, 30)]);
     });
+    gameService.onCardTraded((data) => {
+      setActionLog(prev => [`💱 ${data.card_name} 被交易回牌库`, ...prev.slice(0, 30)]);
+    });
 
     return () => {
       if (secretTimerRef.current) clearTimeout(secretTimerRef.current);
@@ -1455,7 +1458,7 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
               return (
                 <div
                   key={i}
-                  className={`card ${card.is_hero_card ? 'hero-card' : ''} ${isMyTurn && card.is_playable ? 'playable' : ''} ${draggedCard === i ? 'dragging' : ''} ${isStaged ? 'staged' : ''} ${card.has_combo ? 'has-combo' : ''} ${card.has_combo && gameState.player.combo_active ? 'combo-active' : ''}`}
+                  className={`card ${card.is_hero_card ? 'hero-card' : ''} ${isMyTurn && card.is_playable ? 'playable' : ''} ${card.is_tradeable ? 'tradeable' : ''} ${draggedCard === i ? 'dragging' : ''} ${isStaged ? 'staged' : ''} ${card.has_combo ? 'has-combo' : ''} ${card.has_combo && gameState.player.combo_active ? 'combo-active' : ''}`}
                   style={{
                     transform: `rotate(${fan.angle}deg) translateX(${fan.tx}px) translateY(${fan.ty}px) scale(${fan.scale})`,
                     zIndex: fan.zIndex,
@@ -1465,6 +1468,12 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
                   onDragStart={(e) => handleDragStart(e, i, card)}
                   onDragEnd={handleDragEnd}
                   onClick={() => handleCardClick(card, i)}
+                  onContextMenu={(e) => {
+                    e.preventDefault();
+                    if (card.is_tradeable && isMyTurn && !stagedCard) {
+                      gameService.tradeCard(i);
+                    }
+                  }}
                   onMouseEnter={(e) => setHoveredCard({ card, x: e.clientX, y: e.clientY })}
                   onMouseLeave={() => setHoveredCard(null)}
                   onMouseMove={(e) => hoveredCard && setHoveredCard({ card, x: e.clientX, y: e.clientY })}
@@ -1478,6 +1487,9 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
                   )}
                   {card.has_combo && (
                     <div className="card-combo" title="连击">连击</div>
+                  )}
+                  {card.is_tradeable && (
+                    <div className="card-tradeable" title="可交易：右键花 1 费换 1 张牌">💱</div>
                   )}
                   <div className="card-name">{card.name}</div>
                   {/* 种族标签 */}

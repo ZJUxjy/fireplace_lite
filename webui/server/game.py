@@ -378,6 +378,7 @@ class GameManager:
             "name": name,
             "cost": card.cost,
             "is_playable": card.is_playable() if hasattr(card, 'is_playable') else False,
+            "is_tradeable": bool(getattr(card, 'is_tradeable', False)),
         }
         # 随从才有攻击力和血量
         if hasattr(card, 'atk') and hasattr(card, 'health'):

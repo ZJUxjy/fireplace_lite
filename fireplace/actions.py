@@ -1788,6 +1788,31 @@ class SummonCustomMinion(TargetedAction):
                 source.game.queue_actions(source, [Summon(target, card)])
 
 
+class Trade(TargetedAction):
+    """
+    Tradeable: pay 1 mana, shuffle the card from hand back into its
+    controller's deck, then draw 1 card. Broadcasts a Trade event so that
+    cards with `events = Trade(SELF).on(...)` can react.
+    """
+
+    TARGET = ActionArg()  # the card being traded
+
+    TRADE_COST = 1
+
+    def do(self, source, target):
+        controller = target.controller
+        log.info("%r trades %r", controller, target)
+        # Move card from hand to deck and shuffle
+        target.zone = Zone.DECK
+        controller.shuffle_deck()
+        # Pay 1 mana
+        controller.pay_cost(target, self.TRADE_COST)
+        # Draw 1 card
+        controller.draw()
+        source.game.manager.targeted_action(self, source, target)
+        self.broadcast(source, EventListener.AFTER, target)
+
+
 class Shuffle(TargetedAction):
     """
     Shuffle card targets into player target's deck.

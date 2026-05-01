@@ -502,6 +502,50 @@ def register_socket_events(socketio):
             except Exception as e:
                 emit('error', {'message': str(e)})
 
+    @socketio.on('trade_card')
+    def handle_trade_card(data):
+        """交易：将手牌中的可交易卡放回牌库并抽1张"""
+        game_id = data.get('game_id')
+        card_index = data.get('card_index')
+
+        if game_id not in manager.games:
+            emit('error', {'message': 'Game not found'})
+            return
+
+        g = manager.games[game_id]
+        player = g["players"][0]
+
+        if g["game"].current_player != player:
+            emit('error', {'message': 'Not your turn'})
+            return
+
+        if card_index is None or card_index < 0 or card_index >= len(player.hand):
+            emit('error', {'message': 'Invalid card index'})
+            return
+
+        card = player.hand[card_index]
+        if not getattr(card, 'is_tradeable', False):
+            emit('error', {'message': 'Card is not tradeable'})
+            return
+
+        try:
+            manager.log_event(game_id, 'trade', f'{player} 交易了 {card}', {
+                'player': str(player),
+                'card': str(card),
+                'card_id': card.id,
+            })
+            card.trade()
+            state = manager.get_game_state(game_id)
+            emit('game_state', {'game_id': game_id, 'state': state})
+            emit('card_traded', {
+                'game_id': game_id,
+                'player': 'player1',
+                'card_name': str(card),
+                'card_id': card.id,
+            })
+        except Exception as e:
+            emit('error', {'message': str(e)})
+
     @socketio.on('use_hero_power')
     def handle_use_hero_power(data):
         """使用英雄技能"""

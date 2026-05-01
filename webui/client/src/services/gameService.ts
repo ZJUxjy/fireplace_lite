@@ -22,6 +22,7 @@ export type CardData = {
   is_damage_spell?: boolean;
   is_hero_card?: boolean;
   summon_as_minion?: boolean;
+  is_tradeable?: boolean;
 };
 
 export type TitanAbilityData = {
@@ -242,6 +243,19 @@ class GameService {
         target_id: targetId,
       });
     }
+  }
+
+  tradeCard(cardIndex: number) {
+    if (this.gameId) {
+      socketService.emit('trade_card', {
+        game_id: this.gameId,
+        card_index: cardIndex,
+      });
+    }
+  }
+
+  onCardTraded(callback: (data: { game_id: string; player: string; card_name: string; card_id: string }) => void) {
+    socketService.on('card_traded', (data) => callback(data as { game_id: string; player: string; card_name: string; card_id: string }));
   }
 
   makeChoice(cardIndex: number) {

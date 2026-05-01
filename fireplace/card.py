@@ -423,6 +423,32 @@ class PlayableCard(BaseCard, Entity, TargetableByAuras):
     def heal(self, target, amount):
         return self.game.cheat_action(self, [actions.Heal(target, amount)])
 
+    @property
+    def is_tradeable(self) -> bool:
+        """Whether this card can be Traded (Tradeable keyword)."""
+        if not self.data.tags.get(GameTag.TRADEABLE):
+            return False
+        if self.zone != Zone.HAND:
+            return False
+        if not self.controller.current_player:
+            return False
+        if self.controller.choice:
+            return False
+        if self.controller.mana < actions.Trade.TRADE_COST:
+            return False
+        if not self.controller.deck:
+            # No deck cards left to draw — trading would be a no-op draw
+            return False
+        return True
+
+    def trade(self):
+        """
+        Trade this card: pay 1 mana, shuffle into deck, draw 1 card.
+        """
+        if not self.is_tradeable:
+            raise InvalidAction("%r is not tradeable right now." % (self))
+        return self.game.queue_actions(self, [actions.Trade(self)])
+
     def is_playable(self):
         if self.controller.choice:
             return False
