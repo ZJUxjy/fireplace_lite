@@ -75,6 +75,7 @@ class EX1_319:
 class EX1_323:
     """Lord Jaraxxus"""
 
+    summon_as_minion = True  # When summoned by effects (Mirror Entity etc.), place on field
     play = (
         Summon(CONTROLLER, "EX1_323h").then(Morph(SELF, Summon.CARD)),
         Summon(CONTROLLER, "EX1_323w"),

@@ -1521,10 +1521,10 @@ class Morph(TargetedAction):
     def do(self, source, target, card):
         log.info("Morphing %r into %r", target, card)
         target_zone = target.zone
-        if card.zone != target_zone:
-            # Transfer the zone position
+        if card.zone != target_zone and target_zone != Zone.GRAVEYARD:
+            # Transfer the zone position; skip if target ended up in GRAVEYARD
+            # (e.g. hero-card replacement moves EX1_323 to GRAVEYARD as side effect)
             card._summon_index = target.zone_position
-            # In-place morph is OK, eg. in the case of Lord Jaraxxus
             card.zone = target_zone
         target.clear_buffs()
         target.zone = Zone.SETASIDE

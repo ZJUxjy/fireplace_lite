@@ -179,6 +179,8 @@ class CardDB(Dict[str, cardxml.CardXML]):
         else:
             card.scripts.titan_abilities = []
 
+        card.scripts.summon_as_minion = getattr(cardscript, "summon_as_minion", False)
+
         if hasattr(cardscript, "cardtext_entity_0"):
             card.cardtext_entity_0 = cardscript.cardtext_entity_0
 

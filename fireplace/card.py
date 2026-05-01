@@ -1055,15 +1055,28 @@ class Hero(Character):
         return ret
 
     def _set_zone(self, value):
+        was_on_field = self in self.controller.field
         super()._set_zone(value)
         if value == Zone.PLAY:
-            old_hero = self.controller.hero
-            self.controller.hero = self
-            if self.data.hero_power:
-                self.controller.summon(self.data.hero_power)
-            if old_hero:
-                old_hero.zone = Zone.GRAVEYARD
-        elif value == Zone.GRAVEYARD:
+            summon_as_minion = getattr(self.data.scripts, "summon_as_minion", False)
+            if self.old_zone == Zone.HAND or not summon_as_minion:
+                # Played from hand, OR no summon_as_minion flag → hero replacement
+                old_hero = self.controller.hero
+                self.controller.hero = self
+                if self.data.hero_power:
+                    self.controller.summon(self.data.hero_power)
+                if old_hero:
+                    old_hero.zone = Zone.GRAVEYARD
+            else:
+                # Hero card with summon_as_minion=True summoned by effect → minion on field
+                summon_index = getattr(self, "_summon_index", None)
+                if summon_index is not None:
+                    self.controller.field.insert(summon_index, self)
+                else:
+                    self.controller.field.append(self)
+        elif was_on_field:
+            self.controller.field.remove(self)
+        if value == Zone.GRAVEYARD:
             if self.controller.hero is self:
                 self.controller.playstate = PlayState.LOSING
 
@@ -1609,6 +1622,7 @@ class Weapon(rules.WeaponRules, LiveEntity):
     def __init__(self, *args):
         super().__init__(*args)
         self.damage = 0
+        self._max_durability = 0
 
     def dump(self):
         data = super().dump()
