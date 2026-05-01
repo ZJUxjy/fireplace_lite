@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { gameService, type GameState, type CardData, type LogEntry, type MinionData as ServiceMinionData } from '../services/gameService';
+import { gameService, type GameState, type CardData, type LogEntry, type MinionData as ServiceMinionData, type TitanAbilityData } from '../services/gameService';
 import './GameBoard.css';
 
 interface GameBoardProps {
@@ -280,8 +280,10 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
 
   // 目标选择状态
   const [pendingAction, setPendingAction] = useState<{
-    type: 'card' | 'hero_power' | 'weapon';
+    type: 'card' | 'hero_power' | 'weapon' | 'titan_ability';
     cardIndex?: number;
+    minionIndex?: number;
+    abilityIndex?: number;
     targets: string[];
     requiredCount: number;
     validTargets: string[];
@@ -782,6 +784,36 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
     }
   };
 
+  // 泰坦技能按下 — 类似英雄技能流程
+  const handleTitanAbilityMouseDown = (
+    e: React.MouseEvent,
+    minionIndex: number,
+    ability: TitanAbilityData
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isMyTurn || ability.is_used) return;
+    const minion = gameState?.player.field[minionIndex];
+    if (!minion || minion.titan_ability_cooldown) return;
+
+    if (ability.requires_target) {
+      setPendingAction({
+        type: 'titan_ability',
+        minionIndex,
+        abilityIndex: ability.index,
+        targets: [],
+        requiredCount: 1,
+        validTargets: ability.valid_targets || [],
+        committed: false,
+      });
+      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+      setArrowStart({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
+      setArrowEnd({ x: e.clientX, y: e.clientY });
+    } else {
+      gameService.useTitanAbility(minionIndex, ability.index);
+    }
+  };
+
   // 武器按下 - 像攻击一样拖动选择目标
   const handleWeaponMouseDown = (e: React.MouseEvent) => {
     if (!isMyTurn || !gameState?.player.weapon) return;
@@ -915,6 +947,10 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
             gameService.useHeroPower(targetId);
           } else if (pendingAction.type === 'weapon') {
             gameService.weaponAttack(targetId);
+          } else if (pendingAction.type === 'titan_ability') {
+            if (pendingAction.minionIndex !== undefined && pendingAction.abilityIndex !== undefined) {
+              gameService.useTitanAbility(pendingAction.minionIndex, pendingAction.abilityIndex, targetId);
+            }
           }
         }
         // 无论是否有效目标，都清理状态（拖动操作结束）
@@ -1243,6 +1279,24 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
                 )}
                 {minion.frozen && (
                   <div className="frozen-icon" title="冻结">❄️</div>
+                )}
+                {minion.is_titan && minion.titan_abilities && (
+                  <div className="titan-abilities">
+                    {minion.titan_abilities.map((ab) => {
+                      const slotKey = `${i}-${ab.index}`;
+                      const isAvailable = isMyTurn && !ab.is_used && !minion.titan_ability_cooldown;
+                      return (
+                        <div
+                          key={slotKey}
+                          className={`titan-ability-slot ${ab.is_used ? 'used' : ''} ${isAvailable ? 'available' : ''}`}
+                          title={`${ab.name}${ab.text ? '\n' + ab.text.replace(/<[^>]+>/g, '') : ''}`}
+                          onMouseDown={(e) => handleTitanAbilityMouseDown(e, i, ab)}
+                        >
+                          {ab.is_used ? '✓' : ab.index + 1}
+                        </div>
+                      );
+                    })}
+                  </div>
                 )}
               </div>
             ))}

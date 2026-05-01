@@ -1361,6 +1361,9 @@ class Minion(Character):
     def can_attack(self, target=None):
         if self.dormant:
             return False
+        if self.titan_abilities and not all(self.titan_ability_used):
+            # Titan cannot attack while it still has unused abilities
+            return False
 
         return super().can_attack(target)
 

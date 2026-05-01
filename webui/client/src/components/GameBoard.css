@@ -3791,3 +3791,51 @@
 .hero-portrait.hero-transform-flash {
   animation: heroFlash 1.5s ease-in-out;
 }
+
+/* Titan ability slots */
+.titan-abilities {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  z-index: 6;
+}
+.titan-ability-slot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #2a1a0a;
+  border: 2px solid #d4af37;
+  color: #d4af37;
+  font-weight: bold;
+  font-size: 12px;
+  text-align: center;
+  line-height: 18px;
+  user-select: none;
+  cursor: not-allowed;
+  box-shadow: 0 0 6px rgba(212, 175, 55, 0.5);
+}
+.titan-ability-slot.used {
+  background: #1a1a1a;
+  border-color: #555;
+  color: #888;
+  box-shadow: none;
+}
+.titan-ability-slot.available {
+  cursor: pointer;
+  background: linear-gradient(135deg, #4a3010 0%, #6b4818 100%);
+  animation: titan-slot-pulse 1.4s ease-in-out infinite;
+}
+.titan-ability-slot.available:hover {
+  transform: scale(1.18);
+  box-shadow: 0 0 12px rgba(255, 220, 100, 0.9);
+}
+@keyframes titan-slot-pulse {
+  0%, 100% { box-shadow: 0 0 6px rgba(212, 175, 55, 0.5); }
+  50%      { box-shadow: 0 0 14px rgba(255, 220, 100, 0.9); }
+}
+.minion:has(.titan-abilities) {
+  margin-bottom: 14px;
+}

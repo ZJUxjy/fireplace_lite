@@ -133,3 +133,72 @@ def test_legion_invasion_does_not_buff_non_demons():
     played_wisp = game.player1.field[-1]
     assert played_wisp.max_health == played_wisp.data.health  # unchanged
     assert played_wisp.taunt is False
+
+
+##
+# Titan keyword: cannot attack while abilities remain
+
+def test_titan_cannot_attack_with_unused_abilities():
+    """A Titan with any unused ability cannot attack."""
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    titan = game.player1.summon("TTN_737")  # The Primus 8/8
+    # Skip first turn so it's not asleep
+    game.end_turn(); game.end_turn()
+    assert titan.can_attack() is False
+
+
+def test_titan_can_attack_after_all_abilities_used():
+    """Once all 3 abilities are used, the Titan may attack normally."""
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    titan = game.player1.summon("TTN_858")  # Amitus, no targets needed
+    game.end_turn(); game.end_turn()
+
+    titan.use_titan_ability(0)
+    assert titan.can_attack() is False  # 2 left
+    game.end_turn(); game.end_turn()
+
+    titan.use_titan_ability(1)
+    assert titan.can_attack() is False  # 1 left
+    game.end_turn(); game.end_turn()
+
+    titan.use_titan_ability(2)
+    assert all(titan.titan_ability_used) is True
+    assert titan.can_attack() is True
+
+
+def test_titan_cooldown_resets_each_turn():
+    """Only 1 Titan ability per turn; cooldown resets next turn."""
+    import pytest
+    from fireplace.exceptions import InvalidAction
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    titan = game.player1.summon("TTN_858")
+    game.end_turn(); game.end_turn()
+
+    titan.use_titan_ability(0)
+    assert titan.titan_ability_cooldown is True
+
+    with pytest.raises(InvalidAction):
+        titan.use_titan_ability(1)
+
+    game.end_turn(); game.end_turn()
+    assert titan.titan_ability_cooldown is False
+    titan.use_titan_ability(1)  # works now
+
+
+def test_titan_used_abilities_are_permanent():
+    """A used ability cannot be used again on a later turn."""
+    import pytest
+    from fireplace.exceptions import InvalidAction
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    titan = game.player1.summon("TTN_858")
+    game.end_turn(); game.end_turn()
+
+    titan.use_titan_ability(0)
+    game.end_turn(); game.end_turn()
+
+    with pytest.raises(InvalidAction):
+        titan.use_titan_ability(0)

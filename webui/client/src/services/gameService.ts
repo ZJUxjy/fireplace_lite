@@ -24,6 +24,15 @@ export type CardData = {
   summon_as_minion?: boolean;
 };
 
+export type TitanAbilityData = {
+  index: number;
+  name: string;
+  text?: string;
+  is_used: boolean;
+  requires_target: boolean;
+  valid_targets?: string[];
+};
+
 export type MinionData = {
   name: string;
   atk: number;
@@ -48,6 +57,9 @@ export type MinionData = {
   text?: string;
   race?: string;
   mechanics?: string[];
+  is_titan?: boolean;
+  titan_abilities?: TitanAbilityData[];
+  titan_ability_cooldown?: boolean;
 };
 
 export type WeaponData = {
@@ -217,6 +229,17 @@ class GameService {
       socketService.emit('weapon_attack', {
         game_id: this.gameId,
         target_id: targetId
+      });
+    }
+  }
+
+  useTitanAbility(minionIndex: number, abilityIndex: number, targetId?: string) {
+    if (this.gameId) {
+      socketService.emit('use_titan_ability', {
+        game_id: this.gameId,
+        minion_index: minionIndex,
+        ability_index: abilityIndex,
+        target_id: targetId,
       });
     }
   }

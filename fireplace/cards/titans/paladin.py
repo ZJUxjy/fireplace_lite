@@ -18,10 +18,10 @@ class TTN_858:
 class TTN_858t2:
     """Empowered"""
 
-    play = Buff(FRIENDLY_MINIONS - SELF, "TTN_858t2e")
+    play = Buff(FRIENDLY_MINIONS - SELF, "TTN_858t2e1")
 
 
-TTN_858t2e = buff(+2, +2)
+TTN_858t2e1 = buff(+2, +2)
 
 
 # TTN_858t3: Pacified - Set all enemy minions' ATK and Health to 2

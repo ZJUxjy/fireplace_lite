@@ -177,6 +177,7 @@ TEST_DECK_CARDS = {
     # 法师
     'MAGE': {
         'hero_card': ['ICC_833'],  # 冰霜女巫吉安娜
+        'titan': ['TTN_075'],  # 诺加农
         'freeze': ['CS2_026', 'CS2_033'],  # 冰霜新星、水元素
         'spell_damage': ['CS2_155', 'EX1_584'],  # 大法师、食人魔法师
         'secrets': ['EX1_294', 'EX1_295', 'EX1_287', 'EX1_289', 'EX1_594', 'ICC_082'],  # 寒冰屏障、寒冰护体、法术反制、寒冰护体(受攻击时)、蒸发、寒冰克隆
@@ -185,6 +186,7 @@ TEST_DECK_CARDS = {
     # 猎人
     'HUNTER': {
         'hero_card': ['ICC_828'],  # 死亡猎手雷克萨
+        'titan': ['TTN_721'],  # V-07-TR-0N Prime
         'beast': ['CS2_172', 'EX1_534'],  # 血沼迅猛龙、长鬃草原狮
         'deathrattle': ['EX1_534', 'ICC_825'],  # 长鬃草原狮、熊鲨
         'secrets': ['EX1_533', 'EX1_609', 'EX1_610', 'EX1_611', 'EX1_554'],  # 误导、狙击、爆炸陷阱、冰冻陷阱、毒蛇陷阱
@@ -192,6 +194,7 @@ TEST_DECK_CARDS = {
     # 战士
     'WARRIOR': {
         'hero_card': ['ICC_834'],  # 天灾领主加尔鲁什
+        'titan': ['TTN_092'],  # 复仇者阿格拉玛
         'armor': ['EX1_402', 'EX1_606'],  # 炽炎战斧、盾牌格挡
         'enrage': ['EX1_393', 'EX1_412'],  # 阿曼尼狂战士、暴怒的狼人
         'charge': ['CS2_103', 'EX1_084'],  # 冲锋、狼骑兵
@@ -199,6 +202,7 @@ TEST_DECK_CARDS = {
     # 圣骑士
     'PALADIN': {
         'hero_card': ['ICC_829'],  # 黑锋骑士乌瑟尔
+        'titan': ['TTN_858'],  # 守序者阿米图斯
         'divine_shield': ['EX1_008', 'CS2_122'],  # 银色侍从
         'hand_buff': ['UNG_950', 'CFM_650'],  # 剑龙骑术、适者生存
         'secrets': ['EX1_130', 'EX1_136', 'EX1_132', 'EX1_379'],  # 崇高牺牲、救赎、以眼还眼、忏悔
@@ -215,6 +219,7 @@ TEST_DECK_CARDS = {
     # 牧师
     'PRIEST': {
         'hero_card': ['ICC_830'],  # 暗影收割者安度因
+        'titan': ['TTN_429'],  # 阿曼苏尔
         'heal': ['CS1_130', 'CS2_004'],  # 神圣惩击、真言术：盾
         'buff': ['CS2_236', 'EX1_339'],  # 神圣之灵、暗言术：痛
         'silence': ['EX1_332'],  # 沉默
@@ -222,6 +227,7 @@ TEST_DECK_CARDS = {
     # 德鲁伊
     'DRUID': {
         'hero_card': ['ICC_832'],  # 污染者玛法里奥
+        'titan': ['TTN_903'],  # 生命缚誓者伊欧娜
         'choose_one': ['EX1_164', 'EX1_165'],  # 滋养、丛林守护者
         'ramp': ['CS2_013', 'EX1_169'],  # 野性成长、激活（可能为技能）
         'taunt': ['EX1_093', 'CS2_179'],  # 阿古斯之盾、森金持盾卫士
@@ -229,6 +235,7 @@ TEST_DECK_CARDS = {
     # 萨满
     'SHAMAN': {
         'hero_card': ['GIL_504'],  # 女巫哈加莎
+        'titan': ['TTN_800'],  # 雷霆之王戈加尔
         'overload': ['EX1_248', 'EX1_251'],  # 野性狼魂、闪电风暴
         'totem': ['CS2_050', 'UNG_201'],  # 石爪图腾、原始融合
         'windfury': ['EX1_259', 'UNG_938'],  # 风暴看守、雷霆万钧
@@ -236,6 +243,7 @@ TEST_DECK_CARDS = {
     # 术士
     'WARLOCK': {
         'hero_card': ['ICC_831'],  # 血怒者古尔丹
+        'titan': ['TTN_960'],  # 毁灭者萨格拉斯
         'demon': ['CS2_064', 'EX1_306'],  # 恐惧地狱火、魅魔
         'discard': ['EX1_308', 'EX1_310'],  # 灵魂之火、末日守卫
         'spell_damage': ['EX1_597', 'NEW1_021'],  # 古拉巴什狂暴者、狂野炎术师
@@ -254,8 +262,8 @@ def create_test_deck(card_class):
     # 1. 添加本职业机制卡牌
     if class_name in TEST_DECK_CARDS:
         for mechanic, mechanic_cards in TEST_DECK_CARDS[class_name].items():
-            # 英雄牌传说只能带1张；其他机制最多2张
-            limit = 1 if mechanic == 'hero_card' else 2
+            # 英雄牌和泰坦传说只能带1张；其他机制最多2张
+            limit = 1 if mechanic in ('hero_card', 'titan') else 2
             for card_id in mechanic_cards[:limit]:
                 if len(deck) < 30 and deck.count(card_id) < limit:
                     deck.append(card_id)
