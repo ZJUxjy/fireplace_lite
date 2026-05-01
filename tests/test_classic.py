@@ -372,29 +372,30 @@ def test_bane_of_doom():
 
 
 def test_baron_geddon():
+    # Baron Geddon rebalanced to 7/7 (was 7/5)
     game = prepare_game()
 
     geddon1 = game.player1.give("EX1_249")
     wisp = game.player1.give(WISP)
     geddon1.play()
     wisp.play()
-    assert geddon1.health == 5
+    assert geddon1.health == 7
     assert not wisp.dead
     assert game.player1.hero.health == 30
     assert game.player2.hero.health == 30
     game.end_turn()
-    assert geddon1.health == 5
+    assert geddon1.health == 7
     assert wisp.dead
     assert game.player1.hero.health == 28
     assert game.player2.hero.health == 28
 
     geddon2 = game.player2.give("EX1_249")
     geddon2.play()
-    assert geddon1.health == 5
-    assert geddon2.health == 5
+    assert geddon1.health == 7
+    assert geddon2.health == 7
     game.end_turn()
-    assert geddon1.health == 3
-    assert geddon2.health == 5
+    assert geddon1.health == 5
+    assert geddon2.health == 7
 
 
 def test_battle_rage():
@@ -1743,6 +1744,7 @@ def test_injured_blademaster():
 
 
 def test_inner_fire():
+    # Gurubashi Berserker rebalanced to 2/8 (was 2/7); Inner Fire sets atk=health
     game = prepare_game()
     gurubashi = game.player1.give("EX1_399")
     gurubashi.play()
@@ -1754,14 +1756,14 @@ def test_inner_fire():
 
     innerfire = game.player1.give("CS1_129")
     innerfire.play(target=gurubashi)
-    assert gurubashi.atk == 7
+    assert gurubashi.atk == 8
     game.end_turn()
 
-    assert gurubashi.atk == 7
+    assert gurubashi.atk == 8
     equality = game.player2.give("EX1_619")
     equality.play()
     assert gurubashi.health == 1
-    assert gurubashi.atk == 7
+    assert gurubashi.atk == 8
 
 
 def test_innervate():
@@ -1939,23 +1941,24 @@ def test_leeroy():
 
 
 def test_lightspawn():
+    # Lightspawn rebalanced to 0/4 (was 0/5)
     game = prepare_game()
     lightspawn = game.player1.give("EX1_335")
     lightspawn.play()
-    assert lightspawn.health == 5
-    assert lightspawn.atk == 5
-
-    # moonfire the lightspawn, goes to 4 health
-    game.player1.give(MOONFIRE).play(target=lightspawn)
     assert lightspawn.health == 4
     assert lightspawn.atk == 4
+
+    # moonfire the lightspawn, goes to 3 health
+    game.player1.give(MOONFIRE).play(target=lightspawn)
+    assert lightspawn.health == 3
+    assert lightspawn.atk == 3
     assert not lightspawn.buffs
 
     flametongue = game.player1.give("EX1_565")
     flametongue.play()
-    assert lightspawn.health == 4
+    assert lightspawn.health == 3
     assert lightspawn.buffs
-    assert lightspawn.atk == 4
+    assert lightspawn.atk == 3
 
     game.player1.give(SILENCE).play(target=lightspawn)
     assert lightspawn.buffs
@@ -3449,22 +3452,23 @@ def test_twilight_drake():
 
 
 def test_unbound_elemental():
+    # Unbound Elemental rebalanced to 3/4 (was 2/4)
     game = prepare_game()
     unbound = game.player1.give("EX1_258")
     unbound.play()
-    assert unbound.atk == 2
+    assert unbound.atk == 3
     assert unbound.health == 4
     game.player1.give(THE_COIN).play()
-    assert unbound.atk == 2
+    assert unbound.atk == 3
     assert unbound.health == 4
     # Lightning Bolt should trigger it
     game.player1.give("EX1_238").play(target=game.player2.hero)
-    assert unbound.atk == 3
+    assert unbound.atk == 4
     assert unbound.health == 5
     game.end_turn()
 
     game.player2.give("EX1_238").play(target=game.player2.hero)
-    assert unbound.atk == 3
+    assert unbound.atk == 4
     assert unbound.health == 5
 
 

@@ -334,12 +334,14 @@ def test_huge_toad():
 
 
 def test_jungle_moonkin():
+    # Jungle Moonkin nerfed from +2 to +1 spell power.
+    # Animated Statue 10 health, moonfire(1) + spell power(1) = 2 dmg → 8.
     game = prepare_game()
     moonkin = game.player1.give("LOE_051")
     moonkin.play()
     statue = game.player2.summon(ANIMATED_STATUE)
     game.player1.give(MOONFIRE).play(target=statue)
-    assert statue.health == 7
+    assert statue.health == 8
 
 
 def test_keeper_of_uldaman():
