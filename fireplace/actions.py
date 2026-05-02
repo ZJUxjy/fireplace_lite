@@ -1870,6 +1870,65 @@ class Trade(TargetedAction):
         self.broadcast(source, EventListener.AFTER, target)
 
 
+class Forge(TargetedAction):
+    """
+    Forge: pay 2 mana to upgrade a card in hand into its forged form.
+    The forged form is determined by the FORGES_INTO tag on the card data
+    (mapped to the forged_form_id property on PlayableCard).
+    """
+
+    TARGET = ActionArg()  # the card being forged
+
+    FORGE_COST = 2
+
+    def do(self, source, target):
+        controller = target.controller
+        log.info("%r forges %r", controller, target)
+        controller.pay_cost(target, self.FORGE_COST)
+        forged_id = target.forged_form_id
+        if forged_id:
+            forged_card = controller.card(forged_id, source=target)
+            source.game.queue_actions(target, [Morph(target, forged_card)])
+        source.game.manager.targeted_action(self, source, target)
+        self.broadcast(source, EventListener.AFTER, target)
+
+
+class Dredge(TargetedAction):
+    """
+    Dredge: look at the bottom 3 cards of the controller's deck, choose one,
+    and put it on top. The chosen card is exposed via Dredge.CARD so that
+    follow-up actions in the same script can reference it (e.g. for type
+    checks like "If it's a Murloc, summon a copy"). For non-interactive
+    contexts (AI / tests), the first card is auto-picked.
+    """
+
+    TARGET = ActionArg()  # the controller player
+    CARD = CardArg()
+
+    def get_target_args(self, source, target):
+        return [None]
+
+    def do(self, source, target, cards=None):
+        deck = target.deck
+        if not deck:
+            self.cards = []
+            return
+        # Bottom 3 cards (or fewer if deck is smaller). In fireplace's
+        # convention deck[0] is the BOTTOM and deck[-1] is the TOP.
+        n = min(3, len(deck))
+        bottom = list(deck[:n])
+        self.cards = bottom
+        log.info("%r dredges from %r: %r", source, target, bottom)
+        # Auto-pick: take the first bottom card. (UI override: open a
+        # choice dialog and call .choose() to pick a different one.)
+        chosen = bottom[0]
+        # Move chosen to top of deck.
+        target.deck.remove(chosen)
+        target.deck.append(chosen)
+        source.game.manager.targeted_action(self, source, target, [chosen])
+        self.broadcast(source, EventListener.AFTER, target, chosen)
+
+
 class Shuffle(TargetedAction):
     """
     Shuffle card targets into player target's deck.

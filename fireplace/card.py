@@ -467,6 +467,40 @@ class PlayableCard(BaseCard, Entity, TargetableByAuras):
             raise InvalidAction("%r is not tradeable right now." % (self))
         return self.game.queue_actions(self, [actions.Trade(self)])
 
+    @property
+    def forged_form_id(self) -> str:
+        """The card ID this card forges into, or empty string if none."""
+        forges_into_dbf = self.data.tags.get(GameTag.FORGES_INTO, 0)
+        if not forges_into_dbf:
+            return ""
+        from .cards import db
+        return db.dbf.get(forges_into_dbf, "")
+
+    @property
+    def is_forgeable(self) -> bool:
+        """Whether this card can be Forged (Forge keyword)."""
+        if not self.data.tags.get(GameTag.FORGE):
+            return False
+        if not self.forged_form_id:
+            return False
+        if self.zone != Zone.HAND:
+            return False
+        if not self.controller.current_player:
+            return False
+        if self.controller.choice:
+            return False
+        if self.controller.mana < actions.Forge.FORGE_COST:
+            return False
+        return True
+
+    def forge(self):
+        """
+        Forge this card: pay 2 mana, morph into its forged form.
+        """
+        if not self.is_forgeable:
+            raise InvalidAction("%r is not forgeable right now." % (self))
+        return self.game.queue_actions(self, [actions.Forge(self)])
+
     def is_playable(self):
         if self.controller.choice:
             return False
