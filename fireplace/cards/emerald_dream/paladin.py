@@ -79,8 +79,9 @@ class EDR_259e1:
 class EDR_451:
     """Goldpetal Drake"""
 
-    divine_shield = True
-    deathrattle = Summon(CONTROLLER, "CS2_101t")
+    # Battlecry and Deathrattle: Imbue your Hero Power.
+    play = Imbue(CONTROLLER)
+    deathrattle = Imbue(CONTROLLER)
 
 
 class EDR_256e:

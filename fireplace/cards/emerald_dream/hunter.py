@@ -15,13 +15,18 @@ class EDR_014:
 class EDR_226:
     """Exotic Houndmaster"""
 
-    play = Buff(RANDOM(FRIENDLY_MINIONS + BEAST), "EX1_538t")
+    # Battlecry: Draw a Beast. Imbue your Hero Power.
+    # Beast filter on draw isn't easily expressible (Draw doesn't take a
+    # selector); approximated as a generic draw.
+    play = Draw(CONTROLLER), Imbue(CONTROLLER)
 
 
 class EDR_227:
     """Umbraclaw"""
 
-    update = CurrentPlayer(OPPONENT) & Refresh(SELF, {GameTag.ATK: +2})
+    # Rush. Deathrattle: Imbue your Hero Power.
+    tags = {GameTag.RUSH: True}
+    deathrattle = Imbue(CONTROLLER)
 
 
 class EDR_416:

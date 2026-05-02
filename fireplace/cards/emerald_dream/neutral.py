@@ -214,9 +214,9 @@ class EDR_780e1:
 class EDR_800:
     """Flutterwing Guardian"""
 
-    divine_shield = True
-    taunt = True
-    battlecry = Summon(CONTROLLER, "CS2_101t")
+    # Taunt, Divine Shield. Battlecry: Imbue your Hero Power.
+    tags = {GameTag.TAUNT: True, GameTag.DIVINE_SHIELD: True}
+    play = Imbue(CONTROLLER)
 
 
 class EDR_812e:

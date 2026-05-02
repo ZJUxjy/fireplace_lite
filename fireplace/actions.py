@@ -1900,6 +1900,31 @@ class Forge(TargetedAction):
         self.broadcast(source, EventListener.AFTER, target)
 
 
+class Imbue(TargetedAction):
+    """
+    Imbue (Year of the Pegasus / Emerald Dream): empower the controller's
+    hero power. Increments player.imbue_count and, if the current hero power
+    has an `imbued_form_id` attribute on its scripts, morphs it to the next
+    tier. Card scripts can chain forms via imbued_form_id on each tier.
+    """
+
+    TARGET = ActionArg()  # the controller player
+
+    def get_target_args(self, source, target):
+        return [None]
+
+    def do(self, source, target, _unused=None):
+        target.imbue_count += 1
+        log.info("%r imbues hero power (count=%d)", target, target.imbue_count)
+        hero = target.hero
+        if hero and hero.power:
+            imbued_id = getattr(hero.power.data.scripts, "imbued_form_id", None)
+            if imbued_id:
+                new_power = target.card(imbued_id, source=source)
+                source.game.queue_actions(hero.power, [Morph(hero.power, new_power)])
+        source.game.manager.targeted_action(self, source, target)
+
+
 class LaunchStarship(TargetedAction):
     """
     Launch the controller's starship: trigger each attached STARSHIP_PIECE's

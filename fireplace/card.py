@@ -468,6 +468,15 @@ class PlayableCard(BaseCard, Entity, TargetableByAuras):
         return self.game.queue_actions(self, [actions.Trade(self)])
 
     @property
+    def is_tourist(self) -> bool:
+        """Whether this card is a Tourist (Whizbang's Workshop+).
+        In real Hearthstone the tag affects deckbuilding (it grants access
+        to another class's cards). fireplace doesn't enforce deckbuilding
+        rules, so this property is exposed only for UI/metadata use.
+        """
+        return bool(self.data.tags.get(GameTag.TOURIST))
+
+    @property
     def forged_form_id(self) -> str:
         """The card ID this card forges into, or empty string if none."""
         forges_into_dbf = self.data.tags.get(GameTag.FORGES_INTO, 0)

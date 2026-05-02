@@ -28,7 +28,9 @@ class EDR_230e:
 class EDR_231:
     """Aspect's Embrace"""
 
-    play = Adapt(SELF)
+    # Restore 4 Health. Draw a card. Imbue your Hero Power.
+    requirements = {PlayReq.REQ_TARGET_TO_PLAY: 0}
+    play = Heal(TARGET, 4), Draw(CONTROLLER), Imbue(CONTROLLER)
 
 
 class EDR_233:

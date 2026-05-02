@@ -9,6 +9,9 @@ from ..utils import *
 class EDR_449:
     """Lunarwing Messenger"""
 
+    # Lifesteal. Battlecry: Imbue your Hero Power.
+    tags = {GameTag.LIFESTEAL: True}
+    play = Imbue(CONTROLLER)
     deathrattle = CastSpell("EDR_449e")
 
 

@@ -108,6 +108,9 @@ class Player(Entity, TargetableByAuras):
         self.excavate_count = 0
         # STARSHIP: pieces attached to the player's starship awaiting launch.
         self.starship_pieces = CardList()
+        # IMBUE: counter increments each time the hero power is Imbued.
+        # Card scripts can morph the hero power based on this count.
+        self.imbue_count = 0
 
     def dump(self):
         data = super().dump()
