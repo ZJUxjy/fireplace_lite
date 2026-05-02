@@ -94,6 +94,10 @@ class CardDB(Dict[str, cardxml.CardXML]):
             "ability_used",
             "quickdraw",
             "location_action",
+            "frenzy",
+            "spellburst",
+            "manathirst",
+            "start_of_game",
         )
 
         for script in scriptnames:

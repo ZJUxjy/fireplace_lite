@@ -530,6 +530,20 @@ class Play(GameAction):
             if card.play_quickdraw and card.get_actions("quickdraw"):
                 source.game.trigger(card, card.get_actions("quickdraw"), event_args=None)
 
+            # MANATHIRST: bonus effect that fires when controller's max mana
+            # meets the threshold (typically 7+ or 8+).
+            manathirst_threshold = getattr(
+                card.data.scripts, "manathirst_threshold", None
+            )
+            if (
+                manathirst_threshold is not None
+                and player.max_mana >= manathirst_threshold
+                and card.get_actions("manathirst")
+            ):
+                source.game.trigger(
+                    card, card.get_actions("manathirst"), event_args=None
+                )
+
             if card.echo:
                 source.game.queue_actions(
                     card, [Give(player, Buff(Copy(SELF), "GIL_000"))]
@@ -573,6 +587,20 @@ class Play(GameAction):
             if corrupt_id:
                 corrupt_card = player.card(corrupt_id, source=hand_card)
                 source.game.queue_actions(card, [Morph(hand_card, corrupt_card)])
+
+        # SPELLBURST: when CONTROLLER plays a SPELL, each friendly minion with
+        # an unconsumed spellburst script fires once, then is marked consumed.
+        if card.type == CardType.SPELL:
+            for minion in list(player.field):
+                if getattr(minion, "spellburst_consumed", True):
+                    continue
+                if minion.silenced:
+                    continue
+                actions = minion.get_actions("spellburst")
+                if not actions:
+                    continue
+                minion.spellburst_consumed = True
+                source.game.trigger(minion, actions, event_args=None)
 
 
 class Activate(GameAction):
@@ -1013,6 +1041,19 @@ class Damage(TargetedAction):
             target.damaged_this_turn += amount
             if source.type == CardType.HERO_POWER:
                 source.controller.hero_power_damage_this_game += amount
+            # FRENZY: trigger once on first damage taken (before death checks).
+            if (
+                target.type == CardType.MINION
+                and not getattr(target, "frenzy_used", True)
+                and not target.silenced
+            ):
+                frenzy_actions = target.get_actions("frenzy")
+                if frenzy_actions:
+                    target.frenzy_used = True
+                    source.game.trigger(target, frenzy_actions, event_args=None)
+                else:
+                    # Mark used even if no script so we don't repeatedly check.
+                    target.frenzy_used = True
         return amount
 
 
@@ -2180,6 +2221,13 @@ class GameStart(GameAction):
         log.info("Game start")
         source.game.manager.game_action(self, source)
         self.broadcast(source, EventListener.ON)
+        # START_OF_GAME: scan each player's hand and deck for cards with a
+        # start_of_game script (Genn/Baku/Reno-style passives) and trigger them.
+        for player in source.game.players:
+            for card in list(player.hand) + list(player.deck):
+                actions = card.get_actions("start_of_game")
+                if actions:
+                    source.game.trigger(card, actions, event_args=None)
 
 
 class Adapt(TargetedAction):

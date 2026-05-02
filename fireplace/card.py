@@ -1210,6 +1210,8 @@ class Minion(Character):
         self.dormant = False
         self.dormant_turns = data.scripts.dormant_turns
         self.reborn = False
+        self.frenzy_used = False  # FRENZY: one-shot trigger on first damage taken
+        self.spellburst_consumed = False  # SPELLBURST: one-shot on next own spell
         super().__init__(data)
 
     def dump(self):
