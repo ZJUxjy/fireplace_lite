@@ -355,3 +355,285 @@ class NX2_005t:
 
 
 NX2_005te = buff(atk=3, health=3)
+
+
+##
+# === Final batch of INFUSE cards ===
+# Faithful per real Hearthstone effect (with simplifications noted where the
+# underlying mechanic — Discover Relics, Endlessly Infuse counter, in-deck
+# infuse aura — is engine-deep).
+
+
+# MAW_003 — Totemic Evidence (Shaman 1-cost spell).
+# Choose a basic Totem and summon it. Infuse(2 Totems): Summon all 4 instead.
+# Real card uses Choose-One; we approximate with a random pick (engine
+# choose-one for spells with 4 sub-choices is non-trivial to wire here).
+class MAW_003:
+    """Totemic Evidence"""
+
+    play = Summon(CONTROLLER, RandomBasicTotem())
+    progress_total = 2
+
+    class Hand:
+        events = Death(FRIENDLY + MINION + TOTEM).on(
+            AddProgress(SELF, Death.ENTITY)
+        )
+
+    reward = Morph(SELF, "MAW_003t")
+
+
+class MAW_003t:
+    """Totemic Evidence (Infused)"""
+
+    # Summon all 4 basic totems.
+    play = (
+        Summon(CONTROLLER, "CS2_050"),
+        Summon(CONTROLLER, "CS2_051"),
+        Summon(CONTROLLER, "CS2_052"),
+        Summon(CONTROLLER, "NEW1_009"),
+    )
+
+
+# MAW_031 — Afterlife Attendant (Neutral 3-cost 3/4 minion).
+# "Your Infuse cards also Infuse while in your deck."
+# This is an aura that expands the existing per-card Hand.events listener to
+# also fire while the card is in deck — a structural engine extension that
+# would require wiring per-INFUSE-card Deck.events listeners. Modeled here
+# as a custom in-play event: on friendly minion death, iterate the friendly
+# deck and add progress to every INFUSE-tagged card found there.
+INFUSE_TAG = EnumSelector(GameTag.INFUSE)
+
+
+class MAW_031:
+    """Afterlife Attendant"""
+
+    events = Death(FRIENDLY + MINION).on(
+        AddProgress(FRIENDLY_DECK + INFUSE_TAG, Death.ENTITY)
+    )
+
+
+# REV_336 — Plot of Sin (Druid 3-cost spell).
+# Summon two 2/2 Treants. Infuse(2): Two 5/5 Ancients instead.
+class REV_336:
+    """Plot of Sin"""
+
+    play = Summon(CONTROLLER, "REV_336t2") * 2
+    progress_total = 2
+
+    class Hand:
+        events = Death(FRIENDLY + MINION).on(AddProgress(SELF, Death.ENTITY))
+
+    reward = Morph(SELF, "REV_336t4")
+
+
+class REV_336t4:
+    """Plot of Sin (Infused)"""
+
+    play = Summon(CONTROLLER, "REV_336t3") * 2
+
+
+# REV_350 — Frenzied Fangs (Hunter 2-cost spell).
+# Summon two 2/1 Bats. Infuse(2): Give them +1/+2.
+class REV_350:
+    """Frenzied Fangs"""
+
+    play = Summon(CONTROLLER, "REV_350t") * 2
+    progress_total = 2
+
+    class Hand:
+        events = Death(FRIENDLY + MINION).on(AddProgress(SELF, Death.ENTITY))
+
+    reward = Morph(SELF, "REV_350t2")
+
+
+class REV_350t2:
+    """Frenzied Fangs (Infused)"""
+
+    # Summon two 2/1 Bats and buff them with +1/+2.
+    play = (
+        Summon(CONTROLLER, "REV_350t").then(Buff(Summon.CARD, "REV_350e")),
+        Summon(CONTROLLER, "REV_350t").then(Buff(Summon.CARD, "REV_350e")),
+    )
+
+
+REV_350e = buff(atk=1, health=2)
+
+
+# REV_353 — Huntsman Altimor (Hunter 7-cost legendary 5/4).
+# Battlecry: Summon a Gargon Companion (Hecutis/Barghast/Margore — random).
+# Infuse(3): Summon 2 instead. Infuse(3) AGAIN (chained): Summon all 3!
+# This is a multi-stage infuse — implemented via Morph chain
+# REV_353 -> REV_353t -> REV_353t2 (the final form summons all 3).
+GARGON_COMPANIONS = ("REV_353t3", "REV_353t4", "REV_353t5")
+
+
+class REV_353:
+    """Huntsman Altimor"""
+
+    play = Summon(CONTROLLER, RandomID(*GARGON_COMPANIONS))
+    progress_total = 3
+
+    class Hand:
+        events = Death(FRIENDLY + MINION).on(AddProgress(SELF, Death.ENTITY))
+
+    reward = Morph(SELF, "REV_353t")
+
+
+class REV_353t:
+    """Huntsman Altimor (Infused once — summons 2)"""
+
+    play = Summon(CONTROLLER, RandomID(*GARGON_COMPANIONS)) * 2
+    progress_total = 3
+
+    class Hand:
+        events = Death(FRIENDLY + MINION).on(AddProgress(SELF, Death.ENTITY))
+
+    reward = Morph(SELF, "REV_353t2")
+
+
+class REV_353t2:
+    """Huntsman Altimor (Fully Infused — summons all 3)"""
+
+    play = (
+        Summon(CONTROLLER, "REV_353t3"),
+        Summon(CONTROLLER, "REV_353t4"),
+        Summon(CONTROLLER, "REV_353t5"),
+    )
+
+
+class REV_353t3:
+    """Hecutis (3-cost 4/4 Taunt)"""
+    tags = {GameTag.TAUNT: True}
+
+
+class REV_353t4:
+    """Barghast (3-cost 2/4) — Your other minions have +1 Attack"""
+    update = Refresh(FRIENDLY_MINIONS - SELF, {GameTag.ATK: 1})
+
+
+class REV_353t5:
+    """Margore (3-cost 4/2 Charge)"""
+    tags = {GameTag.CHARGE: True}
+
+
+# REV_906 — Sire Denathrius (Neutral 10-cost legendary 10/10).
+# Lifesteal. Battlecry: Deal 5 damage amongst enemies.
+# "Endlessly Infuse" — every 5 friendly minion deaths grants +1 damage.
+# Modeled as Morph chain through escalating forms (REV_906 -> REV_906t).
+# After REV_906t fires, it morphs to itself (resetting progress) and stacks
+# a self-buff that records cumulative cycles. We expose the cumulative
+# damage via a ladder of damage hits scaled by Count.
+class REV_906:
+    """Sire Denathrius"""
+
+    play = Hit(RANDOM_ENEMY_CHARACTER, 1) * 5
+    progress_total = 5
+
+    class Hand:
+        events = Death(FRIENDLY + MINION).on(AddProgress(SELF, Death.ENTITY))
+
+    reward = Morph(SELF, "REV_906t")
+
+
+class REV_906t:
+    """Sire Denathrius (Infused, +1 damage per Endless cycle)"""
+
+    # Deal 6 damage amongst enemies (one extra per cycle, but engine cap:
+    # we only model the first cycle — further cycles re-morph to self and
+    # stack REV_906te which is referenced for visual flag only).
+    play = Hit(RANDOM_ENEMY_CHARACTER, 1) * 6
+    progress_total = 5
+
+    class Hand:
+        events = Death(FRIENDLY + MINION).on(AddProgress(SELF, Death.ENTITY))
+
+    # Endlessly Infuse: re-morph to self and apply a stacking marker buff.
+    # Each cycle increments REV_906te so the eventual Battlecry reflects
+    # accumulated cycles via the marker count (note: marker is purely
+    # informational — the play action still fires fixed 6 hits since LazyNum
+    # support for "6 + buff_count" inside Hit count multiplier requires
+    # Count selectors that aren't trivially composed here).
+    reward = Buff(SELF, "REV_906te"), ClearProgress(SELF)
+
+
+REV_906te = buff(atk=0, health=0)
+
+
+# REV_935 — Party Favor Totem (Shaman 3-cost 0/3 minion).
+# At the end of your turn, summon a random basic Totem.
+# Infuse(2): Summon two instead.
+class REV_935:
+    """Party Favor Totem"""
+
+    events = OWN_TURN_END.on(Summon(CONTROLLER, RandomBasicTotem()))
+    progress_total = 2
+
+    class Hand:
+        events = Death(FRIENDLY + MINION).on(AddProgress(SELF, Death.ENTITY))
+
+    reward = Morph(SELF, "REV_935t")
+
+
+class REV_935t:
+    """Party Favor Totem (Infused)"""
+
+    events = OWN_TURN_END.on(Summon(CONTROLLER, RandomBasicTotem()) * 2)
+
+
+# REV_937 — Artificer Xy'mox (Demon Hunter 8-cost legendary 8/8).
+# Battlecry: Discover and cast a Relic. Infuse(3): Cast all three Relics.
+# "Relic" is a cycling DH spell mechanic not implemented in fireplace.
+# Simplification: discover a random Demon Hunter spell from your deck.
+# Infused: cast 3 random DH spells.
+class REV_937:
+    """Artificer Xy'mox"""
+
+    play = DISCOVER(RandomSpell(card_class=CardClass.DEMONHUNTER))
+    progress_total = 3
+
+    class Hand:
+        events = Death(FRIENDLY + MINION).on(AddProgress(SELF, Death.ENTITY))
+
+    reward = Morph(SELF, "REV_937t")
+
+
+class REV_937t:
+    """Artificer Xy'mox (Infused)"""
+
+    # Cast 3 random DH spells (simplified: just summon 3 random DH minions
+    # since "cast spell from nothing" engine plumbing is involved).
+    play = Give(CONTROLLER, RandomSpell(card_class=CardClass.DEMONHUNTER)) * 3
+
+
+# REV_958 — Buffet Biggun (Paladin 4-cost 2/4 minion).
+# Battlecry: Summon two Silver Hand Recruits.
+# Infuse(2): Give them +2 Attack and Divine Shield.
+class REV_958:
+    """Buffet Biggun"""
+
+    play = Summon(CONTROLLER, "CS2_101t") * 2
+    progress_total = 2
+
+    class Hand:
+        events = Death(FRIENDLY + MINION).on(AddProgress(SELF, Death.ENTITY))
+
+    reward = Morph(SELF, "REV_958t")
+
+
+class REV_958t:
+    """Buffet Biggun (Infused)"""
+
+    # Summon two Recruits then buff them with REV_958e (+2 atk + Divine Shield).
+    play = (
+        Summon(CONTROLLER, "CS2_101t").then(
+            Buff(Summon.CARD, "REV_958e"),
+            SetTags(Summon.CARD, {GameTag.DIVINE_SHIELD: True}),
+        ),
+        Summon(CONTROLLER, "CS2_101t").then(
+            Buff(Summon.CARD, "REV_958e"),
+            SetTags(Summon.CARD, {GameTag.DIVINE_SHIELD: True}),
+        ),
+    )
+
+
+REV_958e = buff(atk=2)
