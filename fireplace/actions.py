@@ -505,6 +505,13 @@ class Play(GameAction):
         if card.type == CardType.SPELL and card.twinspell:
             source.game.queue_actions(card, [Give(player, card.twinspell_copy)])
 
+        # STARSHIP_PIECE: attach the played piece to the controller's starship
+        # so "if you're building a Starship" predicates work and Launch can
+        # fire the piece's launch effect later. (Simplified: piece is also
+        # summoned to the field as normal — see LaunchStarship for details.)
+        if card.type == CardType.MINION and card.data.tags.get(GameTag.STARSHIP_PIECE):
+            player.starship_pieces.append(card)
+
         if card.type == CardType.MINION and card.data.tags.get(GameTag.MINIATURIZE):
             mini_id = card.miniaturize_mini_id
             if mini_id:
@@ -1891,6 +1898,71 @@ class Forge(TargetedAction):
             source.game.queue_actions(target, [Morph(target, forged_card)])
         source.game.manager.targeted_action(self, source, target)
         self.broadcast(source, EventListener.AFTER, target)
+
+
+class LaunchStarship(TargetedAction):
+    """
+    Launch the controller's starship: trigger each attached STARSHIP_PIECE's
+    battlecry as a "launch" effect, then clear the starship_pieces list.
+    Simplified model — pieces in this engine are summoned to the field on
+    play AND tracked in starship_pieces; launch just re-fires battlecries.
+    """
+
+    TARGET = ActionArg()  # the controller player
+
+    def get_target_args(self, source, target):
+        return [None]
+
+    def do(self, source, target, _unused=None):
+        pieces = list(target.starship_pieces)
+        log.info("%r launches starship with pieces %r", target, pieces)
+        for piece in pieces:
+            actions = piece.get_actions("play")
+            if actions:
+                source.game.queue_actions(piece, actions)
+        target.starship_pieces = type(target.starship_pieces)()
+        source.game.manager.targeted_action(self, source, target)
+
+
+class Excavate(TargetedAction):
+    """
+    Excavate (Showdown in Badlands): give the controller a random treasure
+    card from the current Excavate tier. Tier increments each Excavate up to
+    the cap (tier 4 — Azerite legendary). Treasure pools are neutral
+    Tradeable-style tokens that any class can dig up.
+    """
+
+    TARGET = ActionArg()  # the controller player
+    CARD = CardArg()
+
+    # Treasure pools by tier (1-indexed). Tier 4 is the Azerite legendary
+    # tier — players reach it on their 4th Excavate.
+    TREASURE_TIERS = {
+        1: ["WW_001t", "WW_001t2", "WW_001t3", "WW_001t4", "WW_001t18"],
+        2: ["WW_001t5", "WW_001t7", "WW_001t8", "WW_001t9"],
+        3: [
+            "WW_001t11", "WW_001t12", "WW_001t13",
+            "WW_001t14", "WW_001t16", "WW_001t17",
+        ],
+        4: [
+            "WW_001t23", "WW_001t24", "WW_001t25",
+            "WW_001t26", "WW_001t27",
+        ],
+    }
+
+    def get_target_args(self, source, target):
+        return [None]
+
+    def do(self, source, target, _unused=None):
+        target.excavate_count += 1
+        tier = min(target.excavate_count, 4)
+        pool = self.TREASURE_TIERS[tier]
+        treasure_id = source.game.random.choice(pool)
+        log.info("%r excavates tier %d treasure %s", target, tier, treasure_id)
+        treasure = target.card(treasure_id, source=source)
+        treasure.zone = Zone.HAND
+        source.game.manager.targeted_action(self, source, target, treasure)
+        self.broadcast(source, EventListener.AFTER, target, treasure)
 
 
 class Dredge(TargetedAction):

@@ -103,6 +103,11 @@ class Player(Entity, TargetableByAuras):
         self.healed_this_game = 0
         self.cthun = None
         self.invoke_counter = 0
+        # EXCAVATE: counter increments each time the player Excavates. Tier 1
+        # treasures fire on the first Excavate, tier 2 on the second, etc.
+        self.excavate_count = 0
+        # STARSHIP: pieces attached to the player's starship awaiting launch.
+        self.starship_pieces = CardList()
 
     def dump(self):
         data = super().dump()
@@ -211,6 +216,11 @@ class Player(Entity, TargetableByAuras):
     @property
     def characters(self):
         return CardList(chain([self.hero] if self.hero else [], self.field))
+
+    @property
+    def is_building_starship(self) -> bool:
+        """True if the player has any STARSHIP_PIECE cards attached."""
+        return len(self.starship_pieces) > 0
 
     @property
     def entities(self):
