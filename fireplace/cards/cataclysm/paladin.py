@@ -153,14 +153,13 @@ class CATA_478t:
 # 2费 法术
 # 选择你手牌中的一张随从牌，使其获得+2/+2
 class CATA_477:
-    """Hall of the Dragonflight"""
+    """Hall of the Dragonflight (Location)"""
 
-    requirements = {
+    location_requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
         PlayReq.REQ_MINION_TARGET: 0,
     }
-
-    play = Buff(TARGET, "CATA_477e")
+    location_action = Buff(TARGET, "CATA_477e")
 
 
 CATA_477e = buff(+2, +2)

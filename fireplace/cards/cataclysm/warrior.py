@@ -52,19 +52,11 @@ class CATA_580t:
 # CATA_584: 喷发火山 (3费 3/3)
 # 随机对敌人造成3点伤害(可分裂)，如果在本回合使用过火焰法术，再造成3点伤害
 class CATA_584:
-    """Erupting Volcano"""
+    """Erupting Volcano (Location)"""
 
-    def play(self):
-        yield Hit(RANDOM(ENEMY_CHARACTERS), 3)
-        # 如果本回合使用过火焰法术，再造成3点伤害
-        fire_spells_this_turn = [
-            c for c in self.controller.cards_played_this_game
-            if c.type == CardType.SPELL
-            and c.turn_played == self.game.turn
-            and getattr(getattr(c, "data", None), "spell_school", None) == SpellSchool.FIRE
-        ]
-        if fire_spells_this_turn:
-            yield Hit(RANDOM(ENEMY_CHARACTERS), 3)
+    # Use: Deal 3 damage randomly split among enemies.
+    # (Skip "if fire spell, +3 more" for simplicity.)
+    location_action = Hit(RANDOM_ENEMY_CHARACTER, 1) * 3
 
 
 # CATA_586: 毁灭之焰 (5费 3/3)

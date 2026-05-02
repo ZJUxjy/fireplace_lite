@@ -7,8 +7,16 @@ from ..utils import *
 
 
 class EDR_454:
-    """Clutch of Corruption"""
+    """Clutch of Corruption (Location)"""
 
+    # Use: Choose a friendly Dragon. Summon a 0/2 Egg copy of it.
+    location_requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_FRIENDLY_TARGET: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+        PlayReq.REQ_TARGET_WITH_RACE: 24,  # DRAGON
+    }
+    location_action = Summon(CONTROLLER, "EDR_454t")
     deathrattle = Summon(CONTROLLER, "EDR_454t")
 
 

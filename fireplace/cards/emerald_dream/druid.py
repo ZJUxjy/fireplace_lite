@@ -184,9 +184,16 @@ class FIR_906:
 
 
 class FIR_907:
-    """Amirdrassil"""
+    """Amirdrassil (Location)"""
 
-    play = Summon(CONTROLLER, "CS2_101t")
+    # Use: Summon a 1-Cost minion, gain 1 Armor, draw 1, refresh 1 Mana.
+    # (Improves each use — simplified to fixed values.)
+    location_action = (
+        Summon(CONTROLLER, RandomMinion(cost=1)),
+        GainArmor(FRIENDLY_HERO, 1),
+        Draw(CONTROLLER),
+        ManaThisTurn(CONTROLLER, 1),
+    )
 
 
 class FIR_908:

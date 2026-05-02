@@ -44,9 +44,11 @@ class EDR_519e:
 
 
 class EDR_520:
-    """Forbidden Shrine"""
+    """Forbidden Shrine (Location)"""
 
-    play = Summon(CONTROLLER, "CS2_101t")
+    # Use: Spend all Mana, cast a random spell that costs that much.
+    # Simplified: cast a random spell.
+    location_action = CastSpell(RandomSpell())
 
 
 class EDR_872:

@@ -33,12 +33,10 @@ class CATA_491:
 # CATA_492: 暮光神坛 (3费 2/5)
 # 兆示{0}。抽一张牌
 class CATA_492:
-    """Twilight Altar"""
+    """Twilight Altar (Location)"""
 
-    # 兆示：触发一次效果
-    # 简化实现：直接抽一张牌
-    # TODO: 实现完整的兆示机制
-    play = Draw(CONTROLLER)
+    # Herald: trigger an effect once. (Herald not implemented — just draw.)
+    location_action = Draw(CONTROLLER)
 
 
 # CATA_493: 地狱公爵 (4费 4/4 突袭)

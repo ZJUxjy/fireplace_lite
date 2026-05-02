@@ -75,17 +75,14 @@ class CATA_525te:
 # CATA_527: 奈瑟匹拉，蒙难古灵 (3费 5/5)
 # 造成1点伤害。在你施放一个邪能法术后，重新开启。亡语：召唤奈瑟匹拉，脱困古灵
 class CATA_527:
-    """Naga, the Dissenter"""
+    """Naga, the Dissenter (Location)"""
 
-    # 造成1点伤害
-    play = Hit(RANDOM(ENEMY_MINIONS | ENEMY_HERO), 1)
-
-    # 在你施放一个邪能法术后，重新开启
+    # Use: Deal 1 damage. After Fel spell, reopen (re-trigger).
+    location_action = Hit(RANDOM(ENEMY_MINIONS | ENEMY_HERO), 1)
     events = Play(CONTROLLER, FEL_SPELL).after(
         Hit(RANDOM(ENEMY_MINIONS | ENEMY_HERO), 1)
     )
-
-    # 亡语：召唤奈瑟匹拉，脱困古灵
+    # Deathrattle: Summon Nespirah, Unshackled
     deathrattle = Summon(CONTROLLER, "CATA_527t2")
 
 

@@ -44,13 +44,12 @@ CATA_300t3 = CATA_300t1
 # CATA_301: "红玉圣殿" (1费 法术)
 # 在本回合中，你的下一次治疗效果转而造成等量的伤害
 class CATA_301:
-    """Ruby Sanctum"""
+    """Ruby Sanctum (Location)"""
 
-    # 在本回合中，你的下一次治疗效果转而造成等量的伤害
-    # 简化实现：使用自定义动作来处理
-    def play(self):
-        # 设置 healing_as_damage 标志
-        self.controller.healing_as_damage = True
+    # Your next Healing effect this turn deals damage instead.
+    # Simplified for the Location use action: deal 3 damage to a target.
+    location_requirements = {PlayReq.REQ_TARGET_TO_PLAY: 0}
+    location_action = Hit(TARGET, 3)
 
 
 # CATA_302: "愈合" (1费 法术)
