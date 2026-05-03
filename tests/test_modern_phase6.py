@@ -263,3 +263,41 @@ def test_deathwing_in_hand_also_morphs():
     progeny = next((c for c in game.player1.hand if c.id == "CATA_190t14"), None)
     assert progeny is not None
     assert all(c.id != "CATA_190h" for c in game.player1.hand)
+
+
+# === SUMMON-TRIGGER ON NON-HERALD PATHS ===
+# Real Hearthstone "When summoned, ..." fires on any summon — not just
+# the path that originally created the token. Verified via direct summon.
+
+
+def test_soldier_effect_fires_on_direct_summon():
+    """Direct player.summon('CATA_525t') should fire its 'When summoned'."""
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    assert game.player1.hero.atk == 0
+    # No Herald yet — controller.herald_count == 0, but soldier's max(1, count)
+    # gives at least +1 atk.
+    game.player1.summon("CATA_525t")
+    assert game.player1.hero.atk >= 1
+
+
+def test_soldier_effect_fires_after_herald_then_direct_summon():
+    """Herald once (count=1) → direct summon a 2nd Soldier → buff stacks."""
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    game.player1.give("CATA_530").play()  # Herald → +1 atk
+    assert game.player1.hero.atk == 1
+    # Direct summon (e.g., as if a copy effect cloned the soldier)
+    game.player1.summon("CATA_525t")
+    # herald_count is still 1, so direct summon adds another +1 → total 2
+    assert game.player1.hero.atk == 2
+
+
+def test_sinestra_summon_trigger_via_direct_summon():
+    """Soldier of Sinestra direct-summoned should still grant a discounted spell."""
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    initial_hand = len(game.player1.hand)
+    game.player1.summon("CATA_158t")
+    # Hand should have 1 more card (a discounted random spell).
+    assert len(game.player1.hand) == initial_hand + 1

@@ -54,10 +54,10 @@ class CATA_158t:
     """Soldier of Sinestra"""
 
     # When summoned, get a random spell from another class. It costs
-    # ({herald_count}) less. Simplified: give the spell with a stacked
-    # cost-reduction buff equal to herald_count.
+    # ({herald_count}) less. Uses summon_trigger so the effect fires on any
+    # summon path, not just Herald.
     @staticmethod
-    def play(self):
+    def summon_trigger(self):
         amount = max(1, self.controller.herald_count)
         return [
             Give(CONTROLLER, RandomSpell()).then(

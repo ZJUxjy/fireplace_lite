@@ -182,9 +182,10 @@ class CATA_780t:
 
     tags = {GameTag.CARDRACE: Race.DRAGON}
 
-    # When summoned, get a random {herald_count}-Cost minion.
+    # When summoned, get a random {herald_count}-Cost minion. Uses
+    # summon_trigger so effects fire on any summon path, not just Herald.
     @staticmethod
-    def play(self):
+    def summon_trigger(self):
         cost = max(1, self.controller.herald_count)
         return [Give(CONTROLLER, RandomMinion(cost=cost))]
 

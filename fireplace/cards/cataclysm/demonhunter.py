@@ -56,9 +56,10 @@ class CATA_525:
 class CATA_525t:
     """Azshara's Mariner"""
 
-    # When summoned, give your hero +{herald_count} Attack this turn.
+    # When summoned, give your hero +{herald_count} Attack this turn. Uses
+    # summon_trigger so the effect fires on any summon path, not just Herald.
     @staticmethod
-    def play(self):
+    def summon_trigger(self):
         amount = max(1, self.controller.herald_count)
         return [Buff(FRIENDLY_HERO, "CATA_525te") * amount]
 

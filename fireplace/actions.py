@@ -1809,6 +1809,15 @@ class Summon(TargetedAction):
             source.game.manager.targeted_action(self, source, target, card)
             self.queue_broadcast(self, (source, EventListener.ON, target, card))
             self.broadcast(source, EventListener.AFTER, target, card)
+            # SUMMON_TRIGGER: fires the summoned card's `summon_trigger`
+            # script (modeling "When summoned, ..." text — distinct from
+            # Battlecry which only fires on play-from-hand). Sidesteps the
+            # `_broadcast` self-suppression above so the summoned card can
+            # react to its own summon regardless of source path (Herald,
+            # copy, resurrection, random pick, etc.).
+            summon_actions = card.get_actions("summon_trigger")
+            if summon_actions:
+                source.game.trigger(card, summon_actions, event_args=None)
 
         return cards
 
@@ -1958,15 +1967,11 @@ class Herald(TargetedAction):
             "%r heralds (count=%d, soldier=%s)",
             target, target.herald_count, soldier.id,
         )
-        # Summon the soldier to the field.
+        # Summon the soldier to the field. The soldier's "When summoned"
+        # effect (modeled via the `summon_trigger` script) runs inside
+        # Summon.do for every summon path — no explicit dispatch needed
+        # here.
         source.game.queue_actions(source, [Summon(target, soldier)])
-        # Fire the soldier's "When summoned, ..." play script. Summon alone
-        # does not run battlecries; we trigger the play actions explicitly
-        # so soldier effects (e.g. spell discount, hero +N atk) actually
-        # take effect with the current herald_count value.
-        play_actions = soldier.get_actions("play")
-        if play_actions:
-            source.game.trigger(soldier, play_actions, event_args=None)
         # Deathwing upgrade: at 2+ Heralds, morph any Deathwing in deck/hand
         # to Progeny. Loop is idempotent (won't re-fire on subsequent
         # Heralds because CATA_190h no longer exists after morph).
