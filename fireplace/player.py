@@ -111,6 +111,10 @@ class Player(Entity, TargetableByAuras):
         # IMBUE: counter increments each time the hero power is Imbued.
         # Card scripts can morph the hero power based on this count.
         self.imbue_count = 0
+        # HERALD (Cataclysm): counter increments each time the player Heralds.
+        # Soldier tokens scale their effects with this count, and Deathwing
+        # upgrades to Progeny once the counter reaches 2.
+        self.herald_count = 0
 
     def dump(self):
         data = super().dump()

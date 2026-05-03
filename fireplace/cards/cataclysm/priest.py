@@ -109,19 +109,46 @@ CATA_305e = buff(+0, +3)
 class CATA_306:
     """Schism"""
 
-    requirements = {PlayReq.REQ_TARGET_TO_PLAY: 0, PlayReq.REQ_MINION_TARGET: 0}
+    # Shatter. Give a friendly minion +2/+3 and Elusive. Summon a copy.
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_FRIENDLY_TARGET: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+    shatter_halves = ("CATA_306t1", "CATA_306t2")
 
-    # 使一个友方随从获得+2/+3和扰魔。召唤一个它的复制
     def play(self):
         target = self.target
-        # 给目标+2/+3和扰魔
         yield Buff(target, "CATA_306e")
-        # 召唤一个复制
         yield Summon(CONTROLLER, ExactCopy(target))
+        yield Shatter(CONTROLLER)
 
 
-# CATA_306e: +2/+3 和 扰魔
 CATA_306e = buff(+2, +3, elusive=True)
+
+
+class CATA_306t1:
+    """Schism (Shattered half 1)"""
+
+    # Give a friendly minion +2/+3 and Elusive.
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_FRIENDLY_TARGET: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+    play = Buff(TARGET, "CATA_306e")
+
+
+class CATA_306t2:
+    """Schism (Shattered half 2)"""
+
+    # Summon a copy of a friendly minion.
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_FRIENDLY_TARGET: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+    play = Summon(CONTROLLER, ExactCopy(TARGET))
 
 
 # CATA_307: "阿莱克丝塔萨，生命守护者" (7费 8/8 龙)

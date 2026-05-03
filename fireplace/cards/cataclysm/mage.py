@@ -164,14 +164,27 @@ class CATA_485:
 class CATA_489:
     """Arcane Flow"""
 
-    # 裂变：造成4点伤害，对所有敌人造成2点伤害
-    requirements = {
-        PlayReq.REQ_TARGET_TO_PLAY: 0,
-    }
+    # Shatter. Deal 4 damage. Deal 2 damage to all enemies.
+    requirements = {PlayReq.REQ_TARGET_TO_PLAY: 0}
+    shatter_halves = ("CATA_489t", "CATA_489t2")
 
     def play(self):
-        yield Hit(TARGET, 4)
+        yield Hit(self.target, 4)
         yield Hit(ENEMY_CHARACTERS, 2)
+        yield Shatter(CONTROLLER)
+
+
+class CATA_489t:
+    """Arcane Flow (Shattered half 1)"""
+
+    requirements = {PlayReq.REQ_TARGET_TO_PLAY: 0}
+    play = Hit(TARGET, 4)
+
+
+class CATA_489t2:
+    """Arcane Flow (Shattered half 2)"""
+
+    play = Hit(ENEMY_CHARACTERS, 2)
 
 
 # CATA_978: 辛达苟萨的胜利 (5费 法术)

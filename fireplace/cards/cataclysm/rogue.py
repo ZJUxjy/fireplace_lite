@@ -42,10 +42,10 @@ class CATA_154t1:
 class CATA_158:
     """Maniacal Follower"""
 
+    # Stealth. Deathrattle: Herald (summon Soldier of Sinestra).
     tags = {GameTag.STEALTH: True}
-
-    # 亡语: 召唤一个Sinestra的士兵
-    deathrattle = Summon(CONTROLLER, "CATA_158t")
+    herald_soldier_id = "CATA_158t"
+    deathrattle = Herald(CONTROLLER)
 
 
 # CATA_158t: Soldier of Sinestra (1费 1/1 龙)
@@ -53,8 +53,20 @@ class CATA_158:
 class CATA_158t:
     """Soldier of Sinestra"""
 
-    # 简化实现: 战吼，获取一张随机法术
-    play = Discover(CONTROLLER, RandomSpell())
+    # When summoned, get a random spell from another class. It costs
+    # ({herald_count}) less. Simplified: give the spell with a stacked
+    # cost-reduction buff equal to herald_count.
+    @staticmethod
+    def play(self):
+        amount = max(1, self.controller.herald_count)
+        return [
+            Give(CONTROLLER, RandomSpell()).then(
+                Buff(Give.CARD, "CATA_158te") * amount
+            )
+        ]
+
+
+CATA_158te = buff(cost=-1)
 
 
 
@@ -165,5 +177,7 @@ class CATA_785:
         PlayReq.REQ_TARGET_TO_PLAY: 0,
     }
 
-    # 连击: 造成3点伤害（无连击时的兆示效果未实现）
-    combo = Hit(TARGET, 3)
+    # Herald. Combo: Deal 3 damage. (Soldier of Sinestra)
+    herald_soldier_id = "CATA_158t"
+    play = Herald(CONTROLLER)
+    combo = Herald(CONTROLLER), Hit(TARGET, 3)

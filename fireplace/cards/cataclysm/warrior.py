@@ -32,21 +32,22 @@ class CATA_150t1:
 
 
 # CATA_160: 灼烧掠夺者 (4费 4/3)
-# 战吼：兆示，使拉格纳罗斯的士兵获得冲锋
 class CATA_160:
     """Scorching Ravager"""
 
-    # 战吼：召唤一个拉格纳罗斯的士兵并使其获得冲锋
-    play = Summon(CONTROLLER, "CATA_580t").then(
-        GiveRush(Summon.CARD)
-    )
+    # Battlecry: Herald (Soldier of Ragnaros). Give the Soldier Rush.
+    herald_soldier_id = "CATA_580t"
+    play = Herald(CONTROLLER).then(SetTags(Summon.CARD, {GameTag.RUSH: True}))
 
 
-# 亡语：对一个随机敌人造成2点伤害
 class CATA_580t:
     """Soldier of Ragnaros"""
 
-    deathrattle = Hit(RANDOM(ENEMY_CHARACTERS), 2)
+    # Deathrattle: Deal {herald_count} damage to a random enemy.
+    @staticmethod
+    def deathrattle(self):
+        amount = max(1, self.controller.herald_count)
+        return [Hit(RANDOM(ENEMY_CHARACTERS), amount)]
 
 
 # CATA_584: 喷发火山 (3费 3/3)
@@ -161,11 +162,10 @@ class CATA_610e:
     deathrattle = Summon(CONTROLLER, RANDOM(FRIENDLY_HAND + MINION))
 
 
-# CATA_580: 灾变战斧 (3费 3/2 武器)
-# 战吼：兆示
+# CATA_580: 灾变战斧 (3费 武器)
 class CATA_580:
     """Cataclysmic War Axe"""
 
-    # 战吼：造成2点伤害
-    # 简化实现：战吼，对一个随机敌人造成2点伤害
-    play = Hit(RANDOM(ENEMY_CHARACTERS), 2)
+    # Battlecry: Herald (Soldier of Ragnaros).
+    herald_soldier_id = "CATA_580t"
+    play = Herald(CONTROLLER)

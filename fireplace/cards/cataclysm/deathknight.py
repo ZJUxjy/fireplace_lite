@@ -171,26 +171,22 @@ class CATA_470t1:
 class CATA_780:
     """Obsessive Technician"""
 
-    tags = {
-        GameTag.LIFESTEAL: True,
-    }
-
-    # 战吼：兆示
-    # 简化实现：造成2点伤害
-    play = Hit(RANDOM(ENEMY_MINIONS), 2)
+    # Lifesteal. Battlecry: Herald (Soldier of Onyxia).
+    tags = {GameTag.LIFESTEAL: True}
+    herald_soldier_id = "CATA_780t"
+    play = Herald(CONTROLLER)
 
 
-# CATA_780t: 奥妮克希亚的士兵 (1费 1/1 龙)
-# 被召唤时，获取一张消耗为(1)的随从牌，它在本回合中会消耗生命值。兆示两次后升级。
 class CATA_780t:
     """Soldier of Onyxia"""
 
-    tags = {
-        GameTag.CARDRACE: Race.DRAGON,
-    }
+    tags = {GameTag.CARDRACE: Race.DRAGON}
 
-    # 被召唤时，获取一张消耗为(1)的随从牌
-    play = Give(CONTROLLER, RandomMinion(cost=1))
+    # When summoned, get a random {herald_count}-Cost minion.
+    @staticmethod
+    def play(self):
+        cost = max(1, self.controller.herald_count)
+        return [Give(CONTROLLER, RandomMinion(cost=cost))]
 
 
 ##
@@ -202,8 +198,9 @@ class CATA_780t:
 class CATA_156:
     """Experimental Animation"""
 
-    # 对所有敌方随从造成4点伤害
-    play = Hit(ENEMY_MINIONS, 4)
+    # Herald (Soldier of Onyxia). Deal 4 damage to all enemy minions.
+    herald_soldier_id = "CATA_780t"
+    play = Herald(CONTROLLER), Hit(ENEMY_MINIONS, 4)
 
 
 # CATA_471: 塔兰吉的奋战 (5费 法术)

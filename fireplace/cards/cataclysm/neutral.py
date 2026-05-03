@@ -179,11 +179,18 @@ class CATA_476t:
 # CATA_497: 奥卓克希昂 (6费 6/7)
 # 战吼：兆示1。使其余“死亡之翼”卡牌的法力值消耗减少（1）点。
 class CATA_497:
-    """Ysera the Unleashed"""
+    """Ultraxion"""
 
-    # 战吼：兆示1，减少死亡之翼的费用
-    # 简化实现：给死亡之翼卡牌-1费
-    play = Buff(FRIENDLY_DECK + ID("CATA_190h"), "CATA_497e")
+    # Battlecry: Herald. Reduce Deathwing's Cost by ({herald_count}).
+    # Real HS: the cost reduction equals herald_count *after* this Herald.
+    # Neutral cards default to Soldier of Sinestra; Buff stacks on existing
+    # CATA_190h copies in deck/hand.
+    herald_soldier_id = "CATA_158t"
+    play = (
+        Herald(CONTROLLER),
+        Buff(FRIENDLY_DECK + ID("CATA_190h"), "CATA_497e"),
+        Buff(FRIENDLY_HAND + ID("CATA_190h"), "CATA_497e"),
+    )
 
 
 CATA_497e = buff(cost=-1)
@@ -288,12 +295,12 @@ class CATA_721:
 # CATA_722: 末世特使 (5费 5/4 嘲讽)
 # 嘲讽。战吼：兆示1。
 class CATA_722:
-    """Fearsome Doomkin"""
+    """Envoy of the End"""
 
+    # Taunt. Battlecry: Herald.
     tags = {GameTag.TAUNT: True}
-
-    # 简化实现：不做任何效果（兆示效果）
-    pass
+    herald_soldier_id = "CATA_158t"  # neutral default
+    play = Herald(CONTROLLER)
 
 
 # CATA_723: 龙脉混血兽 (7费 8/6)

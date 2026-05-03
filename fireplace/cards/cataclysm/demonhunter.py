@@ -47,20 +47,21 @@ class CATA_151te:
 class CATA_525:
     """Armored Bloodsail Naga"""
 
+    # Rush. Battlecry: Herald (Soldier of Azshara).
     tags = {GameTag.RUSH: True}
-
-    # 兆示效果（简化实现：直接触发效果）
-    # 兆示2次，所以效果触发两次
-    # 简化实现：直接造成2点伤害
-    play = Hit(RANDOM(ENEMY_MINIONS), 2)
+    herald_soldier_id = "CATA_525t"
+    play = Herald(CONTROLLER)
 
 
-# CATA_525t: 艾萨拉的士兵 (1费 2/1)
-# 被召唤时，使你的英雄在当回合获得+1攻击力
 class CATA_525t:
     """Azshara's Mariner"""
 
-    play = Buff(FRIENDLY_HERO, "CATA_525te")
+    # When summoned, give your hero +{herald_count} Attack this turn.
+    @staticmethod
+    def play(self):
+        amount = max(1, self.controller.herald_count)
+        # Stack the per-turn buff `amount` times.
+        return [Buff(FRIENDLY_HERO, "CATA_525te")] * amount
 
 
 @custom_card
@@ -69,6 +70,7 @@ class CATA_525te:
         GameTag.CARDNAME: "Azshara Mariner Buff",
         GameTag.CARDTYPE: CardType.ENCHANTMENT,
         GameTag.ATK: 1,
+        GameTag.TAG_ONE_TURN_EFFECT: True,
     }
 
 
@@ -223,8 +225,9 @@ class CATA_528t:
 class CATA_530:
     """Fel Infusion"""
 
-    # 在本回合中，你的英雄拥有吸血（回合结束时移除）
-    play = Buff(FRIENDLY_HERO, "CATA_530e")
+    # Herald (Soldier of Azshara). Your hero has Lifesteal this turn.
+    herald_soldier_id = "CATA_525t"
+    play = Herald(CONTROLLER), Buff(FRIENDLY_HERO, "CATA_530e")
 
 
 # CATA_530e: 邪能灌魔 buff（仅本回合有效）

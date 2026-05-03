@@ -87,8 +87,9 @@ class CATA_561:
         GameTag.RARITY: 3,
     }
 
-    # 简化实现：召唤2个1/1突袭元素
-    play = Summon(CONTROLLER, "CATA_561t") * 2
+    # Herald (Soldier of Al'Akir). Get two 1/1 Elementals with Rush.
+    herald_soldier_id = "CATA_565t"
+    play = Herald(CONTROLLER), Summon(CONTROLLER, "CATA_561t") * 2
 
 
 # CATA_561t: 微风精灵 (1费 1/1 元素)
@@ -160,6 +161,7 @@ class CATA_564:
 class CATA_565:
     """Skywall Sentinel"""
 
+    # Taunt. Battlecry: Herald (Soldier of Al'Akir).
     tags = {
         GameTag.CARD_SET: 1980,
         GameTag.COST: 2,
@@ -168,12 +170,10 @@ class CATA_565:
         GameTag.TAUNT: True,
         GameTag.RARITY: 3,
     }
+    herald_soldier_id = "CATA_565t"
+    play = Herald(CONTROLLER)
 
-    # 简化实现：战吼，召唤一个1/2的士兵
-    play = Summon(CONTROLLER, "CATA_565t")
 
-
-# CATA_565t: 奥拉基尔的士兵 (1费 1/2)
 class CATA_565t:
     """Soldier of Al'Akir"""
 
@@ -183,6 +183,10 @@ class CATA_565t:
         GameTag.ATK: 1,
         GameTag.HEALTH: 2,
     }
+    # Adjacent minions have +1 Attack (aura). Real Hearthstone scales by
+    # herald_count; we simplify to flat +1 since dynamic-count auras require
+    # per-tick recomputation that fireplace's Refresh doesn't expose.
+    update = Refresh(SELF_ADJACENT, {GameTag.ATK: 1})
 
 
 # CATA_567: 升腾 (4费 法术)

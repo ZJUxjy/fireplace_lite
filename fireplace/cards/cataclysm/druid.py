@@ -163,9 +163,28 @@ class CATA_140:
 class CATA_134:
     """Wildwood Circle"""
 
-    # 破碎效果：召唤两个2/2树人，给所有友方随从亡语buff
-    # 简化实现：直接召唤两个树人并给随从亡语
-    play = Summon(CONTROLLER, "CATA_134t3") * 2, Buff(FRIENDLY_MINIONS, "CATA_134e")
+    # Shatter. Summon two 2/2 Treants. Give your minions "Deathrattle:
+    # Summon a 2/2 Treant." After playing, also add the two halves to hand.
+    shatter_halves = ("CATA_134t", "CATA_134t2")
+    play = (
+        Summon(CONTROLLER, "CATA_134t3") * 2,
+        Buff(FRIENDLY_MINIONS, "CATA_134e"),
+        Shatter(CONTROLLER),
+    )
+
+
+class CATA_134t:
+    """Wildwood Circle (Shattered half 1)"""
+
+    # Summon two 2/2 Treants.
+    play = Summon(CONTROLLER, "CATA_134t3") * 2
+
+
+class CATA_134t2:
+    """Wildwood Circle (Shattered half 2)"""
+
+    # Give your minions "Deathrattle: Summon a 2/2 Treant."
+    play = Buff(FRIENDLY_MINIONS, "CATA_134e")
 
 
 # CATA_134t3: 树人 (1费 2/2)

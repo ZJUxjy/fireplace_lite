@@ -35,8 +35,9 @@ class CATA_491:
 class CATA_492:
     """Twilight Altar (Location)"""
 
-    # Herald: trigger an effect once. (Herald not implemented — just draw.)
-    location_action = Draw(CONTROLLER)
+    # Use: Herald (Soldier of Cho'gall). Draw a card.
+    herald_soldier_id = "CATA_725t"
+    location_action = Herald(CONTROLLER), Draw(CONTROLLER)
 
 
 # CATA_493: 地狱公爵 (4费 4/4 突袭)
@@ -105,13 +106,11 @@ class CATA_499:
 # CATA_725: 暗誓信徒 (2费 2/1)
 # 战吼：兆示{0}。亡语：为你的英雄恢复#3点生命值
 class CATA_725:
-    """Dark Inquisitor"""
+    """Shadowsworn Disciple"""
 
-    # 兆示：触发一次效果
-    # 简化实现：直接触发
-    # TODO: 实现完整的兆示机制
-
-    # 亡语：恢复3点生命值
+    # Battlecry: Herald (Soldier of Cho'gall). Deathrattle: Restore 3 Health.
+    herald_soldier_id = "CATA_725t"
+    play = Herald(CONTROLLER)
     deathrattle = Heal(FRIENDLY_HERO, 3)
 
 

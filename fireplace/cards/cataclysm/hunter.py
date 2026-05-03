@@ -144,8 +144,33 @@ CATA_566e = buff(+1, +1)
 class CATA_820:
     """Supply Run"""
 
-    # 使你的所有野兽获得+1/+1
-    play = Buff(FRIENDLY_MINIONS + BEAST, "CATA_820e")
+    # Shatter. Draw 3 minions. Give minions in your hand +2/+2.
+    shatter_halves = ("CATA_820t", "CATA_820t2")
+    play = (
+        ForceDraw(RANDOM(FRIENDLY_DECK + MINION)),
+        ForceDraw(RANDOM(FRIENDLY_DECK + MINION)),
+        ForceDraw(RANDOM(FRIENDLY_DECK + MINION)),
+        Buff(FRIENDLY_HAND + MINION, "CATA_820e"),
+        Shatter(CONTROLLER),
+    )
 
 
-CATA_820e = buff(+1, +1)
+CATA_820e = buff(+2, +2)
+
+
+class CATA_820t:
+    """Supply Run (Shattered half 1)"""
+
+    # Draw 3 minions.
+    play = (
+        ForceDraw(RANDOM(FRIENDLY_DECK + MINION)),
+        ForceDraw(RANDOM(FRIENDLY_DECK + MINION)),
+        ForceDraw(RANDOM(FRIENDLY_DECK + MINION)),
+    )
+
+
+class CATA_820t2:
+    """Supply Run (Shattered half 2)"""
+
+    # Give minions in your hand +2/+2.
+    play = Buff(FRIENDLY_HAND + MINION, "CATA_820e")

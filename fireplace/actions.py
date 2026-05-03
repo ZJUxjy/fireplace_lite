@@ -1900,6 +1900,69 @@ class Forge(TargetedAction):
         self.broadcast(source, EventListener.AFTER, target)
 
 
+class Shatter(TargetedAction):
+    """
+    Shatter (Cataclysm): when a Shatter card is played, also add its two
+    half-cards to the controller's hand. Each half does part of the full
+    effect when played later. Half-card IDs are read from the source card's
+    `shatter_halves` attribute (a tuple of two card IDs).
+    """
+
+    TARGET = ActionArg()  # the controller player
+
+    def get_target_args(self, source, target):
+        return [None]
+
+    def do(self, source, target, _unused=None):
+        halves = getattr(source.data.scripts, "shatter_halves", None)
+        if not halves:
+            log.warning("%r shatters with no halves configured", source)
+            return
+        log.info("%r shatters into %r", source, halves)
+        for half_id in halves:
+            half = target.card(half_id, source=source)
+            half.zone = Zone.HAND
+        source.game.manager.targeted_action(self, source, target)
+
+
+class Herald(TargetedAction):
+    """
+    Herald (Cataclysm): summon a class-specific Soldier token and increment
+    the player's herald_count. Soldier tokens read this counter at summon
+    time to scale their effects ("Herald twice to upgrade"). The action
+    also checks for the Deathwing upgrade: once herald_count >= 2, any
+    Deathwing the Worldbreaker (CATA_190h) in the player's deck or hand is
+    morphed into Progeny of Deathwing (CATA_190t14).
+    """
+
+    TARGET = ActionArg()  # the controller player
+    CARD = CardArg()  # the soldier token id (string)
+
+    def get_target_args(self, source, target):
+        return [None]
+
+    def do(self, source, target, _unused=None):
+        soldier_id = getattr(source.data.scripts, "herald_soldier_id", None)
+        if soldier_id is None:
+            log.warning("%r heralds with no soldier_id configured", source)
+            return
+        target.herald_count += 1
+        log.info(
+            "%r heralds (count=%d, soldier=%s)",
+            target, target.herald_count, soldier_id,
+        )
+        soldier = target.card(soldier_id, source=source)
+        source.game.queue_actions(source, [Summon(target, soldier)])
+        # Deathwing upgrade: once heralded twice, morph any Deathwing in
+        # deck/hand to Progeny.
+        if target.herald_count == 2:
+            for card in list(target.deck) + list(target.hand):
+                if card.id == "CATA_190h":
+                    progeny = target.card("CATA_190t14", source=card)
+                    source.game.queue_actions(card, [Morph(card, progeny)])
+        source.game.manager.targeted_action(self, source, target, soldier)
+
+
 class Imbue(TargetedAction):
     """
     Imbue (Year of the Pegasus / Emerald Dream): empower the controller's
