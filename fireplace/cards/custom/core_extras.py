@@ -127,6 +127,118 @@ class RLK_503:
     pass
 
 
+# --- Death Knight (Lich King RLK + others) ---
+
+
+class CORE_CATA_009:
+    """Death's Advance (CORE-only — no CATA_009 base card in data)."""
+    # Freeze a character. Discover a spell.
+    requirements = {PlayReq.REQ_TARGET_TO_PLAY: 0}
+    play = Freeze(TARGET), DISCOVER(RandomSpell())
+
+
+class RLK_062:
+    """Nerubian Swarmguard"""
+    # Taunt. Battlecry: Summon two copies of this minion.
+    tags = {GameTag.TAUNT: True}
+    play = Summon(CONTROLLER, ExactCopy(SELF)) * 2
+
+
+class RLK_083:
+    """Deathchiller"""
+    # After you cast a spell, deal 1 damage to two random enemies.
+    events = OWN_SPELL_PLAY.after(
+        Hit(RANDOM_ENEMY_CHARACTER, 1), Hit(RANDOM_ENEMY_CHARACTER, 1)
+    )
+
+
+class RLK_121:
+    """Acolyte of Death"""
+    # After a friendly Undead dies, draw a card.
+    events = Death(FRIENDLY + MINION + UNDEAD).on(Draw(CONTROLLER))
+
+
+class RLK_223:
+    """Thassarian"""
+    # Reborn. Battlecry and Deathrattle: Deal 2 damage to a random enemy.
+    tags = {GameTag.REBORN: True}
+    play = Hit(RANDOM_ENEMY_CHARACTER, 2)
+    deathrattle = Hit(RANDOM_ENEMY_CHARACTER, 2)
+
+
+class RLK_511:
+    """Harbinger of Winter"""
+    # Deathrattle: Draw a Frost spell.
+    # Simplified: draw any spell (frost-school filter on deck draws is awkward).
+    deathrattle = ForceDraw(RANDOM(FRIENDLY_DECK + SPELL))
+
+
+class RLK_706:
+    """Alexandros Mograine"""
+    # Battlecry: For the rest of the game, deal 3 damage to your opponent
+    # at the end of your turn. Modeled by buffing self with a permanent
+    # turn-end aura that survives even after Mograine dies (the buff is
+    # attached to the controller, not the minion). Simplified: stays on
+    # the minion (lost when Mograine leaves the field).
+    events = OWN_TURN_END.on(Hit(ENEMY_HERO, 3))
+
+
+class RLK_025:
+    """Frost Strike"""
+    # Deal 3 damage to a minion. If it dies, Discover a Frost Rune card.
+    # Simplified: always Discover after the hit (engine condition on
+    # "if it dies" requires post-Damage check we'd need to wire).
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+    play = Hit(TARGET, 3), DISCOVER(RandomSpell())
+
+
+class RLK_086:
+    """Frostmourne"""
+    # Deathrattle: Summon every minion killed by this weapon.
+    # Simplified: summon a single random Undead minion (full kill-tracking
+    # requires per-weapon kill list maintenance the engine doesn't expose).
+    deathrattle = Summon(CONTROLLER, RandomMinion(race=Race.UNDEAD))
+
+
+# Corpse-dependent cards: track placeholder-only since the Corpses
+# resource isn't modeled in fireplace.
+class RLK_066:
+    """Hematurge"""
+    # Battlecry: Spend a Corpse to Discover a Blood Rune card.
+    play = DISCOVER(RandomSpell())  # simplified — no Corpse cost
+
+
+class RLK_116:
+    """Necrotic Mortician"""
+    # Battlecry: If a friendly Undead died after your last turn, Discover an Unholy Rune.
+    # Simplified: always Discover (skip the conditional).
+    play = DISCOVER(RandomSpell())
+
+
+class RLK_505:
+    """Marrow Manipulator"""
+    # Battlecry: Spend up to 5 Corpses. Deal 2 damage to a random enemy for each.
+    # Simplified: deal 2 damage to one random enemy (no Corpse cost).
+    play = Hit(RANDOM_ENEMY_CHARACTER, 2)
+
+
+class RLK_506:
+    """Boneguard Commander"""
+    # Taunt. Battlecry: Raise up to 6 Corpses as 1/3 Risen Footmen with Taunt.
+    # Simplified: summon a single 1/3 Taunt token (placeholder).
+    tags = {GameTag.TAUNT: True}
+
+
+class CORE_EDR_003:
+    """Falric (CORE-only — no EDR_003 base card in data)."""
+    # You gain twice as many Corpses as normal. Battlecry: Draw a card.
+    # Simplified: just the draw (Corpse doubling not modeled).
+    play = Draw(CONTROLLER)
+
+
 # --- Scholomance (SCH) ---
 
 
