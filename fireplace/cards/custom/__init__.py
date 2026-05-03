@@ -5,6 +5,7 @@ from .patch_icc import *
 from .patch_dalaran import *
 from .patch_outlands import *
 from .bonus_effects import *
+from .core_extras import *
 
 
 # Pre-nerf Warsong Commander for tests
