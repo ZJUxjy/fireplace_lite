@@ -29,6 +29,7 @@ def test_anubarak():
 
 
 def test_astral_communion():
+    # Astral Communion cost was rebalanced 4 -> 5 in hsdata build 241135.
     game = prepare_game(game_class=Game)
     game.player1.discard_hand()
     astral = game.player1.give("AT_043")
@@ -40,10 +41,14 @@ def test_astral_communion():
     assert game.player1.mana == 5
     astral.play()
     assert not game.player1.hand
-    assert game.player1.mana == game.player1.max_mana == 10
+    # Pay 5 (4 from temp_mana, 1 from regular). max_mana gains 10 -> capped 10.
+    # used_mana = 1, so mana = 10 - 1 = 9.
+    assert game.player1.max_mana == 10
+    assert game.player1.mana == 9
 
 
 def test_astral_communion_full_mana():
+    # Astral Communion cost was rebalanced 4 -> 5 in hsdata build 241135.
     game = prepare_game()
     assert game.player1.mana == 10
     astral = game.player1.give("AT_043")
@@ -53,7 +58,8 @@ def test_astral_communion_full_mana():
     assert len(game.player1.hand) == 1
     assert game.player1.hand[0].id == "CS2_013t"
     assert game.player1.max_mana == 10
-    assert game.player1.mana == 6
+    # Pay 5 from full 10 -> 5 left.
+    assert game.player1.mana == 5
 
 
 def test_aviana():
