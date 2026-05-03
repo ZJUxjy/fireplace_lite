@@ -40,7 +40,11 @@ class EDR_487:
 class EDR_488:
     """Avant-Gardening"""
 
-    play = Summon(CONTROLLER, "CS2_101t")
+    # Discover a Deathrattle minion with a Dark Gift.
+    play = Discover(CONTROLLER, RandomMinion(deathrattle=True)).then(
+        Give(CONTROLLER, Discover.CARD),
+        GiveDarkGift(Discover.CARD),
+    )
 
 
 class EDR_489:

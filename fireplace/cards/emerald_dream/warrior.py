@@ -29,8 +29,13 @@ class EDR_454t:
 class EDR_456:
     """Darkrider"""
 
-    charge = True
-    battlecry = Find(DRAGON + IN_HAND) & Discover(RandomCard())
+    # Battlecry: If you're holding a Dragon, Discover a Dragon with a Dark Gift.
+    play = Find(FRIENDLY_HAND + DRAGON) & Discover(
+        CONTROLLER, RandomMinion(race=Race.DRAGON)
+    ).then(
+        Give(CONTROLLER, Discover.CARD),
+        GiveDarkGift(Discover.CARD),
+    )
 
 
 class EDR_457:

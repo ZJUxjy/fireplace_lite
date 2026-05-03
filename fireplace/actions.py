@@ -1983,6 +1983,50 @@ class Herald(TargetedAction):
         source.game.manager.targeted_action(self, source, target, soldier)
 
 
+class GiveDarkGift(TargetedAction):
+    """
+    Dark Gift (Emerald Dream): apply a random Dark Gift enchantment to the
+    target minion. The pool consists of 11 EDR_100t* enchantments — each
+    grants a different bonus (stats + keyword, deathrattle, charge, etc.).
+
+    Cards typically use this in conjunction with Discover, e.g.
+    "Discover a Legendary minion with a Dark Gift" — discover a minion,
+    then GiveDarkGift on the discovered card.
+    """
+
+    TARGET = ActionArg()  # the minion / card to receive the gift
+    CARD = CardArg()  # the chosen enchantment (for follow-up actions)
+
+    DARK_GIFT_POOL = (
+        "EDR_100te",    # Waking Terror — +3 atk + Lifesteal
+        "EDR_100t1e",   # Well Rested — +2/+2 + Elusive
+        "EDR_100t2e",   # Short Claws — -2 cost, -2 atk
+        "EDR_100t3e",   # Bundled Up — +4 HP + Taunt
+        "EDR_100t4e",   # Inner Demons — Deathrattle: Draw 2
+        "EDR_100t5e",   # Living Nightmare — play summons 2/2 copy
+        "EDR_100t6e",   # Sneaky Sleepwalking — Charge
+        "EDR_100t7e",   # Rude Awakening — Battlecry x2
+        "EDR_100t8e1",  # Sweet Dreams — +4/+5
+        "EDR_100t9e",   # Persisting Horror — Reborn
+        "EDR_100t13e",  # Harpy's Talons — Divine Shield + Windfury
+    )
+
+    def get_target_args(self, source, target):
+        return [None]
+
+    def do(self, source, target, _unused=None):
+        if target is None:
+            return
+        gift_id = source.game.random.choice(self.DARK_GIFT_POOL)
+        log.info("%r gives Dark Gift %s to %r", source, gift_id, target)
+        source.game.queue_actions(source, [Buff(target, gift_id)])
+        # Track on the controller for Wallow-style replay logic.
+        if not hasattr(target.controller, "dark_gifts_given"):
+            target.controller.dark_gifts_given = []
+        target.controller.dark_gifts_given.append(gift_id)
+        source.game.manager.targeted_action(self, source, target, gift_id)
+
+
 class Imbue(TargetedAction):
     """
     Imbue (Year of the Pegasus / Emerald Dream): empower the controller's

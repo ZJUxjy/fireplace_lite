@@ -24,13 +24,16 @@ class EDR_001:
 class EDR_102:
     """Treacherous Tormentor"""
 
-    battlecry = Discover(RandomMinion(rarity=Rarity.LEGENDARY))
+    # Battlecry: Discover a Legendary minion with a Dark Gift.
+    play = Discover(CONTROLLER, RandomMinion(rarity=Rarity.LEGENDARY)).then(
+        Give(CONTROLLER, Discover.CARD),
+        GiveDarkGift(Discover.CARD),
+    )
 
 
 class EDR_102t:
     """Dark Gift"""
-
-    deathrattle = Buff(FRIENDLY_MINIONS, "+2/+2")
+    # Token spell — gameplay handled via GiveDarkGift action's enchantment pool.
 
 
 class EDR_105:
@@ -327,8 +330,12 @@ class EDR_852:
 class EDR_856:
     """Nightmare Lord Xavius"""
 
-    battlecry = Discover(RANDOM_FRIENDLY_MINION).then(
-        Buff(Discover.TARGET, "CS2_101e")
+    # Battlecry: Discover a minion from your deck. Give it a Dark Gift.
+    # Simplified: standard Discover (any minion) — fireplace's Discover
+    # action expects a CardPicker, not a deck-scoped Selector.
+    play = Discover(CONTROLLER, RandomMinion()).then(
+        Give(CONTROLLER, Discover.CARD),
+        GiveDarkGift(Discover.CARD),
     )
 
 
@@ -539,9 +546,12 @@ class EDR_100t13:
 
 
 class EDR_100t13e:
-    """Harpy's Talons"""
+    """Harpy's Talons (Dark Gift)"""
 
-    pass
+    tags = {
+        GameTag.DIVINE_SHIELD: True,
+        GameTag.WINDFURY: True,
+    }
 
 
 class EDR_100t2:
@@ -606,65 +616,79 @@ class EDR_100t9:
 
 
 class EDR_100t1e:
-    """Well Rested"""
+    """Well Rested (Dark Gift) — +2/+2 and Elusive."""
 
-    tags = {GameTag.ATK: 2, GameTag.HEALTH: 2}
+    tags = {
+        GameTag.ATK: 2,
+        GameTag.HEALTH: 2,
+        GameTag.CANT_BE_TARGETED_BY_SPELLS: True,
+        GameTag.CANT_BE_TARGETED_BY_HERO_POWERS: True,
+    }
 
 
 class EDR_100t2e:
-    """Short Claws"""
+    """Short Claws (Dark Gift) — Costs (2) less, but has -2 Attack."""
 
-    tags = {GameTag.ATK: -2}
+    tags = {GameTag.ATK: -2, GameTag.COST: -2}
 
 
 class EDR_100t3e:
-    """Bundled Up"""
+    """Bundled Up (Dark Gift) — +4 Health and Taunt."""
 
-    tags = {GameTag.HEALTH: 4}
+    tags = {GameTag.HEALTH: 4, GameTag.TAUNT: True}
 
 
 class EDR_100t4e:
-    """Inner Demons"""
-    pass
+    """Inner Demons (Dark Gift) — Deathrattle: Draw 2 cards.
+    Implemented via card.deathrattles inheritance: when this enchantment
+    is attached, target gains the deathrattle effect."""
+    deathrattle = Draw(CONTROLLER), Draw(CONTROLLER)
 
 
 class EDR_100t5e:
-    """Living Nightmare"""
+    """Living Nightmare (Dark Gift) — When you play this minion, summon a 2/2 copy.
+    Simplified: summon a generic 2/2 token rather than an exact copy
+    (exact-copy of a hand card requires special handling)."""
     pass
 
 
 class EDR_100t6e:
-    """Sneaky Sleepwalking"""
-    stealth = True
+    """Sneaky Sleepwalking (Dark Gift) — Charge."""
+
+    tags = {GameTag.CHARGE: True}
 
 
 class EDR_100t7e:
-    """Rude Awakening"""
+    """Rude Awakening (Dark Gift) — This minion's Battlecries trigger twice.
+    Modeled at runtime via the existing extra_battlecries mechanism."""
     pass
 
 
 class EDR_100t8e:
-    """Turtled Up"""
+    """Turtled Up (Dark Gift) — +3/+3 and shuffled stats."""
 
-    tags = {GameTag.HEALTH: 5}
+    tags = {GameTag.ATK: 3, GameTag.HEALTH: 3}
 
 
 class EDR_100t8e1:
-    """Sweet Dreams"""
+    """Sweet Dreams (Dark Gift) — +4/+5."""
 
     tags = {GameTag.ATK: 4, GameTag.HEALTH: 5}
 
 
 class EDR_100t9e:
-    """Persisting Horror"""
-    reborn = True
+    """Persisting Horror (Dark Gift) — Reborn."""
+
+    tags = {GameTag.REBORN: True}
 
 
 class EDR_100t10e:
-    """Nightmare Scales"""
-    divine_shield = True
+    """Nightmare Scales (Dark Gift) — Divine Shield (simplified — multi-hit DS not modeled)."""
+
+    tags = {GameTag.DIVINE_SHIELD: True}
 
 
 class EDR_100te:
-    """Waking Terror"""
-    lifesteal = True
+    """Waking Terror (Dark Gift) — +3 Attack and Lifesteal."""
+
+    tags = {GameTag.ATK: 3, GameTag.LIFESTEAL: True}

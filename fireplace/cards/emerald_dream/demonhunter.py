@@ -157,7 +157,12 @@ class EDR_840te2:
 class EDR_882:
     """Jumpscare!"""
 
-    play = Damage(ENEMY_MINIONS, 2)
+    # Discover a Demon that costs 5 or more with a Dark Gift.
+    # (Shuffle-others-into-deck part is omitted for simplicity.)
+    play = Discover(CONTROLLER, RandomMinion(race=Race.DEMON, cost=5)).then(
+        Give(CONTROLLER, Discover.CARD),
+        GiveDarkGift(Discover.CARD),
+    )
 
 
 class FIR_902:
