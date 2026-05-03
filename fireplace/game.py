@@ -353,6 +353,14 @@ class BaseGame(Entity):
             for buff in CardList(entity.entities).filter(one_turn_effect=True):
                 self.log("Ending One-Turn effect: %r", buff)
                 buff.remove()
+        # TEMPORARY cards: discard from the current player's hand at end of
+        # turn. Token cards generated as Temporary (Hologram Operator's
+        # Draenei, etc.) carry _is_temporary=True or a `temporary` script
+        # attribute on their card class.
+        for card in list(self.current_player.hand):
+            if getattr(card, "is_temporary", False):
+                self.log("Discarding Temporary card %r at end of turn", card)
+                card.discard()
         # Extra turn
         if self.next_players:
             next_player = self.next_players.pop(0)

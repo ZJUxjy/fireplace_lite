@@ -488,6 +488,26 @@ class PlayableCard(BaseCard, Entity, TargetableByAuras):
         return self.game.queue_actions(self, [actions.Trade(self)])
 
     @property
+    def is_fabled(self) -> bool:
+        """Whether this card has the FABLED keyword (Time Travel super-rare).
+        FABLED is mostly metadata in fireplace — affects deckbuilding rules
+        in real Hearthstone (multiple copies allowed) but doesn't change
+        gameplay logic per-card."""
+        return bool(self.data.tags.get(GameTag.FABLED)) or bool(
+            self.data.tags.get(GameTag.FABLED_PLUS)
+        )
+
+    @property
+    def is_temporary(self) -> bool:
+        """Whether this card is 'Temporary' — discarded from hand at end of
+        turn if not played. Marked via the `temporary` script attribute or
+        via the runtime _is_temporary flag (set by cards that generate
+        temporary tokens, e.g., Hologram Operator's Draenei)."""
+        if getattr(self, "_is_temporary", False):
+            return True
+        return bool(getattr(self.data.scripts, "temporary", False))
+
+    @property
     def is_tourist(self) -> bool:
         """Whether this card is a Tourist (Whizbang's Workshop+).
         In real Hearthstone the tag affects deckbuilding (it grants access

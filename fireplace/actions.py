@@ -2003,6 +2003,42 @@ class Herald(TargetedAction):
         source.game.manager.targeted_action(self, source, target, soldier)
 
 
+class GiveBonusEffect(TargetedAction):
+    """
+    Bonus Effect (Cataclysm/Emerald Dream): apply a random keyword buff
+    from the Bonus Effect pool to the target. The pool consists of
+    keyword-bearing enchantments (Taunt, Divine Shield, Reborn, Stealth,
+    Windfury, Lifesteal, Rush, Charge — single-keyword bonuses).
+
+    fireplace's local CardDefs lacks dedicated Bonus Effect tokens, so the
+    pool reuses simple custom enchantments registered alongside this
+    action.
+    """
+
+    TARGET = ActionArg()
+    CARD = CardArg()
+
+    BONUS_EFFECT_POOL = (
+        "BONUS_EFFECT_TAUNT",
+        "BONUS_EFFECT_DS",
+        "BONUS_EFFECT_REBORN",
+        "BONUS_EFFECT_WF",
+        "BONUS_EFFECT_LIFESTEAL",
+        "BONUS_EFFECT_RUSH",
+    )
+
+    def get_target_args(self, source, target):
+        return [None]
+
+    def do(self, source, target, _unused=None):
+        if target is None:
+            return
+        eff_id = source.game.random.choice(self.BONUS_EFFECT_POOL)
+        log.info("%r grants Bonus Effect %s to %r", source, eff_id, target)
+        source.game.queue_actions(source, [Buff(target, eff_id)])
+        source.game.manager.targeted_action(self, source, target, eff_id)
+
+
 class GiveDarkGift(TargetedAction):
     """
     Dark Gift (Emerald Dream): apply a random Dark Gift enchantment to the
