@@ -564,6 +564,18 @@ class Play(GameAction):
                     card, [Give(player, Buff(Copy(SELF), "GIL_000"))]
                 )
 
+            # REWIND (Time Travel): the card can be played a second time
+            # with a fresh roll of any random outcomes. We model this by
+            # giving the controller a copy of the card after first play —
+            # the copy has rewind_used=True so it doesn't infinitely loop.
+            if (
+                card.data.tags.get(GameTag.REWIND)
+                and not getattr(card, "rewind_used", False)
+            ):
+                rewind_copy = card.controller.card(card.id, source=card)
+                rewind_copy.rewind_used = True
+                rewind_copy.zone = Zone.HAND
+
             actions = card.get_actions("magnetic")
             if actions:
                 source.game.trigger(card, actions, event_args=None)

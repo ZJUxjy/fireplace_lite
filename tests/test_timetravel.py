@@ -79,8 +79,14 @@ def test_time_610_shadows_draws_all_deck_minions():
     hand_before = len(game.player1.hand)
     shadows = game.player1.give("TIME_610")
     shadows.play()
-    # Both minions drawn (spell stays in deck)
-    assert len(game.player1.hand) == hand_before + 2
+    # Two minions drawn from deck. (TIME_610 also has the Rewind keyword so
+    # a copy of itself is added back to hand — count only the non-Shadows
+    # cards added.)
+    new_minions = sum(
+        1 for c in game.player1.hand
+        if c.id == "CS2_189"
+    )
+    assert new_minions == 2
 
 
 ##
