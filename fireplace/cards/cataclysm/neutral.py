@@ -182,15 +182,19 @@ class CATA_497:
     """Ultraxion"""
 
     # Battlecry: Herald. Reduce Deathwing's Cost by ({herald_count}).
-    # Real HS: the cost reduction equals herald_count *after* this Herald.
-    # Neutral cards default to Soldier of Sinestra; Buff stacks on existing
-    # CATA_190h copies in deck/hand.
+    # The cost reduction equals herald_count *after* this Herald — so we
+    # compute it as current count + 1 at play time and stack the -1 buff
+    # that many times onto any Deathwing copies in deck/hand.
     herald_soldier_id = "CATA_158t"
-    play = (
-        Herald(CONTROLLER),
-        Buff(FRIENDLY_DECK + ID("CATA_190h"), "CATA_497e"),
-        Buff(FRIENDLY_HAND + ID("CATA_190h"), "CATA_497e"),
-    )
+
+    @staticmethod
+    def play(self):
+        n = self.controller.herald_count + 1  # post-Herald count
+        return [
+            Herald(CONTROLLER),
+            Buff(FRIENDLY_DECK + ID("CATA_190h"), "CATA_497e") * n,
+            Buff(FRIENDLY_HAND + ID("CATA_190h"), "CATA_497e") * n,
+        ]
 
 
 CATA_497e = buff(cost=-1)

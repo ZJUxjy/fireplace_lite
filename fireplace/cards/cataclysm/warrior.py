@@ -36,8 +36,10 @@ class CATA_160:
     """Scorching Ravager"""
 
     # Battlecry: Herald (Soldier of Ragnaros). Give the Soldier Rush.
+    # Use Herald.CARD (the summoned soldier) — Summon.CARD won't resolve
+    # here because the .then() callback receives Herald's args, not Summon's.
     herald_soldier_id = "CATA_580t"
-    play = Herald(CONTROLLER).then(SetTags(Summon.CARD, {GameTag.RUSH: True}))
+    play = Herald(CONTROLLER).then(SetTags(Herald.CARD, {GameTag.RUSH: True}))
 
 
 class CATA_580t:

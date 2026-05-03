@@ -60,8 +60,7 @@ class CATA_525t:
     @staticmethod
     def play(self):
         amount = max(1, self.controller.herald_count)
-        # Stack the per-turn buff `amount` times.
-        return [Buff(FRIENDLY_HERO, "CATA_525te")] * amount
+        return [Buff(FRIENDLY_HERO, "CATA_525te") * amount]
 
 
 @custom_card

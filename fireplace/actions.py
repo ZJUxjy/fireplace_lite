@@ -1905,7 +1905,8 @@ class Shatter(TargetedAction):
     Shatter (Cataclysm): when a Shatter card is played, also add its two
     half-cards to the controller's hand. Each half does part of the full
     effect when played later. Half-card IDs are read from the source card's
-    `shatter_halves` attribute (a tuple of two card IDs).
+    `shatter_halves` attribute (a tuple of two card IDs). Goes through Give
+    so max-hand-size discards and hand-zone broadcasts behave normally.
     """
 
     TARGET = ActionArg()  # the controller player
@@ -1920,8 +1921,7 @@ class Shatter(TargetedAction):
             return
         log.info("%r shatters into %r", source, halves)
         for half_id in halves:
-            half = target.card(half_id, source=source)
-            half.zone = Zone.HAND
+            source.game.queue_actions(source, [Give(target, half_id)])
         source.game.manager.targeted_action(self, source, target)
 
 
@@ -1933,29 +1933,44 @@ class Herald(TargetedAction):
     also checks for the Deathwing upgrade: once herald_count >= 2, any
     Deathwing the Worldbreaker (CATA_190h) in the player's deck or hand is
     morphed into Progeny of Deathwing (CATA_190t14).
+
+    Exposes Herald.CARD so follow-up actions can target the freshly-summoned
+    Soldier (e.g. Scorching Ravager: `Herald(...).then(SetTags(Herald.CARD,
+    {RUSH: True}))`).
     """
 
     TARGET = ActionArg()  # the controller player
-    CARD = CardArg()  # the soldier token id (string)
+    CARD = CardArg()  # the summoned Soldier token
 
     def get_target_args(self, source, target):
-        return [None]
-
-    def do(self, source, target, _unused=None):
         soldier_id = getattr(source.data.scripts, "herald_soldier_id", None)
         if soldier_id is None:
+            return [None]
+        soldier = target.card(soldier_id, source=source)
+        return [soldier]
+
+    def do(self, source, target, soldier):
+        if soldier is None:
             log.warning("%r heralds with no soldier_id configured", source)
             return
         target.herald_count += 1
         log.info(
             "%r heralds (count=%d, soldier=%s)",
-            target, target.herald_count, soldier_id,
+            target, target.herald_count, soldier.id,
         )
-        soldier = target.card(soldier_id, source=source)
+        # Summon the soldier to the field.
         source.game.queue_actions(source, [Summon(target, soldier)])
-        # Deathwing upgrade: once heralded twice, morph any Deathwing in
-        # deck/hand to Progeny.
-        if target.herald_count == 2:
+        # Fire the soldier's "When summoned, ..." play script. Summon alone
+        # does not run battlecries; we trigger the play actions explicitly
+        # so soldier effects (e.g. spell discount, hero +N atk) actually
+        # take effect with the current herald_count value.
+        play_actions = soldier.get_actions("play")
+        if play_actions:
+            source.game.trigger(soldier, play_actions, event_args=None)
+        # Deathwing upgrade: at 2+ Heralds, morph any Deathwing in deck/hand
+        # to Progeny. Loop is idempotent (won't re-fire on subsequent
+        # Heralds because CATA_190h no longer exists after morph).
+        if target.herald_count >= 2:
             for card in list(target.deck) + list(target.hand):
                 if card.id == "CATA_190h":
                     progeny = target.card("CATA_190t14", source=card)

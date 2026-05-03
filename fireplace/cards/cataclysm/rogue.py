@@ -66,7 +66,13 @@ class CATA_158t:
         ]
 
 
-CATA_158te = buff(cost=-1)
+@custom_card
+class CATA_158te:
+    tags = {
+        GameTag.CARDNAME: "Sinestra's Discount",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.COST: -1,
+    }
 
 
 
