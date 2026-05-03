@@ -390,6 +390,26 @@ class PlayableCard(BaseCard, Entity, TargetableByAuras):
         return self.controller.cards_played_this_turn == 0
 
     @property
+    def play_kindred(self):
+        """Kindred triggers when the controller has another minion of the
+        same race already on the board. If self is multi-race or has Race.ALL
+        any matching race counts."""
+        if self.type != CardType.MINION:
+            return False
+        my_races = set(getattr(self, "races", []) or [])
+        if not my_races:
+            return False
+        for friendly in self.controller.field:
+            if friendly is self:
+                continue
+            their_races = set(getattr(friendly, "races", []) or [])
+            if my_races & their_races:
+                return True
+            if Race.ALL in their_races or Race.ALL in my_races:
+                return True
+        return False
+
+    @property
     def corrupt_form_id(self):
         """Card ID of the corrupted form, if any (for CORRUPT-tagged cards)."""
         if not self.data.tags.get(GameTag.CORRUPT):

@@ -537,6 +537,14 @@ class Play(GameAction):
             if card.play_quickdraw and card.get_actions("quickdraw"):
                 source.game.trigger(card, card.get_actions("quickdraw"), event_args=None)
 
+            # KINDRED: fires when the controller has another minion of the
+            # same race on the board (checked at play time). Bonus effect on
+            # top of any battlecry; both can fire on the same play.
+            if card.play_kindred and card.get_actions("kindred"):
+                source.game.trigger(
+                    card, card.get_actions("kindred"), event_args=None
+                )
+
             # MANATHIRST: bonus effect that fires when controller's max mana
             # meets the threshold (typically 7+ or 8+).
             manathirst_threshold = getattr(
