@@ -38,17 +38,26 @@ def get_script_definition(id, card=None):
         if dbf_id < card.dbf_id and dbf_id in db.dbf:
             id = db.dbf[dbf_id]
 
-    for cardset in CARD_SETS:
-        module = import_module("fireplace.cards.%s" % (cardset))
-        if hasattr(module, id):
-            cls = getattr(module, id)
-            methods = [
-                attr
-                for attr in dir(cls)
-                if not (attr.startswith("__") or attr.endswith("__"))
-            ]
-            if len(methods) > 0:
-                return cls
+    # CORE_ cards re-use scripts from their original set. Try the literal id
+    # first; if no script class exists, fall back to the prefix-stripped id
+    # ("CORE_EX1_134" -> "EX1_134"). Handle "Core_" too (some XML variants).
+    candidates = [id]
+    for prefix in ("CORE_", "Core_"):
+        if id.startswith(prefix):
+            candidates.append(id[len(prefix):])
+
+    for candidate in candidates:
+        for cardset in CARD_SETS:
+            module = import_module("fireplace.cards.%s" % (cardset))
+            if hasattr(module, candidate):
+                cls = getattr(module, candidate)
+                methods = [
+                    attr
+                    for attr in dir(cls)
+                    if not (attr.startswith("__") or attr.endswith("__"))
+                ]
+                if len(methods) > 0:
+                    return cls
 
 
 class CardDB(Dict[str, cardxml.CardXML]):
