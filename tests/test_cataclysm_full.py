@@ -2785,6 +2785,19 @@ def test_fel_infusion_lifesteal_this_turn_only():
     assert game.player1.hero.lifesteal is False
 
 
+def test_fel_infusion_heralds_azshara_while_granting_lifesteal():
+    """Fel Infusion Heralds Azshara and grants lifesteal for the turn."""
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    player.max_mana = 2
+    player.used_mana = 0
+
+    player.give("CATA_530").play()
+
+    assert player.hero.lifesteal is True
+    assert getattr(player, "_cataclysm_heralds", {}).get("azshara") == 1
+
+
 ##
 # CATA_616: 戈隆巨人
 # 法力值消耗随上一张打出牌的费用降低

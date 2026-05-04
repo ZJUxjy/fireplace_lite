@@ -225,7 +225,7 @@ class CATA_530:
     """Fel Infusion"""
 
     # 在本回合中，你的英雄拥有吸血（回合结束时移除）
-    play = Buff(FRIENDLY_HERO, "CATA_530e")
+    play = CATA_AzsharaHerald(CONTROLLER), Buff(FRIENDLY_HERO, "CATA_530e")
 
 
 # CATA_530e: 邪能灌魔 buff（仅本回合有效）
