@@ -1,4 +1,5 @@
 from flask_socketio import emit, join_room
+from hearthstone.enums import CardType
 from .game import manager
 import random
 import time
@@ -435,7 +436,34 @@ def register_socket_events(socketio):
                 hand_snap = take_hand_snapshot(game_id)
                 hand_cards_snap = take_hand_cards_snapshot(game_id)
                 played_card_obj_id = id(card)
+                is_hero_card = (
+                    getattr(card, 'type', None) == CardType.HERO
+                    and (getattr(getattr(card, 'data', None), 'armor', 0) or 0) > 0
+                )
+                old_hero_name = str(player.hero) if is_hero_card else None
+                old_hero_id = getattr(player.hero, 'id', None) if is_hero_card else None
+                hero_card_id = getattr(card, 'id', None) if is_hero_card else None
+                hero_info = None
                 card.play(target=target, choose=choose)
+
+                if is_hero_card:
+                    hero_info = {
+                        'player': str(player),
+                        'old_hero': old_hero_name,
+                        'old_hero_id': old_hero_id,
+                        'new_hero': str(player.hero),
+                        'new_hero_id': getattr(player.hero, 'id', None),
+                        'card_id': hero_card_id,
+                        'hero_power': str(player.hero.power),
+                        'hero_power_id': getattr(player.hero.power, 'id', None),
+                        'armor': getattr(player.hero, 'armor', 0),
+                    }
+                    manager.log_event(
+                        game_id,
+                        'hero_transformed',
+                        f'{player} 变身为 {player.hero}',
+                        hero_info,
+                    )
 
                 # 检测沉默事件
                 for m in list(player.field) + list(opponent.field):
@@ -475,6 +503,8 @@ def register_socket_events(socketio):
                     emit('discard', {'game_id': game_id, 'discard': {'player': d['player'], 'card_name': d['card_name'], 'card_id': d['card_id'], 'message': d['message']}})
 
                 emit('game_state', {'game_id': game_id, 'state': state})
+                if hero_info:
+                    emit('hero_transformed', {'game_id': game_id, 'hero': hero_info})
 
                 # 如果是 PVE 模式且玩家打完牌后是 AI 回合，执行 AI
                 if g["mode"] == "pve":
@@ -493,6 +523,7 @@ def register_socket_events(socketio):
         """使用英雄技能"""
         game_id = data.get('game_id')
         target_id = data.get('target_id')
+        choose_card_id = data.get('choose_card_id')
 
         if game_id not in manager.games:
             emit('error', {'message': 'Game not found'})
@@ -514,13 +545,29 @@ def register_socket_events(socketio):
             emit('error', {'message': 'Hero power is not usable'})
             return
 
+        choose = None
+        if getattr(heropower, 'must_choose_one', False):
+            if choose_card_id:
+                for choose_card in heropower.choose_cards:
+                    if getattr(choose_card, 'id', str(choose_card)) == choose_card_id:
+                        choose = choose_card
+                        break
+            if choose is None:
+                emit('error', {'message': 'Invalid hero power choice'})
+                return
+
         target = None
-        print(f"[Server] Hero power requires_target: {heropower.requires_target()}, target_id: {target_id}")
-        if heropower.requires_target():
+        target_source = choose if choose is not None and hasattr(choose, 'requires_target') else heropower
+        requires_target = target_source.requires_target() if hasattr(target_source, 'requires_target') else False
+        print(f"[Server] Hero power requires_target: {requires_target}, target_id: {target_id}")
+        if requires_target:
             if target_id:
                 target = manager.get_target_by_id(game_id, target_id)
                 print(f"[Server] Resolved target: {target}")
             if not target:
+                emit('error', {'message': 'Valid target required'})
+                return
+            if hasattr(target_source, 'targets') and target_source.targets and target not in target_source.targets:
                 emit('error', {'message': 'Valid target required'})
                 return
 
@@ -534,7 +581,7 @@ def register_socket_events(socketio):
                 'cost': heropower.cost
             })
 
-            heropower.use(target=target)
+            heropower.use(target=target, choose=choose)
             print(f"[Server] Hero power used: {heropower} -> {target}")
 
             # 记录技能效果
@@ -561,6 +608,54 @@ def register_socket_events(socketio):
                     ai_thread.start()
 
         except Exception as e:
+            emit('error', {'message': str(e)})
+
+    @socketio.on('make_choice')
+    def handle_make_choice(data):
+        """Resolve the current engine choice by index and send updated state."""
+        try:
+            import traceback
+
+            if not isinstance(data, dict):
+                emit('error', {'message': 'Invalid request'})
+                return
+
+            game_id = data.get('game_id')
+            card_index = data.get('card_index')
+
+            if game_id not in manager.games:
+                emit('error', {'message': 'Game not found'})
+                return
+
+            g = manager.games[game_id]
+            player = g["players"][0]
+
+            if not player.choice:
+                emit('error', {'message': 'No active choice'})
+                return
+
+            if (
+                isinstance(card_index, bool)
+                or not isinstance(card_index, int)
+                or card_index < 0
+                or card_index >= len(player.choice.cards)
+            ):
+                emit('error', {'message': 'Invalid choice index'})
+                return
+
+            chosen = player.choice.cards[card_index]
+            manager.log_event(game_id, 'choice', f'{player} 选择了 {chosen}', {
+                'player': str(player),
+                'choice': str(chosen),
+                'card_id': getattr(chosen, 'id', None),
+            })
+            player.choice.choose(chosen)
+
+            state = manager.get_game_state(game_id)
+            emit('game_state', {'game_id': game_id, 'state': state})
+        except Exception as e:
+            print(f"[Server] make_choice failed: {e}")
+            traceback.print_exc()
             emit('error', {'message': str(e)})
 
     @socketio.on('attack')

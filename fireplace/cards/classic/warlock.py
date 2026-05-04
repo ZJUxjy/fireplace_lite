@@ -75,6 +75,11 @@ class EX1_319:
 class EX1_323:
     """Lord Jaraxxus"""
 
+    tags = {
+        GameTag.CARDTYPE: CardType.MINION,
+        GameTag.ATK: 3,
+        GameTag.HEALTH: 15,
+    }
     play = (
         Summon(CONTROLLER, "EX1_323h").then(Morph(SELF, Summon.CARD)),
         Summon(CONTROLLER, "EX1_323w"),

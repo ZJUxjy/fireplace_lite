@@ -1,7 +1,7 @@
 import uuid
 import random
 from datetime import datetime
-from fireplace import cards
+from fireplace import cards, enums
 from fireplace.game import Game
 from fireplace.player import Player
 from fireplace.utils import random_class
@@ -176,6 +176,7 @@ TEST_DECK_CARDS = {
     },
     # 法师
     'MAGE': {
+        'hero_card': ['ICC_833'],
         'freeze': ['CS2_026', 'CS2_033'],  # 冰霜新星、水元素
         'spell_damage': ['CS2_155', 'EX1_584'],  # 大法师、食人魔法师
         'secrets': ['EX1_294', 'EX1_295', 'EX1_287', 'EX1_289', 'EX1_594', 'ICC_082'],  # 寒冰屏障、寒冰护体、法术反制、寒冰护体(受攻击时)、蒸发、寒冰克隆
@@ -183,18 +184,21 @@ TEST_DECK_CARDS = {
     },
     # 猎人
     'HUNTER': {
+        'hero_card': ['ICC_828'],
         'beast': ['CS2_172', 'EX1_534'],  # 血沼迅猛龙、长鬃草原狮
         'deathrattle': ['EX1_534', 'ICC_825'],  # 长鬃草原狮、熊鲨
         'secrets': ['EX1_533', 'EX1_609', 'EX1_610', 'EX1_611', 'EX1_554'],  # 误导、狙击、爆炸陷阱、冰冻陷阱、毒蛇陷阱
     },
     # 战士
     'WARRIOR': {
+        'hero_card': ['ICC_834'],
         'armor': ['EX1_402', 'EX1_606'],  # 炽炎战斧、盾牌格挡
         'enrage': ['EX1_393', 'EX1_412'],  # 阿曼尼狂战士、暴怒的狼人
         'charge': ['CS2_103', 'EX1_084'],  # 冲锋、狼骑兵
     },
     # 圣骑士
     'PALADIN': {
+        'hero_card': ['ICC_829'],
         'divine_shield': ['EX1_008', 'CS2_122'],  # 银色侍从
         'hand_buff': ['UNG_950', 'CFM_650'],  # 剑龙骑术、适者生存
         'secrets': ['EX1_130', 'EX1_136', 'EX1_132', 'EX1_379'],  # 崇高牺牲、救赎、以眼还眼、忏悔
@@ -202,6 +206,7 @@ TEST_DECK_CARDS = {
     },
     # 潜行者
     'ROGUE': {
+        'hero_card': ['ICC_827'],
         'combo': ['EX1_131', 'CS2_073', 'CS2_072'],  # 军情七处特工、冷血、背刺
         'stealth': ['NEW1_014', 'EX1_522'],  # 猢狲战士、耐心的刺客
         'weapon': ['CS2_080', 'EX1_133'],  # 刺客之刃、毁灭之刃
@@ -209,24 +214,28 @@ TEST_DECK_CARDS = {
     },
     # 牧师
     'PRIEST': {
+        'hero_card': ['ICC_830'],
         'heal': ['CS1_130', 'CS2_004'],  # 神圣惩击、真言术：盾
         'buff': ['CS2_236', 'EX1_339'],  # 神圣之灵、暗言术：痛
         'silence': ['EX1_332'],  # 沉默
     },
     # 德鲁伊
     'DRUID': {
+        'hero_card': ['ICC_832'],
         'choose_one': ['EX1_164', 'EX1_165'],  # 滋养、丛林守护者
         'ramp': ['CS2_013', 'EX1_169'],  # 野性成长、激活（可能为技能）
         'taunt': ['EX1_093', 'CS2_179'],  # 阿古斯之盾、森金持盾卫士
     },
     # 萨满
     'SHAMAN': {
+        'hero_card': ['GIL_504'],
         'overload': ['EX1_248', 'EX1_251'],  # 野性狼魂、闪电风暴
         'totem': ['CS2_050', 'UNG_201'],  # 石爪图腾、原始融合
         'windfury': ['EX1_259', 'UNG_938'],  # 风暴看守、雷霆万钧
     },
     # 术士
     'WARLOCK': {
+        'hero_card': ['ICC_831'],
         'demon': ['CS2_064', 'EX1_306'],  # 恐惧地狱火、魅魔
         'discard': ['EX1_308', 'EX1_310'],  # 灵魂之火、末日守卫
         'spell_damage': ['EX1_597', 'NEW1_021'],  # 古拉巴什狂暴者、狂野炎术师
@@ -346,16 +355,17 @@ class GameManager:
 
         return game_id
 
-    def get_card_data(self, card):
+    def get_card_data(self, card, player=None, opponent=None):
         """获取卡牌详细信息"""
         # 优先使用中文名
-        card_id = getattr(card, 'card_id', None)
+        card_id = getattr(card, 'card_id', None) or getattr(card, 'id', None)
         chinese_info = card_text_loader.get_card_info(card_id) if card_id else {}
 
         name = chinese_info.get('name') or str(card)
         text = chinese_info.get('text')
 
         data = {
+            "id": card_id,
             "name": name,
             "cost": card.cost,
             "is_playable": card.is_playable() if hasattr(card, 'is_playable') else False,
@@ -393,7 +403,10 @@ class GameManager:
             data["requires_target"] = True
             # 获取有效目标列表
             if hasattr(card, 'targets'):
-                data["valid_targets"] = [self._get_target_id(t) for t in card.targets]
+                if player is not None and opponent is not None:
+                    data["valid_targets"] = [self._get_target_id_for_players(t, player, opponent) for t in card.targets]
+                else:
+                    data["valid_targets"] = [self._get_target_id(t) for t in card.targets]
         else:
             data["requires_target"] = False
 
@@ -401,7 +414,7 @@ class GameManager:
         if hasattr(card, 'must_choose_one') and card.must_choose_one:
             data["must_choose_one"] = True
             if hasattr(card, 'choose_cards') and card.choose_cards:
-                data["choose_cards"] = [self.get_card_data(c) for c in card.choose_cards]
+                data["choose_cards"] = [self.get_card_data(c, player, opponent) for c in card.choose_cards]
         else:
             data["must_choose_one"] = False
 
@@ -428,6 +441,10 @@ class GameManager:
         player = g["players"][0]
         opponent = g["players"][1]
 
+        return self._get_target_id_for_players(target, player, opponent)
+
+    def _get_target_id_for_players(self, target, player, opponent):
+        """获取目标在指定玩家视角下的标识符。"""
         # 英雄 - 直接比较（最高优先级）
         if target == player.hero:
             return "hero"
@@ -569,6 +586,53 @@ class GameManager:
             data["text"] = text
         return data
 
+    def get_hero_data(self, hero):
+        """Serialize hero metadata for WebUI rendering."""
+        card_id = getattr(hero, "card_id", None) or getattr(hero, "id", None)
+        hero_class = getattr(getattr(hero, "data", None), "card_class", None)
+        hero_type = getattr(hero, "type", None)
+        hero_armor = getattr(getattr(hero, "data", None), "armor", 0) or 0
+        return {
+            "id": card_id,
+            "name": str(hero),
+            "hero_class": hero_class.name if hero_class else "NEUTRAL",
+            "is_hero_card": hero_type == CardType.HERO and hero_armor > 0,
+        }
+
+    def get_hero_power_data(self, hero_power, player=None, opponent=None):
+        """Serialize hero power metadata for WebUI rendering and targeting."""
+        requires_target = hero_power.requires_target() if hasattr(hero_power, "requires_target") else False
+        description = str(hero_power.description) if hasattr(hero_power, "description") and hero_power.description else ""
+        is_passive = bool(getattr(hero_power, "data", None) and hero_power.data.tags.get(enums.PASSIVE_HERO_POWER))
+
+        data = {
+            "id": getattr(hero_power, "card_id", None) or getattr(hero_power, "id", None),
+            "name": str(hero_power),
+            "cost": hero_power.cost,
+            "is_usable": False if is_passive else (hero_power.is_usable() if hasattr(hero_power, "is_usable") else False),
+            "requires_target": requires_target,
+            "description": description,
+            "is_passive": is_passive,
+            "must_choose_one": bool(getattr(hero_power, "must_choose_one", False)),
+            "is_summon": str(hero_power) == "Reinforce" or "summon" in description.lower(),
+            "is_life_tap": str(hero_power) == "Life Tap" or "life tap" in description.lower(),
+            "health_cost": 2 if str(hero_power) == "Life Tap" else 0,
+            "is_totemic_call": str(hero_power) == "Totemic Call" or "totem" in description.lower(),
+        }
+        if requires_target and hasattr(hero_power, "targets"):
+            if player is not None and opponent is not None:
+                data["valid_targets"] = [self._get_target_id_for_players(t, player, opponent) for t in hero_power.targets]
+            else:
+                data["valid_targets"] = [self._get_target_id(t) for t in hero_power.targets]
+        if data["must_choose_one"] and getattr(hero_power, "choose_cards", None):
+            choose_cards = []
+            for choose_card in hero_power.choose_cards:
+                choose_data = self.get_card_data(choose_card, player, opponent)
+                choose_data["name"] = data["name"]
+                choose_cards.append(choose_data)
+            data["choose_cards"] = choose_cards
+        return data
+
     def get_game_state(self, game_id):
         """获取游戏状态"""
         if game_id not in self.games:
@@ -579,30 +643,10 @@ class GameManager:
         player = g["players"][0]
         opponent = g["players"][1]
 
-        # 获取英雄技能信息
-        hero_power = player.hero.power
-        requires_target = hero_power.requires_target() if hasattr(hero_power, 'requires_target') else False
-        print(f"[HeroPower] {hero_power} - requires_target: {requires_target}")
-
-        # 获取英雄技能描述
-        hero_power_description = ""
-        if hasattr(hero_power, 'description') and hero_power.description:
-            hero_power_description = str(hero_power.description)
-
-        hero_power_data = {
-            "name": str(hero_power),
-            "cost": hero_power.cost,
-            "is_usable": hero_power.is_usable() if hasattr(hero_power, 'is_usable') else False,
-            "requires_target": requires_target,
-            "description": hero_power_description,
-            "is_summon": str(hero_power) == "Reinforce" or "summon" in hero_power_description.lower(),
-            "is_life_tap": str(hero_power) == "Life Tap" or "life tap" in hero_power_description.lower(),
-            "health_cost": 2 if str(hero_power) == "Life Tap" else 0,
-            "is_totemic_call": str(hero_power) == "Totemic Call" or "totem" in hero_power_description.lower(),
-        }
-        if requires_target and hasattr(hero_power, 'targets'):
-            valid_targets = [self._get_target_id(t) for t in hero_power.targets]
-            hero_power_data["valid_targets"] = valid_targets
+        hero_data = self.get_hero_data(player.hero)
+        opponent_hero_data = self.get_hero_data(opponent.hero)
+        hero_power_data = self.get_hero_power_data(player.hero.power, player, opponent)
+        opponent_hero_power_data = self.get_hero_power_data(opponent.hero.power, player, opponent)
 
         # 获取日志
         logger = g.get("logger")
@@ -661,7 +705,10 @@ class GameManager:
             "turn_remaining": int(turn_remaining),
             "turn_timeout": timeout,
             "player": {
-                "hero": str(player.hero),
+                "hero": hero_data["name"],
+                "hero_id": hero_data["id"],
+                "hero_class": hero_data["hero_class"],
+                "is_hero_card": hero_data["is_hero_card"],
                 "health": player.hero.health,
                 "max_health": player.hero.max_health,
                 "armor": getattr(player.hero, 'armor', 0),
@@ -691,7 +738,10 @@ class GameManager:
                 "choice": choice_data,
             },
             "opponent": {
-                "hero": str(opponent.hero),
+                "hero": opponent_hero_data["name"],
+                "hero_id": opponent_hero_data["id"],
+                "hero_class": opponent_hero_data["hero_class"],
+                "is_hero_card": opponent_hero_data["is_hero_card"],
                 "health": opponent.hero.health,
                 "max_health": opponent.hero.max_health,
                 "armor": getattr(opponent.hero, 'armor', 0),
@@ -705,13 +755,7 @@ class GameManager:
                 "fatigue_counter": getattr(opponent, 'fatigue_counter', 0),
                 "field": [self.get_minion_data(m) for m in opponent.field],
                 "has_taunt": any(m.taunt for m in opponent.field),
-                "hero_power": {
-                    "name": str(opponent.hero.power),
-                    "cost": opponent.hero.power.cost,
-                    "is_usable": opponent.hero.power.is_usable() if hasattr(opponent.hero.power, 'is_usable') else False,
-                    "requires_target": opponent.hero.power.requires_target() if hasattr(opponent.hero.power, 'requires_target') else False,
-                    "description": str(opponent.hero.power.description) if hasattr(opponent.hero.power, 'description') else "",
-                },
+                "hero_power": opponent_hero_power_data,
                 "weapon": get_weapon_data(opponent.hero),
                 "secret_count": len(opponent.secrets),
             },

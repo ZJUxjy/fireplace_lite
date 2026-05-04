@@ -1608,6 +1608,9 @@ class Weapon(rules.WeaponRules, LiveEntity):
 
     def __init__(self, *args):
         super().__init__(*args)
+        if not hasattr(self, "_max_durability"):
+            self._max_durability = getattr(self, "_max_health", 0)
+            self._max_health = 0
         self.damage = 0
 
     def dump(self):
