@@ -2691,6 +2691,21 @@ def test_brokesaga_draws_for_each_death():
 # CATA_488t: 沃坎诺斯的喷发柱
 # 每当本随从受到伤害，获取一张随机火焰法术牌，费用减少3
 
+def test_vulcanos_summons_linked_colossal_plumes():
+    """Vulcanos summons two linked Colossal limb plumes."""
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    vulcanos = game.player1.give("CATA_488")
+
+    vulcanos.play()
+
+    plumes = [minion for minion in game.player1.field if minion.id == "CATA_488t"]
+    assert len(plumes) == 2
+    assert len(vulcanos.colossal_limbs) == 2
+    assert all(plume.data.tags.get(GameTag.COLOSSAL_LIMB) for plume in plumes)
+    assert all(plume.colossal_body is vulcanos for plume in plumes)
+
+
 def test_plume_of_vulcanos_gives_fire_spell_on_damage():
     """Plume of Vulcanos gives a fire spell with -3 cost when damaged."""
     from hearthstone.enums import SpellSchool
