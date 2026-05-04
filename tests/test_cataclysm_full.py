@@ -379,6 +379,32 @@ def test_ocular_occultist_chooses_hand_card_to_discard():
     assert discarded.zone == Zone.REMOVEDFROMGAME
 
 
+def test_cursed_chain_returns_minion_after_enemy_turn_end():
+    """Cursed Chain controls the target until the enemy turn ends."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    target = player.opponent.summon("CS2_231")
+
+    player.give("CATA_496").play(target=target)
+
+    assert target.controller is player
+    assert target in player.field
+    assert target.cant_attack
+
+    game.end_turn()
+
+    assert target.controller is player
+    assert target in player.field
+
+    game.end_turn()
+
+    assert target.controller is player.opponent
+    assert target in player.opponent.field
+    assert not target.cant_attack
+
+
 def test_fiendish_servant_has_stats_from_prior_discards():
     """Fiendish Servant has +2/+2 for each card discarded this game."""
     game = prepare_empty_game()

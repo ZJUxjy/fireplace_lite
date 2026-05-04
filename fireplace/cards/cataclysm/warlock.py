@@ -70,6 +70,18 @@ class CATA_494:
 
 # CATA_496: 诅咒之链 (5费 4/4)
 # 直到敌方回合结束，夺取一个敌方随从的控制权。在本回合中，该随从无法攻击
+class CATA_496_ReturnAtEnemyTurnEnd(TargetedAction):
+    TARGET = ActionArg()
+    PLAYER = ActionArg()
+
+    def do(self, source, target, player):
+        if player is not source.controller.opponent:
+            return
+        ret = source.game.queue_actions(source, [Steal(target, player)])
+        source.remove()
+        return ret
+
+
 class CATA_496:
     """Cursed Chain"""
 
@@ -80,10 +92,17 @@ class CATA_496:
     }
 
     # 夺取控制权，并使其无法攻击
-    play = Steal(TARGET), SetTags(TARGET, {GameTag.CANT_ATTACK: True})
+    play = Steal(TARGET), Buff(TARGET, "CATA_496e")
 
-    # 敌方回合结束时移除无法攻击的标记
-    events = OWN_TURN_END.on(UnsetTags(TARGET, {GameTag.CANT_ATTACK: True}))
+
+class CATA_496e:
+    tags = {
+        GameTag.CANT_ATTACK: True,
+    }
+
+    events = EndTurn().on(
+        CATA_496_ReturnAtEnemyTurnEnd(OWNER, EndTurn.PLAYER)
+    )
 
 
 # CATA_498: 拉法姆的奋战 (3费 法术)
