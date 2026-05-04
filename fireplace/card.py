@@ -41,7 +41,7 @@ def Card(id):
         CardType.ENCHANTMENT: Enchantment,
         CardType.WEAPON: Weapon,
         CardType.HERO_POWER: HeroPower,
-        CardType.LOCATION: Spell,  # Location cards use Spell logic
+        CardType.LOCATION: Location,
     }.get(data.type, Spell)
     if subclass is Spell:
         if data.secret:
@@ -1353,6 +1353,90 @@ class Minion(Character):
             return False
 
         return super().can_attack(target)
+
+
+class Location(LiveEntity):
+    health_attribute = "durability"
+
+    def __init__(self, data):
+        self._summon_index = None
+        self.location_exhausted = False
+        super().__init__(data)
+        self._max_durability = getattr(self, "_max_health", 0)
+        self._max_health = 0
+
+    def dump(self):
+        data = super().dump()
+        data["max_durability"] = self.max_durability
+        data["durability"] = self.durability
+        data["exhausted"] = self.location_exhausted
+        return data
+
+    @property
+    def max_durability(self):
+        ret = self._max_durability
+        ret += self._getattr("max_health", 0)
+        return max(0, ret)
+
+    @max_durability.setter
+    def max_durability(self, value):
+        self._max_durability = value
+
+    @property
+    def durability(self):
+        return self.max_durability - self.damage
+
+    @property
+    def attackable(self):
+        return False
+
+    @property
+    def zone_position(self):
+        if self.zone == Zone.PLAY:
+            return self.controller.field.index(self) + 1
+        return super().zone_position
+
+    def _set_zone(self, value):
+        if value == Zone.PLAY:
+            if self._summon_index is not None:
+                self.controller.field.insert(self._summon_index, self)
+            else:
+                self.controller.field.append(self)
+            self.location_exhausted = False
+        elif self.zone == Zone.PLAY:
+            self.log("%r is removed from the field", self)
+            self.controller.field.remove(self)
+            if self.damage:
+                self.damage = 0
+
+        super()._set_zone(value)
+
+    def is_usable(self):
+        if self.controller.choice:
+            return False
+        if not self.zone == Zone.PLAY:
+            return False
+        if not self.controller.current_player:
+            return False
+        if self.location_exhausted:
+            return False
+        if self.dead:
+            return False
+        return bool(self.get_actions("activate"))
+
+    def use(self, target=None, choose=None):
+        if choose:
+            raise InvalidAction("%r cannot be used with choice %r" % (self, choose))
+        if not self.is_usable():
+            raise InvalidAction("%r can't be used." % (self))
+
+        self.target = target
+        ret = self.game.cheat_action(self, [actions.PlayHeroPower(self, target)])
+        self.target = None
+        self.location_exhausted = True
+        self.damage += 1
+        self.game.process_deaths()
+        return ret
 
 
 class Spell(PlayableCard):

@@ -88,18 +88,25 @@ class CATA_525t:
     play = CATA_151_BuffHeroAttack(CONTROLLER)
 
 
-# CATA_527: 奈瑟匹拉，蒙难古灵 (3费 5/5)
+class CATA_527_Reopen(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        target.location_exhausted = False
+
+
+# CATA_527: 奈瑟匹拉，蒙难古灵 (3费 地标)
 # 造成1点伤害。在你施放一个邪能法术后，重新开启。亡语：召唤奈瑟匹拉，脱困古灵
 class CATA_527:
     """Naga, the Dissenter"""
 
+    tags = {GameTag.DEATHRATTLE: True}
+
     # 造成1点伤害
-    play = Hit(RANDOM(ENEMY_MINIONS | ENEMY_HERO), 1)
+    activate = Hit(RANDOM(ENEMY_MINIONS | ENEMY_HERO), 1)
 
     # 在你施放一个邪能法术后，重新开启
-    events = Play(CONTROLLER, FEL_SPELL).after(
-        Hit(RANDOM(ENEMY_MINIONS | ENEMY_HERO), 1)
-    )
+    events = Play(CONTROLLER, FEL_SPELL).after(CATA_527_Reopen(SELF))
 
     # 亡语：召唤奈瑟匹拉，脱困古灵
     deathrattle = Summon(CONTROLLER, "CATA_527t2")

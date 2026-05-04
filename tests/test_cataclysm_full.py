@@ -2616,17 +2616,70 @@ def test_torch_overflow_gives_hero_attack():
 
 ##
 # CATA_527: 奈瑟匹拉，蒙难古灵
-# 造成1点伤害
+# 地标：造成1点伤害。在你施放一个邪能法术后，重新开启。亡语：召唤奈瑟匹拉，脱困古灵。
 
-def test_naga_dissenter_play_deals_1_damage():
-    """Naga the Dissenter's battlecry deals 1 damage to a random enemy."""
-    game = prepare_empty_game()
-    enemy_minion = game.player2.summon("CS2_182")  # Chillwind Yeti 4/5
-    naga = game.player1.give("CATA_527")
-    total_hp_before = enemy_minion.health + game.player2.hero.health
+def test_naga_dissenter_location_reopens_after_fel_spell():
+    """Naga the Dissenter is a Location that reopens after you cast a Fel spell."""
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    naga = player.give("CATA_527")
+    enemy_hero = player.opponent.hero
+    enemy_health = enemy_hero.health
+
     naga.play()
-    total_hp_after = enemy_minion.health + game.player2.hero.health
-    assert total_hp_after == total_hp_before - 1
+
+    assert naga in player.field
+    assert enemy_hero.health == enemy_health
+
+    naga.use()
+
+    assert enemy_hero.health == enemy_health - 1
+    assert not naga.is_usable()
+
+    player.used_mana = 0
+    player.give("CATA_528").play()
+
+    assert naga.is_usable()
+
+
+def test_naga_dissenter_location_reopens_on_next_turn():
+    """Naga the Dissenter reopens naturally on its controller's next turn."""
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    naga = player.give("CATA_527")
+
+    naga.play()
+    naga.use()
+
+    assert not naga.is_usable()
+
+    game.end_turn()
+    game.end_turn()
+
+    assert naga.is_usable()
+
+
+def test_naga_dissenter_deathrattle_summons_liberated_after_durability_spent():
+    """Naga the Dissenter summons Naga the Liberated after its Location durability is spent."""
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    naga = player.give("CATA_527")
+
+    naga.play()
+    for _ in range(naga.max_durability):
+        naga.use()
+        player.used_mana = 0
+        if naga in player.field:
+            player.give("CATA_528").play()
+
+    assert naga.zone == Zone.GRAVEYARD
+    assert any(card.id == "CATA_527t2" for card in player.field)
 
 
 ##
