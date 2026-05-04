@@ -2429,8 +2429,25 @@ def test_gruesome_nightmare_buffs_target_by_own_atk():
     game.player1.max_mana = 10
     yeti = game.player1.summon("CS2_182")  # 4/5 Chillwind Yeti
     nightmare = game.player1.give("CATA_161")  # 3/3
-    nightmare.play(target=yeti)
+    nightmare.play()
+    game.player1.choice.choose(yeti)
     assert yeti.atk == 4 + 3  # +3 ATK from nightmare's ATK
+
+
+def test_gruesome_nightmare_can_choose_a_hand_minion():
+    """Gruesome Nightmare can choose and buff a minion in hand."""
+    game = prepare_empty_game(CardClass.DEATHKNIGHT, CardClass.DEATHKNIGHT)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    hand_minion = player.give("CATA_465t")
+
+    player.give("CATA_161").play()
+
+    assert player.choice
+    assert hand_minion in player.choice.cards
+    player.choice.choose(hand_minion)
+    assert hand_minion.atk == hand_minion.data.atk + 3
 
 
 ##

@@ -107,14 +107,9 @@ class CATA_155t1:
 class CATA_161:
     """Gruesome Nightmare"""
 
-    requirements = {
-        PlayReq.REQ_TARGET_TO_PLAY: 0,
-        PlayReq.REQ_MINION_TARGET: 0,
-    }
-
-    # 战吼：使目标随从获得等同于本随从攻击力的攻击力
-    def play(self):
-        yield Buff(TARGET, "CATA_161e", atk=ATK(SELF))
+    play = Choice(CONTROLLER, (FRIENDLY_HAND + MINION) | FRIENDLY_MINIONS).then(
+        Buff(Choice.CARD, "CATA_161e", atk=ATK(SELF))
+    )
 
 
 # CATA_464: 黑翼实验品 (2费 3/1 龙)
