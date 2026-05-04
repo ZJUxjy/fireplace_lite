@@ -167,6 +167,25 @@ def test_merithra_fills_remaining_slots():
     assert len(game.player1.hand) == 10
 
 
+def test_merithra_discounts_dragons_after_spending_25_mana_while_in_hand():
+    """Merithra's generated Dragons cost 1 after witnessing 25 mana spent in hand."""
+    from fireplace.actions import SpendMana
+
+    game = prepare_empty_game()
+    player = game.player1
+    player.max_mana = 10
+    player.used_mana = 0
+    merithra = player.give("CATA_140")
+
+    game.queue_actions(player.hero, [SpendMana(player, 25)])
+    player.used_mana = 0
+
+    merithra.play()
+
+    assert len(player.hand) == 10
+    assert all(card.cost == 1 for card in player.hand)
+
+
 ##
 # CATA_491: 怪异触手
 # 对所有随从造成$3点伤害。重复（打出后回到手牌）

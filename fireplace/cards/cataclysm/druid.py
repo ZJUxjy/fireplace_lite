@@ -148,10 +148,34 @@ CATA_139te = buff(+1, +1)
 class CATA_140:
     """Merithra of the Dream"""
 
+    progress_total = 25
+
     # 战吼：将随机龙牌填入你的手牌直到满（10张上限）
     def play(self):
         count = 10 - len(self.controller.hand)
-        return [Give(CONTROLLER, RandomDragon()) for _ in range(max(0, count))]
+        actions = []
+        for _ in range(max(0, count)):
+            action = Give(CONTROLLER, RandomDragon())
+            if self.progress >= self.progress_total:
+                action = action.then(Buff(Give.CARD, "CATA_140e"))
+            actions.append(action)
+        return actions
+
+    class Hand:
+        events = SpendMana(CONTROLLER).after(
+            AddProgress(SELF, CONTROLLER, SpendMana.AMOUNT)
+        )
+
+
+@custom_card
+class CATA_140e:
+    """Merithra generated Dragon discount"""
+
+    tags = {
+        GameTag.CARDNAME: "Merithra of the Dream Discount",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
+    cost = SET(1)
 
 
 ##
