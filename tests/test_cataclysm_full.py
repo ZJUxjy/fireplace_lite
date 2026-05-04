@@ -36,6 +36,21 @@ def test_ragnaros_does_not_kill_minions():
     assert leper_gnome in game.player1.field
 
 
+def test_cataclysmic_war_axe_battlecry_heralds_without_damage():
+    """Cataclysmic War Axe Battlecry Heralds Ragnaros without dealing damage."""
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    enemy_hero = player.opponent.hero
+    player.max_mana = 10
+    player.used_mana = 0
+    base_health = enemy_hero.health
+
+    player.give("CATA_580").play()
+
+    assert enemy_hero.health == base_health
+    assert getattr(player, "_cataclysm_heralds", {}).get("ragnaros") == 1
+
+
 ##
 # CATA_130: 炫晶小熊
 # 每当你消耗掉最后一个法力水晶，获得+1/+1

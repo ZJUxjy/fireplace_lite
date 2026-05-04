@@ -31,6 +31,15 @@ class CATA_150t1:
     deathrattle = Hit(RANDOM(ENEMY_CHARACTERS), 2)
 
 
+class CATA_RagnarosHerald(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        heralds = getattr(target, "_cataclysm_heralds", {}).copy()
+        heralds["ragnaros"] = heralds.get("ragnaros", 0) + 1
+        target._cataclysm_heralds = heralds
+
+
 # CATA_160: 灼烧掠夺者 (4费 4/3)
 # 战吼：兆示，使拉格纳罗斯的士兵获得冲锋
 class CATA_160:
@@ -201,6 +210,5 @@ class CATA_610e:
 class CATA_580:
     """Cataclysmic War Axe"""
 
-    # 战吼：造成2点伤害
-    # 简化实现：战吼，对一个随机敌人造成2点伤害
-    play = Hit(RANDOM(ENEMY_CHARACTERS), 2)
+    # 战吼：兆示
+    play = CATA_RagnarosHerald(CONTROLLER)
