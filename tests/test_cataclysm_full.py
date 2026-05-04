@@ -479,18 +479,21 @@ def test_jewel_collector_returns_discarded_card_discounted_on_death():
 
 def test_commander_geddon_discover_choice_and_zero_cost():
     """Commander Geddon gives a discover choice; chosen card costs (0)."""
-    game = prepare_game()
-    game.player1.max_mana = 10
-    game.player1.used_mana = 0
-    geddon = game.player1.give("CATA_591")
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    for card_id in ("CS2_029", "CS2_182", WISP):
+        player.give(card_id).shuffle_into_deck()
+
+    geddon = player.give("CATA_591")
     geddon.play()
-    # Should have a discover choice
-    assert game.player1.choice is not None
-    # Choose the first card
-    chosen = game.player1.choice.cards[0]
-    game.player1.choice.choose(chosen)
-    # The chosen card should be in hand with cost 0
-    card_in_hand = next((c for c in game.player1.hand if c.id == chosen.id), None)
+    assert player.choice is not None
+
+    chosen = player.choice.cards[0]
+    player.choice.choose(chosen)
+
+    card_in_hand = next((c for c in player.hand if c.id == chosen.id), None)
     assert card_in_hand is not None
     assert card_in_hand.cost == 0
 
@@ -845,6 +848,34 @@ def test_spearhead_paladin_gives_discounted_holy_spell_at_turn_end():
     generated = player.hand[0]
     assert getattr(generated.data, "spell_school", None) == SpellSchool.HOLY
     assert generated.cost == max(0, generated.data.cost - 3)
+
+
+##
+# CATA_477: 守护巨龙之厅
+# 选择你手牌中的一张随从牌，使其获得+2/+2。
+
+def test_hall_of_the_dragonflight_buffs_chosen_hand_minion():
+    """Hall of the Dragonflight chooses a minion in hand and gives it +2/+2."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    hand_minion = player.give("CS2_182")
+    base_stats = (hand_minion.atk, hand_minion.health)
+
+    player.give("CATA_477").play()
+    choice = player.choice
+
+    assert choice is not None
+    assert choice.cards == [hand_minion]
+
+    choice.choose(hand_minion)
+
+    assert hand_minion.zone == Zone.HAND
+    assert (hand_minion.atk, hand_minion.health) == (
+        base_stats[0] + 2,
+        base_stats[1] + 2,
+    )
 
 
 ##

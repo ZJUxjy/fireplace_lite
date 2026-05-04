@@ -165,12 +165,9 @@ class CATA_478t:
 class CATA_477:
     """Hall of the Dragonflight"""
 
-    requirements = {
-        PlayReq.REQ_TARGET_TO_PLAY: 0,
-        PlayReq.REQ_MINION_TARGET: 0,
-    }
-
-    play = Buff(TARGET, "CATA_477e")
+    play = Choice(CONTROLLER, FRIENDLY_HAND + MINION).then(
+        Buff(Choice.CARD, "CATA_477e")
+    )
 
 
 CATA_477e = buff(+2, +2)
