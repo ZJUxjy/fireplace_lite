@@ -668,8 +668,8 @@ def test_fiendish_servant_in_play_updates_after_discard():
     assert servant.health == servant.data.health + 2
 
 
-def test_tentacle_repeats_with_decrementing_damage():
-    """Tentacle repeats with 1 less damage each time."""
+def test_tentacle_repeats_effect_with_decrementing_damage():
+    """Tentacle resolves 3, then 2, then 1 damage in one play."""
     game = prepare_empty_game()
     game.player1.max_mana = 10
     game.player1.used_mana = 0
@@ -678,34 +678,19 @@ def test_tentacle_repeats_with_decrementing_damage():
 
     tentacle.play()
 
-    assert dummy.health == dummy.max_health - 3
-    repeated = next(c for c in game.player1.hand if c.id == "CATA_491")
-    assert getattr(repeated, "cata_491_damage", None) == 2
-
-    game.player1.used_mana = 0
-    repeated.play()
-
-    assert dummy.health == dummy.max_health - 5
-    repeated = next(c for c in game.player1.hand if c.id == "CATA_491")
-    assert getattr(repeated, "cata_491_damage", None) == 1
-
-    game.player1.used_mana = 0
-    repeated.play()
-
     assert dummy.health == dummy.max_health - 6
     assert not any(c.id == "CATA_491" for c in game.player1.hand)
 
 
 def test_tentacle_deals_damage_to_all_minions():
-    """Tentacle deals 3 damage to all minions."""
+    """Tentacle repeats its damage against all minions."""
     game = prepare_empty_game()
     game.player1.max_mana = 10
     game.player1.used_mana = 0
-    # Use a minion with enough health to survive 3 damage: Chillwind Yeti (CS2_182) 4/5
-    dummy = game.player2.summon("CS2_182")  # 4/5 Chillwind Yeti
+    dummy = game.player2.summon("EX1_572")
     tentacle = game.player1.give("CATA_491")
     tentacle.play()
-    assert dummy.health == dummy.max_health - 3
+    assert dummy.health == dummy.max_health - 6
 
 
 ##
@@ -2333,6 +2318,20 @@ def test_forests_gift_scales_with_friendly_minion_count():
     assert (target.atk, target.health) == (target.data.atk + 3, target.data.health + 3)
 
 
+def test_forests_gift_cannot_target_enemy_minion():
+    """Forest's Gift can only target friendly minions."""
+    game = prepare_empty_game(CardClass.DRUID, CardClass.DRUID)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    friendly = player.summon(WISP)
+    enemy = player.opponent.summon(WISP)
+    gift = player.give("CATA_138")
+
+    assert friendly in gift.play_targets
+    assert enemy not in gift.play_targets
+
+
 ##
 # CATA_479: 飞龙机动
 # 裂变：召唤两条4/2的幼龙。使你的随从获得+1/+1和圣盾。
@@ -2671,7 +2670,7 @@ def test_gruesome_nightmare_can_choose_a_hand_minion():
 
 ##
 # CATA_585: 烈火炙烤 (warrior Torch)
-# 对一个受伤的随从造成6点伤害，溢出伤害给英雄+X攻击力，将牌放回手牌
+# 对一个受伤的随从造成8点伤害，超出目标生命值的剩余伤害以本牌复制回手
 
 def test_torch_deals_8_damage_and_returns_leftover_damage_to_hand():
     """Torch deals 8 damage and returns a copy carrying leftover damage."""

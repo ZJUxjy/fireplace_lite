@@ -186,15 +186,6 @@ class CATA_585:
     play = CATA_585_Torch(TARGET)
 
 
-@custom_card
-class CATA_585te:
-    tags = {
-        GameTag.CARDNAME: "Torch Return",
-        GameTag.CARDTYPE: CardType.ENCHANTMENT,
-        GameTag.ATK: 0,
-    }
-
-
 # CATA_610: 洛戈什的奋战 (5费 法术)
 # 使一个随从获得"亡语：随机从你的手牌中召唤一个随从"
 class CATA_610:

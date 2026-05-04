@@ -122,6 +122,7 @@ class CATA_138:
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
         PlayReq.REQ_MINION_TARGET: 0,
+        PlayReq.REQ_FRIENDLY_TARGET: 0,
     }
 
     play = CATA_138_ForestsGift(TARGET)
