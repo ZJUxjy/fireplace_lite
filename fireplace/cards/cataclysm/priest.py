@@ -30,7 +30,7 @@ class CATA_300:
     play = Summon(CONTROLLER, "CATA_300t1"), Summon(CONTROLLER, "CATA_300t2"), Summon(CONTROLLER, "CATA_300t3")
 
     # 在你为一个角色恢复生命值后，随机攻击一个敌方随从
-    events = Heal().after(Hit(RANDOM_ENEMY_MINION, ATK(SELF)))
+    events = Heal(source=FRIENDLY).on(Attack(SELF, RANDOM_ENEMY_MINION))
 
 
 # CATA_300t1, CATA_300t2, CATA_300t3: 黑血之腿 (1费 0/2)

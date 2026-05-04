@@ -409,6 +409,26 @@ def test_black_blood_limb_heals_damaged_friendly_character_at_turn_end():
     assert target.health == damaged_health + 3
 
 
+def test_black_blood_random_attack_takes_defender_damage_after_heal():
+    """Black Blood randomly attacks an enemy minion after you restore Health."""
+    from fireplace.actions import Heal, Hit
+
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    black_blood = player.summon("CATA_300")
+    defender = player.opponent.summon("EX1_572")
+    game.cheat_action(player.opponent.hero, [Hit(player.hero, 3)])
+    damaged_hero_health = player.hero.health
+
+    game.cheat_action(player.hero.power, [Heal(player.hero, 1)])
+
+    assert player.hero.health == damaged_hero_health + 1
+    assert defender.health == defender.max_health - black_blood.atk
+    assert black_blood.health == black_blood.max_health - defender.atk
+
+
 def test_alexstrasza_life_guardian_damages_enemy_after_restoring_to_full():
     """Alexstrasza sets your hero to 15 Health and fires after a heal reaches full."""
     from fireplace.actions import Heal
