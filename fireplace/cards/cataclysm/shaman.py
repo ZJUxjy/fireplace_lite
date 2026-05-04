@@ -170,8 +170,11 @@ class CATA_564:
         PlayReq.REQ_MINION_TARGET: 0,
     }
 
-    # 战吼：给目标随从超级风怒
-    play = SetTags(TARGET, {GameTag.MEGA_WINDFURY: True})
+    # 战吼：给目标随从超级风怒，且无法攻击英雄。
+    play = SetTags(TARGET, {
+        GameTag.MEGA_WINDFURY: True,
+        GameTag.CANNOT_ATTACK_HEROES: True,
+    })
 
 
 # CATA_565: 天空之墙哨兵 (2费 0/3)
@@ -296,4 +299,3 @@ class CATA_724:
 
     # 亡语：解锁你被过载的水晶
     deathrattle = UnlockOverload(CONTROLLER)
-

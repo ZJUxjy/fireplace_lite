@@ -593,7 +593,7 @@ def test_alakir_gives_minions_matching_atk_cost():
 # 战吼：使一个友方随从获得Mega-Windfury
 
 def test_air_support_gives_mega_windfury():
-    """Air Support gives target friendly minion Mega-Windfury."""
+    """Air Support gives target friendly minion Mega-Windfury and prevents hero attacks."""
     game = prepare_empty_game()
     game.player1.max_mana = 10
     game.player1.used_mana = 0
@@ -601,6 +601,7 @@ def test_air_support_gives_mega_windfury():
     air_support = game.player1.give("CATA_564")
     air_support.play(target=target)
     assert target.mega_windfury
+    assert target.cannot_attack_heroes
 
 
 ##
