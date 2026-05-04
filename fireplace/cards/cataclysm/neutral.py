@@ -222,6 +222,15 @@ CATA_213e = buff(+1, 0)
 CATA_213e2 = buff(0, +1)
 
 
+class CATA_DeathwingHerald(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        heralds = getattr(target, "_cataclysm_heralds", {}).copy()
+        heralds["deathwing"] = heralds.get("deathwing", 0) + 1
+        target._cataclysm_heralds = heralds
+
+
 # CATA_476: 青铜护卫者 (8费 3/7)
 # 在你的回合结束时，召唤一条6/6并具有圣盾的元素巨龙。
 class CATA_476:
@@ -357,8 +366,8 @@ class CATA_722:
 
     tags = {GameTag.TAUNT: True}
 
-    # 简化实现：不做任何效果（兆示效果）
-    pass
+    # 战吼：兆示
+    play = CATA_DeathwingHerald(CONTROLLER)
 
 
 # CATA_723: 龙脉混血兽 (7费 8/6)

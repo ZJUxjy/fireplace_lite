@@ -2052,6 +2052,20 @@ def test_victor_nefarius_dragon_in_hand_reduces_cost():
     assert created._cost == -3 or created.cost < 1  # base cost 1 - 3 = 0 (min 0)
 
 
+def test_fearsome_doomkin_heralds_deathwing():
+    """Fearsome Doomkin keeps Taunt and Battlecry Heralds Deathwing."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    doomkin = player.give("CATA_722")
+    doomkin.play()
+
+    assert doomkin.taunt
+    assert getattr(player, "_cataclysm_heralds", {}).get("deathwing") == 1
+
+
 ##
     """Archmage Kalec gives spellpower+1 to all spells in hand and deck."""
     game = prepare_empty_game()
