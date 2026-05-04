@@ -107,6 +107,24 @@ class CATA_561t:
 # CATA_563: 雷鸣流云 (3费 4/3)
 # 战吼：选择手牌中一张费用(4)或更低的法术来吸收
 # 亡语：释放它
+class CATA_563_Absorb(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        source._absorbed_spell = target
+        target.zone = Zone.SETASIDE
+        source.game.manager.targeted_action(self, source, target)
+
+
+class CATA_563_CastAbsorbed(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        spell = getattr(target, "_absorbed_spell", None)
+        if spell:
+            source.game.queue_actions(spell, [CastSpell(spell)])
+
+
 class CATA_563:
     """Crackling Cloudstrider"""
 
@@ -118,9 +136,10 @@ class CATA_563:
         GameTag.RARITY: 4,
     }
 
-    # 简化实现：战吼，随机获得一张手牌中的法术
-    # 亡语：造成2点伤害
-    deathrattle = Hit(RANDOM(ENEMY_CHARACTERS), 2)
+    play = Choice(CONTROLLER, FRIENDLY_HAND + SPELL + (COST <= 4)).then(
+        CATA_563_Absorb(Choice.CARD)
+    )
+    deathrattle = CATA_563_CastAbsorbed(SELF)
 
 
 # CATA_563e2: 阴云 (buff)
@@ -277,5 +296,4 @@ class CATA_724:
 
     # 亡语：解锁你被过载的水晶
     deathrattle = UnlockOverload(CONTROLLER)
-
 

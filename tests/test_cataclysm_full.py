@@ -604,6 +604,32 @@ def test_air_support_gives_mega_windfury():
 
 
 ##
+# CATA_563: 雷鸣流云
+# 战吼：选择并吸收你手牌中一张法力值消耗小于或等于（4）点的法术牌。亡语：施放该法术。
+
+def test_cloudstrider_absorbs_hand_spell_and_casts_it_on_death():
+    """Crackling Cloudstrider stores a chosen cheap hand spell and casts it on death."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    spell = player.give("CS2_025")  # Arcane Explosion, 2-Cost spell.
+    enemy = player.opponent.summon("CS2_182")
+
+    cloudstrider = player.give("CATA_563")
+    cloudstrider.play()
+
+    assert player.choice is not None
+    assert player.choice.cards == [spell]
+    player.choice.choose(spell)
+    assert spell not in player.hand
+
+    cloudstrider.destroy()
+
+    assert enemy.health == enemy.max_health - 1
+
+
+##
 # CATA_487: 祈雨元素
 # 每回合第一次用法术造成伤害时，获得+2攻击力（每回合只触发一次）
 
