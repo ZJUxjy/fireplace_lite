@@ -158,14 +158,11 @@ class CATA_699:
         PlayReq.REQ_MINION_TARGET: 0,
     }
 
-    # 战吼：偷取目标3点生命值，触发3次（造成伤害并治疗英雄）
-    def play(self):
-        target = self.target
-        actions = []
-        for _ in range(3):
-            actions.append(Hit(target, 3))
-            actions.append(Heal(FRIENDLY_HERO, 3))
-        return actions
+    # 战吼：偷取目标3点生命值，触发3次
+    play = (
+        Buff(TARGET, "CATA_699e", max_health=-3),
+        Buff(SELF, "CATA_699e2", max_health=3),
+    ) * 3
 
 
 ##

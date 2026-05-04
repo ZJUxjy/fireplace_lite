@@ -1825,6 +1825,26 @@ def test_armored_bloodsail_naga_heralds_without_damage():
     assert getattr(player, "_cataclysm_heralds", {}).get("azshara") == 1
 
 
+def test_terrace_dredger_steals_enemy_minion_health_three_times():
+    """Terrace Dredger steals 3 Health from an enemy minion three times."""
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    enemy = player.opponent.summon("EX1_572")  # Ysera, 12 Health.
+    player.max_mana = 10
+    player.used_mana = 0
+    player.hero.set_current_health(20)
+
+    dredger = player.give("CATA_699")
+    dredger.play(target=enemy)
+
+    assert dredger in player.field
+    assert dredger.max_health == 15
+    assert dredger.health == 15
+    assert enemy.max_health == 3
+    assert enemy.health == 3
+    assert player.hero.health == 20
+
+
 ##
 # CATA_533: 涣漫洪流
 # 对最左边和最右边的敌方随从造成5点伤害; 无随从时对敌方英雄造成5点伤害
