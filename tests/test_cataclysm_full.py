@@ -563,6 +563,23 @@ def test_agent_transforms_hand_card_to_coin():
     assert len(coins) == 1
 
 
+def test_agent_transforms_hand_card_without_discarding_it():
+    """Agent of the Old Ones transforms a hand card without discard triggers."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    for card in list(player.hand):
+        card.zone = Zone.REMOVEDFROMGAME
+    transformed = player.give(FIREBALL)
+
+    player.give("CATA_200").play()
+
+    assert transformed.zone == Zone.REMOVEDFROMGAME
+    assert player.discarded_cards_this_game == 0
+    assert [card.id for card in player.hand] == ["GAME_005"]
+
+
 def test_isorath_devours_two_opponent_hand_cards_and_deathrattle_returns_them():
     """Iso'rath removes two opponent hand cards until its Deathrattle."""
     game = prepare_empty_game()

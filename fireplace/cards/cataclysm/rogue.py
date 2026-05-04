@@ -69,14 +69,22 @@ class CATA_158t:
 
 # CATA_200: Agent of the Old Ones (1费 2/1 埃索达)
 # 战吼: 将你手牌中的一张随机卡牌变成一个幸运币
+class CATA_200_TransformHandCardToCoin(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        if not target.hand:
+            return []
+        transformed = source.game.random.choice(list(target.hand))
+        transformed.zone = Zone.REMOVEDFROMGAME
+        source.game.manager.targeted_action(self, source, transformed)
+        return source.game.queue_actions(source, [Give(target, THE_COIN)])
+
+
 class CATA_200:
     """Agent of the Old Ones"""
 
-    # 将手牌中一张随机卡弃掉，然后给一枚幸运币
-    def play(self):
-        if not self.controller.hand:
-            return []
-        return [Discard(RANDOM(FRIENDLY_HAND)), Give(CONTROLLER, THE_COIN)]
+    play = CATA_200_TransformHandCardToCoin(CONTROLLER)
 
 
 # CATA_201: Twilight Mistress (9费 4/12 龙)
