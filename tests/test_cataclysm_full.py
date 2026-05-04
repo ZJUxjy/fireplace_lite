@@ -1345,6 +1345,25 @@ def test_tolvir_carver_chosen_hand_card_discounts_each_turn_start():
     assert chosen.cost == chosen.data.cost - 2
 
 
+def test_confront_the_tolvir_replays_one_cost_cards_targeting_enemies():
+    """Confront the Tol'vir replays every 1-Cost card and targets enemies if possible."""
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    enemy_hero = player.opponent.hero
+    player.max_mana = 10
+    player.used_mana = 0
+    enemy_health = enemy_hero.health
+
+    player.give("DS1_185").play(target=enemy_hero)
+    player.give("CATA_558").play()
+    player.used_mana = 0
+
+    player.give("CATA_560").play()
+
+    assert enemy_hero.health == enemy_health - 4
+    assert [minion.id for minion in player.field].count("CATA_558") == 2
+
+
 ##
 # CATA_721: 避难的幸存者
 # 战吼：选择一张你的手牌洗入你的牌库。抽一张牌。

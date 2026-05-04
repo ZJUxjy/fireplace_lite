@@ -141,15 +141,27 @@ class CATA_558:
 
 
 # CATA_560: Confront the Tol'vir (面对托维尔人) - 3费 法术
-# 造成3点伤害
+# 再次使用你在本局对战中使用过的每一张法力值消耗为（1）的牌（尽可能以敌人为目标）。
+class CATA_560_ReplayOneCostCards(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        for card in list(player.cards_played_this_game):
+            if card.cost != 1:
+                continue
+            replay_card = player.card(card.id)
+            if replay_card.type == CardType.SPELL:
+                source.game.queue_actions(
+                    source, [CastSpellTargetsEnemiesIfPossible(replay_card)]
+                )
+            else:
+                source.game.queue_actions(source, [Summon(player, replay_card)])
+
+
 class CATA_560:
     """Confront the Tol'vir"""
 
-    requirements = {
-        PlayReq.REQ_TARGET_TO_PLAY: 0,
-    }
-
-    play = Hit(TARGET, 3)
+    play = CATA_560_ReplayOneCostCards(CONTROLLER)
 
 
 # CATA_566: Tol'vir Carver (托维尔雕刻师) - 3费 3/2
