@@ -23,46 +23,70 @@ class CATA_550t:
 
 
 # CATA_551: Stonetalon Striker (石爪打击者) - 3费 3/3
-# 战吼: 如果控制一个野兽，获得+3/+3
+# 嘲讽。当本牌在你手中时，使用一张龙牌即可将本牌变为6/6的龙。
 class CATA_551:
     """Stonetalon Striker"""
 
-    # 战吼: 如果控制一个野兽，获得+3/+3
-    powered_up = Find(FRIENDLY_MINIONS + BEAST)
-    play = powered_up & Buff(SELF, "CATA_551e")
+    tags = {GameTag.TAUNT: True}
+
+    class Hand:
+        events = Play(CONTROLLER, DRAGON).after(Morph(SELF, "CATA_551t"))
 
 
-@custom_card
-class CATA_551e:
-    tags = {
-        GameTag.CARDNAME: "Stonetalon Strike",
-        GameTag.CARDTYPE: CardType.ENCHANTMENT,
-        GameTag.ATK: 3,
-        GameTag.HEALTH: 3,
-    }
+class CATA_551t:
+    """Stonetalon Striker"""
+
+    tags = {GameTag.TAUNT: True}
 
 
-# CATA_552: Ebonscale Scout (黑鳞斥候) - 6费 4/4
-# 战吼: 如果控制一个野兽，将一个友方野兽移回你的手牌
+# CATA_552: Ebonscale Scout (乌鳞斥候) - 6费 4/4
+# 战吼：造成等同于本随从攻击力的伤害。当本牌在你手中时，使用一张龙牌即可将本牌变为8/8的龙。
 class CATA_552:
     """Ebonscale Scout"""
 
-    # 战吼: 如果控制一个野兽，将一个友方野兽移回你的手牌
-    powered_up = Find(FRIENDLY_MINIONS + BEAST)
-    play = powered_up & Bounce(RANDOM(FRIENDLY_MINIONS + BEAST))
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+    }
+
+    play = Hit(TARGET, ATK(SELF))
+
+    class Hand:
+        events = Play(CONTROLLER, DRAGON).after(Morph(SELF, "CATA_552t"))
+
+
+class CATA_552t:
+    """Ebonscale Scout"""
+
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+    }
+
+    play = Hit(TARGET, ATK(SELF))
 
 
 # CATA_553: Ebyssian (埃布西安) - 7费 6/6
-# 战吼: 如果控制一个野兽，使其获得+6/+6
+# 战吼：在本局对战中，你的龙拥有突袭。当本牌在你手中时，使用一张龙牌即可将本牌变为12/12的龙。
 class CATA_553:
     """Ebyssian"""
 
-    # 战吼: 如果控制一个野兽，使其获得+6/+6
-    powered_up = Find(FRIENDLY_MINIONS + BEAST)
-    play = powered_up & Buff(RANDOM(FRIENDLY_MINIONS + BEAST), "CATA_553e")
+    play = Buff(CONTROLLER, "CATA_553e")
+
+    class Hand:
+        events = Play(CONTROLLER, DRAGON).after(Morph(SELF, "CATA_553t"))
 
 
-CATA_553e = buff(+6, +6)
+class CATA_553t:
+    """Ebyssian"""
+
+    play = Buff(CONTROLLER, "CATA_553e")
+
+
+class CATA_553e:
+    events = Summon(CONTROLLER, DRAGON).on(GiveRush(Summon.CARD))
+
+
+class CATA_553e2:
+    tags = {GameTag.RUSH: True}
 
 
 ##

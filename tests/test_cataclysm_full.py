@@ -1166,6 +1166,83 @@ def test_carrier_whelp_can_give_dragon_that_costs_less_than_three():
     assert generated.cost == 2
 
 
+def test_hunter_secret_dragons_transform_after_playing_dragon():
+    """Stonetalon, Ebonscale, and Ebyssian transform in hand after you play a Dragon."""
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    stonetalon = player.give("CATA_551")
+    ebonscale = player.give("CATA_552")
+    ebyssian = player.give("CATA_553")
+
+    player.give("CATA_465t").play()
+
+    transformed_ids = [card.id for card in player.hand]
+    assert "CATA_551t" in transformed_ids
+    assert "CATA_552t" in transformed_ids
+    assert "CATA_553t" in transformed_ids
+    assert stonetalon not in player.hand
+    assert ebonscale not in player.hand
+    assert ebyssian not in player.hand
+    transformed_stonetalon = next(card for card in player.hand if card.id == "CATA_551t")
+    assert Race.DRAGON in transformed_stonetalon.races
+    assert transformed_stonetalon.taunt
+    assert (transformed_stonetalon.atk, transformed_stonetalon.health) == (6, 6)
+
+
+def test_ebonscale_scout_deals_attack_damage_before_and_after_transform():
+    """Ebonscale Scout deals damage equal to its Attack, including the Dragon form."""
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    opponent = player.opponent
+    player.max_mana = 10
+    player.used_mana = 0
+    target = opponent.summon("CATA_201")
+
+    player.give("CATA_552").play(target=target)
+
+    assert target.damage == 4
+
+    player.used_mana = 0
+    transformed = player.give("CATA_552")
+    player.give("CATA_465t").play()
+    target2 = opponent.summon("CATA_201")
+    player.used_mana = 0
+    next(card for card in player.hand if card.id == "CATA_552t").play(target=target2)
+
+    assert transformed not in player.hand
+    assert target2.damage == 8
+
+
+def test_ebyssian_gives_dragons_rush_this_game():
+    """Ebyssian and its Dragon form give your Dragons Rush this game."""
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    player.give("CATA_553").play()
+    dragon = player.summon("CATA_465t")
+
+    assert dragon.rush
+
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    original = player.give("CATA_553")
+    player.give("CATA_465t").play()
+    player.used_mana = 0
+    transformed = next(card for card in player.hand if card.id == "CATA_553t")
+
+    transformed.play()
+    dragon = player.summon("CATA_465t")
+
+    assert original not in player.hand
+    assert dragon.rush
+
+
 def test_reinforcement_rallier_is_elusive_without_summoning_token():
     """Reinforcement Rallier is an Elusive 2/2 and has no summon battlecry."""
     game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
