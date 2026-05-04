@@ -85,17 +85,19 @@ CATA_554e = buff(+4, +4)
 
 
 # CATA_557: Sylvanas's Triumph (希尔瓦娜斯的胜利) - 2费 法术
-# 召唤一个2/2的骷髅
+# 造成3点伤害。如果你使用过本牌的其他复制，改为对所有敌人造成伤害。
 class CATA_557:
     """Sylvanas's Triumph"""
 
-    # 召唤一个2/2的骷髅
-    play = Summon(CONTROLLER, "CATA_557t")
+    requirements = {
+        PlayReq.REQ_TARGET_IF_AVAILABLE: 0,
+    }
 
-
-# CATA_557t: Skeleton (骷髅) - 2费 2/2
-class CATA_557t:
-    """Skeleton"""
+    def play(self):
+        if self.controller.cards_played_this_game.filter(id="CATA_557"):
+            yield Hit(ENEMY_CHARACTERS, 3)
+        elif self.target:
+            yield Hit(self.target, 3)
 
 
 # CATA_558: Reinforcement Rallier (进击的募援官) - 1费 2/2

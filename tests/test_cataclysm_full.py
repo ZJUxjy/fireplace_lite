@@ -1182,6 +1182,29 @@ def test_reinforcement_rallier_is_elusive_without_summoning_token():
     assert rallier.cant_be_targeted_by_hero_powers
 
 
+def test_sylvanas_triumph_upgrades_after_another_copy_was_played():
+    """Sylvanas's Triumph deals 3, then later copies damage all enemies."""
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    opponent = player.opponent
+    player.max_mana = 10
+    player.used_mana = 0
+    enemy_hero = opponent.hero
+    enemy_minion = opponent.summon("CATA_201")
+
+    player.give("CATA_557").play(target=enemy_hero)
+
+    assert enemy_hero.damage == 3
+    assert enemy_minion.damage == 0
+
+    player.used_mana = 0
+    player.give("CATA_557").play(target=enemy_minion)
+
+    assert enemy_hero.damage == 6
+    assert enemy_minion.damage == 3
+    assert player.hero.damage == 0
+
+
 ##
 # CATA_721: 避难的幸存者
 # 战吼：选择一张你的手牌洗入你的牌库。抽一张牌。
