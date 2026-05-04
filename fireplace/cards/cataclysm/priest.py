@@ -24,6 +24,8 @@ class CATA_216e:
 class CATA_300:
     """Black Blood"""
 
+    colossal_limb_count = 3
+
     # 巨型+3：召唤3条腿
     play = Summon(CONTROLLER, "CATA_300t1"), Summon(CONTROLLER, "CATA_300t2"), Summon(CONTROLLER, "CATA_300t3")
 
@@ -34,6 +36,8 @@ class CATA_300:
 # CATA_300t1, CATA_300t2, CATA_300t3: 黑血之腿 (1费 0/2)
 class CATA_300t1:
     """Black Blood Limb"""
+
+    events = OWN_TURN_END.on(Heal(RANDOM(FRIENDLY + DAMAGED_CHARACTERS), 3))
 
 
 CATA_300t2 = CATA_300t1

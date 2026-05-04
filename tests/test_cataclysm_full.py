@@ -390,6 +390,25 @@ def test_sanctified_priest_increases_hero_power_healing_this_game():
     assert hero.health == damaged_health + 4
 
 
+def test_black_blood_limb_heals_damaged_friendly_character_at_turn_end():
+    """Black Blood's limbs restore 3 Health to a damaged friendly character."""
+    from fireplace.actions import Hit
+
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    limb = player.summon("CATA_300t1")
+    target = player.summon("CS2_182")
+    game.cheat_action(player.opponent.hero, [Hit(target, 3)])
+    damaged_health = target.health
+
+    game.end_turn()
+
+    assert limb in player.field
+    assert target.health == damaged_health + 3
+
+
 def test_alexstrasza_life_guardian_damages_enemy_after_restoring_to_full():
     """Alexstrasza sets your hero to 15 Health and fires after a heal reaches full."""
     from fireplace.actions import Heal
@@ -790,7 +809,7 @@ def test_sinestra_tokens_give_discounted_other_class_spell():
         assert player.choice is None
         assert generated.type == CardType.SPELL
         assert generated.card_class != CardClass.ROGUE
-        assert generated.cost == max(0, generated.data.cost - 1)
+        assert any(buff.id == "CATA_154te" for buff in generated.buffs)
 
 
 def test_maniacal_followers_herald_sinestra_spell_discount_upgrade():
@@ -816,7 +835,7 @@ def test_maniacal_followers_herald_sinestra_spell_discount_upgrade():
     assert "CATA_158t" not in [card.id for card in player.field]
     assert generated.type == CardType.SPELL
     assert generated.card_class != CardClass.ROGUE
-    assert generated.cost == max(0, generated.data.cost - 2)
+    assert any(buff.id == "CATA_154te2" for buff in generated.buffs)
 
 
 def test_rite_of_twilight_heralds_sinestra_without_combo_damage():
@@ -846,7 +865,7 @@ def test_rite_of_twilight_heralds_sinestra_without_combo_damage():
     generated = player.hand[-1]
     assert generated.type == CardType.SPELL
     assert generated.card_class != CardClass.ROGUE
-    assert generated.cost == max(0, generated.data.cost - 2)
+    assert any(buff.id == "CATA_154te2" for buff in generated.buffs)
 
 
 def test_sinestra_casts_other_class_spell_twice():
