@@ -356,6 +356,22 @@ def test_experimental_animation_heralds_while_damaging_enemy_minions():
     assert getattr(generated, "costs_health_turn", None) == game.turn
 
 
+def test_chow_down_spends_corpses_to_give_hungry_drakes_rush():
+    """Chow Down spends 8 Corpses to give the summoned Hungry Drakes Rush."""
+    game = prepare_empty_game(CardClass.DEATHKNIGHT, CardClass.DEATHKNIGHT)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    player.corpses = 8
+
+    player.give("CATA_465").play()
+
+    drakes = [minion for minion in player.field if minion.id == "CATA_465t"]
+    assert len(drakes) == 5
+    assert all(drake.rush for drake in drakes)
+    assert player.corpses == 0
+
+
 def test_sanctified_priest_increases_hero_power_healing_this_game():
     """Sanctified Priest increases the controller's healing effects by 2."""
     from fireplace.actions import Hit

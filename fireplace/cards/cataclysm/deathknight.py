@@ -149,11 +149,27 @@ class CATA_464t:
 
 # CATA_465: 投喂加餐 (8费 法术)
 # 召唤五条5/4的亡灵幼龙。消耗8份残骸，使其获得突袭。
+class CATA_465_SummonDrakes(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        spend_corpses = getattr(player, "corpses", 0) >= 8
+        if spend_corpses:
+            player.corpses -= 8
+
+        actions = []
+        for _ in range(5):
+            summon = Summon(player, "CATA_465t")
+            if spend_corpses:
+                summon = summon.then(GiveRush(Summon.CARD))
+            actions.append(summon)
+        source.game.queue_actions(source, actions)
+
+
 class CATA_465:
     """Chow Down"""
 
-    # 召唤五条5/4亡灵幼龙
-    play = Summon(CONTROLLER, "CATA_465t") * 5
+    play = CATA_465_SummonDrakes(CONTROLLER)
 
 
 # CATA_465t: 饥饿的幼龙 (5费 5/4 龙)
