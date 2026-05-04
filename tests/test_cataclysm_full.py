@@ -828,6 +828,26 @@ def test_nozdormu_buffs_only_minions_that_already_had_divine_shield():
 
 
 ##
+# CATA_474: 矛心哨卫
+# 在你的回合结束时，随机获取一张神圣法术牌，其法力值消耗减少（3）点。
+
+def test_spearhead_paladin_gives_discounted_holy_spell_at_turn_end():
+    """Spearhead Paladin gives a Holy spell and discounts that generated card by 3."""
+    from hearthstone.enums import SpellSchool
+
+    game = prepare_empty_game()
+    player = game.current_player
+    player.summon("CATA_474")
+
+    game.end_turn()
+
+    assert len(player.hand) == 1
+    generated = player.hand[0]
+    assert getattr(generated.data, "spell_school", None) == SpellSchool.HOLY
+    assert generated.cost == max(0, generated.data.cost - 3)
+
+
+##
 # CATA_570: 莫卓克
 # 战吼：抽1张牌并减少其费用(10)
 

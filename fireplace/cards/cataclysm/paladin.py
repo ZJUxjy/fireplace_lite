@@ -115,8 +115,9 @@ class CATA_474:
     """Spearhead Paladin"""
 
     events = OWN_TURN_END.on(
-        Give(CONTROLLER, RandomSpell(spell_school=SpellSchool.HOLY)),
-        Buff(Give.CARD, "CATA_474e")
+        Give(CONTROLLER, RandomSpell(spell_school=SpellSchool.HOLY)).then(
+            Buff(Give.CARD, "CATA_474e")
+        )
     )
 
 
