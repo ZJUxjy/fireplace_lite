@@ -204,6 +204,7 @@ class CATA_565t:
         GameTag.ATK: 1,
         GameTag.HEALTH: 2,
     }
+    update = Refresh(SELF_ADJACENT, {GameTag.ATK: +1})
 
 
 # CATA_567: 升腾 (4费 法术)

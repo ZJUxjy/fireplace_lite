@@ -674,6 +674,23 @@ def test_ritual_of_power_adds_breezlings_to_hand():
     assert all(card.rush for card in breezlings)
 
 
+def test_soldier_of_alakir_buffs_adjacent_minion_attack():
+    """Soldier of Al'Akir gives adjacent minions +1 Attack."""
+    game = prepare_empty_game()
+    player = game.player1
+    left = player.summon("CS2_182")
+    soldier = player.summon("CATA_565t")
+    right = player.summon("CS2_179")
+    far = player.summon("CS2_172")
+
+    game.refresh_auras()
+
+    assert left.atk == left.data.atk + 1
+    assert right.atk == right.data.atk + 1
+    assert far.atk == far.data.atk
+    assert soldier.atk == soldier.data.atk
+
+
 ##
 # CATA_564: 飞行助翼
 # 战吼：使一个友方随从获得Mega-Windfury
