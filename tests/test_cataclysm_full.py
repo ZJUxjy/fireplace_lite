@@ -631,6 +631,27 @@ def test_cloudstrider_absorbs_hand_spell_and_casts_it_on_death():
 
 
 ##
+# CATA_568: 穆拉丁的奋战
+# 抽两张牌。在本局对战中，友方角色每攻击过一次，本牌的法力值消耗便减少（1）点。
+
+def test_muradins_last_stand_cost_reduced_by_friendly_attacks_this_game():
+    """Muradin's Last Stand costs 1 less for each friendly character attack this game."""
+    from fireplace.actions import Attack
+
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    spell = player.give("CATA_568")
+    attacker1 = player.summon(WISP)
+    attacker2 = player.summon(WISP)
+
+    game.cheat_action(attacker1, [Attack(attacker1, player.opponent.hero)])
+    game.cheat_action(attacker2, [Attack(attacker2, player.opponent.hero)])
+
+    assert spell.cost == 7
+
+
+##
 # CATA_487: 祈雨元素
 # 每回合第一次用法术造成伤害时，获得+2攻击力（每回合只触发一次）
 

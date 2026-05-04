@@ -229,6 +229,10 @@ CATA_567e = buff(+1, +1)
 
 # CATA_568: 穆拉丁的奋战 (9费 法术)
 # 抽2张牌，每有一个友方角色攻击过，费用就减少(1)
+def _muradins_last_stand_cost(entity, amount):
+    return amount - entity.controller.friendly_attacks_this_game
+
+
 class CATA_568:
     """Muradin's Last Stand"""
 
@@ -240,8 +244,10 @@ class CATA_568:
         GameTag.RARITY: 3,
     }
 
-    # 简化实现：抽2张牌
     play = Draw(CONTROLLER) * 2
+
+    class Hand:
+        update = Refresh(SELF, {GameTag.COST: _muradins_last_stand_cost})
 
 
 # CATA_569: 演武仪式 (4费 法术)
