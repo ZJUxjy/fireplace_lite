@@ -228,6 +228,53 @@ def test_arisen_onyxia_does_not_replace_opponent_turn_hero_damage():
     assert hero.max_health == base_max_health
 
 
+def test_onyxias_wing_generated_minion_costs_health_this_turn():
+    """Onyxia's Wing gives a 1-Cost minion that costs Health this turn."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 1
+    player.used_mana = 0
+    hero = player.hero
+    wing = player.give("CATA_155t")
+
+    wing.play()
+    generated = player.hand[-1]
+    player.used_mana = player.max_mana
+    base_health = hero.health
+
+    assert generated.cost == 1
+    assert generated.is_playable()
+
+    target = generated.targets[0] if generated.requires_target() else None
+    generated.play(target=target)
+
+    assert hero.health == base_health - 1
+    assert player.used_mana == player.max_mana
+
+
+def test_onyxias_wing_health_cost_expires_after_this_turn():
+    """Onyxia's Wing generated minion uses mana again after the current turn."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 1
+    player.used_mana = 0
+    hero = player.hero
+    wing = player.give("CATA_155t")
+
+    wing.play()
+    generated = player.hand[-1]
+    game.end_turn()
+    game.end_turn()
+    player.used_mana = 0
+    base_health = hero.health
+
+    target = generated.targets[0] if generated.requires_target() else None
+    generated.play(target=target)
+
+    assert hero.health == base_health
+    assert player.used_mana == generated.cost
+
+
 ##
 # CATA_491: 怪异触手
 # 对所有随从造成$3点伤害。重复（打出后回到手牌）

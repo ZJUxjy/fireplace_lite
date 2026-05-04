@@ -53,6 +53,18 @@ class CATA_155e:
 
 # CATA_155t: 奥妮克希亚之翼 (1费 1/1 龙)
 # 被召唤时，获取一张消耗为(1)的随从牌，它在本回合中会消耗生命值。兆示两次后升级。
+class CATA_155t_GiveHealthCostMinion(TargetedAction):
+    TARGET = ActionArg()
+    CARD = CardArg()
+
+    def do(self, source, target, cards):
+        if not hasattr(cards, "__iter__"):
+            cards = [cards]
+        for card in cards:
+            card.costs_health_turn = source.game.turn
+        return source.game.queue_actions(source, [Give(target, cards)])
+
+
 class CATA_155t:
     """Onyxia's Wing"""
 
@@ -61,8 +73,7 @@ class CATA_155t:
     }
 
     # 被召唤时，获取一张消耗为(1)的随从牌，它在本回合中会消耗生命值
-    # 简化实现：直接获取一张1费随从
-    play = Give(CONTROLLER, RandomMinion(cost=1))
+    play = CATA_155t_GiveHealthCostMinion(CONTROLLER, RandomMinion(cost=1))
 
 
 # CATA_155t1: 奥妮克希亚之翼（升级版）
@@ -74,7 +85,7 @@ class CATA_155t1:
     }
 
     # 被召唤时，获取一张消耗为(1)的随从牌，它在本回合中会消耗生命值
-    play = Give(CONTROLLER, RandomMinion(cost=1))
+    play = CATA_155t_GiveHealthCostMinion(CONTROLLER, RandomMinion(cost=1))
 
 
 # CATA_161: 残恶梦魇 (3费 3/3)

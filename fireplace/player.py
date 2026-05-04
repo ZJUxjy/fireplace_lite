@@ -66,6 +66,9 @@ class Player(Entity, TargetableByAuras):
         max_cost = self.murlocs_cost_health_max
         return not max_cost or card.cost <= max_cost
 
+    def _card_costs_health_this_turn(self, card):
+        return getattr(card, "costs_health_turn", None) == self.game.turn
+
     def __init__(self, name, deck: List[str], hero: str, is_standard=True):
         self.game: Game = None
         self.opponent: Player = None
@@ -369,6 +372,8 @@ class Player(Entity, TargetableByAuras):
         """
         Returns whether the player can pay the resource cost of a card.
         """
+        if self._card_costs_health_this_turn(card):
+            return self.hero.health > card.cost
         if self.spells_cost_health and card.type == CardType.SPELL:
             return self.hero.health > card.cost
         if self._murloc_costs_health(card):
@@ -380,6 +385,10 @@ class Player(Entity, TargetableByAuras):
         Make player pay \a amount mana.
         Returns how much mana is spent, after temporary mana adjustments.
         """
+        if self._card_costs_health_this_turn(source):
+            self.log("%s pays %i health for %r", self, amount, source)
+            self.game.queue_actions(self, [Hit(self.hero, amount)])
+            return amount
         if self.spells_cost_health and source.type == CardType.SPELL:
             self.log("%s spells cost %i health", self, amount)
             self.game.queue_actions(self, [Hit(self.hero, amount)])
