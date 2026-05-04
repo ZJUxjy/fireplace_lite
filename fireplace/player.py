@@ -48,6 +48,23 @@ class Player(Entity, TargetableByAuras):
     murlocs_cost_health = slot_property("murlocs_cost_health")
     type = CardType.PLAYER
 
+    @property
+    def murlocs_cost_health_max(self):
+        limits = [
+            slot.murlocs_cost_health_max
+            for slot in self.slots
+            if getattr(slot, "murlocs_cost_health_max", 0)
+        ]
+        return min(limits) if limits else 0
+
+    def _murloc_costs_health(self, card):
+        if not self.murlocs_cost_health:
+            return False
+        if card.type != CardType.MINION or Race.MURLOC not in card.races:
+            return False
+        max_cost = self.murlocs_cost_health_max
+        return not max_cost or card.cost <= max_cost
+
     def __init__(self, name, deck: List[str], hero: str, is_standard=True):
         self.game: Game = None
         self.opponent: Player = None
@@ -349,9 +366,8 @@ class Player(Entity, TargetableByAuras):
         """
         if self.spells_cost_health and card.type == CardType.SPELL:
             return self.hero.health > card.cost
-        if self.murlocs_cost_health:
-            if card.type == CardType.MINION and Race.MURLOC in card.races:
-                return self.hero.health > card.cost
+        if self._murloc_costs_health(card):
+            return self.hero.health > card.cost
         return self.mana >= card.cost
 
     def pay_cost(self, source: Entity, amount: int) -> int:
@@ -363,11 +379,10 @@ class Player(Entity, TargetableByAuras):
             self.log("%s spells cost %i health", self, amount)
             self.game.queue_actions(self, [Hit(self.hero, amount)])
             return amount
-        if self.murlocs_cost_health:
-            if source.type == CardType.MINION and Race.MURLOC in source.races:
-                self.log("%s murlocs cost %i health", self, amount)
-                self.game.queue_actions(self, [Hit(self.hero, amount)])
-                return amount
+        if self._murloc_costs_health(source):
+            self.log("%s murlocs cost %i health", self, amount)
+            self.game.queue_actions(self, [Hit(self.hero, amount)])
+            return amount
         if source.type == CardType.SPELL:
             self.spent_mana_on_spells_this_game += amount
         self.game.queue_actions(source, [SpendMana(self, amount)])

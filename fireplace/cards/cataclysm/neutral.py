@@ -25,9 +25,7 @@ class CATA_111:
 class CATA_180:
     """Fished Murloc"""
 
-    # 战吼：下一张≤3费的鱼人消耗生命值
-    # 简化实现：直接给对手一个debuff
-    play = Buff(OPPONENT, "CATA_180e")
+    play = Buff(CONTROLLER, "CATA_180e")
 
 
 # CATA_180e: 毁灭！ (buff)
@@ -35,9 +33,14 @@ class CATA_180:
 class CATA_180e:
     """Consume Life"""
 
-    # 简化实现：这个效果实际上需要在使用鱼人时触发
-    # 这里简化为什么都不做，实际效果需要在使用时检查
-    pass
+    events = Play(CONTROLLER, MURLOC + (COST <= 3)).on(Destroy(SELF))
+    update = Refresh(
+        CONTROLLER,
+        {
+            enums.MURLOCS_COST_HEALTH: True,
+            enums.MURLOCS_COST_HEALTH_MAX: 3,
+        },
+    )
 
 
 # CATA_185: 无面复制者 (3费 3/3)

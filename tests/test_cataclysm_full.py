@@ -192,6 +192,54 @@ def test_agent_transforms_hand_card_to_coin():
 
 
 ##
+# CATA_180: 速逝鱼人
+# 战吼：你的下一张法力值消耗小于或等于（3）点的鱼人牌会消耗生命值，而非法力值。
+
+def test_fished_murloc_makes_next_low_cost_murloc_cost_health():
+    """Fished Murloc makes your next <=3-Cost Murloc cost Health instead of Mana."""
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    game.player1.used_mana = 0
+
+    game.player1.give("CATA_180").play()
+    mana_before = game.player1.mana
+    health_before = game.player1.hero.health
+    murloc = game.player1.give("EX1_506")  # Murloc Tidehunter, 2 mana.
+
+    murloc.play()
+
+    assert game.player1.mana == mana_before
+    assert game.player1.hero.health == health_before - 2
+    assert not game.player1.murlocs_cost_health
+
+
+def test_fished_murloc_ignores_high_cost_murloc_until_low_cost_murloc_played():
+    """Fished Murloc is not consumed by Murlocs that cost more than 3."""
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    game.player1.used_mana = 0
+
+    game.player1.give("CATA_180").play()
+    mana_before = game.player1.mana
+    health_before = game.player1.hero.health
+    expensive_murloc = game.player1.give("EX1_062")  # Old Murk-Eye, 4 mana.
+
+    expensive_murloc.play()
+
+    assert game.player1.mana == mana_before - 4
+    assert game.player1.hero.health == health_before
+    assert game.player1.murlocs_cost_health
+
+    low_cost_murloc = game.player1.give("EX1_506")
+    mana_before_low_cost = game.player1.mana
+    low_cost_murloc.play()
+
+    assert game.player1.mana == mana_before_low_cost
+    assert game.player1.hero.health == health_before - 2
+    assert not game.player1.murlocs_cost_health
+
+
+##
 # CATA_591: 指挥官迦顿
 # 战吼：从你的牌库中发现一张卡牌，它的费用为(0)
 
