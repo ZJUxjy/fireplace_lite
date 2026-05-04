@@ -171,6 +171,22 @@ def test_merithra_fills_remaining_slots():
 # CATA_491: 怪异触手
 # 对所有随从造成$3点伤害。重复（打出后回到手牌）
 
+def test_ocular_occultist_chooses_hand_card_to_discard():
+    """Ocular Occultist chooses a hand card and discards it."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    discarded = player.give(FIREBALL)
+
+    player.give("CATA_490").play()
+
+    assert player.choice is not None
+    assert player.choice.cards == [discarded]
+    player.choice.choose(discarded)
+    assert discarded.zone == Zone.REMOVEDFROMGAME
+
+
 def test_tentacle_repeats_returns_to_hand():
     """Tentacle (CATA_491) returns to hand after being played (Repeat mechanic)."""
     game = prepare_empty_game()

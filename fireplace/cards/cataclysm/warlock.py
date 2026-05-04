@@ -13,12 +13,7 @@ class CATA_490:
     tags = {GameTag.TAUNT: True}
 
     # 战吼：选择一张手牌并弃掉
-    play = Discard(TARGET)
-
-    requirements = {
-        PlayReq.REQ_TARGET_TO_PLAY: 0,
-        PlayReq.REQ_MINION_TARGET: 0,
-    }
+    play = Choice(CONTROLLER, FRIENDLY_HAND - SELF).then(Discard(Choice.CARD))
 
 
 # CATA_491: 怪异触手 (5费 5/4)
