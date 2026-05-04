@@ -245,7 +245,8 @@ class Player(Entity, TargetableByAuras):
     def spellpower(self):
         aura_power = self.controller.spellpower_adjustment
         minion_power = sum(
-            minion.spellpower for minion in self.field.filter(dormant=False)
+            getattr(minion, "spellpower", 0)
+            for minion in self.field.filter(dormant=False)
         )
         return aura_power + minion_power
 

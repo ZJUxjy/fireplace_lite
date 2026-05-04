@@ -134,7 +134,10 @@ class Entity(BuffableEntity):
 def slot_property(attr, f=any):
     @property
     def func(self):
-        return f(getattr(slot, attr, False) for slot in self.slots)
+        return f(
+            getattr(slot, attr, False)
+            for slot in self.buffs + self.slots
+        )
 
     return func
 
