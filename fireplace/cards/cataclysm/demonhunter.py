@@ -1,5 +1,3 @@
-import random as _random
-
 from ..utils import *
 from hearthstone.enums import SpellSchool
 
@@ -143,16 +141,9 @@ class CATA_529e:
 class CATA_697:
     """Fel Void Mutant"""
 
-    # 战吼：从手牌中的邪能法术中随机选一张，获取一张复制
-    def play(self):
-        fel_spells = [
-            c for c in self.controller.hand
-            if c.type == CardType.SPELL
-            and getattr(getattr(c, "data", None), "spell_school", None) == SpellSchool.FEL
-        ]
-        if fel_spells:
-            chosen = _random.choice(fel_spells)
-            yield Give(CONTROLLER, chosen.id)
+    play = Choice(CONTROLLER, FRIENDLY_HAND + FEL_SPELL).then(
+        Give(CONTROLLER, Copy(Choice.CARD))
+    )
 
 
 # CATA_699: 恐怖海兽 (9费 9/6)

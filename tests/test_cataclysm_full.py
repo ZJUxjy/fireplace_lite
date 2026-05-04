@@ -2521,19 +2521,21 @@ def test_greedy_fel_fisher_reduces_cost_on_fel_spell():
 
 def test_fel_void_mutant_copies_fel_spell_from_hand():
     """Fel Void Mutant copies a Fel spell from hand."""
-    from hearthstone.enums import SpellSchool
     game = prepare_empty_game()
     game.player1.max_mana = 10
-    # Add a Fel spell to hand (BAR_306 = Sigil of Flame, Fel school)
     fel_spell = game.player1.give("BAR_306")
+    other_fel_spell = game.player1.give("CATA_528")
     mutant = game.player1.give("CATA_697")
-    hand_before = len(game.player1.hand)  # 2
+    hand_before = len(game.player1.hand)
+
     mutant.play()
-    # mutant removed (-1) + copy of Fel spell added (+1) = same count
+
+    assert game.player1.choice
+    assert fel_spell in game.player1.choice.cards
+    assert other_fel_spell in game.player1.choice.cards
+    game.player1.choice.choose(fel_spell)
     assert len(game.player1.hand) == hand_before
-    # The new card should be a Fel spell
-    new_cards = [c for c in game.player1.hand if c is not fel_spell]
-    assert any(getattr(getattr(c, "data", None), "spell_school", None) == SpellSchool.FEL for c in new_cards)
+    assert [card.id for card in game.player1.hand].count(fel_spell.id) == 2
 
 
 def test_fel_void_mutant_does_nothing_without_fel_spell():
