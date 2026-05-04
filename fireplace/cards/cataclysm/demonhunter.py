@@ -42,6 +42,15 @@ class CATA_151te:
     tags = {GameTag.WINDFURY: True, GameTag.ATK: 1}
 
 
+class CATA_AzsharaHerald(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        heralds = getattr(target, "_cataclysm_heralds", {}).copy()
+        heralds["azshara"] = heralds.get("azshara", 0) + 1
+        target._cataclysm_heralds = heralds
+
+
 # CATA_525: 装甲放血纳迦 (3费 3/1)
 # 突袭。战吼：兆示
 class CATA_525:
@@ -49,10 +58,8 @@ class CATA_525:
 
     tags = {GameTag.RUSH: True}
 
-    # 兆示效果（简化实现：直接触发效果）
-    # 兆示2次，所以效果触发两次
-    # 简化实现：直接造成2点伤害
-    play = Hit(RANDOM(ENEMY_MINIONS), 2)
+    # 战吼：兆示
+    play = CATA_AzsharaHerald(CONTROLLER)
 
 
 # CATA_525t: 艾萨拉的士兵 (1费 2/1)

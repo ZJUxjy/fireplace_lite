@@ -1468,6 +1468,21 @@ def test_azshara_tentacle_buffs_hero_atk():
     assert game.player1.hero.atk == base_atk + 1
 
 
+def test_armored_bloodsail_naga_heralds_without_damage():
+    """Armored Bloodsail Naga Battlecry Heralds Azshara without damage."""
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    enemy = player.opponent.summon("CS2_182")
+    player.max_mana = 10
+    player.used_mana = 0
+    base_health = enemy.health
+
+    player.give("CATA_525").play()
+
+    assert enemy.health == base_health
+    assert getattr(player, "_cataclysm_heralds", {}).get("azshara") == 1
+
+
 ##
 # CATA_533: 涣漫洪流
 # 对最左边和最右边的敌方随从造成5点伤害; 无随从时对敌方英雄造成5点伤害
