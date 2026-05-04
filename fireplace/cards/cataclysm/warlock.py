@@ -83,14 +83,25 @@ class CATA_496:
     events = OWN_TURN_END.on(UnsetTags(TARGET, {GameTag.CANT_ATTACK: True}))
 
 
-# CATA_498: 拉法姆的奋战 (1费 2/2)
+# CATA_498: 拉法姆的奋战 (3费 法术)
 # 随机对两个敌方随从造成$@点伤害。（每回合都会升级！）
 class CATA_498:
     """Rafaam's Strider"""
 
-    # 简化实现：每回合开始时升级伤害
-    # 初始造成2点伤害，每回合+1
-    events = OWN_TURN_BEGIN.on(Hit(RANDOM(ENEMY_MINIONS) * 2, 1))
+    def play(self):
+        amount = 2 + sum(1 for buff in self.buffs if buff.id == "CATA_498e")
+        yield Hit(RANDOM(ENEMY_MINIONS) * 2, amount)
+
+    class Hand:
+        events = OWN_TURN_BEGIN.on(Buff(SELF, "CATA_498e"))
+
+
+@custom_card
+class CATA_498e:
+    tags = {
+        GameTag.CARDNAME: "Rafaam's Strider Upgrade",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
 
 
 # CATA_499: 助祭耗材 (3费 2/3)

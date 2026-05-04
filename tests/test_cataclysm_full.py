@@ -67,6 +67,40 @@ def test_crystalspine_cub_no_buff_when_mana_remains():
 
 
 ##
+# CATA_498: 拉法姆的奋战
+# 随机对两个敌方随从造成$@点伤害。（每回合都会升级！）
+
+def test_rafaams_strider_deals_two_damage_to_two_enemy_minions():
+    """Rafaam's Strider deals 2 total damage hits to enemy minions when played."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    enemies = [player.opponent.summon("CS2_182"), player.opponent.summon("CS2_182")]
+
+    player.give("CATA_498").play()
+
+    assert sum(minion.max_health - minion.health for minion in enemies) == 4
+
+
+def test_rafaams_strider_upgrades_in_hand_each_turn():
+    """Rafaam's Strider damage increases while it waits in hand."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    strider = player.give("CATA_498")
+    enemies = [player.opponent.summon("CS2_182"), player.opponent.summon("CS2_182")]
+
+    game.end_turn()
+    game.end_turn()
+    player.used_mana = 0
+    strider.play()
+
+    assert sum(minion.max_health - minion.health for minion in enemies) == 6
+
+
+##
 # CATA_132: 护巢龙
 # 战吼：获得两个3/3嘲讽龙。如果你使用8点法力，则直接召唤
 
