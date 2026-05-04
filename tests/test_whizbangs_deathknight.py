@@ -1,5 +1,6 @@
 from utils import *
 from hearthstone.enums import CardClass
+from fireplace.dsl.selector import Zone
 
 
 def test_shambling_zombietank_spends_corpses_to_summon_copy():
@@ -227,3 +228,122 @@ def test_foamrender_does_not_gain_durability_without_corpses():
 
     assert player.corpses == 2
     assert player.weapon is None
+
+
+def test_silk_stitching_discovers_spell_for_minion_deathrattle():
+    """Silk Stitching stores a discovered cheap spell on a friendly minion."""
+    game = prepare_empty_game(CardClass.DEATHKNIGHT, CardClass.DEATHKNIGHT)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    target = player.summon("EX1_572")
+
+    player.give("TOY_822").play(target=target)
+    chosen_spell = player.choice.cards[0]
+    player.choice.choose(chosen_spell)
+
+    assert target.has_deathrattle
+    stored_spells = [
+        getattr(buff, "store_card", None)
+        for buff in target.buffs
+        if buff.id == "TOY_822e"
+    ]
+    assert stored_spells == [chosen_spell]
+
+
+def test_rainbow_seamstress_gains_keywords_for_started_runes():
+    """Rainbow Seamstress checks started Blood, Frost, and Unholy cards."""
+    game = prepare_empty_game(CardClass.DEATHKNIGHT, CardClass.DEATHKNIGHT)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    player.starting_deck = [
+        player.card("TOY_824"),
+        player.card("TOY_821"),
+        player.card("TOY_827"),
+    ]
+
+    seamstress = player.give("TOY_823").play()
+
+    assert seamstress.lifesteal
+    assert seamstress.reborn
+    assert seamstress.rush
+
+
+def test_headless_horseman_destroys_highest_attack_and_shuffles_head():
+    """The Headless Horseman destroys the highest-Attack enemy minion and shuffles Head."""
+    game = prepare_empty_game(CardClass.DEATHKNIGHT, CardClass.DEATHKNIGHT)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    low_attack = player.opponent.summon("CS2_182")
+    high_attack = player.opponent.summon("CS2_200")
+
+    player.give("TOY_829").play()
+
+    assert low_attack.zone == Zone.PLAY
+    assert high_attack.zone == Zone.GRAVEYARD
+    assert player.hero.id == "TOY_829"
+    assert player.hero_power.id == "TOY_829hp3"
+    assert "TOY_829t" in [card.id for card in player.deck]
+
+
+def test_horsemans_head_casts_when_drawn_and_upgrades_hero_power():
+    """Horseman's Head casts when drawn and replaces the Hero Power."""
+    game = prepare_empty_game(CardClass.DEATHKNIGHT, CardClass.DEATHKNIGHT)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    player.give("TOY_829").play()
+    head = next(card for card in player.deck if card.id == "TOY_829t")
+    player.deck.remove(head)
+    player.deck.append(head)
+
+    player.draw()
+
+    assert head.zone == Zone.GRAVEYARD
+    assert player.hero_power.id == "TOY_829hp"
+
+
+def test_dr_stitchensew_stitches_discovered_minion_chain():
+    """Dr. Stitchensew discovers 5, 3, and 1-Cost minions for a Deathrattle chain."""
+    game = prepare_empty_game(CardClass.DEATHKNIGHT, CardClass.DEATHKNIGHT)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    stitchensew = player.give("TOY_830").play()
+    five_cost = player.choice.cards[0]
+    player.choice.choose(five_cost)
+    three_cost = player.choice.cards[0]
+    player.choice.choose(three_cost)
+    one_cost = player.choice.cards[0]
+    player.choice.choose(one_cost)
+
+    stitchensew.destroy()
+    first_summoned = player.field[-1]
+    assert first_summoned.id == five_cost.id
+
+    first_summoned.destroy()
+    second_summoned = player.field[-1]
+    assert second_summoned.id == three_cost.id
+
+    second_summoned.destroy()
+    assert player.field[-1].id == one_cost.id
+
+
+def test_toysnatching_geist_gigantifies_and_discounts_discovered_undead():
+    """Toysnatching Geist adds its Gigantic copy and discounts the discovered Undead."""
+    game = prepare_empty_game(CardClass.DEATHKNIGHT, CardClass.DEATHKNIGHT)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    geist = player.give("MIS_006").play()
+    discovered = player.choice.cards[0]
+    base_cost = discovered.cost
+    player.choice.choose(discovered)
+
+    assert "MIS_006t" in [card.id for card in player.hand]
+    assert discovered.zone == Zone.HAND
+    assert discovered.cost == max(0, base_cost - geist.atk)
