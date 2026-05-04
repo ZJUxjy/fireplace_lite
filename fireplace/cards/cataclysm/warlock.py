@@ -4,6 +4,16 @@ from ..utils import *
 ##
 # Minions
 
+
+class CATA_GuldanHerald(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        heralds = getattr(target, "_cataclysm_heralds", {}).copy()
+        heralds["guldan"] = heralds.get("guldan", 0) + 1
+        target._cataclysm_heralds = heralds
+
+
 # CATA_490: 魔眼秘术师 (3费 3/6 嘲讽)
 # 战吼：选择你手牌中的一张牌并弃掉
 class CATA_490:
@@ -30,10 +40,8 @@ class CATA_491:
 class CATA_492:
     """Twilight Altar"""
 
-    # 兆示：触发一次效果
-    # 简化实现：直接抽一张牌
-    # TODO: 实现完整的兆示机制
-    play = Draw(CONTROLLER)
+    # 兆示。抽一张牌
+    play = CATA_GuldanHerald(CONTROLLER), Draw(CONTROLLER)
 
 
 def _fiendish_servant_stats(entity, amount):
@@ -142,9 +150,8 @@ class CATA_499:
 class CATA_725:
     """Dark Inquisitor"""
 
-    # 兆示：触发一次效果
-    # 简化实现：直接触发
-    # TODO: 实现完整的兆示机制
+    # 战吼：兆示
+    play = CATA_GuldanHerald(CONTROLLER)
 
     # 亡语：恢复3点生命值
     deathrattle = Heal(FRIENDLY_HERO, 3)

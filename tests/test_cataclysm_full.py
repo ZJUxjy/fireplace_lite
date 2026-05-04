@@ -501,6 +501,45 @@ def test_cursed_chain_returns_minion_after_enemy_turn_end():
     assert not target.cant_attack
 
 
+def test_twilight_altar_heralds_and_draws_a_card():
+    """Twilight Altar Heralds Gul'dan and draws a card."""
+    game = prepare_empty_game(CardClass.WARLOCK, CardClass.WARLOCK)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    for card in list(player.hand):
+        card.zone = Zone.REMOVEDFROMGAME
+    deck_card = player.give("CS2_231")
+    deck_card.shuffle_into_deck()
+
+    player.give("CATA_492").play()
+
+    assert deck_card in player.hand
+    assert getattr(player, "_cataclysm_heralds", {}).get("guldan") == 1
+
+
+def test_dark_inquisitor_heralds_and_deathrattle_heals_hero():
+    """Dark Inquisitor Battlecry Heralds Gul'dan and Deathrattle heals."""
+    from fireplace.actions import Hit
+
+    game = prepare_empty_game(CardClass.WARLOCK, CardClass.WARLOCK)
+    player = game.current_player
+    hero = player.hero
+    player.max_mana = 10
+    player.used_mana = 0
+    game.cheat_action(hero, [Hit(hero, 5)])
+    damaged_health = hero.health
+
+    inquisitor = player.give("CATA_725")
+    inquisitor.play()
+
+    assert getattr(player, "_cataclysm_heralds", {}).get("guldan") == 1
+
+    inquisitor.destroy()
+
+    assert hero.health == damaged_health + 3
+
+
 def test_fiendish_servant_has_stats_from_prior_discards():
     """Fiendish Servant has +2/+2 for each card discarded this game."""
     game = prepare_empty_game()
