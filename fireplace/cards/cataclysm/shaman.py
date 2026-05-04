@@ -75,7 +75,7 @@ class CATA_153e1:
 
 
 # CATA_561: 能量仪式 (2费 法术)
-# 兆示，召唤2个1/1具有突袭的元素
+# 兆示，获取2个1/1具有突袭的元素
 class CATA_561:
     """Ritual of Power"""
 
@@ -87,8 +87,7 @@ class CATA_561:
         GameTag.RARITY: 3,
     }
 
-    # 简化实现：召唤2个1/1突袭元素
-    play = Summon(CONTROLLER, "CATA_561t") * 2
+    play = Give(CONTROLLER, "CATA_561t") * 2
 
 
 # CATA_561t: 微风精灵 (1费 1/1 元素)

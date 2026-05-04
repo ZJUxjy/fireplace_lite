@@ -656,6 +656,25 @@ def test_alakir_gives_minions_matching_atk_cost():
 
 
 ##
+# CATA_561: 能量仪式
+# 兆示。获取两张1/1并具有突袭的元素牌。
+
+def test_ritual_of_power_adds_breezlings_to_hand():
+    """Ritual of Power adds two Breezlings to hand instead of summoning them."""
+    game = prepare_empty_game()
+    player = game.player1
+    player.max_mana = 10
+    player.used_mana = 0
+
+    player.give("CATA_561").play()
+
+    breezlings = [card for card in player.hand if card.id == "CATA_561t"]
+    assert len(breezlings) == 2
+    assert not any(minion.id == "CATA_561t" for minion in player.field)
+    assert all(card.rush for card in breezlings)
+
+
+##
 # CATA_564: 飞行助翼
 # 战吼：使一个友方随从获得Mega-Windfury
 
