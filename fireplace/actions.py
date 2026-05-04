@@ -360,6 +360,11 @@ class Death(GameAction):
             if card.zone == Zone.PLAY:
                 card._dead_position = card.zone_position - 1
             card.zone = Zone.GRAVEYARD
+            # CORPSE: minion deaths grant the controller 1 corpse (Death
+            # Knight resource). Implemented globally — controller.corpses is
+            # never read by non-DK card scripts so this is a no-op for them.
+            if card.type == CardType.MINION and hasattr(card.controller, "corpses"):
+                card.controller.corpses += 1
             source.game.check_for_end_game()
             source.game.refresh_auras()
             log.info("Processing Deathrattle for %r", card)
@@ -1401,6 +1406,22 @@ class GainArmor(TargetedAction):
         target.armor += amount
         source.game.manager.targeted_action(self, source, target, amount)
         self.broadcast(source, EventListener.ON, target, amount)
+
+
+class GainCorpse(TargetedAction):
+    """
+    Add corpses (Death Knight resource) to a player. Most corpse generation
+    happens implicitly via Death.do, so card scripts only call this for
+    explicit "Gain a Corpse" battlecries.
+    """
+
+    TARGET = ActionArg()
+    AMOUNT = IntArg()
+
+    def do(self, source, target, amount):
+        target.corpses += amount
+        log.info("%r gains %d corpse(s) (total=%d)", target, amount, target.corpses)
+        source.game.manager.targeted_action(self, source, target, amount)
 
 
 class GainMana(TargetedAction):

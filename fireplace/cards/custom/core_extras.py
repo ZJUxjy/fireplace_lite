@@ -7,6 +7,35 @@ under its original ID so the CORE_-prefix auto-link picks it up.
 """
 from hearthstone.enums import CardType, Race, SpellSchool
 from ..utils import *
+from ...actions import GainCorpse, TargetedAction, ActionArg
+
+
+class _SpendCorpsesSummon(TargetedAction):
+    """Helper for end-of-turn / battlecry corpse-spend → summon-N actions.
+
+    Reads `_max_count` and `_card_id` from instance attrs (set via class).
+    Spends up to `_max_count` corpses and summons one copy of `_card_id`
+    per spent corpse. Spawned via `_make_corpse_spend_action` factory below.
+    """
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        spend = min(target.corpses, self._max_count)
+        if spend == 0:
+            return
+        target.corpses -= spend
+        for _ in range(spend):
+            source.game.queue_actions(source, [Summon(target, self._card_id)])
+
+
+def _make_corpse_spend_action(max_count, card_id):
+    """Build a `_SpendCorpsesSummon`-style class bound to fixed kwargs."""
+    cls_name = "SpendCorpses_%s_x%d" % (card_id, max_count)
+    cls = type(cls_name, (_SpendCorpsesSummon,), {
+        "_max_count": max_count,
+        "_card_id": card_id,
+    })
+    return cls
 
 
 # --- Forged in the Barrens (BAR) ---
@@ -122,9 +151,8 @@ class RLK_958e:
 
 
 class RLK_503:
-    """Body Bagger"""
-    # Battlecry: Gain a Corpse. (Corpses not modeled — no-op.)
-    pass
+    """Body Bagger — Battlecry: Gain a Corpse."""
+    play = GainCorpse(CONTROLLER, 1)
 
 
 # --- Death Knight (Lich King RLK + others) ---
@@ -203,40 +231,252 @@ class RLK_086:
     deathrattle = Summon(CONTROLLER, RandomMinion(race=Race.UNDEAD))
 
 
-# Corpse-dependent cards: track placeholder-only since the Corpses
-# resource isn't modeled in fireplace.
 class RLK_066:
-    """Hematurge"""
-    # Battlecry: Spend a Corpse to Discover a Blood Rune card.
-    play = DISCOVER(RandomSpell())  # simplified — no Corpse cost
+    """Hematurge — Battlecry: Spend a Corpse to Discover a Blood Rune card."""
+
+    @staticmethod
+    def play(self):
+        if self.controller.corpses >= 1:
+            self.controller.corpses -= 1
+            return [Discover(self.controller, RandomSpell()).then(
+                Give(self.controller, Discover.CARD)
+            )]
+        return []
 
 
 class RLK_116:
-    """Necrotic Mortician"""
-    # Battlecry: If a friendly Undead died after your last turn, Discover an Unholy Rune.
-    # Simplified: always Discover (skip the conditional).
-    play = DISCOVER(RandomSpell())
+    """Necrotic Mortician — Battlecry: If a friendly Undead died this game,
+    Discover an Unholy Rune.
+
+    Real card checks "died after your last turn"; we simplify to "died this
+    game" since fireplace's killed_this_turn flag resets at turn start.
+    """
+
+    @staticmethod
+    def play(self):
+        if self.controller.graveyard.filter(type=CardType.MINION, races=Race.UNDEAD):
+            return [Discover(self.controller, RandomSpell()).then(
+                Give(self.controller, Discover.CARD)
+            )]
+        return []
 
 
 class RLK_505:
-    """Marrow Manipulator"""
-    # Battlecry: Spend up to 5 Corpses. Deal 2 damage to a random enemy for each.
-    # Simplified: deal 2 damage to one random enemy (no Corpse cost).
-    play = Hit(RANDOM_ENEMY_CHARACTER, 2)
+    """Marrow Manipulator — Battlecry: Spend up to 5 Corpses. Deal 2 damage
+    to a random enemy for each.
+    """
+
+    @staticmethod
+    def play(self):
+        spend = min(self.controller.corpses, 5)
+        if spend == 0:
+            return []
+        self.controller.corpses -= spend
+        return [Hit(RANDOM_ENEMY_CHARACTER, 2)] * spend
 
 
 class RLK_506:
-    """Boneguard Commander"""
-    # Taunt. Battlecry: Raise up to 6 Corpses as 1/3 Risen Footmen with Taunt.
-    # Simplified: summon a single 1/3 Taunt token (placeholder).
+    """Boneguard Commander — Taunt. Battlecry: Raise up to 6 Corpses as 1/3
+    Risen Footmen with Taunt.
+    """
     tags = {GameTag.TAUNT: True}
+
+    @staticmethod
+    def play(self):
+        spend = min(self.controller.corpses, 6)
+        if spend == 0:
+            return []
+        self.controller.corpses -= spend
+        return [Summon(self.controller, "RLK_061t")] * spend
 
 
 class CORE_EDR_003:
-    """Falric (CORE-only — no EDR_003 base card in data)."""
-    # You gain twice as many Corpses as normal. Battlecry: Draw a card.
-    # Simplified: just the draw (Corpse doubling not modeled).
+    """Falric (CORE-only — no EDR_003 base card in data).
+    You gain twice as many Corpses as normal. Battlecry: Draw a card.
+    Simplified: just the draw — corpse doubling isn't modeled (would
+    require source tagging in Death.do).
+    """
     play = Draw(CONTROLLER)
+
+
+# --- New Corpse-aware cards (added in Phase 2A) ---
+
+
+class RLK_061:
+    """Battlefield Necromancer — At end of turn, raise a Corpse as a 1/3
+    Risen Footman with Taunt.
+    """
+    events = OWN_TURN_END.on(_make_corpse_spend_action(1, "RLK_061t")(CONTROLLER))
+
+
+class CORE_RLK_712:
+    """Blood Tap — Give all minions in your hand +1/+1. Spend 2 Corpses to
+    give them +1/+1 more.
+    """
+
+    @staticmethod
+    def play(self):
+        actions = [Buff(FRIENDLY_HAND + MINION, "RLK_712e")]
+        if self.controller.corpses >= 2:
+            self.controller.corpses -= 2
+            actions.append(Buff(FRIENDLY_HAND + MINION, "RLK_712e"))
+        return actions
+
+
+class RLK_712e:
+    tags = {GameTag.ATK: 1, GameTag.HEALTH: 1}
+
+
+class _MalignantHorrorClone(TargetedAction):
+    """Spend 4 corpses (controller) → summon a copy of source."""
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        if target.corpses < 4:
+            return
+        target.corpses -= 4
+        source.game.queue_actions(source, [Summon(target, ExactCopy(source))])
+
+
+class CORE_RLK_745:
+    """Malignant Horror — Reborn. At end of turn, spend 4 Corpses to summon
+    a copy of this minion.
+    """
+    tags = {GameTag.REBORN: True}
+    events = OWN_TURN_END.on(_MalignantHorrorClone(CONTROLLER))
+
+
+class RLK_060:
+    """Army of the Dead — Raise up to 5 Corpses as 2/2 Risen Ghouls with Rush.
+    Real token: RLK_008t (Risen Ghoul 2/2 Rush).
+    """
+
+    @staticmethod
+    def play(self):
+        spend = min(self.controller.corpses, 5)
+        if spend == 0:
+            return []
+        self.controller.corpses -= spend
+        return [Summon(self.controller, "RLK_008t")] * spend
+
+
+class CORE_WW_374:
+    """Corpse Farm — Spend up to 8 Corpses to summon a random minion of that Cost."""
+
+    @staticmethod
+    def play(self):
+        spend = min(self.controller.corpses, 8)
+        if spend == 0:
+            return []
+        self.controller.corpses -= spend
+        return [Summon(self.controller, RandomMinion(cost=spend))]
+
+
+# ============================================================================
+# Phase 2B: complex single-offs (Tichondrius / Ulfar / Vibrant Squirrel /
+# Illidari Inquisitor / Keymaster Alabaster / Menagerie Mug / Jackpot).
+# Cards with cost-modifying auras (Foxy Fraud, Cult Neophyte, Resistance
+# Aura) and origin-tracking effects (Steamcleaner) remain unimplemented.
+# ============================================================================
+
+
+class CORE_CATA_001:
+    """Tichondrius — Your hero is Immune. Battlecry: Your next Demon this
+    turn costs (0).
+
+    Hero-immune is modeled via an `update` aura that re-applies IMMUNE
+    while Tichondrius is on the field. The "next Demon costs 0" cost-mod
+    is omitted (requires a turn-bound aura the engine doesn't expose).
+    """
+    update = Refresh(FRIENDLY_HERO, {GameTag.IMMUNE: True})
+
+
+class CORE_CATA_006:
+    """Ulfar — Battlecry: Give your other minions
+    'Deathrattle: Summon a minion with this minion's Cost.'
+    """
+    play = Buff(FRIENDLY_MINIONS - SELF, "CORE_CATA_006e")
+
+
+class CORE_CATA_006e:
+    deathrattle = Summon(CONTROLLER, RandomMinion(cost=COST(OWNER)))
+    tags = {GameTag.DEATHRATTLE: True}
+
+
+class WON_141e:
+    """Menagerie Mug's "+1/+1 to selected friendly" buff."""
+    tags = {GameTag.ATK: 1, GameTag.HEALTH: 1}
+
+
+class CORE_SW_439:
+    """Vibrant Squirrel — Deathrattle: Shuffle 4 Acorns into your deck.
+    When drawn, an Acorn summons a 2/1 Squirrel.
+    """
+    deathrattle = Shuffle(CONTROLLER, "SW_439t") * 4
+
+
+class SW_439t:
+    """Acorn token — destroys itself and summons a Satisfied Squirrel
+    (SW_439t2 = 2/1 Squirrel) when drawn.
+    """
+    draw = Destroy(SELF), Summon(CONTROLLER, "SW_439t2")
+
+
+class CS3_020:
+    """Illidari Inquisitor — Rush. After your hero attacks an enemy, this
+    attacks it too.
+    """
+    tags = {GameTag.RUSH: True}
+    events = Attack(FRIENDLY_HERO).after(Attack(SELF, Attack.DEFENDER))
+
+
+class CORE_SCH_717:
+    """Keymaster Alabaster — Whenever your opponent draws a card, add a
+    copy to your hand that costs (1).
+
+    The cost-mod portion is skipped (engine has no per-card cost override
+    that survives leaving Keymaster's aura). The copy is added at full cost.
+    """
+    events = Draw(OPPONENT).on(Give(CONTROLLER, ExactCopy(Draw.CARD)))
+
+
+class CORE_WON_141:
+    """Menagerie Mug — Battlecry: Give 3 random friendly minions of
+    different minion types +1/+1.
+
+    Simplified: pick up to 3 friendly minions of distinct races and buff
+    each. If fewer than 3 distinct races are present, buff what we can.
+    """
+
+    @staticmethod
+    def play(self):
+        seen_races = set()
+        targets = []
+        # Iterate friendly minions (excluding self) and pick first per race.
+        for minion in self.controller.field:
+            if minion is self:
+                continue
+            for race in minion.races or [None]:
+                if race and race not in seen_races:
+                    seen_races.add(race)
+                    targets.append(minion)
+                    break
+            if len(targets) >= 3:
+                break
+        if not targets:
+            return []
+        return [Buff(t, "WON_141e") for t in targets]
+
+
+class CORE_TID_931:
+    """Jackpot! — Add two random spells from other classes that cost (5)
+    or more to your hand.
+
+    Simplified: pick from any class spells (not strictly off-class) at cost
+    5+. The "off-class" filter would require comparing card_class to the
+    controller's class, which the cards.filter helper can't express directly.
+    """
+    play = Give(CONTROLLER, RandomSpell(cost=[5, 6, 7, 8, 9, 10])) * 2
 
 
 # --- Scholomance (SCH) ---
@@ -407,34 +647,45 @@ class CORE_EDR_002e:
 
 
 class RLK_707:
-    """Grave Strength — Give your minions +1 Attack.
-    (Corpse path — 'Spend 5 to give +3 instead' — skipped.)
+    """Grave Strength — Give your minions +1 Attack. Spend 5 Corpses to give
+    them +3 instead.
     """
-    play = Buff(FRIENDLY_MINIONS, "RLK_707e")
+
+    @staticmethod
+    def play(self):
+        if self.controller.corpses >= 5:
+            self.controller.corpses -= 5
+            return [Buff(FRIENDLY_MINIONS, "RLK_707e_big")]
+        return [Buff(FRIENDLY_MINIONS, "RLK_707e")]
 
 
 class RLK_707e:
     tags = {GameTag.ATK: 1}
 
 
-class CORE_RLK_118:
-    """Tomb Guardians — Summon two 2/2 Zombies with Taunt.
-    (Corpse path — 'Spend 4 to give them Reborn' — skipped.)
-    Real token: RLK_118t3 = Menacing Zombie 2/2 Taunt.
+class RLK_707e_big:
+    tags = {GameTag.ATK: 3}
+
+
+class RLK_118:
+    """Tomb Guardians — Summon two 2/2 Zombies with Taunt. Spend 4 Corpses
+    to give them Reborn.
     """
-    play = Summon(CONTROLLER, "RLK_118t3") * 2
 
-
-class CORE_RLK_506:
-    """Boneguard Commander — simplified to a single 1/3 Footman with Taunt.
-    Real card: Battlecry: Raise up to 6 Corpses as 1/3 Risen Footmen w/ Taunt.
-    """
-    tags = {GameTag.TAUNT: True}
-    play = Summon(CONTROLLER, "RLK_506t")
-
-
-class RLK_506t:
-    tags = {GameTag.ATK: 1, GameTag.HEALTH: 3, GameTag.TAUNT: True}
+    @staticmethod
+    def play(self):
+        if self.controller.corpses >= 4:
+            self.controller.corpses -= 4
+            # Summon then SetTags(REBORN) on each spawned token.
+            return [
+                Summon(self.controller, "RLK_118t3").then(
+                    SetTags(Summon.CARD, {GameTag.REBORN: True})
+                ),
+                Summon(self.controller, "RLK_118t3").then(
+                    SetTags(Summon.CARD, {GameTag.REBORN: True})
+                ),
+            ]
+        return [Summon(self.controller, "RLK_118t3") * 2]
 
 
 class CORE_CATA_007:
@@ -618,17 +869,23 @@ class CORE_BAR_311:
 
 
 class CORE_BAR_313:
-    """Priest of An'she — Taunt. Battlecry: If you've restored Health this turn, +3/+3."""
+    """Priest of An'she — Taunt. Battlecry: If you've restored Health this turn, +3/+3.
+
+    Tracked via the hero's healed_this_turn counter — covers the most common
+    healing path (hero healed). Direct minion heals don't bump it; treated as
+    a soft simplification.
+    """
     tags = {GameTag.TAUNT: True}
 
     @staticmethod
     def play(self):
-        if self.controller.healed_this_turn > 0:
-            return [Buff(self, "CORE_BAR_313e")]
+        if (self.controller.hero
+                and getattr(self.controller.hero, "healed_this_turn", 0) > 0):
+            return [Buff(self, "BAR_313e")]
         return []
 
 
-class CORE_BAR_313e:
+class BAR_313e:
     tags = {GameTag.ATK: 3, GameTag.HEALTH: 3}
 
 
@@ -641,11 +898,11 @@ class CORE_RLK_814:
             if c.type == CardType.SPELL and getattr(
                 c.data, "spell_school", None
             ) == SpellSchool.SHADOW:
-                return [Buff(self, "CORE_RLK_814e")]
+                return [Buff(self, "RLK_814e")]
         return []
 
 
-class CORE_RLK_814e:
+class RLK_814e:
     tags = {GameTag.ATK: 1, GameTag.HEALTH: 1}
 
 
@@ -666,10 +923,10 @@ class CORE_CATA_002:
 
 class CORE_WC_042:
     """Wailing Vapor — After you play an Elemental, gain +1 Attack."""
-    events = Play(CONTROLLER, MINION + ELEMENTAL).on(Buff(SELF, "CORE_WC_042e"))
+    events = Play(CONTROLLER, MINION + ELEMENTAL).on(Buff(SELF, "WC_042e"))
 
 
-class CORE_WC_042e:
+class WC_042e:
     tags = {GameTag.ATK: 1}
 
 

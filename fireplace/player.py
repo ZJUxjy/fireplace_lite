@@ -115,6 +115,10 @@ class Player(Entity, TargetableByAuras):
         # Soldier tokens scale their effects with this count, and Deathwing
         # upgrades to Progeny once the counter reaches 2.
         self.herald_count = 0
+        # CORPSE (Death Knight resource): each friendly minion that dies grants
+        # 1 corpse to its controller. DK card scripts can spend corpses for
+        # extra effects (Tomb Guardians, Army of the Dead, Body Bagger, ...).
+        self.corpses = 0
 
     def dump(self):
         data = super().dump()

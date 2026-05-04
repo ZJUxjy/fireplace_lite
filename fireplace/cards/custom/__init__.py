@@ -31,3 +31,23 @@ class FIREPLACE_EX1_084e:
         GameTag.CARDTYPE: CardType.ENCHANTMENT,
         GameTag.CHARGE: True,
     }
+
+
+# Python-only enchantments referenced by core_extras.py fill-ins.
+@custom_card
+class RLK_707e_big:
+    tags = {
+        GameTag.CARDNAME: "Mass Grave",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 3,
+    }
+
+
+@custom_card
+class CORE_WON_350e:
+    tags = {
+        GameTag.CARDNAME: "Knew a Guy",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 1,
+        GameTag.HEALTH: 2,
+    }
