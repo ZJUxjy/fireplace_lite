@@ -104,6 +104,16 @@ class CATA_135t:
 CATA_135e = buff(atk=1, health=1)
 
 
+class CATA_138_ForestsGift(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        amount = Count(FRIENDLY_MINIONS).evaluate(source)
+        return source.game.queue_actions(source, [
+            Buff(target, "CATA_138e", atk=amount, max_health=amount)
+        ])
+
+
 # CATA_138: 森林赠礼 (2费 法术)
 # 给一个随从 +1/+1，数值等于你控制的随从数量
 class CATA_138:
@@ -114,8 +124,7 @@ class CATA_138:
         PlayReq.REQ_MINION_TARGET: 0,
     }
 
-    # 获得等同于随从数量的+1/+1
-    play = Buff(TARGET, "CATA_138e")
+    play = CATA_138_ForestsGift(TARGET)
 
 
 CATA_138e = buff(+1, +1)

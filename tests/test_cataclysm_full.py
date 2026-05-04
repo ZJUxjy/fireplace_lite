@@ -668,15 +668,32 @@ def test_fiendish_servant_in_play_updates_after_discard():
     assert servant.health == servant.data.health + 2
 
 
-def test_tentacle_repeats_returns_to_hand():
-    """Tentacle (CATA_491) returns to hand after being played (Repeat mechanic)."""
+def test_tentacle_repeats_with_decrementing_damage():
+    """Tentacle repeats with 1 less damage each time."""
     game = prepare_empty_game()
     game.player1.max_mana = 10
     game.player1.used_mana = 0
+    dummy = game.player2.summon("EX1_572")
     tentacle = game.player1.give("CATA_491")
+
     tentacle.play()
-    # Should be back in hand
-    assert any(c.id == "CATA_491" for c in game.player1.hand)
+
+    assert dummy.health == dummy.max_health - 3
+    repeated = next(c for c in game.player1.hand if c.id == "CATA_491")
+    assert getattr(repeated, "cata_491_damage", None) == 2
+
+    game.player1.used_mana = 0
+    repeated.play()
+
+    assert dummy.health == dummy.max_health - 5
+    repeated = next(c for c in game.player1.hand if c.id == "CATA_491")
+    assert getattr(repeated, "cata_491_damage", None) == 1
+
+    game.player1.used_mana = 0
+    repeated.play()
+
+    assert dummy.health == dummy.max_health - 6
+    assert not any(c.id == "CATA_491" for c in game.player1.hand)
 
 
 def test_tentacle_deals_damage_to_all_minions():
@@ -2251,6 +2268,21 @@ def test_hall_of_the_dragonflight_buffs_chosen_hand_minion():
     )
 
 
+def test_bronze_redemption_summons_dragon_with_current_stats():
+    """Bronze Redemption's end-turn Dragon copies its current attack and health."""
+    from fireplace.actions import Buff
+
+    game = prepare_empty_game(CardClass.PALADIN, CardClass.PALADIN)
+    player = game.current_player
+    bronze = player.summon("CATA_478")
+    game.cheat_action(bronze, [Buff(bronze, "CATA_473e")])
+
+    game.end_turn()
+
+    token = next(minion for minion in player.field if minion.id == "CATA_478t")
+    assert (token.atk, token.health) == (bronze.atk, bronze.health)
+
+
 ##
 # CATA_134: 荒林怪圈
 # 裂变：召唤两个2/2树人。使你的随从获得“亡语：召唤一个2/2树人。”
@@ -2284,6 +2316,21 @@ def test_wildwood_circle_halves_recombine_when_adjacent():
     player.hand[1].play()
 
     assert [card.id for card in player.hand] == ["CATA_134"]
+
+
+def test_forests_gift_scales_with_friendly_minion_count():
+    """Forest's Gift gives +1/+1 for each friendly minion controlled."""
+    game = prepare_empty_game(CardClass.DRUID, CardClass.DRUID)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    target = player.summon(WISP)
+    player.summon(WISP)
+    player.summon(WISP)
+
+    player.give("CATA_138").play(target=target)
+
+    assert (target.atk, target.health) == (target.data.atk + 3, target.data.health + 3)
 
 
 ##
@@ -2368,6 +2415,24 @@ def test_morchok_draw_reduces_cost_by_10():
     # The yeti should now be in hand with cost reduced by 10 (min 0)
     assert yeti.zone == ZoneEnum.HAND
     assert yeti.cost == 0  # 4 - 10 = 0 (min 0)
+
+
+def test_morchok_repeats_draw_with_overflow_discount():
+    """Morchok spends leftover discount amount to keep drawing cards."""
+    from hearthstone.enums import Zone as ZoneEnum
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    game.player1.used_mana = 0
+    cheap = game.player1.card("CS2_231", zone=ZoneEnum.DECK)  # 1-Cost
+    expensive = game.player1.card("CS2_182", zone=ZoneEnum.DECK)  # 4-Cost
+    morchok = game.player1.give("CATA_570")
+
+    morchok.play()
+
+    assert cheap.zone == ZoneEnum.HAND
+    assert expensive.zone == ZoneEnum.HAND
+    assert cheap.cost == 0
+    assert expensive.cost == 0
 
 
 ##
@@ -2608,30 +2673,52 @@ def test_gruesome_nightmare_can_choose_a_hand_minion():
 # CATA_585: 烈火炙烤 (warrior Torch)
 # 对一个受伤的随从造成6点伤害，溢出伤害给英雄+X攻击力，将牌放回手牌
 
-def test_torch_deals_6_damage_and_returns_to_hand():
-    """Torch deals 6 damage to an injured minion, then goes back to hand."""
+def test_torch_deals_8_damage_and_returns_leftover_damage_to_hand():
+    """Torch deals 8 damage and returns a copy carrying leftover damage."""
     game = prepare_empty_game()
     game.player1.max_mana = 10
     yeti = game.player2.summon("CS2_182")  # 4/5 Yeti
     yeti.damage = 1  # injure it (now 4 HP, REQ_DAMAGED_TARGET satisfied)
     torch = game.player1.give("CATA_585")
+
     torch.play(target=yeti)
-    # Yeti (4 HP remaining) should be dead (took 6 damage)
+
     assert yeti not in game.player2.field
-    # Torch should be back in hand
-    assert any(c.id == "CATA_585" for c in game.player1.hand)
+    repeated = next(c for c in game.player1.hand if c.id == "CATA_585")
+    assert getattr(repeated, "cata_585_damage", None) == 4
 
 
-def test_torch_overflow_gives_hero_attack():
-    """Torch overflow damage (6 - target HP) gives hero that much attack."""
+def test_torch_does_not_return_without_leftover_damage():
+    """Torch does not return if all damage is spent on the target."""
     game = prepare_empty_game()
     game.player1.max_mana = 10
-    yeti = game.player2.summon("CS2_182")  # 4/5 Yeti
-    yeti.damage = 1  # now 4 HP
-    # Overflow = 6 - 4 = 2
+    target = game.player2.summon("EX1_572")  # 4/12
+    target.damage = 1  # 11 Health, target is damaged
     torch = game.player1.give("CATA_585")
-    torch.play(target=yeti)
-    assert game.player1.hero.atk == 2
+
+    torch.play(target=target)
+
+    assert target.health == 3
+    assert not any(c.id == "CATA_585" for c in game.player1.hand)
+
+
+def test_decimation_damage_equals_minions_on_battlefield():
+    """Decimation's damage increases by 1 for each minion on the battlefield."""
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    minions = [
+        player.summon("EX1_572"),
+        player.opponent.summon("EX1_572"),
+        player.opponent.summon("EX1_572"),
+    ]
+
+    player.give("CATA_581").play()
+
+    assert [minion.health for minion in minions] == [
+        minion.max_health - len(minions) for minion in minions
+    ]
 
 
 ##
@@ -2662,6 +2749,19 @@ def test_naga_dissenter_location_reopens_after_fel_spell():
     player.give("CATA_528").play()
 
     assert naga.is_usable()
+
+
+def test_location_is_not_playable_on_full_board():
+    """Locations use a board slot and cannot be played on a full board."""
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    for _ in range(game.MAX_MINIONS_ON_FIELD):
+        player.summon("CS2_231")
+    sanctum = player.give("CATA_301")
+
+    assert not sanctum.is_playable()
 
 
 def test_naga_dissenter_location_reopens_on_next_turn():
@@ -2816,6 +2916,21 @@ def test_vulcanos_summons_linked_colossal_plumes():
     assert len(vulcanos.colossal_limbs) == 2
     assert all(plume.data.tags.get(GameTag.COLOSSAL_LIMB) for plume in plumes)
     assert all(plume.colossal_body is vulcanos for plume in plumes)
+
+
+def test_colossal_limbs_survive_when_body_dies():
+    """Colossal limbs remain in play when the body dies."""
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    vulcanos = game.player1.give("CATA_488")
+
+    vulcanos.play()
+    plumes = [minion for minion in game.player1.field if minion.id == "CATA_488t"]
+
+    vulcanos.destroy()
+
+    assert vulcanos not in game.player1.field
+    assert all(plume in game.player1.field for plume in plumes)
 
 
 def test_plume_of_vulcanos_gives_fire_spell_on_damage():
@@ -2978,9 +3093,12 @@ def test_medivh_triumph_normal_cost_without_legendary():
 # 随机对敌人造成3点伤害，如果在本回合使用过火焰法术，再造成3点伤害
 
 def test_erupting_volcano_deals_3_damage():
-    """Erupting Volcano deals 3 damage to a random enemy."""
+    """Erupting Volcano splits 3 damage among all enemies."""
     game = prepare_empty_game()
+    game.random.seed(6)
     game.player1.max_mana = 10
+    game.player2.summon("EX1_572")
+    game.player2.summon("EX1_572")
     total_hp_before = game.player2.hero.health + sum(
         m.health for m in game.player2.field
     )
@@ -2995,23 +3113,36 @@ def test_erupting_volcano_deals_3_damage():
         m.health for m in game.player2.field
     )
     assert total_hp_after == total_hp_before - 3
+    damage_taken = [game.player2.hero.max_health - game.player2.hero.health]
+    damage_taken += [m.max_health - m.health for m in game.player2.field]
+    assert sorted(damage_taken) == [1, 1, 1]
 
 
 def test_erupting_volcano_bonus_damage_with_fire_spell():
-    """Erupting Volcano deals extra 3 damage when a Fire spell was cast this turn."""
+    """Erupting Volcano splits 3 extra damage after a Fire spell was cast this turn."""
     game = prepare_empty_game()
+    game.random.seed(6)
     game.player1.max_mana = 10
+    game.player2.summon("EX1_572")
+    game.player2.summon("EX1_572")
     # Cast a fire spell first (Fireball is fire school)
     game.player1.give("CS2_029").play(target=game.player2.hero)  # Fireball (fire)
-    hero_hp_before = game.player2.hero.health
+    total_hp_before = game.player2.hero.health + sum(
+        m.health for m in game.player2.field
+    )
     volcano = game.player1.give("CATA_584")
     volcano.play()
-    assert game.player2.hero.health == hero_hp_before
+    assert game.player2.hero.health + sum(
+        m.health for m in game.player2.field
+    ) == total_hp_before
     volcano.use()
-    # Should deal 3 + 3 = 6 additional damage beyond fireball
-    # But damage can go to either hero or field, so just check total decreased by 6
-    total_hp_after = game.player2.hero.health
-    assert total_hp_after == hero_hp_before - 6  # both hits go to hero (no minions)
+    total_hp_after = game.player2.hero.health + sum(
+        m.health for m in game.player2.field
+    )
+    assert total_hp_after == total_hp_before - 6
+    damage_taken = [game.player2.hero.max_health - game.player2.hero.health - 6]
+    damage_taken += [m.max_health - m.health for m in game.player2.field]
+    assert sorted(damage_taken) == [1, 2, 3]
 
 
 ##

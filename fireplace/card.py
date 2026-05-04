@@ -1264,10 +1264,6 @@ class Minion(Character):
                 self.titan_ability_used.append(False)
         elif value == Zone.GRAVEYARD and self.zone == Zone.PLAY:
             self.controller.minions_killed_this_turn += 1
-            # Colossal body death → kill all living limbs
-            for limb in list(self.colossal_limbs):
-                if limb.zone == Zone.PLAY:
-                    limb.zone = Zone.GRAVEYARD
             self.colossal_limbs.clear()
             # Colossal limb death → remove from body's limb list.
             # We do NOT clear self.colossal_body here so the deathrattle
@@ -1410,6 +1406,9 @@ class Location(LiveEntity):
                 self.damage = 0
 
         super()._set_zone(value)
+
+    def is_summonable(self):
+        return super().is_summonable() and self.controller.minion_slots > 0
 
     def is_usable(self):
         if self.controller.choice:

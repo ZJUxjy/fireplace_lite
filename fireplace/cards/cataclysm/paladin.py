@@ -140,13 +140,26 @@ class CATA_475:
     events = OWN_TURN_END.on(Hit(ENEMY_MINIONS | ENEMY_HERO, 2))
 
 
+class CATA_478_SummonCurrentStats(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        atk_delta = source.atk - 1
+        health_delta = source.health - 1
+        return source.game.queue_actions(source, [
+            Summon(target, "CATA_478t").then(
+                Buff(Summon.CARD, "CATA_478e", atk=atk_delta, max_health=health_delta)
+            )
+        ])
+
+
 # CATA_478: 青铜救赎者
 # 5费 3/3 龙
 # 在你的回合结束时，召唤一条属性值等同于本随从的龙
 class CATA_478:
     """Bronze Redemption"""
 
-    events = OWN_TURN_END.on(Summon(CONTROLLER, "CATA_478t"))
+    events = OWN_TURN_END.on(CATA_478_SummonCurrentStats(CONTROLLER))
 
 
 # CATA_478t: 青铜蛮兵
@@ -155,6 +168,14 @@ class CATA_478t:
     """Bronze Sellsword"""
 
     tags = {GameTag.CARDRACE: Race.DRAGON}
+
+
+@custom_card
+class CATA_478e:
+    tags = {
+        GameTag.CARDNAME: "Bronze Redeemer Stats",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
 
 
 ##

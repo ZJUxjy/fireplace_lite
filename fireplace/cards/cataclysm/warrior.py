@@ -60,11 +60,16 @@ class CATA_580t:
 
 # CATA_584: 喷发火山 (3费 3/3)
 # 随机对敌人造成3点伤害(可分裂)，如果在本回合使用过火焰法术，再造成3点伤害
+def _cata_584_split_damage(amount):
+    for _ in range(amount):
+        yield Hit(RANDOM(ENEMY_CHARACTERS), 1)
+
+
 class CATA_584:
     """Erupting Volcano"""
 
     def activate(self):
-        yield Hit(RANDOM(ENEMY_CHARACTERS), 3)
+        yield from _cata_584_split_damage(3)
         # 如果本回合使用过火焰法术，再造成3点伤害
         fire_spells_this_turn = [
             c for c in self.controller.cards_played_this_game
@@ -73,7 +78,7 @@ class CATA_584:
             and getattr(getattr(c, "data", None), "spell_school", None) == SpellSchool.FIRE
         ]
         if fire_spells_this_turn:
-            yield Hit(RANDOM(ENEMY_CHARACTERS), 3)
+            yield from _cata_584_split_damage(3)
 
 
 # CATA_586: 毁灭之焰 (5费 3/3)
@@ -138,8 +143,7 @@ class CATA_591e2:
 class CATA_581:
     """Decimation"""
 
-    # 对所有随从造成4点伤害
-    play = Hit(ALL_MINIONS, 4)
+    play = Hit(ALL_MINIONS, Count(ALL_MINIONS))
 
 
 # CATA_582: 灼热裂隙 (2费 法术)
@@ -156,6 +160,20 @@ CATA_582e = buff(+3, 0)
 
 # CATA_585: 烈火炙烤 (1费 法术)
 # 对一个受伤的随从造成$@点伤害，将这张牌置入你的手牌，伤害超出目标生命值的部分会返还
+class CATA_585_Torch(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        amount = getattr(source, "cata_585_damage", 8)
+        leftover = max(0, amount - target.health)
+        actions = [Hit(target, amount)]
+        if leftover > 0:
+            repeated = source.controller.card("CATA_585", source=source)
+            repeated.cata_585_damage = leftover
+            actions.append(Give(source.controller, repeated))
+        return source.game.queue_actions(source, actions)
+
+
 class CATA_585:
     """Torch"""
 
@@ -165,14 +183,7 @@ class CATA_585:
         PlayReq.REQ_DAMAGED_TARGET: 0,
     }
 
-    # 对目标造成6点伤害，将这张牌置入你的手牌；溢出伤害给英雄+X攻击力
-    def play(self):
-        target = self.target
-        leftover = max(0, 6 - target.health)
-        yield Hit(target, 6)
-        yield Give(CONTROLLER, "CATA_585")
-        if leftover > 0:
-            yield Buff(FRIENDLY_HERO, "CATA_585te", atk=leftover)
+    play = CATA_585_Torch(TARGET)
 
 
 @custom_card

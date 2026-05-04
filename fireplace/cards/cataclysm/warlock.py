@@ -26,13 +26,25 @@ class CATA_490:
     play = Choice(CONTROLLER, FRIENDLY_HAND - SELF).then(Discard(Choice.CARD))
 
 
-# CATA_491: 怪异触手 (5费 5/4)
+class CATA_491_Repeat(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        amount = getattr(source, "cata_491_damage", 3)
+        actions = [Hit(ALL_MINIONS, amount)]
+        if amount > 1:
+            repeated = source.controller.card("CATA_491", source=source)
+            repeated.cata_491_damage = amount - 1
+            actions.append(Give(target, repeated))
+        return source.game.queue_actions(source, actions)
+
+
+# CATA_491: 怪异触手 (6费 法术)
 # 对所有随从造成$3点伤害。重复（打出后回到手牌）
 class CATA_491:
     """Tentacle"""
 
-    # 对所有随从造成3点伤害，然后回到手牌（重复）
-    play = Hit(ALL_MINIONS, 3), Give(CONTROLLER, "CATA_491")
+    play = CATA_491_Repeat(CONTROLLER)
 
 
 # CATA_492: 暮光神坛 (3费 2/5)

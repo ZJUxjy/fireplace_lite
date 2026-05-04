@@ -297,6 +297,25 @@ class CATA_569:
     play = Summon(CONTROLLER, RandomMinion(cost=3)), Summon(CONTROLLER, RandomMinion(cost=2)), Summon(CONTROLLER, RandomMinion(cost=1))
 
 
+class CATA_570_DrawOverflow(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        remaining = 10
+        results = []
+        while remaining > 0 and target.deck:
+            card = target.deck[-1]
+            spent = max(0, card.cost)
+            drawn = source.game.queue_actions(source, [Draw(target)])
+            results.extend(drawn)
+            if card.zone == Zone.HAND:
+                source.game.queue_actions(source, [
+                    Buff(card, "CATA_570e", cost=-remaining)
+                ])
+            remaining -= spent
+        return results
+
+
 # CATA_570: 莫卓克 (10费 10/10)
 # 战吼：抽1张牌并减少其费用(10)
 class CATA_570:
@@ -310,8 +329,7 @@ class CATA_570:
         GameTag.RARITY: 5,
     }
 
-    # 战吼：抽1张牌并减少其费用(10)
-    play = Draw(CONTROLLER).then(Buff(Draw.CARD, "CATA_570e"))
+    play = CATA_570_DrawOverflow(CONTROLLER)
 
 
 CATA_570e = buff(cost=-10)
