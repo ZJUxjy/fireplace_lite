@@ -1364,6 +1364,27 @@ def test_confront_the_tolvir_replays_one_cost_cards_targeting_enemies():
     assert [minion.id for minion in player.field].count("CATA_558") == 2
 
 
+def test_magmaw_fills_board_with_replenishing_attack_buff_limbs():
+    """Magmaw fills open spaces with limbs whose Deathrattle gives +2 Attack."""
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    magmaw = player.give("CATA_550").play()
+
+    assert len(player.field) == game.MAX_MINIONS_ON_FIELD
+    assert magmaw in player.field
+    assert [minion.id for minion in player.field].count("CATA_550t") == 6
+    initial_attack = sum(minion.atk for minion in player.field)
+
+    player.field[-1].destroy()
+
+    assert len(player.field) == game.MAX_MINIONS_ON_FIELD
+    assert [minion.id for minion in player.field].count("CATA_550t") == 6
+    assert sum(minion.atk for minion in player.field) == initial_attack + 2
+
+
 ##
 # CATA_721: 避难的幸存者
 # 战吼：选择一张你的手牌洗入你的牌库。抽一张牌。

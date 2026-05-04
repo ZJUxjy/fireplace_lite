@@ -5,21 +5,43 @@ from ..utils import *
 # Minions
 
 # CATA_550: Magmaw (熔喉) - 7费 2/12 野兽
-# 巨型+2: 召唤2个肢体
-# 战吼: 如果没有其他随从，召唤5个熔喉的肢体
+# 巨型+99。当场上有空位时，召唤剩余的肢节。
+class CATA_550_FillLimbs(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, body):
+        if body.zone != Zone.PLAY:
+            return
+        if not hasattr(body, "_cata_550_remaining_limbs"):
+            body._cata_550_remaining_limbs = 99
+        space = body.game.MAX_MINIONS_ON_FIELD - len(body.controller.field)
+        amount = min(space, body._cata_550_remaining_limbs)
+        if amount <= 0:
+            return
+        body._cata_550_remaining_limbs -= amount
+        body.game.queue_actions(body, [Summon(body.controller, "CATA_550t")] * amount)
+
+
 class CATA_550:
     """Magmaw"""
 
-    # 巨型+2: 召唤2个肢体
-    play = Summon(CONTROLLER, "CATA_550t") * 2
+    play = CATA_550_FillLimbs(SELF)
+    events = Death(FRIENDLY + MINION).after(CATA_550_FillLimbs(SELF))
 
 
-# CATA_550t: Magmaw's Body (熔喉的肢体) - 1费 2/1
-# 亡语: 对一个随机敌人造成2点伤害
+# CATA_550t: Magmaw's Body (熔喉的肢节) - 1费 2/1
+# 亡语：随机使一个友方随从获得+2攻击力。
 class CATA_550t:
     """Magmaw's Body"""
 
-    deathrattle = Hit(RANDOM(ENEMY_CHARACTERS), 2)
+    tags = {GameTag.COLOSSAL_LIMB: True}
+
+    deathrattle = Buff(RANDOM(FRIENDLY_MINIONS), "CATA_550e1"), CATA_550_FillLimbs(
+        COLOSSAL_BODY
+    )
+
+
+CATA_550e1 = buff(atk=2)
 
 
 # CATA_551: Stonetalon Striker (石爪打击者) - 3费 3/3
