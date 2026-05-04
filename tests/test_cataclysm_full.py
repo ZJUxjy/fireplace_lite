@@ -1166,6 +1166,22 @@ def test_carrier_whelp_can_give_dragon_that_costs_less_than_three():
     assert generated.cost == 2
 
 
+def test_reinforcement_rallier_is_elusive_without_summoning_token():
+    """Reinforcement Rallier is an Elusive 2/2 and has no summon battlecry."""
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    player.give("CATA_558")
+
+    rallier = player.give("CATA_558")
+    rallier.play()
+
+    assert [minion.id for minion in player.field] == ["CATA_558"]
+    assert rallier.cant_be_targeted_by_abilities
+    assert rallier.cant_be_targeted_by_hero_powers
+
+
 ##
 # CATA_721: 避难的幸存者
 # 战吼：选择一张你的手牌洗入你的牌库。抽一张牌。

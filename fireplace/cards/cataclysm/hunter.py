@@ -98,20 +98,16 @@ class CATA_557t:
     """Skeleton"""
 
 
-# CATA_558: Reinforcement Rallier (增援召集者) - 1费 2/2
-# 战吼: 如果你的手牌中有另一张增援召集者，召唤一个2/2
+# CATA_558: Reinforcement Rallier (进击的募援官) - 1费 2/2
+# 扰魔
 class CATA_558:
     """Reinforcement Rallier"""
 
-    # 战吼: 如果你的手牌中有另一张增援召集者，召唤一个2/2
-    def play(self):
-        if self.controller.hand.filter(id="CATA_558"):
-            yield Summon(CONTROLLER, "CATA_558t")
-
-
-# CATA_558t: Reinforcement (增援) - 1费 2/2
-class CATA_558t:
-    """Reinforcement"""
+    tags = {
+        GameTag.ELUSIVE: True,
+        GameTag.CANT_BE_TARGETED_BY_ABILITIES: True,
+        GameTag.CANT_BE_TARGETED_BY_HERO_POWERS: True,
+    }
 
 
 # CATA_560: Confront the Tol'vir (面对托维尔人) - 3费 法术
