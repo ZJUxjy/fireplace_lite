@@ -1548,10 +1548,11 @@ class Heal(TargetedAction):
     AMOUNT = IntArg()
 
     def do(self, source, target, amount):
+        amount = source.get_heal(amount, target)
+        amount += source.controller.healing_bonus
         if source.controller.healing_as_damage:
             return source.game.queue_actions(source.controller, [Hit(target, amount)])
 
-        amount = source.get_heal(amount, target)
         amount = min(amount, target.damage)
         if amount:
             # Undamaged targets do not receive heals

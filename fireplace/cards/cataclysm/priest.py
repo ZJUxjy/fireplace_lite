@@ -16,8 +16,8 @@ class CATA_216:
 
 
 # CATA_216e: 治疗增强 buff - 作为一个标记
-# 注意：这是一个标记 buff，实际的治疗增强需要在 card.py 中处理
-CATA_216e = buff(health=0)  # 空 buff 作为标记
+class CATA_216e:
+    healing_bonus = 2
 
 
 # CATA_300: "黑血" (7费 4/8 巨型+3)

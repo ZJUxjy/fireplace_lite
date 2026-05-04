@@ -69,6 +69,14 @@ class Player(Entity, TargetableByAuras):
     def _card_costs_health_this_turn(self, card):
         return getattr(card, "costs_health_turn", None) == self.game.turn
 
+    @property
+    def healing_bonus(self):
+        return sum(
+            getattr(buff.data.scripts, "healing_bonus", 0)
+            for buff in self.buffs
+            if buff.data
+        )
+
     def __init__(self, name, deck: List[str], hero: str, is_standard=True):
         self.game: Game = None
         self.opponent: Player = None

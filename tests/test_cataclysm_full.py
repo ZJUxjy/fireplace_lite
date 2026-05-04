@@ -299,6 +299,24 @@ def test_soldier_of_onyxia_generated_minion_costs_health_this_turn():
     assert player.used_mana == player.max_mana
 
 
+def test_sanctified_priest_increases_hero_power_healing_this_game():
+    """Sanctified Priest increases the controller's healing effects by 2."""
+    from fireplace.actions import Hit
+
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    hero = player.hero
+    game.cheat_action(hero, [Hit(hero, 5)])
+    damaged_health = hero.health
+
+    player.give("CATA_216").play()
+    player.hero.power.use(hero)
+
+    assert hero.health == damaged_health + 4
+
+
 ##
 # CATA_491: 怪异触手
 # 对所有随从造成$3点伤害。重复（打出后回到手牌）
