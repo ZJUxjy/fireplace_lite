@@ -401,6 +401,25 @@ def test_veranus_does_not_buff_deck_when_minion_cost_sum_is_not_100():
 
 
 ##
+# CATA_556: 载蛋雏龙
+# 战吼：随机获取一张法力值消耗小于或等于（3）点的龙牌。
+
+def test_carrier_whelp_can_give_dragon_that_costs_less_than_three():
+    """Carrier Whelp's random dragon pool includes dragons below 3 cost."""
+    game = prepare_empty_game()
+    game.random.seed(3)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    player.give("CATA_556").play()
+
+    generated = player.hand[-1]
+    assert generated.id == "NEW1_023"
+    assert generated.cost == 2
+
+
+##
 # CATA_591: 指挥官迦顿
 # 战吼：从你的牌库中发现一张卡牌，它的费用为(0)
 

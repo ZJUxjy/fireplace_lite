@@ -260,7 +260,7 @@ class CATA_556:
     """Egg Alarm-o-Bot"""
 
     # 战吼：随机获取一张≤3费的龙牌
-    play = Give(CONTROLLER, RandomMinion(cost=3, race=Race.DRAGON))
+    play = Give(CONTROLLER, RandomMinion(cost=list(range(4)), race=Race.DRAGON))
 
 
 # CATA_612: 霜冻小鬼 (2费 5/3)
