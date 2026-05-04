@@ -1205,6 +1205,41 @@ def test_sylvanas_triumph_upgrades_after_another_copy_was_played():
     assert player.hero.damage == 0
 
 
+def test_earthen_roar_sets_enemy_minion_health_to_one():
+    """Earthen Roar sets one enemy minion's Health to 1."""
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    target = player.opponent.summon("CATA_201")
+
+    player.give("CATA_554").play(target=target)
+
+    assert target.health == 1
+    assert target.atk == target.data.atk
+    assert player.choice is None
+
+
+def test_earthen_roar_holding_dragon_chooses_second_enemy_minion():
+    """Earthen Roar chooses another enemy minion when you are holding a Dragon."""
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    first = player.opponent.summon("CATA_201")
+    second = player.opponent.summon("CATA_201")
+    player.give("CATA_465t")
+
+    player.give("CATA_554").play(target=first)
+
+    assert first.health == 1
+    assert player.choice
+    assert second in player.choice.cards
+    player.choice.choose(second)
+
+    assert second.health == 1
+
+
 ##
 # CATA_721: 避难的幸存者
 # 战吼：选择一张你的手牌洗入你的牌库。抽一张牌。

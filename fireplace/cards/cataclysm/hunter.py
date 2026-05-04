@@ -68,20 +68,24 @@ CATA_553e = buff(+6, +6)
 ##
 # Spells
 
-# CATA_554: Earthen Roar (大地之吼) - 1费 法术
-# 使一个随从获得+4/+4
+# CATA_554: Earthen Roar (撼地巨吼) - 1费 法术
+# 将一个敌方随从的生命值变为1。如果你的手牌中有龙牌，再选择一个。
 class CATA_554:
     """Earthen Roar"""
 
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
         PlayReq.REQ_MINION_TARGET: 0,
+        PlayReq.REQ_ENEMY_TARGET: 0,
     }
 
-    play = Buff(TARGET, "CATA_554e")
-
-
-CATA_554e = buff(+4, +4)
+    def play(self):
+        target = self.target
+        yield SetCurrentHealth(target, 1)
+        if any(Race.DRAGON in card.races for card in self.controller.hand):
+            candidates = [minion for minion in self.controller.opponent.field if minion is not target]
+            if candidates:
+                yield Choice(CONTROLLER, candidates).then(SetCurrentHealth(Choice.CARD, 1))
 
 
 # CATA_557: Sylvanas's Triumph (希尔瓦娜斯的胜利) - 2费 法术
