@@ -25,6 +25,21 @@ class CATA_151:
     update = Refresh(FRIENDLY_HERO, {GameTag.WINDFURY: True})
 
 
+def _cataclysm_azshara_herald_count(player):
+    return getattr(player, "_cataclysm_heralds", {}).get("azshara", 0)
+
+
+class CATA_151_BuffHeroAttack(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        amount = 2 if _cataclysm_azshara_herald_count(player) >= 2 else 1
+        source.game.queue_actions(
+            source,
+            [Buff(player.hero, "CATA_151te", atk=amount)],
+        )
+
+
 # CATA_151t: 艾萨拉的触手 (1费 2/1)
 # 被召唤时，使你的英雄在当回合获得+1攻击力
 class CATA_151t:
@@ -33,11 +48,16 @@ class CATA_151t:
     tags = {GameTag.COLOSSAL_LIMB: True}
 
     # 被召唤时，使你的英雄获得+1攻击力
-    play = Buff(FRIENDLY_HERO, "CATA_151te")
+    play = CATA_151_BuffHeroAttack(CONTROLLER)
 
 
+@custom_card
 class CATA_151te:
-    tags = {GameTag.WINDFURY: True, GameTag.ATK: 1}
+    tags = {
+        GameTag.CARDNAME: "Hero Blood of the Fel",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
+    events = OWN_TURN_END.on(Destroy(SELF))
 
 
 class CATA_AzsharaHerald(TargetedAction):
@@ -65,16 +85,7 @@ class CATA_525:
 class CATA_525t:
     """Azshara's Mariner"""
 
-    play = Buff(FRIENDLY_HERO, "CATA_525te")
-
-
-@custom_card
-class CATA_525te:
-    tags = {
-        GameTag.CARDNAME: "Azshara Mariner Buff",
-        GameTag.CARDTYPE: CardType.ENCHANTMENT,
-        GameTag.ATK: 1,
-    }
+    play = CATA_151_BuffHeroAttack(CONTROLLER)
 
 
 # CATA_527: 奈瑟匹拉，蒙难古灵 (3费 5/5)

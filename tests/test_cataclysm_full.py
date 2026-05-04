@@ -1802,12 +1802,50 @@ def test_azshara_hero_windfury_aura():
 
 def test_azshara_tentacle_buffs_hero_atk():
     """Azshara's Tentacle gives hero +1 ATK when played."""
-    game = prepare_empty_game()
-    game.player1.max_mana = 10
-    base_atk = game.player1.hero.atk
-    tentacle = game.player1.give("CATA_151t")
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    base_atk = player.hero.atk
+    tentacle = player.give("CATA_151t")
     tentacle.play()
-    assert game.player1.hero.atk == base_atk + 1
+    assert player.hero.atk == base_atk + 1
+    assert player.hero.windfury is False
+    game.end_turn()
+    assert player.hero.atk == base_atk
+
+
+def test_azshara_tentacle_attack_buff_upgrades_after_two_heralds():
+    """Azshara's Tentacle grants +2 ATK after Azshara has been Heralded twice."""
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    base_atk = player.hero.atk
+
+    player.give("CATA_525").play()
+    player.give("CATA_530").play()
+    player.give("CATA_151t").play()
+
+    assert getattr(player, "_cataclysm_heralds", {}).get("azshara") == 2
+    assert player.hero.atk == base_atk + 2
+
+
+def test_azshara_mariner_attack_buff_upgrades_and_expires():
+    """Azshara's Mariner uses the Herald upgrade and expires at turn end."""
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    base_atk = player.hero.atk
+
+    player.give("CATA_525").play()
+    player.give("CATA_530").play()
+    player.give("CATA_525t").play()
+
+    assert player.hero.atk == base_atk + 2
+    game.end_turn()
+    assert player.hero.atk == base_atk
 
 
 def test_armored_bloodsail_naga_heralds_without_damage():
