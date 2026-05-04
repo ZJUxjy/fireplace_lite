@@ -233,9 +233,16 @@ class CATA_725te:
 
 # CATA_791: 残影 (2费 法术)
 # 造成4点伤害。重复
+@custom_card
 class CATA_791:
     """Shadowflame"""
 
+    tags = {
+        GameTag.CARDNAME: "Shadowflame",
+        GameTag.CARDTYPE: CardType.SPELL,
+        GameTag.CLASS: CardClass.WARLOCK,
+        GameTag.COST: 2,
+    }
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
         PlayReq.REQ_MINION_TARGET: 0,

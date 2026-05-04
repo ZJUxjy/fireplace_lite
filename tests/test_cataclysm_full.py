@@ -657,10 +657,19 @@ def test_destructive_blaze_summons_copy_after_surviving_damage():
 # 造成4点伤害。重复（打出后回到手牌）
 
 def test_shadowflame_repeats_returns_to_hand():
-    """Shadowflame (CATA_791) is not in DB; CATA_491 Tentacle repeat is tested instead."""
-    # CATA_791 is not in the hearthstone DB and cannot be instantiated
-    # This test verifies CATA_491 repeat returns to hand (covered in separate test)
-    assert True  # placeholder - CATA_791 ID does not exist in DB
+    """Shadowflame deals 4 damage to a minion and repeats back into hand."""
+    game = prepare_empty_game()
+    player = game.current_player
+    opponent = player.opponent
+    player.max_mana = 10
+    player.used_mana = 0
+    target = opponent.summon("CATA_201")
+
+    player.give("CATA_791").play(target=target)
+
+    assert target.damage == 4
+    repeated = [card for card in player.hand if card.id == "CATA_791"]
+    assert len(repeated) == 1
 
 
 def test_shadow_shock_damages_target_and_summons_two_shades():
