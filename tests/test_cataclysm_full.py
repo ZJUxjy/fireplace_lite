@@ -631,6 +631,34 @@ def test_sinestra_tokens_give_discounted_other_class_spell():
         assert generated.cost == max(0, generated.data.cost - 1)
 
 
+def test_sinestra_casts_other_class_spell_twice():
+    """Sinestra makes the controller's other-class spells cast twice."""
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    player = game.current_player
+    enemy_hero = player.opponent.hero
+    player.max_mana = 10
+    player.used_mana = 0
+    player.summon("CATA_154")
+
+    player.give(FIREBALL).play(target=enemy_hero)
+
+    assert enemy_hero.health == enemy_hero.max_health - 12
+
+
+def test_sinestra_does_not_double_rogue_spell():
+    """Sinestra does not double the controller's Rogue spells."""
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    player = game.current_player
+    target = player.opponent.summon("CS2_182")
+    player.max_mana = 10
+    player.used_mana = 0
+    player.summon("CATA_154")
+
+    player.give("CS2_072").play(target=target)
+
+    assert target.health == target.max_health - 2
+
+
 def test_stolen_power_gives_complete_other_class_shatter_card():
     """Stolen Power gives a complete Shatter card instead of split halves."""
     shatter_cards = {"CATA_134", "CATA_306", "CATA_479", "CATA_489", "CATA_820"}

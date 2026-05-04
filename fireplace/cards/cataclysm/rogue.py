@@ -7,15 +7,27 @@ from ..utils import *
 # CATA_154: Sinestra (6费 5/5 龙)
 # 巨型+2: 召唤2个肢体
 # 你的其他职业的法术会施放两次
+class CATA_154_DoubleOtherClassSpell(TargetedAction):
+    CARD = ActionArg()
+    TARGET = ActionArg()
+
+    def do(self, source, card, target):
+        if card.card_class == source.card_class:
+            return
+        copied = source.controller.card(card.id, source=source, zone=Zone.SETASIDE)
+        return source.game.queue_actions(source, [CastSpell(copied, target)])
+
+
 class CATA_154:
     """Sinestra"""
 
     # 巨型+2: 召唤2个Sinestra的翅膀
     play = Summon(CONTROLLER, "CATA_154t") * 2
 
-    # 简化实现: 你的其他职业的法术会施放两次
-    # 通过使所有法术获得减费来简化
-    pass
+    # 你的其他职业的法术会施放两次
+    events = Play(CONTROLLER, SPELL).after(
+        CATA_154_DoubleOtherClassSpell(Play.CARD, Play.TARGET)
+    )
 
 
 SINESTRA_TOKEN_SPELL = Give(CONTROLLER, RandomSpell(card_class=ANOTHER_CLASS)).then(
