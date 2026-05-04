@@ -261,6 +261,39 @@ def test_goo_increases_adjacent_hand_card_costs_only():
 
 
 ##
+# CATA_615: 吉恩，咒厄国王
+# 当本牌在你手牌中时，如果你其他手牌的法力值消耗均为偶数或奇数，变形成为狼人国王。
+
+def test_genn_greymane_transforms_in_hand_when_other_hand_costs_share_parity():
+    """Genn Greymane transforms in hand when all other hand cards share parity."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.give("CS2_182")  # Chillwind Yeti: 4 mana.
+    player.give("CS2_179")  # Sen'jin Shieldmasta: 4 mana.
+
+    player.give("CATA_615")
+    game.refresh_auras()
+
+    assert any(card.id == "CATA_615t" for card in player.hand)
+    assert not any(card.id == "CATA_615" for card in player.hand)
+
+
+def test_worgen_king_battlecry_sets_hero_power_cost_to_one():
+    """Genn Greymane (Worgen) makes your starting Hero Power cost 1."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    genn = player.give("CATA_615t")
+
+    assert player.hero_power.cost == 2
+
+    genn.play()
+
+    assert player.hero_power.cost == 1
+
+
+##
 # CATA_208: 无私的保卫者
 # 嘲讽。受到的所有伤害提高一点。
 

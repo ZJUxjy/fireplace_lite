@@ -24,6 +24,21 @@ def _hand_adjacent(entities, source):
 _HAND_ADJACENT = FuncSelector(_hand_adjacent)
 
 
+def _genn_ready(entities, source):
+    if source.zone != Zone.HAND:
+        return []
+    other_cards = [card for card in source.controller.hand if card is not source]
+    if not other_cards:
+        return [source]
+    parity = other_cards[0].cost % 2
+    if all(card.cost % 2 == parity for card in other_cards):
+        return [source]
+    return []
+
+
+_GENN_READY = FuncSelector(_genn_ready)
+
+
 ##
 # Minions
 
@@ -247,18 +262,22 @@ class CATA_614:
 class CATA_615:
     """Genn Greymane"""
 
-    # 简化实现：战吼变形
-    play = Morph(SELF, "CATA_615t")
+    class Hand:
+        update = Find(_GENN_READY) & Morph(SELF, "CATA_615t")
 
 
 # CATA_615t: 吉恩，狼人国王 (4费 6/5)
 # 战吼：升级你的初始英雄技能，其法力值消耗为（1）点。
+class CATA_615e:
+    """Moon Howl"""
+
+    cost = SET(1)
+
+
 class CATA_615t:
     """Genn Greymane (Worgen)"""
 
-    # 战吼：升级英雄技能为1费
-    # 简化实现：不做任何效果
-    pass
+    play = Buff(FRIENDLY_HERO_POWER, "CATA_615e")
 
 
 def _gruul_cost(entity, i):
