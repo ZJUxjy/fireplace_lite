@@ -110,10 +110,9 @@ class CATA_208:
 
     tags = {GameTag.TAUNT: True}
 
-    # 受到的所有伤害提高1点
-    # 这是一个被动效果，需要特殊实现
-    # 简化实现：给一个debuff
-    pass
+    events = Predamage(SELF).on(
+        Predamage(SELF, 0), Damage(SELF, Predamage.AMOUNT + 1)
+    )
 
 
 # CATA_209: 战场轰炸手 (4费 4/4)

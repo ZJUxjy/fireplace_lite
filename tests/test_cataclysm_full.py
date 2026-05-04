@@ -240,6 +240,34 @@ def test_fished_murloc_ignores_high_cost_murloc_until_low_cost_murloc_played():
 
 
 ##
+# CATA_208: 无私的保卫者
+# 嘲讽。受到的所有伤害提高一点。
+
+def test_selfless_defender_takes_one_extra_spell_damage():
+    """Selfless Defender takes 1 extra damage from spell damage."""
+    game = prepare_empty_game()
+    attacker = game.current_player
+    defender = attacker.opponent.summon("CATA_208")
+
+    attacker.give("CS2_008").play(target=defender)  # Moonfire: 1 damage.
+
+    assert defender.health == defender.max_health - 2
+
+
+def test_selfless_defender_takes_one_extra_combat_damage():
+    """Selfless Defender takes 1 extra damage from combat damage."""
+    game = prepare_empty_game()
+    player = game.current_player
+    defender = player.opponent.summon("CATA_208")
+    attacker = player.summon("CS2_182")  # Chillwind Yeti: 4 attack.
+    attacker.turns_in_play = 1
+
+    attacker.attack(defender)
+
+    assert defender.health == defender.max_health - 5
+
+
+##
 # CATA_591: 指挥官迦顿
 # 战吼：从你的牌库中发现一张卡牌，它的费用为(0)
 
