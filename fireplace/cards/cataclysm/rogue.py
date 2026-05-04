@@ -288,5 +288,6 @@ class CATA_785:
         PlayReq.REQ_TARGET_TO_PLAY: 0,
     }
 
-    # 连击: 造成3点伤害（无连击时的兆示效果未实现）
+    # 兆示。连击：造成3点伤害
+    play = CATA_SinestraHerald(CONTROLLER)
     combo = Hit(TARGET, 3)

@@ -711,6 +711,36 @@ def test_maniacal_followers_herald_sinestra_spell_discount_upgrade():
     assert generated.cost == max(0, generated.data.cost - 2)
 
 
+def test_rite_of_twilight_heralds_sinestra_without_combo_damage():
+    """Rite of Twilight Heralds Sinestra even when it is not Comboed."""
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    game.random.seed(0)
+    player = game.current_player
+    enemy_hero = player.opponent.hero
+    player.max_mana = 10
+    player.used_mana = 0
+    base_health = enemy_hero.health
+    for card in list(player.hand):
+        card.zone = Zone.REMOVEDFROMGAME
+
+    player.give("CATA_785").play(target=enemy_hero)
+    assert enemy_hero.health == base_health
+
+    game.end_turn()
+    game.end_turn()
+    player.used_mana = 0
+    player.give("CATA_785").play(target=enemy_hero)
+    assert enemy_hero.health == base_health
+
+    player.used_mana = 0
+    player.give("CATA_154t").play()
+
+    generated = player.hand[-1]
+    assert generated.type == CardType.SPELL
+    assert generated.card_class != CardClass.ROGUE
+    assert generated.cost == max(0, generated.data.cost - 2)
+
+
 def test_sinestra_casts_other_class_spell_twice():
     """Sinestra makes the controller's other-class spells cast twice."""
     game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
