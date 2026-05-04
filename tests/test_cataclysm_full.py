@@ -161,6 +161,36 @@ def test_tentacle_deals_damage_to_all_minions():
 
 
 ##
+# CATA_586: 毁灭之焰
+# 在本随从受到伤害并存活下来后，召唤一个毁灭之焰。亡语：随机对一个敌人造成2点伤害。
+
+def test_destructive_blaze_has_no_battlecry_damage():
+    """Destructive Blaze should not deal damage when played."""
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    game.player1.used_mana = 0
+    enemy_hero = game.player2.hero
+    health_before = enemy_hero.health
+
+    game.player1.give("CATA_586").play()
+
+    assert enemy_hero.health == health_before
+
+
+def test_destructive_blaze_summons_copy_after_surviving_damage():
+    """Destructive Blaze summons a copy after it takes non-lethal damage."""
+    from fireplace.actions import Hit
+
+    game = prepare_empty_game()
+    blaze = game.player1.summon("CATA_586")
+
+    game.cheat_action(game.player2.hero, [Hit(blaze, 1)])
+
+    assert [minion.id for minion in game.player1.field].count("CATA_586") == 2
+    assert blaze in game.player1.field
+
+
+##
 # CATA_791: 残影
 # 造成4点伤害。重复（打出后回到手牌）
 

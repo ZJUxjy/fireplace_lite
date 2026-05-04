@@ -72,10 +72,8 @@ class CATA_584:
 class CATA_586:
     """Destructive Blaze"""
 
-    # 战吼：对一个随机敌人造成3点伤害
-    play = Hit(RANDOM(ENEMY_CHARACTERS), 3)
-
-    # 简化实现：亡语：对一个随机敌人造成2点伤害
+    # 在本随从受到伤害并存活下来后，召唤一个毁灭之焰。
+    events = SELF_DAMAGE.on(Dead(SELF) | Summon(CONTROLLER, ExactCopy(SELF)))
     deathrattle = Hit(RANDOM(ENEMY_CHARACTERS), 2)
 
 
