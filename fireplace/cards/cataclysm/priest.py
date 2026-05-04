@@ -68,17 +68,24 @@ class CATA_302:
 
 # CATA_303: "净化吐息" (2费 法术)
 # 对一个随从造成$5点伤害。如果该随从死亡，则为敌方英雄恢复#5点生命值。
+class CATA_303_PurifyingBreath(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        source.game.queue_actions(source, [Hit(target, 5)])
+        if target.dead:
+            return source.game.queue_actions(
+                source, [Heal(source.controller.opponent.hero, 5)]
+            )
+
+
 class CATA_303:
     """Purifying Breath"""
 
     requirements = {PlayReq.REQ_TARGET_TO_PLAY: 0, PlayReq.REQ_MINION_TARGET: 0}
 
     # 对一个随从造成5点伤害。如果该随从死亡，则为敌方英雄恢复5点生命值
-    def play(self):
-        target = self.target
-        yield Hit(target, 5)
-        # 检查目标是否死亡
-        yield Dead(target).after(Heal(ENEMY_HERO, 5))
+    play = CATA_303_PurifyingBreath(TARGET)
 
 
 # CATA_304: "受伤的侍者" (3费 3/8 野兽)

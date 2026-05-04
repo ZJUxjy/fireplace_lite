@@ -359,6 +359,45 @@ def test_ruby_sanctum_healing_conversion_expires_at_turn_end():
     assert hero.health == damaged_health + 2
 
 
+def test_purifying_breath_heals_enemy_hero_when_target_dies():
+    """Purifying Breath heals the enemy hero if its minion target dies."""
+    from fireplace.actions import Hit
+
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    enemy_hero = player.opponent.hero
+    target = player.opponent.summon("CS2_231")
+    game.cheat_action(player.hero, [Hit(enemy_hero, 5)])
+    damaged_health = enemy_hero.health
+
+    player.give("CATA_303").play(target=target)
+
+    assert target.dead
+    assert enemy_hero.health == damaged_health + 5
+
+
+def test_purifying_breath_does_not_heal_enemy_hero_when_target_survives():
+    """Purifying Breath does not heal the enemy hero if the target survives."""
+    from fireplace.actions import Hit
+
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    enemy_hero = player.opponent.hero
+    target = player.opponent.summon("CS2_200")
+    game.cheat_action(player.hero, [Hit(enemy_hero, 5)])
+    damaged_health = enemy_hero.health
+
+    player.give("CATA_303").play(target=target)
+
+    assert not target.dead
+    assert target.health == target.max_health - 5
+    assert enemy_hero.health == damaged_health
+
+
 ##
 # CATA_491: 怪异触手
 # 对所有随从造成$3点伤害。重复（打出后回到手牌）
