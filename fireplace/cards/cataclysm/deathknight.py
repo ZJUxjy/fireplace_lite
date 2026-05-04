@@ -261,8 +261,8 @@ class CATA_780t:
 class CATA_156:
     """Experimental Animation"""
 
-    # 对所有敌方随从造成4点伤害
-    play = Hit(ENEMY_MINIONS, 4)
+    # 兆示。对所有敌方随从造成4点伤害
+    play = CATA_OnyxiaHerald(CONTROLLER), Hit(ENEMY_MINIONS, 4)
 
 
 # CATA_471: 塔兰吉的奋战 (5费 法术)

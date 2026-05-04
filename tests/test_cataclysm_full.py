@@ -319,6 +319,28 @@ def test_onyxia_heralds_upgrade_health_cost_generation_to_two_cost_minions():
     assert getattr(generated, "costs_health_turn", None) == game.turn
 
 
+def test_experimental_animation_heralds_while_damaging_enemy_minions():
+    """Experimental Animation deals 4 to enemy minions and Heralds Onyxia."""
+    game = prepare_empty_game()
+    game.random.seed(0)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    enemy = player.opponent.summon("CS2_182")
+
+    player.give("CATA_156").play()
+    assert enemy.health == enemy.max_health - 4
+
+    player.used_mana = 0
+    player.give("CATA_156").play()
+    player.used_mana = 0
+    player.give("CATA_155t").play()
+
+    generated = player.hand[-1]
+    assert generated.cost == 2
+    assert getattr(generated, "costs_health_turn", None) == game.turn
+
+
 def test_sanctified_priest_increases_hero_power_healing_this_game():
     """Sanctified Priest increases the controller's healing effects by 2."""
     from fireplace.actions import Hit
