@@ -205,7 +205,9 @@ class CATA_479t3:
 class CATA_480:
     """Sandwind Aura"""
 
-    play = Buff(CONTROLLER, "CATA_480e")
+    def play(self):
+        turns = 3 + getattr(self, "_aura_duration_bonus", 0)
+        return (Buff(CONTROLLER, "CATA_480e", _sandwind_turns_remaining=turns),)
 
 
 # CATA_480e: 沙怒光环 buff
@@ -241,9 +243,17 @@ class CATA_480e:
 # CATA_621: 格尔宾的胜利
 # 1费 法术
 # 随机获取一张圣骑士光环牌，其持续时间增加一回合
+class CATA_621_AddDuration(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        target._aura_duration_bonus = getattr(target, "_aura_duration_bonus", 0) + 1
+        source.game.manager.targeted_action(self, source, target)
+
+
 class CATA_621:
     """Galakrond's Triumph"""
 
-    # 简化实现：随机获取一张圣骑士职业卡（这里简化为获取一张圣骑士卡）
-    # 由于没有专门的光环牌列表，简化实现为获取一张圣骑士随机卡
-    play = Give(CONTROLLER, RandomCard(type=CardType.SPELL, card_class=CardClass.PALADIN))
+    play = Give(CONTROLLER, RandomID("CATA_480")).then(
+        CATA_621_AddDuration(Give.CARD)
+    )

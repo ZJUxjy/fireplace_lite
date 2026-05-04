@@ -1076,6 +1076,42 @@ def test_sandwind_aura_expires_after_three_friendly_turns():
     assert len(player.hand) == 7
 
 
+def test_gelbins_triumph_gives_paladin_aura_with_extra_duration():
+    """Gelbin's Triumph gives a Paladin Aura with one extra turn of duration."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    player.summon("CATA_474")
+
+    player.give("CATA_621").play()
+    assert len(player.hand) == 1
+    aura = player.hand[0]
+    assert aura.id == "CATA_480"
+    assert getattr(aura, "_aura_duration_bonus", 0) == 1
+
+    aura.play()
+
+    game.end_turn()
+    assert len(player.hand) == 2
+    game.end_turn()
+
+    game.end_turn()
+    assert len(player.hand) == 4
+    game.end_turn()
+
+    game.end_turn()
+    assert len(player.hand) == 6
+    game.end_turn()
+
+    game.end_turn()
+    assert len(player.hand) == 8
+    game.end_turn()
+
+    game.end_turn()
+    assert len(player.hand) == 9
+
+
 ##
 # CATA_477: 守护巨龙之厅
 # 选择你手牌中的一张随从牌，使其获得+2/+2。
