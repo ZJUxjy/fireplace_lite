@@ -150,7 +150,7 @@ class CATA_452:
 class CATA_452t:
     """Azure Warden"""
 
-    # 简单的6/6龙
+    # 6/6龙白板衍生物，无额外脚本
     pass
 
 
