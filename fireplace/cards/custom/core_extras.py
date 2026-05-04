@@ -5,7 +5,7 @@ missing in fireplace, so CORE_X auto-link had nothing to inherit.
 Centralizing them here keeps the diff focused; each card script lives
 under its original ID so the CORE_-prefix auto-link picks it up.
 """
-from hearthstone.enums import SpellSchool
+from hearthstone.enums import CardType, Race, SpellSchool
 from ..utils import *
 
 
@@ -324,3 +324,390 @@ class CS3_025e:
     tags = {GameTag.ATK: 1, GameTag.HEALTH: 1}
 
 
+# ============================================================================
+# Phase 12: additional CORE fill-ins (~36 cards across all classes).
+# Cards here either (a) are CORE_-only with no base equivalent in data, or
+# (b) have a base ID whose original implementation was missing.
+# Hard-to-model effects (Corpses, cost-modifying auras, deck-origin tracking)
+# remain unimplemented in this batch.
+# ============================================================================
+
+
+# --- DEATH KNIGHT ---
+
+
+class RLK_048:
+    """Anti-Magic Shell — Give your minions +1/+1 and 'Elusive'."""
+    play = Buff(FRIENDLY_MINIONS, "RLK_048e")
+
+
+class RLK_048e:
+    tags = {
+        GameTag.ATK: 1,
+        GameTag.HEALTH: 1,
+        GameTag.CANT_BE_TARGETED_BY_ABILITIES: True,
+        GameTag.CANT_BE_TARGETED_BY_HERO_POWERS: True,
+    }
+
+
+class CORE_RLK_087:
+    """Asphyxiate — Destroy the highest Attack enemy minion."""
+    play = Destroy(HIGHEST_ATK(ENEMY_MINIONS))
+
+
+class RLK_024:
+    """Death Strike — Lifesteal. Deal 6 damage to a minion.
+
+    LIFESTEAL is set on the spell via XML tags, so the engine handles
+    the heal automatically when Hit fires.
+    """
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+    play = Hit(TARGET, 6)
+
+
+class RLK_709:
+    """Remorseless Winter — Deal 2 damage to all enemies. Draw a card."""
+    play = Hit(ENEMY_CHARACTERS, 2), Draw(CONTROLLER)
+
+
+class CORE_RLK_063:
+    """Frostwyrm's Fury — Deal 5 damage. Freeze enemy minions. Summon 5/5."""
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+    play = (
+        Hit(TARGET, 5),
+        Freeze(ENEMY_MINIONS),
+        Summon(CONTROLLER, "RLK_063t"),
+    )
+
+
+class RLK_063t:
+    """Frostwyrm token — 5/5 Frostwyrm."""
+    tags = {GameTag.ATK: 5, GameTag.HEALTH: 5}
+
+
+class CORE_EDR_002:
+    """Poison Breath — Give a friendly Undead Poisonous."""
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_FRIENDLY_TARGET: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+        PlayReq.REQ_TARGET_WITH_RACE: Race.UNDEAD.value,
+    }
+    play = Buff(TARGET, "CORE_EDR_002e")
+
+
+class CORE_EDR_002e:
+    tags = {GameTag.POISONOUS: True}
+
+
+class RLK_707:
+    """Grave Strength — Give your minions +1 Attack.
+    (Corpse path — 'Spend 5 to give +3 instead' — skipped.)
+    """
+    play = Buff(FRIENDLY_MINIONS, "RLK_707e")
+
+
+class RLK_707e:
+    tags = {GameTag.ATK: 1}
+
+
+class CORE_RLK_118:
+    """Tomb Guardians — Summon two 2/2 Zombies with Taunt.
+    (Corpse path — 'Spend 4 to give them Reborn' — skipped.)
+    Real token: RLK_118t3 = Menacing Zombie 2/2 Taunt.
+    """
+    play = Summon(CONTROLLER, "RLK_118t3") * 2
+
+
+class CORE_RLK_506:
+    """Boneguard Commander — simplified to a single 1/3 Footman with Taunt.
+    Real card: Battlecry: Raise up to 6 Corpses as 1/3 Risen Footmen w/ Taunt.
+    """
+    tags = {GameTag.TAUNT: True}
+    play = Summon(CONTROLLER, "RLK_506t")
+
+
+class RLK_506t:
+    tags = {GameTag.ATK: 1, GameTag.HEALTH: 3, GameTag.TAUNT: True}
+
+
+class CORE_CATA_007:
+    """Consumption — Deal 3 damage to two random enemy minions.
+    (The conditional 'Draw a card for each that dies' is skipped.)
+    """
+    play = Hit(RANDOM_ENEMY_MINION, 3) * 2
+
+
+# --- DEMON HUNTER ---
+
+
+class CORE_TTN_843:
+    """Eredar Deceptor — Whenever you draw a card, summon a 1/1 Demon w/ Rush."""
+    # TTN_843t1 = Invading Felbat (1/1 demon w/ Rush), the real card's token.
+    events = Draw(CONTROLLER).on(Summon(CONTROLLER, "TTN_843t1"))
+
+
+class CORE_WC_701:
+    """Felrattler — Rush. Deathrattle: Deal 1 damage to all enemy minions."""
+    tags = {GameTag.RUSH: True}
+    deathrattle = Hit(ENEMY_MINIONS, 1)
+
+
+# --- DRUID ---
+
+
+class CORE_TSC_650:
+    """Flipper Friends — Choose One: 6/6 Orca w/ Taunt; or six 1/1 Otters w/ Rush.
+
+    Real-card tokens: TSC_650t (6/6 Orca Taunt), TSC_650t4 (1/1 Otter Rush).
+    """
+    choose = ("TSC_650a", "TSC_650d")
+    play = Summon(CONTROLLER, "TSC_650t")
+
+
+class TSC_650a:
+    play = Summon(CONTROLLER, "TSC_650t")
+
+
+class TSC_650d:
+    play = Summon(CONTROLLER, "TSC_650t4") * 6
+
+
+class CORE_RLK_657:
+    """Underking — Rush. Battlecry and Deathrattle: Gain 6 Armor."""
+    tags = {GameTag.RUSH: True}
+    play = GainArmor(FRIENDLY_HERO, 6)
+    deathrattle = GainArmor(FRIENDLY_HERO, 6)
+
+
+# --- HUNTER ---
+
+
+class CORE_BAR_801:
+    """Wound Prey — Deal 1 damage. Summon a 1/1 Hyena with Rush."""
+    requirements = {PlayReq.REQ_TARGET_TO_PLAY: 0}
+    # BAR_035t = Swift Hyena 1/1 Rush (the existing in-set hyena token).
+    play = Hit(TARGET, 1), Summon(CONTROLLER, "BAR_035t")
+
+
+class CORE_AV_337:
+    """Mountain Bear — Taunt. Deathrattle: Summon two 2/4 Cubs with Taunt."""
+    tags = {GameTag.TAUNT: True}
+    deathrattle = Summon(CONTROLLER, "AV_337t") * 2
+
+
+class AV_337t:
+    tags = {GameTag.ATK: 2, GameTag.HEALTH: 4, GameTag.TAUNT: True}
+
+
+# --- MAGE ---
+
+
+class CORE_SW_108:
+    """First Flame — Deal 2 damage to a minion. Add a Second Flame to hand."""
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+    play = Hit(TARGET, 2), Give(CONTROLLER, "SW_108t")
+
+
+class SW_108t:
+    """Second Flame — Deal 2 damage to a minion."""
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+    play = Hit(TARGET, 2)
+
+
+class CORE_BAR_812:
+    """Oasis Ally — Secret: when a friendly minion is attacked, summon a 3/6 Water Elemental."""
+    # ICC_833t = 3/6 Water Elemental (existing token reused).
+    secret = Attack(None, FRIENDLY_MINIONS).on(
+        Reveal(SELF), Summon(CONTROLLER, "ICC_833t")
+    )
+
+
+# --- NEUTRAL ---
+
+
+class CORE_SW_072:
+    """Rustrot Viper — Tradeable. Battlecry: Destroy your opponent's weapon."""
+    play = Destroy(ENEMY_WEAPON)
+
+
+class CORE_SW_066:
+    """Royal Librarian — Tradeable. Battlecry: Silence a minion."""
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+    play = Silence(TARGET)
+
+
+class CORE_REV_023:
+    """Demolition Renovator — Tradeable. Battlecry: Destroy an enemy location."""
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_LOCATION_TARGET: 0,
+        PlayReq.REQ_ENEMY_TARGET: 0,
+    }
+    play = Destroy(TARGET)
+
+
+class CORE_ETC_111:
+    """Merch Seller — At end of turn, put a random spell on top of opponent's deck.
+    (Engine doesn't expose 'top of deck' for arbitrary card; using Shuffle as
+    an approximation — the random spell goes into the opponent's deck.)
+    """
+    events = OWN_TURN_END.on(Shuffle(OPPONENT, RandomSpell()))
+
+
+class CORE_YOP_034:
+    """Runaway Blackwing — At end of turn, deal 10 damage to a random enemy minion."""
+    events = OWN_TURN_END.on(Hit(RANDOM_ENEMY_MINION, 10))
+
+
+# --- PALADIN ---
+
+
+class CORE_TSC_076:
+    """Immortalized in Stone — Summon a 4/8, 2/4, and 1/2 Elemental with Taunt.
+
+    Real-card tokens use these existing in-set ids: TSC_076t (Worn Statue),
+    TSC_076t2 (Living Statue), TSC_076t3 (Pristine Statue). Stats taken
+    straight from the tokens (data shows 1/2, 2/4, 1/2 — note that the
+    description's '4/8 Pristine Statue' isn't reflected in this XML build;
+    we summon what's there).
+    """
+    play = (
+        Summon(CONTROLLER, "TSC_076t"),
+        Summon(CONTROLLER, "TSC_076t2"),
+        Summon(CONTROLLER, "TSC_076t3"),
+    )
+
+
+# --- PRIEST ---
+
+
+class CORE_SW_442:
+    """Void Shard — Lifesteal. Deal 4 damage."""
+    requirements = {PlayReq.REQ_TARGET_TO_PLAY: 0}
+    play = Hit(TARGET, 4)
+
+
+class CORE_SCH_512:
+    """Initiation — Deal 4 damage to a minion. If it dies, summon a new copy."""
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+    play = Hit(TARGET, 4).then(Dead(Hit.TARGET) & Summon(CONTROLLER, ExactCopy(Hit.TARGET)))
+
+
+class CORE_BAR_311:
+    """Devouring Plague — Lifesteal. Deal 4 damage randomly split among enemy minions."""
+    play = Hit(RANDOM_ENEMY_MINION, 1) * 4
+
+
+class CORE_BAR_313:
+    """Priest of An'she — Taunt. Battlecry: If you've restored Health this turn, +3/+3."""
+    tags = {GameTag.TAUNT: True}
+
+    @staticmethod
+    def play(self):
+        if self.controller.healed_this_turn > 0:
+            return [Buff(self, "CORE_BAR_313e")]
+        return []
+
+
+class CORE_BAR_313e:
+    tags = {GameTag.ATK: 3, GameTag.HEALTH: 3}
+
+
+class CORE_RLK_814:
+    """Crystalsmith Cultist — Battlecry: If holding a Shadow spell, gain +1/+1."""
+
+    @staticmethod
+    def play(self):
+        for c in self.controller.hand:
+            if c.type == CardType.SPELL and getattr(
+                c.data, "spell_school", None
+            ) == SpellSchool.SHADOW:
+                return [Buff(self, "CORE_RLK_814e")]
+        return []
+
+
+class CORE_RLK_814e:
+    tags = {GameTag.ATK: 1, GameTag.HEALTH: 1}
+
+
+class CORE_CATA_002:
+    """Calia Menethil — Battlecry: Resurrect your highest-Cost minion that died this game."""
+
+    @staticmethod
+    def play(self):
+        deads = self.controller.graveyard.filter(type=CardType.MINION)
+        if not deads:
+            return []
+        target = max(deads, key=lambda c: c.cost)
+        return [Summon(self.controller, target.id)]
+
+
+# --- SHAMAN ---
+
+
+class CORE_WC_042:
+    """Wailing Vapor — After you play an Elemental, gain +1 Attack."""
+    events = Play(CONTROLLER, MINION + ELEMENTAL).on(Buff(SELF, "CORE_WC_042e"))
+
+
+class CORE_WC_042e:
+    tags = {GameTag.ATK: 1}
+
+
+class CORE_AV_107:
+    """Glaciate — Discover an 8-Cost minion. Summon and Freeze it."""
+    play = Discover(CONTROLLER, RandomMinion(cost=8)).then(
+        Summon(CONTROLLER, Discover.CARD).then(Freeze(Summon.CARD))
+    )
+
+
+# --- WARLOCK ---
+
+
+class CORE_WON_096:
+    """Dark Peddler — Battlecry: Discover a 1-Cost card."""
+    play = DISCOVER(RandomCollectible(cost=1))
+
+
+class CORE_SW_088:
+    """Demonic Assault — Deal 3 damage. Summon two 1/3 Voidwalkers with Taunt."""
+    requirements = {PlayReq.REQ_TARGET_TO_PLAY: 0}
+    play = Hit(TARGET, 3), Summon(CONTROLLER, "CS2_065") * 2
+
+
+# --- WARRIOR ---
+
+
+class CORE_WON_350:
+    """I Know a Guy — Discover a Taunt minion. Give it +1/+2."""
+    play = Discover(CONTROLLER, RandomMinion(taunt=True)).then(
+        Give(CONTROLLER, Discover.CARD), Buff(Discover.CARD, "CORE_WON_350e")
+    )
+
+
+class CORE_WON_350e:
+    tags = {GameTag.ATK: 1, GameTag.HEALTH: 2}
+
+
+class CORE_WON_337:
+    """Ironforge Portal — Gain 4 Armor. Summon a random 4-Cost minion."""
+    play = GainArmor(FRIENDLY_HERO, 4), Summon(CONTROLLER, RandomMinion(cost=4))

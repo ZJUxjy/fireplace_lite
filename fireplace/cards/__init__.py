@@ -33,18 +33,25 @@ def get_script_definition(id, card=None):
     if not card:
         card = db[id]
 
+    # Build the candidate id list. Preserve the literal id first so that a
+    # script written under e.g. "CORE_RLK_657" wins over the redirected base.
+    candidates = [id]
     if GameTag.DECK_RULE_COUNT_AS_COPY_OF_CARD_ID in card.tags:
         dbf_id = card.tags[GameTag.DECK_RULE_COUNT_AS_COPY_OF_CARD_ID]
         if dbf_id < card.dbf_id and dbf_id in db.dbf:
-            id = db.dbf[dbf_id]
+            redirected = db.dbf[dbf_id]
+            if redirected not in candidates:
+                candidates.append(redirected)
 
-    # CORE_ cards re-use scripts from their original set. Try the literal id
-    # first; if no script class exists, fall back to the prefix-stripped id
+    # CORE_ cards re-use scripts from their original set. After the literal
+    # ids are queued, also try the prefix-stripped variants
     # ("CORE_EX1_134" -> "EX1_134"). Handle "Core_" too (some XML variants).
-    candidates = [id]
-    for prefix in ("CORE_", "Core_"):
-        if id.startswith(prefix):
-            candidates.append(id[len(prefix):])
+    for c in list(candidates):
+        for prefix in ("CORE_", "Core_"):
+            if c.startswith(prefix):
+                stripped = c[len(prefix):]
+                if stripped not in candidates:
+                    candidates.append(stripped)
 
     for candidate in candidates:
         for cardset in CARD_SETS:
