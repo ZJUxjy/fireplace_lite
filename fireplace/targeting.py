@@ -49,9 +49,15 @@ def is_valid_target(self, target, requirements=None):
             return False
         if target.immune and self.controller != target.controller:
             return False
-        if self.type == CardType.SPELL and target.cant_be_targeted_by_abilities:
+        # ELUSIVE = "can't be targeted by spells or hero powers"; OR it in
+        # alongside the explicit per-source flags.
+        if self.type == CardType.SPELL and (
+            target.cant_be_targeted_by_abilities or target.elusive
+        ):
             return False
-        if self.type == CardType.HERO_POWER and target.cant_be_targeted_by_hero_powers:
+        if self.type == CardType.HERO_POWER and (
+            target.cant_be_targeted_by_hero_powers or target.elusive
+        ):
             return False
 
     if target.cant_be_targeted_by_opponents and self.controller != target.controller:

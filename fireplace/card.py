@@ -966,6 +966,10 @@ class Character(LiveEntity):
     cant_be_targeted_by_hero_powers = boolean_property(
         "cant_be_targeted_by_hero_powers"
     )
+    # ELUSIVE is the modern keyword for "can't be targeted by spells or hero
+    # powers". The XML stores it as a single GameTag (id 1211); targeting.py
+    # ORs this in alongside the explicit cant_be_targeted_* flags.
+    elusive = boolean_property("elusive")
 
     heavily_armored = boolean_property("heavily_armored")
     min_health = int_property("min_health")
