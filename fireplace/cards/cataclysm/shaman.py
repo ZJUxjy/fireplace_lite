@@ -150,6 +150,15 @@ class CATA_563e2:
     }
 
 
+class CATA_AlakirHerald(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        heralds = getattr(target, "_cataclysm_heralds", {}).copy()
+        heralds["alakir"] = heralds.get("alakir", 0) + 1
+        target._cataclysm_heralds = heralds
+
+
 # CATA_564: 飞行助翼 (5费 5/5)
 # 战吼：使一个友方随从获得Mega-Windfury，无法攻击英雄
 class CATA_564:
@@ -190,8 +199,8 @@ class CATA_565:
         GameTag.RARITY: 3,
     }
 
-    # 简化实现：战吼，召唤一个1/2的士兵
-    play = Summon(CONTROLLER, "CATA_565t")
+    # 战吼：兆示
+    play = CATA_AlakirHerald(CONTROLLER)
 
 
 # CATA_565t: 奥拉基尔的士兵 (1费 1/2)

@@ -1254,6 +1254,21 @@ def test_soldier_of_alakir_buffs_adjacent_minion_attack():
     assert soldier.atk == soldier.data.atk
 
 
+def test_skywall_sentinel_heralds_without_summoning_soldier():
+    """Skywall Sentinel Battlecry Heralds Al'Akir without summoning a Soldier."""
+    game = prepare_empty_game(CardClass.SHAMAN, CardClass.SHAMAN)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    sentinel = player.give("CATA_565")
+    sentinel.play()
+
+    assert sentinel.taunt
+    assert not any(minion.id == "CATA_565t" for minion in player.field)
+    assert getattr(player, "_cataclysm_heralds", {}).get("alakir") == 1
+
+
 def test_ascendance_transforms_minions_and_resummons_originals():
     """Ascendance transforms friendly minions and gives them original-summoning deathrattles."""
     game = prepare_empty_game()
