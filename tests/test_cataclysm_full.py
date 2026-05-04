@@ -2081,6 +2081,23 @@ def test_fearsome_doomkin_heralds_deathwing():
     assert getattr(player, "_cataclysm_heralds", {}).get("deathwing") == 1
 
 
+def test_ultraxion_heralds_and_discounts_deathwing_cards():
+    """Ultraxion Heralds Deathwing and discounts Deathwing cards in hand and deck."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    hand_deathwing = player.give("CATA_190h")
+    deck_deathwing = player.give("CATA_190h")
+    deck_deathwing.shuffle_into_deck()
+
+    player.give("CATA_497").play()
+
+    assert getattr(player, "_cataclysm_heralds", {}).get("deathwing") == 1
+    assert hand_deathwing.cost == hand_deathwing.data.cost - 1
+    assert deck_deathwing.cost == deck_deathwing.data.cost - 1
+
+
 ##
     """Archmage Kalec gives spellpower+1 to all spells in hand and deck."""
     game = prepare_empty_game()

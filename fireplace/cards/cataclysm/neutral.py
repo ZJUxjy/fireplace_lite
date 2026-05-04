@@ -255,9 +255,11 @@ class CATA_476t:
 class CATA_497:
     """Ysera the Unleashed"""
 
-    # 战吼：兆示1，减少死亡之翼的费用
-    # 简化实现：给死亡之翼卡牌-1费
-    play = Buff(FRIENDLY_DECK + ID("CATA_190h"), "CATA_497e")
+    # 战吼：兆示。使死亡之翼的法力值消耗减少（1）点
+    play = (
+        CATA_DeathwingHerald(CONTROLLER),
+        Buff((FRIENDLY_HAND | FRIENDLY_DECK) + ID("CATA_190h"), "CATA_497e"),
+    )
 
 
 CATA_497e = buff(cost=-1)
