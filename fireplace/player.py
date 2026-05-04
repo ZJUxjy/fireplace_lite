@@ -37,6 +37,7 @@ class Player(Entity, TargetableByAuras):
     minion_extra_combos = slot_property("minion_extra_combos")
     extra_deathrattles = slot_property("extra_deathrattles")
     extra_end_turn_effect = slot_property("extra_end_turn_effect")
+    minion_extra_end_turn_effect = slot_property("minion_extra_end_turn_effect")
     healing_double = slot_property("healing_double", sum)
     hero_power_double = slot_property("hero_power_double", sum)
     healing_as_damage = slot_property("healing_as_damage")

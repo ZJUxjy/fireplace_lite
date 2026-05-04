@@ -382,6 +382,17 @@ class EndTurn(GameAction):
 
     PLAYER = ActionArg()
 
+    def broadcast_minion_effects(self, source, at, player):
+        source.game.action_start(BlockType.TRIGGER, source, 0, None)
+        for entity in source.game.entities:
+            if (
+                entity.type == CardType.MINION
+                and entity.controller is player
+                and entity.zone == Zone.PLAY
+            ):
+                self._broadcast(entity, source, at, player)
+        source.game.action_end(BlockType.TRIGGER, source)
+
     def do(self, source, player):
         if player.choice:
             raise InvalidAction(
@@ -391,6 +402,8 @@ class EndTurn(GameAction):
         self.broadcast(source, EventListener.ON, player)
         if player.extra_end_turn_effect:
             self.broadcast(source, EventListener.ON, player)
+        elif player.minion_extra_end_turn_effect:
+            self.broadcast_minion_effects(source, EventListener.ON, player)
         source.game._end_turn()
 
 

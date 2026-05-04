@@ -1,4 +1,5 @@
 from ..utils import *
+from ... import enums
 from hearthstone.enums import SpellSchool
 
 
@@ -204,18 +205,37 @@ class CATA_479t3:
 class CATA_480:
     """Sandwind Aura"""
 
-    # 简化实现：持续3回合的buff
-    # 由于触发两次机制实现复杂，这里简化为持续3回合的 buff
     play = Buff(CONTROLLER, "CATA_480e")
 
 
 # CATA_480e: 沙怒光环 buff
 @custom_card
 class CATA_480e:
+    def _tick_duration(self, *args):
+        if getattr(self, "_sandwind_last_tick_turn", None) == self.game.turn:
+            return None
+        self._sandwind_last_tick_turn = self.game.turn
+        self._sandwind_turns_remaining = getattr(
+            self, "_sandwind_turns_remaining", 3
+        ) - 1
+        if self._sandwind_turns_remaining <= 0:
+            self._sandwind_expired = True
+        return None
+
+    def _destroy_if_expired(self, *args):
+        if getattr(self, "_sandwind_expired", False):
+            return Destroy(SELF)
+        return None
+
     tags = {
         GameTag.CARDNAME: "Sandwind Aura",
         GameTag.CARDTYPE: CardType.ENCHANTMENT,
     }
+    update = Refresh(CONTROLLER, {enums.MINION_EXTRA_END_TURN_EFFECT: True})
+    events = [
+        OWN_TURN_END.on(_tick_duration),
+        OWN_TURN_BEGIN.on(_destroy_if_expired),
+    ]
 
 
 # CATA_621: 格尔宾的胜利

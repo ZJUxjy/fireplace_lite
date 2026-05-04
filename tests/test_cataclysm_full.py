@@ -1031,6 +1031,51 @@ def test_spearhead_paladin_gives_discounted_holy_spell_at_turn_end():
     assert generated.cost == max(0, generated.data.cost - 3)
 
 
+def test_sandwind_aura_triggers_friendly_minion_end_turn_effects_twice():
+    """Sandwind Aura doubles friendly minion end-turn effects while active."""
+    from hearthstone.enums import SpellSchool
+
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    player.summon("CATA_474")
+
+    player.give("CATA_480").play()
+    game.end_turn()
+
+    assert len(player.hand) == 2
+    for generated in player.hand:
+        assert getattr(generated.data, "spell_school", None) == SpellSchool.HOLY
+        assert generated.cost == max(0, generated.data.cost - 3)
+
+
+def test_sandwind_aura_expires_after_three_friendly_turns():
+    """Sandwind Aura doubles three friendly end turns, then expires."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    player.summon("CATA_474")
+
+    player.give("CATA_480").play()
+
+    game.end_turn()
+    assert len(player.hand) == 2
+    game.end_turn()
+
+    game.end_turn()
+    assert len(player.hand) == 4
+    game.end_turn()
+
+    game.end_turn()
+    assert len(player.hand) == 6
+    game.end_turn()
+
+    game.end_turn()
+    assert len(player.hand) == 7
+
+
 ##
 # CATA_477: 守护巨龙之厅
 # 选择你手牌中的一张随从牌，使其获得+2/+2。
