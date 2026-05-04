@@ -31,7 +31,12 @@ class CATA_490:
 class CATA_491:
     """Tentacle"""
 
-    play = Hit(ALL_MINIONS, 3), Hit(ALL_MINIONS, 2), Hit(ALL_MINIONS, 1)
+    def play(self):
+        yield Hit(ALL_MINIONS, 3)
+        yield Deaths()
+        yield Hit(ALL_MINIONS, 2)
+        yield Deaths()
+        yield Hit(ALL_MINIONS, 1)
 
 
 # CATA_492: 暮光神坛 (3费 2/5)

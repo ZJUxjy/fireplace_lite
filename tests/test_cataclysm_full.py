@@ -693,6 +693,27 @@ def test_tentacle_deals_damage_to_all_minions():
     assert dummy.health == dummy.max_health - 6
 
 
+def test_tentacle_does_not_hit_minions_killed_by_earlier_repeat():
+    """Tentacle processes deaths between each repeated damage amount."""
+    from hearthstone.enums import Zone as ZoneEnum
+
+    game = prepare_empty_game(CardClass.WARLOCK, CardClass.WARLOCK)
+    player = game.current_player
+    opponent = player.opponent
+    player.max_mana = 10
+    player.used_mana = 0
+    opponent.card("CS2_231", zone=ZoneEnum.DECK)
+    opponent.card("CS2_231", zone=ZoneEnum.DECK)
+    opponent.card("CS2_231", zone=ZoneEnum.DECK)
+    acolyte = opponent.summon("EX1_007")  # Acolyte of Pain
+    acolyte.damage = acolyte.max_health - 3
+    hand_count = len(opponent.hand)
+
+    player.give("CATA_491").play()
+
+    assert len(opponent.hand) == hand_count + 1
+
+
 ##
 # CATA_586: 毁灭之焰
 # 在本随从受到伤害并存活下来后，召唤一个毁灭之焰。亡语：随机对一个敌人造成2点伤害。
