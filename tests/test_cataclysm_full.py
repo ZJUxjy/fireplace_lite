@@ -187,6 +187,38 @@ def test_ocular_occultist_chooses_hand_card_to_discard():
     assert discarded.zone == Zone.REMOVEDFROMGAME
 
 
+def test_fiendish_servant_has_stats_from_prior_discards():
+    """Fiendish Servant has +2/+2 for each card discarded this game."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    discarded = player.give(FIREBALL)
+
+    player.give("CATA_490").play()
+    player.choice.choose(discarded)
+    servant = player.give("CATA_493")
+
+    assert servant.atk == servant.data.atk + 2
+    assert servant.health == servant.data.health + 2
+
+
+def test_fiendish_servant_in_play_updates_after_discard():
+    """Fiendish Servant in play gains +2/+2 when another card is discarded."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    servant = player.summon("CATA_493")
+    discarded = player.give(FIREBALL)
+
+    player.give("CATA_490").play()
+    player.choice.choose(discarded)
+
+    assert servant.atk == servant.data.atk + 2
+    assert servant.health == servant.data.health + 2
+
+
 def test_tentacle_repeats_returns_to_hand():
     """Tentacle (CATA_491) returns to hand after being played (Repeat mechanic)."""
     game = prepare_empty_game()

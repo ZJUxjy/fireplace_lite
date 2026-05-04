@@ -36,19 +36,27 @@ class CATA_492:
     play = Draw(CONTROLLER)
 
 
-# CATA_493: 地狱公爵 (4费 4/4 突袭)
+def _fiendish_servant_stats(entity, amount):
+    return amount + (2 * entity.controller.discarded_cards_this_game)
+
+
+# CATA_493: 地狱公爵 (4费 2/2 突袭)
 # 在本局对战中，你每弃掉一张牌，便拥有+2/+2
 class CATA_493:
     """Fiendish Servant"""
 
     tags = {GameTag.RUSH: True}
 
-    # 在本局对战中，你每弃掉一张牌，便拥有+2/+2
-    # 简化实现：弃掉卡牌时触发
-    events = Discard(FRIENDLY_HAND).on(Buff(SELF, "CATA_493e"))
+    update = Refresh(SELF, {
+        GameTag.ATK: _fiendish_servant_stats,
+        GameTag.HEALTH: _fiendish_servant_stats,
+    })
 
-
-CATA_493e = buff(+2, +2)
+    class Hand:
+        update = Refresh(SELF, {
+            GameTag.ATK: _fiendish_servant_stats,
+            GameTag.HEALTH: _fiendish_servant_stats,
+        })
 
 
 # CATA_494: 马洛拉克 (5费 4/6)

@@ -1152,6 +1152,7 @@ class Discard(TargetedAction):
         target.zone = Zone.REMOVEDFROMGAME
         source.game.manager.targeted_action(self, source, target)
         if old_zone == Zone.HAND:
+            target.controller.discarded_cards_this_game += 1
             target.tags[DISCARDED] = True
             actions = target.get_actions("discard")
             source.game.cheat_action(target, actions)
