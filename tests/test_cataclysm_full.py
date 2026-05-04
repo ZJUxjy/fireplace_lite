@@ -563,6 +563,37 @@ def test_agent_transforms_hand_card_to_coin():
     assert len(coins) == 1
 
 
+def test_isorath_devours_two_opponent_hand_cards_and_deathrattle_returns_them():
+    """Iso'rath removes two opponent hand cards until its Deathrattle."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    opponent = player.opponent
+    for card in list(opponent.hand):
+        card.zone = Zone.REMOVEDFROMGAME
+    hand_cards = [
+        opponent.give("CS2_231"),
+        opponent.give(FIREBALL),
+        opponent.give("CS2_025"),
+    ]
+    isorath = player.give("CATA_481")
+
+    isorath.play()
+
+    devoured = [card for card in hand_cards if card.zone == Zone.REMOVEDFROMGAME]
+    assert len(devoured) == 2
+    assert all(card.controller is opponent for card in devoured)
+    assert len([card for card in hand_cards if card.zone == Zone.HAND]) == 1
+
+    game.skip_turn()
+    game.skip_turn()
+    isorath.destroy()
+
+    assert all(card in opponent.hand for card in devoured)
+    assert all(card in opponent.hand for card in hand_cards)
+
+
 ##
 # CATA_180: 速逝鱼人
 # 战吼：你的下一张法力值消耗小于或等于（3）点的鱼人牌会消耗生命值，而非法力值。

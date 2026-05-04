@@ -82,6 +82,34 @@ class CATA_201:
 # CATA_481: Iso'rath (5费 5/3)
 # 战吼: 吞噬对手2张卡，然后休眠2回合
 # 亡语: 将这些卡归还
+class CATA_481_DevourOpponentHand(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        opponent_hand = list(source.controller.opponent.hand)
+        devoured = source.game.random.sample(
+            opponent_hand, min(2, len(opponent_hand))
+        )
+        source.devoured_cards = devoured
+        for card in devoured:
+            card.zone = Zone.REMOVEDFROMGAME
+            source.game.manager.targeted_action(self, source, card)
+        return devoured
+
+
+class CATA_481_ReturnDevoured(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        devoured = getattr(target, "devoured_cards", [])
+        for card in list(devoured):
+            if len(card.controller.hand) < card.controller.max_hand_size:
+                card.zone = Zone.HAND
+                source.game.manager.targeted_action(self, source, card)
+        devoured.clear()
+        return devoured
+
+
 class CATA_481:
     """Iso'rath"""
 
@@ -89,11 +117,10 @@ class CATA_481:
     dormant_turns = 2
 
     # 战吼: 随机吞噬对手2张卡
-    # 简化实现: 随机造成2点伤害给对手
-    play = Hit(RANDOM_ENEMY_MINION, 2) * 2
+    play = CATA_481_DevourOpponentHand(SELF)
 
-    # 亡语: 简化实现
-    deathrattle = Hit(RANDOM_ENEMY_MINION, 2)
+    # 亡语: 将吞噬的牌吐回对手手牌
+    deathrattle = CATA_481_ReturnDevoured(SELF)
 
 
 
