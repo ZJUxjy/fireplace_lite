@@ -166,7 +166,6 @@ class CATA_485:
 class CATA_489:
     """Arcane Flow"""
 
-    # 裂变：造成4点伤害，对所有敌人造成2点伤害
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
     }
@@ -174,6 +173,22 @@ class CATA_489:
     def play(self):
         yield Hit(TARGET, 4)
         yield Hit(ENEMY_CHARACTERS, 2)
+
+
+class CATA_489t:
+    """Arcane Flow"""
+
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+    }
+
+    play = Hit(TARGET, 4)
+
+
+class CATA_489t2:
+    """Arcane Flow"""
+
+    play = Hit(ENEMY_CHARACTERS, 2)
 
 
 # CATA_978: 辛达苟萨的胜利 (5费 法术)

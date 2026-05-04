@@ -187,9 +187,20 @@ class CATA_140e:
 class CATA_134:
     """Wildwood Circle"""
 
-    # 破碎效果：召唤两个2/2树人，给所有友方随从亡语buff
-    # 简化实现：直接召唤两个树人并给随从亡语
+    # 合成后的裂变牌执行两个半张效果。
     play = Summon(CONTROLLER, "CATA_134t3") * 2, Buff(FRIENDLY_MINIONS, "CATA_134e")
+
+
+class CATA_134t:
+    """Wildwood Circle"""
+
+    play = Summon(CONTROLLER, "CATA_134t3") * 2
+
+
+class CATA_134t2:
+    """Wildwood Circle"""
+
+    play = Buff(FRIENDLY_MINIONS, "CATA_134e")
 
 
 # CATA_134t3: 树人 (1费 2/2)

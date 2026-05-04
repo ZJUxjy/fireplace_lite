@@ -180,12 +180,23 @@ CATA_477e = buff(+2, +2)
 class CATA_479:
     """Dragonriding"""
 
-    # 裂变效果：召唤两条4/2幼龙，使你的随从获得+1/+1和圣盾
     play = (
         Summon(CONTROLLER, "CATA_479t3") * 2,
         Buff(FRIENDLY_MINIONS, "CATA_479e"),
         GiveDivineShield(FRIENDLY_MINIONS),
     )
+
+
+class CATA_479t:
+    """Dragonriding"""
+
+    play = Summon(CONTROLLER, "CATA_479t3") * 2
+
+
+class CATA_479t2:
+    """Dragonriding"""
+
+    play = Buff(FRIENDLY_MINIONS, "CATA_479e"), GiveDivineShield(FRIENDLY_MINIONS)
 
 
 CATA_479e = buff(+1, +1)

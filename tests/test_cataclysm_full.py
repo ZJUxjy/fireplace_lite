@@ -1217,6 +1217,41 @@ def test_hall_of_the_dragonflight_buffs_chosen_hand_minion():
 
 
 ##
+# CATA_134: 荒林怪圈
+# 裂变：召唤两个2/2树人。使你的随从获得“亡语：召唤一个2/2树人。”
+
+def test_wildwood_circle_shatters_and_left_half_only_summons_treants():
+    """Wildwood Circle splits in hand; the left shattered half only summons Treants."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    player.give("CS2_013")
+
+    player.give("CATA_134")
+
+    assert [card.id for card in player.hand] == ["CATA_134t", "CS2_013", "CATA_134t2"]
+
+    player.hand[0].play()
+
+    assert [minion.id for minion in player.field] == ["CATA_134t3", "CATA_134t3"]
+
+
+def test_wildwood_circle_halves_recombine_when_adjacent():
+    """Shattered Wildwood Circle halves recombine into the full card when the card between them leaves hand."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    player.give("GAME_005")
+    player.give("CATA_134")
+
+    player.hand[1].play()
+
+    assert [card.id for card in player.hand] == ["CATA_134"]
+
+
+##
 # CATA_479: 飞龙机动
 # 裂变：召唤两条4/2的幼龙。使你的随从获得+1/+1和圣盾。
 
@@ -1234,6 +1269,25 @@ def test_dragonriding_summons_buffed_divine_shield_whelps():
     for whelp in whelps:
         assert (whelp.atk, whelp.health) == (5, 3)
         assert whelp.divine_shield
+
+
+def test_dragonriding_left_half_only_summons_unbuffed_whelps():
+    """The left shattered Dragonriding half summons whelps without the right-half buff."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    player.give("GAME_005")
+    player.give("CATA_479")
+
+    player.hand[0].play()
+
+    whelps = [minion for minion in player.field if minion.id == "CATA_479t3"]
+    assert len(whelps) == 2
+    assert [(whelp.atk, whelp.health, whelp.divine_shield) for whelp in whelps] == [
+        (4, 2, False),
+        (4, 2, False),
+    ]
 
 
 ##
@@ -1303,6 +1357,80 @@ def test_mossbinding_buffs_elementals_by_mana_spent():
     for t in treants:
         assert t.atk == 1 + 5  # base 1 + 5 mana spent
         assert t.health == 2 + 5  # base 2 + 5 mana spent
+
+
+##
+# CATA_489: 奥术涌流
+# 裂变：造成4点伤害。对所有敌人造成2点伤害。
+
+def test_arcane_flow_left_half_only_damages_target():
+    """The left shattered Arcane Flow half deals 4 to its target without the right-half AOE."""
+    game = prepare_empty_game()
+    player = game.current_player
+    enemy_hero = player.opponent.hero
+    enemy_minion = player.opponent.summon("CS2_182")
+    player.max_mana = 10
+    player.used_mana = 0
+    player.give("GAME_005")
+    player.give("CATA_489")
+
+    player.hand[0].play(target=enemy_hero)
+
+    assert enemy_hero.health == enemy_hero.max_health - 4
+    assert enemy_minion.health == enemy_minion.max_health
+
+
+##
+# CATA_820: 运输补给
+# 裂变：抽三张随从牌。使你手牌中的随从牌获得+2/+2。
+
+def test_supply_run_draws_three_minions_and_buffs_hand_minions():
+    """Supply Run draws three minions, then gives minions in hand +2/+2."""
+    from hearthstone.enums import Zone as ZoneEnum
+
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    deck_minions = [
+        player.card("CS2_231", zone=ZoneEnum.DECK),
+        player.card("CS2_182", zone=ZoneEnum.DECK),
+        player.card("CS2_171", zone=ZoneEnum.DECK),
+    ]
+    supply_run = player.give("CATA_820")
+    hand_minion = player.give("CS2_231")
+    supply_run.play()
+
+    for minion in deck_minions:
+        assert minion.zone == ZoneEnum.HAND
+        assert (minion.atk, minion.health) == (
+            minion.data.atk + 2,
+            minion.data.health + 2,
+        )
+    assert (hand_minion.atk, hand_minion.health) == (
+        hand_minion.data.atk + 2,
+        hand_minion.data.health + 2,
+    )
+
+
+##
+# CATA_306: 教派分歧
+# 裂变：使一个友方随从获得+2/+3和扰魔。召唤一个它的复制。
+
+def test_schism_left_half_buffs_without_summoning_copy():
+    """The left shattered Schism half buffs its target without the right-half copy summon."""
+    game = prepare_empty_game()
+    player = game.current_player
+    target = player.summon("CS2_231")
+    player.max_mana = 10
+    player.used_mana = 0
+    player.give("GAME_005")
+    player.give("CATA_306")
+
+    player.hand[0].play(target=target)
+
+    assert (target.atk, target.health) == (3, 4)
+    assert list(player.field) == [target]
 
 
 ##

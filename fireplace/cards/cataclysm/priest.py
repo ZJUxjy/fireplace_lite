@@ -112,13 +112,24 @@ class CATA_306:
 
     requirements = {PlayReq.REQ_TARGET_TO_PLAY: 0, PlayReq.REQ_MINION_TARGET: 0}
 
-    # 使一个友方随从获得+2/+3和扰魔。召唤一个它的复制
     def play(self):
         target = self.target
-        # 给目标+2/+3和扰魔
         yield Buff(target, "CATA_306e")
-        # 召唤一个复制
         yield Summon(CONTROLLER, ExactCopy(target))
+
+
+class CATA_306t1:
+    """Schism"""
+
+    requirements = {PlayReq.REQ_TARGET_TO_PLAY: 0, PlayReq.REQ_MINION_TARGET: 0}
+    play = Buff(TARGET, "CATA_306e")
+
+
+class CATA_306t2:
+    """Schism"""
+
+    requirements = {PlayReq.REQ_TARGET_TO_PLAY: 0, PlayReq.REQ_MINION_TARGET: 0}
+    play = Summon(CONTROLLER, ExactCopy(TARGET))
 
 
 # CATA_306e: +2/+3 和 扰魔

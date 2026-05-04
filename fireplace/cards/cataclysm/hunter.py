@@ -140,12 +140,25 @@ CATA_566e = buff(+1, +1)
 
 
 # CATA_820: Supply Run (运输补给) - 4费 法术
-# 使你的所有野兽获得+1/+1
+# 裂变：抽三张随从牌。使你手牌中的随从牌获得+2/+2。
 class CATA_820:
     """Supply Run"""
 
-    # 使你的所有野兽获得+1/+1
-    play = Buff(FRIENDLY_MINIONS + BEAST, "CATA_820e")
+    play = ForceDraw(RANDOM(FRIENDLY_DECK + MINION)) * 3, Buff(
+        FRIENDLY_HAND + MINION, "CATA_820e"
+    )
 
 
-CATA_820e = buff(+1, +1)
+class CATA_820t:
+    """Supply Run"""
+
+    play = ForceDraw(RANDOM(FRIENDLY_DECK + MINION)) * 3
+
+
+class CATA_820t2:
+    """Supply Run"""
+
+    play = Buff(FRIENDLY_HAND + MINION, "CATA_820e")
+
+
+CATA_820e = buff(+2, +2)

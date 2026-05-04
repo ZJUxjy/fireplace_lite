@@ -23,6 +23,81 @@ from .logging import log
 from .utils import random_class
 
 
+SHATTER_SPLITS = {
+    "CATA_134": ("CATA_134t", "CATA_134t2"),
+    "CATA_306": ("CATA_306t1", "CATA_306t2"),
+    "CATA_479": ("CATA_479t", "CATA_479t2"),
+    "CATA_489": ("CATA_489t", "CATA_489t2"),
+    "CATA_820": ("CATA_820t", "CATA_820t2"),
+}
+SHATTER_HALVES = {
+    half: (original, other)
+    for original, halves in SHATTER_SPLITS.items()
+    for half, other in ((halves[0], halves[1]), (halves[1], halves[0]))
+}
+
+
+def _move_to_hand(card, index=None):
+    if index is not None:
+        card._summon_index = index
+    card.zone = Zone.HAND
+    card._summon_index = None
+
+
+def _split_shatter_card(card):
+    if card.zone != Zone.HAND or getattr(card, "_shatter_locked", False):
+        return None
+    halves = SHATTER_SPLITS.get(card.id)
+    if not halves:
+        return None
+
+    player = card.controller
+    available_slots = player.max_hand_size - (len(player.hand) - 1)
+    card.zone = Zone.SETASIDE
+
+    left = player.card(halves[0], source=card, zone=Zone.SETASIDE)
+    left._shatter_original = card.id
+    _move_to_hand(left, 0)
+    cards = [left]
+
+    if available_slots >= 2:
+        right = player.card(halves[1], source=card, zone=Zone.SETASIDE)
+        right._shatter_original = card.id
+        _move_to_hand(right)
+        cards.append(right)
+    return cards
+
+
+def _recombine_shattered_cards(player):
+    for index in range(len(player.hand) - 1):
+        left = player.hand[index]
+        right = player.hand[index + 1]
+        original, other_half = SHATTER_HALVES.get(left.id, (None, None))
+        if not original or right.id != other_half:
+            continue
+
+        left.zone = Zone.SETASIDE
+        right.zone = Zone.SETASIDE
+        combined = player.card(original, source=left, zone=Zone.SETASIDE)
+        combined._shatter_locked = True
+        _move_to_hand(combined, index)
+        return combined
+    return None
+
+
+def _update_shatter_hand(player, card=None):
+    split_cards = _split_shatter_card(card) if card is not None else None
+    recombined = []
+    while True:
+        combined = _recombine_shattered_cards(player)
+        if not combined:
+            break
+        recombined.append(combined)
+    if recombined and split_cards:
+        return recombined
+    return split_cards
+
+
 def _eval_card(source, card):
     """
     Return a Card instance from \a card
@@ -504,6 +579,7 @@ class Play(GameAction):
         card.play_right_most = card is card.controller.hand[-1]
 
         card.zone = Zone.PLAY
+        _update_shatter_hand(player)
 
         # Remember cast on friendly characters
         if card.type == CardType.SPELL and target and target.controller == source:
@@ -1266,6 +1342,7 @@ class Draw(TargetedAction):
                 actions = card.get_actions("draw")
                 source.game.cheat_action(card, actions)
             self.broadcast(source, EventListener.ON, target, card, source)
+            _update_shatter_hand(target, card)
 
         return [card]
 
@@ -1417,6 +1494,9 @@ class Give(TargetedAction):
             ret.append(card)
             source.game.manager.targeted_action(self, source, target, card)
             self.broadcast(source, EventListener.AFTER, target, card)
+            split_cards = _update_shatter_hand(target, card)
+            if split_cards is not None:
+                ret[-1:] = split_cards
         return ret
 
 
