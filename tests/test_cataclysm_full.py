@@ -317,6 +317,48 @@ def test_sanctified_priest_increases_hero_power_healing_this_game():
     assert hero.health == damaged_health + 4
 
 
+def test_ruby_sanctum_turns_next_heal_into_damage_once():
+    """Ruby Sanctum converts only the next healing effect this turn into damage."""
+    from fireplace.actions import Heal, Hit
+
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    hero = player.hero
+    game.cheat_action(hero, [Hit(hero, 4)])
+    damaged_health = hero.health
+
+    player.give("CATA_301").play()
+    game.cheat_action(player.hero.power, [Heal(hero, 2)])
+
+    assert hero.health == damaged_health - 2
+
+    game.cheat_action(player.hero.power, [Heal(hero, 2)])
+
+    assert hero.health == damaged_health
+
+
+def test_ruby_sanctum_healing_conversion_expires_at_turn_end():
+    """Ruby Sanctum does not convert healing after the current turn ends."""
+    from fireplace.actions import Heal, Hit
+
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    hero = player.hero
+    game.cheat_action(hero, [Hit(hero, 4)])
+    damaged_health = hero.health
+
+    player.give("CATA_301").play()
+    game.end_turn()
+    game.end_turn()
+    game.cheat_action(player.hero.power, [Heal(hero, 2)])
+
+    assert hero.health == damaged_health + 2
+
+
 ##
 # CATA_491: 怪异触手
 # 对所有随从造成$3点伤害。重复（打出后回到手牌）

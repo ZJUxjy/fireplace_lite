@@ -77,6 +77,22 @@ class Player(Entity, TargetableByAuras):
             if buff.data
         )
 
+    @property
+    def healing_as_damage(self):
+        return any(
+            getattr(slot, "healing_as_damage", False) for slot in self.slots
+        ) or any(
+            getattr(buff.data.scripts, "healing_as_damage", False)
+            for buff in self.buffs
+            if buff.data
+        )
+
+    def consume_healing_as_damage(self):
+        for buff in self.buffs[:]:
+            if buff.data and getattr(buff.data.scripts, "healing_as_damage", False):
+                buff.remove()
+                return
+
     def __init__(self, name, deck: List[str], hero: str, is_standard=True):
         self.game: Game = None
         self.opponent: Player = None

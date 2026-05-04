@@ -47,10 +47,12 @@ class CATA_301:
     """Ruby Sanctum"""
 
     # 在本回合中，你的下一次治疗效果转而造成等量的伤害
-    # 简化实现：使用自定义动作来处理
-    def play(self):
-        # 设置 healing_as_damage 标志
-        self.controller.healing_as_damage = True
+    play = Buff(CONTROLLER, "CATA_301e")
+
+
+class CATA_301e:
+    healing_as_damage = True
+    events = OWN_TURN_END.on(Destroy(SELF))
 
 
 # CATA_302: "愈合" (1费 法术)

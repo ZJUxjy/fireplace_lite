@@ -1551,6 +1551,7 @@ class Heal(TargetedAction):
         amount = source.get_heal(amount, target)
         amount += source.controller.healing_bonus
         if source.controller.healing_as_damage:
+            source.controller.consume_healing_as_damage()
             return source.game.queue_actions(source.controller, [Hit(target, amount)])
 
         amount = min(amount, target.damage)
