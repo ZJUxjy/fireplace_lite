@@ -2595,19 +2595,28 @@ def test_naga_dissenter_play_deals_1_damage():
 # 每次你施放邪能法术，费用-1
 
 def test_greedy_fel_fisher_reduces_cost_on_fel_spell():
-    """Greedy Fel Fisher gets -1 cost each time a Fel spell is cast."""
+    """Greedy Fel Fisher costs less in hand for each Fel spell cast this game."""
     game = prepare_empty_game()
     game.player1.max_mana = 10
-    fisher = game.player1.summon("CATA_529")
-    base_cost = fisher.cost
+    fisher = game.player1.give("CATA_529")
+    base_cost = fisher.data.cost
+
     # Play a non-Fel spell: should NOT reduce cost
     fireball = game.player1.give("CS2_029")  # Fireball (fire)
     fireball.play(target=game.player2.hero)
     assert fisher.cost == base_cost
+
     # Play a Fel spell: should reduce cost
     fel_spell = game.player1.give("BAR_306")  # Sigil of Flame (fel)
     fel_spell.play()
     assert fisher.cost == base_cost - 1
+
+    other_fel_spell = game.player1.give("CATA_528")
+    other_fel_spell.play()
+    assert fisher.cost == base_cost - 2
+
+    late_fisher = game.player1.give("CATA_529")
+    assert late_fisher.cost == base_cost - 2
 
 
 ##

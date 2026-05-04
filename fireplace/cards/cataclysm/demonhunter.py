@@ -127,24 +127,26 @@ class CATA_527t2e:
     cost = SET(1)
 
 
-# CATA_529: 贪婪的邪能钓鱼者 (6费 5/5)
-# 在本局对战中，你每施放一个邪能法术，本牌的法力值消耗便减少(1)点
-class CATA_529:
-    """Greedy Fel钓鱼者"""
-
-    # 邪能法术后减少费用
-    events = Play(CONTROLLER, FEL_SPELL).after(
-        Buff(SELF, "CATA_529e")
+def _cata_529_fel_spell_count(player):
+    return sum(
+        1
+        for card in player.cards_played_this_game
+        if card.type == CardType.SPELL
+        and getattr(getattr(card, "data", None), "spell_school", None) == SpellSchool.FEL
     )
 
 
-@custom_card
-class CATA_529e:
-    tags = {
-        GameTag.CARDNAME: "Fel Affinity",
-        GameTag.CARDTYPE: CardType.ENCHANTMENT,
-        GameTag.COST: -1,
-    }
+def _cata_529_cost(entity, cost):
+    return cost - _cata_529_fel_spell_count(entity.controller)
+
+
+# CATA_529: 贪婪的邪能钓鱼者 (6费 5/5)
+# 在本局对战中，你每施放一个邪能法术，本牌的法力值消耗便减少(1)点
+class CATA_529:
+    """Greedy Felfisher"""
+
+    class Hand:
+        update = Refresh(SELF, {GameTag.COST: _cata_529_cost})
 
 
 # CATA_697: 恶念变异体 (3费 3/4)
