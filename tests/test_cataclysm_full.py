@@ -581,7 +581,7 @@ def test_raincaller_buffs_on_first_spell_damage():
     raincaller = game.player1.summon("CATA_487")
     base_atk = raincaller.atk
     # Play a damage spell
-    game.player1.give("CS2_023").play()  # Arcane Missiles (1 mana, deals 3 random damage)
+    game.player1.give(FIREBALL).play(target=game.player2.hero)
     assert raincaller.atk == base_atk + 2
 
 
@@ -593,10 +593,23 @@ def test_raincaller_only_triggers_once_per_turn():
     raincaller = game.player1.summon("CATA_487")
     base_atk = raincaller.atk
     # Play two damage spells in same turn
-    game.player1.give("CS2_023").play()  # Arcane Missiles
-    game.player1.give("CS2_023").play()  # Arcane Missiles again
+    game.player1.give(FIREBALL).play(target=game.player2.hero)
+    game.player1.give(FIREBALL).play(target=game.player2.hero)
     # Should only have triggered once (+2, not +4)
     assert raincaller.atk == base_atk + 2
+
+
+def test_raincaller_ignores_non_damage_spell():
+    """Raincaller should not gain Attack from a spell that dealt no damage."""
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    game.player1.used_mana = 0
+    raincaller = game.player1.summon("CATA_487")
+    base_atk = raincaller.atk
+
+    game.player1.give(THE_COIN).play()
+
+    assert raincaller.atk == base_atk
 
 
 ##

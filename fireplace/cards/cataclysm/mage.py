@@ -47,8 +47,8 @@ class CATA_484:
 class CATA_487:
     """Raincaller"""
 
-    # 每回合第一次施放法术时获得+2攻击力（方法回调，保证每回合只触发一次）
-    def _on_spell(self, *args):
+    # 每回合第一次用法术造成伤害时获得+2攻击力。
+    def _on_spell_damage(self, *args):
         # trigger_event calls callable actions twice if result is iterable,
         # so return a single Action (not a list) to avoid double-execution
         if not getattr(self, "_rain_triggered", False):
@@ -61,7 +61,7 @@ class CATA_487:
         return None
 
     events = [
-        Play(CONTROLLER, SPELL).after(_on_spell),
+        Damage(source=FRIENDLY + SPELL).on(_on_spell_damage),
         OWN_TURN_BEGIN.on(_reset_rain),
     ]
 
