@@ -240,6 +240,27 @@ def test_fished_murloc_ignores_high_cost_murloc_until_low_cost_murloc_played():
 
 
 ##
+# CATA_186: 黏弹爆破手
+# 战吼：使你的对手获得一张法力值消耗为（2）的黏弹。黏弹相邻的卡牌法力值消耗增加（1）点。
+
+def test_goo_increases_adjacent_hand_card_costs_only():
+    """Goo increases the cost of adjacent hand cards only."""
+    game = prepare_empty_game()
+    player = game.player1
+    left = player.give("CS2_182")
+    goo = player.give("CATA_186t")
+    right = player.give("CS2_179")
+    far = player.give("CS2_172")
+
+    game.refresh_auras()
+
+    assert left.cost == left.data.cost + 1
+    assert right.cost == right.data.cost + 1
+    assert far.cost == far.data.cost
+    assert goo.cost == 2
+
+
+##
 # CATA_208: 无私的保卫者
 # 嘲讽。受到的所有伤害提高一点。
 

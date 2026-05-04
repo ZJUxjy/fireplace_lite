@@ -8,6 +8,22 @@ _SELF_IF_ALONE = FuncSelector(
 )
 
 
+def _hand_adjacent(entities, source):
+    if source.zone != Zone.HAND:
+        return []
+    hand = source.controller.hand
+    index = hand.index(source)
+    adjacent = []
+    if index > 0:
+        adjacent.append(hand[index - 1])
+    if index + 1 < len(hand):
+        adjacent.append(hand[index + 1])
+    return adjacent
+
+
+_HAND_ADJACENT = FuncSelector(_hand_adjacent)
+
+
 ##
 # Minions
 
@@ -69,9 +85,8 @@ class CATA_186t:
 
     tags = {GameTag.COST: 2}
 
-    # 这个效果需要在手牌中触发
-    # 简化实现：不做任何效果
-    pass
+    class Hand:
+        update = Refresh(_HAND_ADJACENT, {GameTag.COST: +1})
 
 
 # CATA_190h: 灭世者死亡之翼 (10费 30/12 英雄)
