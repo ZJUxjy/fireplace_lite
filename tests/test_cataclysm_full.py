@@ -322,6 +322,49 @@ def test_selfless_defender_takes_one_extra_combat_damage():
 
 
 ##
+# CATA_213: 威拉诺兹
+# 战吼：如果你的套牌中随从牌的法力值消耗之和为100，使你牌库中的随从获得总计100点的属性值。
+
+def _total_deck_minion_bonus(player):
+    return sum(
+        card.atk
+        - card.data.atk
+        + card.max_health
+        - card.data.health
+        for card in player.deck
+        if card.type == CardType.MINION
+    )
+
+
+def test_veranus_buffs_deck_minions_by_total_100_stats_when_deck_cost_is_100():
+    """Veranus gives deck minions a total of 100 stats when deck minion costs sum to 100."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    for _ in range(25):
+        player.give("CS2_182").shuffle_into_deck()  # Chillwind Yeti: 4 mana.
+
+    player.give("CATA_213").play()
+
+    assert _total_deck_minion_bonus(player) == 100
+
+
+def test_veranus_does_not_buff_deck_when_minion_cost_sum_is_not_100():
+    """Veranus does nothing when deck minion costs do not sum to 100."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    for _ in range(24):
+        player.give("CS2_182").shuffle_into_deck()
+
+    player.give("CATA_213").play()
+
+    assert _total_deck_minion_bonus(player) == 0
+
+
+##
 # CATA_591: 指挥官迦顿
 # 战吼：从你的牌库中发现一张卡牌，它的费用为(0)
 

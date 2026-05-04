@@ -178,15 +178,29 @@ class CATA_210t:
 
 # CATA_213: 威拉诺兹 (6费 6/6)
 # 战吼：如果你的套牌中随从牌的法力值消耗之和为100，使你牌库中的随从获得总计100点的属性值。
+class CATA_213_BuffDeck(TargetedAction):
+    def do(self, source, target):
+        minions = [card for card in target.deck if card.type == CardType.MINION]
+        if not minions or sum(card.cost for card in minions) != 100:
+            return
+        actions = [
+            Buff(
+                source.game.random.choice(minions),
+                source.game.random.choice(("CATA_213e", "CATA_213e2")),
+            )
+            for _ in range(100)
+        ]
+        source.game.queue_actions(source, actions)
+
+
 class CATA_213:
     """Veranus"""
 
-    # 战吼：如果套牌中随从法力值消耗之和为100，给牌库中随从总计100属性
-    # 简化实现：直接不做检查，给所有随从+5/+5
-    play = Buff(FRIENDLY_DECK + MINION, "CATA_213e")
+    play = CATA_213_BuffDeck(CONTROLLER)
 
 
-CATA_213e = buff(+5, +5)
+CATA_213e = buff(+1, 0)
+CATA_213e2 = buff(0, +1)
 
 
 # CATA_476: 青铜护卫者 (8费 3/7)
