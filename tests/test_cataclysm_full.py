@@ -275,6 +275,30 @@ def test_onyxias_wing_health_cost_expires_after_this_turn():
     assert player.used_mana == generated.cost
 
 
+def test_soldier_of_onyxia_generated_minion_costs_health_this_turn():
+    """Soldier of Onyxia uses the same temporary Health-cost generation."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 1
+    player.used_mana = 0
+    hero = player.hero
+    soldier = player.give("CATA_780t")
+
+    soldier.play()
+    generated = player.hand[-1]
+    player.used_mana = player.max_mana
+    base_health = hero.health
+
+    assert generated.cost == 1
+    assert generated.is_playable()
+
+    target = generated.targets[0] if generated.requires_target() else None
+    generated.play(target=target)
+
+    assert hero.health == base_health - 1
+    assert player.used_mana == player.max_mana
+
+
 ##
 # CATA_491: 怪异触手
 # 对所有随从造成$3点伤害。重复（打出后回到手牌）

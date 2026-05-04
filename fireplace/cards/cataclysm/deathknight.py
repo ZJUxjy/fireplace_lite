@@ -236,7 +236,7 @@ class CATA_780t:
     }
 
     # 被召唤时，获取一张消耗为(1)的随从牌
-    play = Give(CONTROLLER, RandomMinion(cost=1))
+    play = CATA_155t_GiveHealthCostMinion(CONTROLLER, RandomMinion(cost=1))
 
 
 ##
