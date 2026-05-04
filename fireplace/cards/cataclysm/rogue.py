@@ -160,12 +160,23 @@ class CATA_786:
 
 # CATA_202: Stolen Power (3费 法术)
 # 获取一张随机粉碎卡（来自另一个职业）
-# 简化实现: 发现一张随机法术
+STOLEN_POWER_SHATTER_CARDS = ("CATA_134", "CATA_306", "CATA_479", "CATA_489", "CATA_820")
+
+
+class CATA_202_GiveCompleteShatter(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        card_id = source.game.random.choice(STOLEN_POWER_SHATTER_CARDS)
+        card = target.card(card_id, source=source, zone=Zone.SETASIDE)
+        card._shatter_locked = True
+        return source.game.queue_actions(source, [Give(target, card)])
+
+
 class CATA_202:
     """Stolen Power"""
 
-    # 简化实现: 发现一张随机法术
-    play = Discover(CONTROLLER, RandomSpell())
+    play = CATA_202_GiveCompleteShatter(CONTROLLER)
 
 
 # CATA_203: Garona's Last Stand (2费 法术)

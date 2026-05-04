@@ -631,6 +631,33 @@ def test_sinestra_tokens_give_discounted_other_class_spell():
         assert generated.cost == max(0, generated.data.cost - 1)
 
 
+def test_stolen_power_gives_complete_other_class_shatter_card():
+    """Stolen Power gives a complete Shatter card instead of split halves."""
+    shatter_cards = {"CATA_134", "CATA_306", "CATA_479", "CATA_489", "CATA_820"}
+    shatter_halves = {
+        "CATA_134t", "CATA_134t2",
+        "CATA_306t1", "CATA_306t2",
+        "CATA_479t", "CATA_479t2",
+        "CATA_489t", "CATA_489t2",
+        "CATA_820t", "CATA_820t2",
+    }
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    for card in list(player.hand):
+        card.zone = Zone.REMOVEDFROMGAME
+
+    player.give("CATA_202").play()
+
+    assert player.choice is None
+    assert len(player.hand) == 1
+    generated = player.hand[0]
+    assert generated.id in shatter_cards
+    assert generated.id not in shatter_halves
+    assert generated.card_class != CardClass.ROGUE
+
+
 ##
 # CATA_180: 速逝鱼人
 # 战吼：你的下一张法力值消耗小于或等于（3）点的鱼人牌会消耗生命值，而非法力值。
