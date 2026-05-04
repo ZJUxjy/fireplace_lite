@@ -899,6 +899,31 @@ def test_dragonriding_summons_buffed_divine_shield_whelps():
 
 
 ##
+# CATA_464: 黑翼实验品
+# 亡语：获取一张消耗为（2）的法术牌，该法术能造成等同于本随从攻击力的伤害。
+
+def test_blackwing_experiment_gives_dragon_breath_with_current_attack_damage():
+    """Blackwing Experiment gives Dragon Breath that deals damage equal to its attack at death."""
+    from fireplace.actions import Buff
+
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    experiment = player.summon("CATA_464")
+    game.cheat_action(experiment, [Buff(experiment, "CATA_473e")])
+
+    experiment.destroy()
+
+    breath = next(card for card in player.hand if card.id == "CATA_464t")
+    enemy_hero = player.opponent.hero
+    health_before = enemy_hero.health
+    breath.play(target=enemy_hero)
+
+    assert enemy_hero.health == health_before - experiment.atk
+
+
+##
 # CATA_570: 莫卓克
 # 战吼：抽1张牌并减少其费用(10)
 

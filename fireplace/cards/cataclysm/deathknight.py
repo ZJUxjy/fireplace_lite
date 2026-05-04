@@ -72,11 +72,19 @@ class CATA_161:
 
 # CATA_464: 黑翼实验品 (2费 3/1 龙)
 # 亡语：获取一张消耗为(2)的法术牌，该法术能造成等同于本随从攻击力的伤害。
+class CATA_464_GiveDragonBreath(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        card = target.card("CATA_464t", source=source)
+        card._dragon_breath_damage = source.atk
+        source.game.queue_actions(source, [Give(target, card)])
+
+
 class CATA_464:
     """Blackwing Experiment"""
 
-    # 亡语：获取一张2费法术
-    deathrattle = Give(CONTROLLER, RandomSpell(cost=2))
+    deathrattle = CATA_464_GiveDragonBreath(CONTROLLER)
 
 
 # CATA_464t: 龙息 (2费 法术)
@@ -84,7 +92,12 @@ class CATA_464:
 class CATA_464t:
     """Dragon Breath"""
 
-    play = Hit(TARGET, 3)
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+    }
+
+    def play(self):
+        yield Hit(TARGET, getattr(self, "_dragon_breath_damage", 3))
 
 
 # CATA_465: 投喂加餐 (8费 法术)
