@@ -817,6 +817,7 @@ class Buff(TargetedAction):
             setattr(buff, k, v)
         buff.apply(target)
         source.game.manager.targeted_action(self, source, target, buff)
+        self.broadcast(source, EventListener.AFTER, target, buff)
         return target
 
 

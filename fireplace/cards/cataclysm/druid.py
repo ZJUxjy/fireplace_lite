@@ -9,6 +9,14 @@ from ..utils import *
 _SELF_IF_MANA_EMPTY = FuncSelector(
     lambda entities, source: [source] if source.controller.mana == 0 else []
 )
+_WICKERFANG_LEGS = FuncSelector(
+    lambda entities, source: [
+        entity
+        for entity in entities
+        if getattr(entity, "id", "").startswith("CATA_139t")
+        and entity.controller is source.controller
+    ]
+)
 
 
 class CATA_130:
@@ -116,15 +124,28 @@ CATA_138e = buff(+1, +1)
 # CATA_139: 柳牙 (6费 0/5)
 # 巨型+4
 # 在柳牙的一条腿获得属性后，柳牙也获得相同属性
+class CATA_139_CopyLegStats(TargetedAction):
+    TARGET = ActionArg()
+    BUFF = CardArg()
+
+    def do(self, source, target, buff):
+        atk = getattr(buff, "atk", 0)
+        health = getattr(buff, "max_health", 0)
+        if atk or health:
+            return source.game.queue_actions(
+                source, [Buff(target, "CATA_139e", atk=atk, max_health=health)]
+            )
+
+
 class CATA_139:
     """Wickerfang"""
 
     # 巨型+4：召唤4条腿
     play = Summon(CONTROLLER, "CATA_139t"), Summon(CONTROLLER, "CATA_139t2"), Summon(CONTROLLER, "CATA_139t3"), Summon(CONTROLLER, "CATA_139t4")
 
-    # 简化实现：每回合结束时获得+1/+1 (腿也会获得)
-    # 柳牙的效果是在腿获得buff时同步获得，这里简化为每回合结束时获得buff
-    pass
+    events = Buff(_WICKERFANG_LEGS, None).after(
+        CATA_139_CopyLegStats(SELF, Buff.BUFF)
+    )
 
 
 # CATA_139t, CATA_139t2, CATA_139t3, CATA_139t4: 柳牙之腿 (1费 0/2)

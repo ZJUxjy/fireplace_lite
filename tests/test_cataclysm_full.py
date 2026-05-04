@@ -1414,6 +1414,27 @@ def test_supply_run_draws_three_minions_and_buffs_hand_minions():
 
 
 ##
+# CATA_139: 柳牙
+# 巨型+4。在柳牙的腿获得属性值后，本随从也会获得。
+
+def test_wickerfang_gains_stats_when_legs_gain_stats():
+    """Wickerfang gains the same stats when each leg grows at end of turn."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    wickerfang = player.give("CATA_139").play()
+
+    game.end_turn()
+
+    legs = [minion for minion in player.field if minion.id.startswith("CATA_139t")]
+    assert len(legs) == 4
+    assert all((leg.atk, leg.health) == (1, 3) for leg in legs)
+    assert (wickerfang.atk, wickerfang.health) == (4, 9)
+
+
+##
 # CATA_306: 教派分歧
 # 裂变：使一个友方随从获得+2/+3和扰魔。召唤一个它的复制。
 
