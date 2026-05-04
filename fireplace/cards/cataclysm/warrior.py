@@ -84,9 +84,9 @@ class CATA_586:
 class CATA_591:
     """Commander Geddon"""
 
-    # 战吼：发现一张卡牌，费用变为(0)
-    play = Discover(CONTROLLER, RandomCollectible()).then(
-        Give(CONTROLLER, Discover.CARD), Buff(Discover.CARD, "CATA_591e")
+    # 战吼：从牌库中发现一张牌，费用变为(0)
+    play = Choice(CONTROLLER, RANDOM(DeDuplicate(FRIENDLY_DECK)) * 3).then(
+        Buff(Choice.CARD, "CATA_591e"), ForceDraw(Choice.CARD)
     )
 
 

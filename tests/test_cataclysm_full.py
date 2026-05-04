@@ -240,6 +240,24 @@ def test_fished_murloc_ignores_high_cost_murloc_until_low_cost_murloc_played():
 
 
 ##
+# CATA_185: 无面复制者
+# 扰魔。亡语：将消灭本随从的随从变形成为无面复制者。
+
+def test_facelessifier_transforms_minion_that_kills_it_in_combat():
+    """Facelessifier transforms the enemy minion that kills it in combat."""
+    game = prepare_empty_game()
+    attacker_controller = game.current_player
+    attacker = attacker_controller.summon("CS2_182")  # Chillwind Yeti: 4/5.
+    defender = attacker_controller.opponent.summon("CATA_185")
+    attacker.turns_in_play = 1
+
+    attacker.attack(defender)
+
+    assert [minion.id for minion in attacker_controller.field] == ["CATA_185"]
+    assert not attacker_controller.opponent.field
+
+
+##
 # CATA_186: 黏弹爆破手
 # 战吼：使你的对手获得一张法力值消耗为（2）的黏弹。黏弹相邻的卡牌法力值消耗增加（1）点。
 

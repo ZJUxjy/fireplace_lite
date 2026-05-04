@@ -39,6 +39,16 @@ def _genn_ready(entities, source):
 _GENN_READY = FuncSelector(_genn_ready)
 
 
+def _remember_facelessifier_killer(entity, target, amount, damage_source):
+    if (
+        damage_source.type == CardType.MINION
+        and damage_source.controller is not entity.controller
+        and damage_source.zone == Zone.PLAY
+        and (target.dead or damage_source.poisonous)
+    ):
+        entity._facelessifier_killer = damage_source
+
+
 ##
 # Minions
 
@@ -79,9 +89,18 @@ class CATA_180e:
 class CATA_185:
     """Facelessifier"""
 
-    # 简化实现：扰魔 + 亡语变形自己
-    # 亡语：召唤一个无面复制者
-    deathrattle = Summon(CONTROLLER, "CATA_185")
+    tags = {
+        GameTag.ELUSIVE: True,
+        GameTag.CANT_BE_TARGETED_BY_ABILITIES: True,
+        GameTag.CANT_BE_TARGETED_BY_HERO_POWERS: True,
+    }
+
+    events = Damage(SELF).on(_remember_facelessifier_killer)
+
+    def deathrattle(self):
+        killer = getattr(self, "_facelessifier_killer", None)
+        if killer and killer.zone == Zone.PLAY and not killer.dead:
+            return (Morph(killer, "CATA_185"),)
 
 
 # CATA_186: 黏弹爆破手 (4费 4/4)
