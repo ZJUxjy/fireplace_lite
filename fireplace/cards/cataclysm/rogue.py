@@ -155,15 +155,24 @@ class CATA_481:
 
 # CATA_786: Chaos Supplicant (4费 3/5)
 # 在你施放法术后，随机施放一张其他职业的同费用法术
+class CATA_786_CastSameCostOtherClassSpell(TargetedAction):
+    CARD = ActionArg()
+
+    def do(self, source, card):
+        spells = RandomSpell(
+            cost=card.cost,
+            card_class=ANOTHER_CLASS,
+        ).evaluate(source)
+        if not spells:
+            return
+        return source.game.queue_actions(source, [CastSpell(spells[0])])
+
+
 class CATA_786:
     """Chaos Supplicant"""
 
-    # 在你施放法术后，随机施放一张其他职业的同费用法术
-    # 简化实现: 在你施放法术后，触发一个随机效果
     events = Play(CONTROLLER, SPELL).after(
-        Discover(CONTROLLER, RandomSpell()).then(
-            CastSpell(Discover.CARD)
-        )
+        CATA_786_CastSameCostOtherClassSpell(Play.CARD)
     )
 
 

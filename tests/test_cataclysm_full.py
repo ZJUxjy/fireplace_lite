@@ -686,6 +686,31 @@ def test_stolen_power_gives_complete_other_class_shatter_card():
     assert generated.card_class != CardClass.ROGUE
 
 
+def test_chaos_supplicant_casts_same_cost_other_class_spell_without_discover():
+    """Chaos Supplicant casts a random same-Cost other-class spell after your spell."""
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    player.summon("CATA_786")
+    target = player.opponent.summon("CS2_182")
+    trigger_spell = player.give("CS2_072")
+
+    trigger_spell.play(target=target)
+
+    chaos_spells = [
+        entity for entity in game
+        if entity.type == CardType.SPELL
+        and entity.controller is player
+        and entity is not trigger_spell
+        and entity.zone == Zone.GRAVEYARD
+        and entity.card_class != CardClass.ROGUE
+    ]
+    assert player.choice is None
+    assert len(chaos_spells) == 1
+    assert chaos_spells[0].cost == trigger_spell.cost
+
+
 ##
 # CATA_180: 速逝鱼人
 # 战吼：你的下一张法力值消耗小于或等于（3）点的鱼人牌会消耗生命值，而非法力值。
