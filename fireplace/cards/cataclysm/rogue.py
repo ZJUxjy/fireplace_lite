@@ -30,9 +30,35 @@ class CATA_154:
     )
 
 
-SINESTRA_TOKEN_SPELL = Give(CONTROLLER, RandomSpell(card_class=ANOTHER_CLASS)).then(
-    Buff(Give.CARD, "CATA_154te")
-)
+def _cataclysm_herald_count(player, herald):
+    return getattr(player, "_cataclysm_heralds", {}).get(herald, 0)
+
+
+class CATA_SinestraHerald(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        heralds = getattr(target, "_cataclysm_heralds", {}).copy()
+        heralds["sinestra"] = heralds.get("sinestra", 0) + 1
+        target._cataclysm_heralds = heralds
+
+
+class CATA_154_GiveDiscountedOtherClassSpell(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        spells = RandomSpell(card_class=ANOTHER_CLASS).evaluate(source)
+        if not spells:
+            return
+        buff = (
+            "CATA_154te2"
+            if _cataclysm_herald_count(target, "sinestra") >= 2
+            else "CATA_154te"
+        )
+        return source.game.queue_actions(
+            source,
+            [Give(target, spells).then(Buff(Give.CARD, buff))],
+        )
 
 
 @custom_card
@@ -42,6 +68,18 @@ class CATA_154te:
         GameTag.CARDTYPE: CardType.ENCHANTMENT,
         GameTag.COST: -1,
     }
+
+
+@custom_card
+class CATA_154te2:
+    tags = {
+        GameTag.CARDNAME: "Sinestra Spell Discount",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.COST: -2,
+    }
+
+
+SINESTRA_TOKEN_SPELL = CATA_154_GiveDiscountedOtherClassSpell(CONTROLLER)
 
 
 # CATA_154t: Sinestra's Wing (1费 1/1 龙)
@@ -67,8 +105,8 @@ class CATA_158:
 
     tags = {GameTag.STEALTH: True}
 
-    # 亡语: 召唤一个Sinestra的士兵
-    deathrattle = Summon(CONTROLLER, "CATA_158t")
+    # 亡语：兆示
+    deathrattle = CATA_SinestraHerald(CONTROLLER)
 
 
 # CATA_158t: Soldier of Sinestra (1费 1/1 龙)

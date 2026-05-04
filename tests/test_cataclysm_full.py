@@ -670,6 +670,32 @@ def test_sinestra_tokens_give_discounted_other_class_spell():
         assert generated.cost == max(0, generated.data.cost - 1)
 
 
+def test_maniacal_followers_herald_sinestra_spell_discount_upgrade():
+    """Maniacal Follower Deathrattles Herald Sinestra instead of summoning tokens."""
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    game.random.seed(0)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    for card in list(player.hand):
+        card.zone = Zone.REMOVEDFROMGAME
+
+    first = player.summon("CATA_158")
+    second = player.summon("CATA_158")
+    first.destroy()
+    second.destroy()
+    for card in list(player.hand):
+        card.zone = Zone.REMOVEDFROMGAME
+
+    player.give("CATA_154t").play()
+
+    generated = player.hand[-1]
+    assert "CATA_158t" not in [card.id for card in player.field]
+    assert generated.type == CardType.SPELL
+    assert generated.card_class != CardClass.ROGUE
+    assert generated.cost == max(0, generated.data.cost - 2)
+
+
 def test_sinestra_casts_other_class_spell_twice():
     """Sinestra makes the controller's other-class spells cast twice."""
     game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
