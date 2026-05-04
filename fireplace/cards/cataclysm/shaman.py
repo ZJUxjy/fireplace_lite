@@ -209,6 +209,23 @@ class CATA_565t:
 
 # CATA_567: 升腾 (4费 法术)
 # 将所有友方随从变形成费用增加(1)的随从，它们死亡时召唤原始随从
+class CATA_567_Ascend(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        cards = RandomMinion(cost=target.cost + 1).evaluate(source)
+        if not cards:
+            return []
+        return source.game.queue_actions(
+            source,
+            [
+                Morph(target, cards[0]).then(
+                    StoringBuff(Morph.CARD, "CATA_567e", ExactCopy(Morph.TARGET))
+                )
+            ],
+        )
+
+
 class CATA_567:
     """Ascendance"""
 
@@ -220,11 +237,14 @@ class CATA_567:
         GameTag.RARITY: 4,
     }
 
-    # 简化实现：使所有友方随从获得+1/+1
-    play = Buff(FRIENDLY_MINIONS, "CATA_567e")
+    play = CATA_567_Ascend(FRIENDLY_MINIONS)
 
 
-CATA_567e = buff(+1, +1)
+class CATA_567e:
+    """Ascendance enchantment"""
+
+    tags = {GameTag.DEATHRATTLE: True}
+    deathrattle = Summon(CONTROLLER, STORE_CARD)
 
 
 # CATA_568: 穆拉丁的奋战 (9费 法术)

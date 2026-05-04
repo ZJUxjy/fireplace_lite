@@ -691,6 +691,27 @@ def test_soldier_of_alakir_buffs_adjacent_minion_attack():
     assert soldier.atk == soldier.data.atk
 
 
+def test_ascendance_transforms_minions_and_resummons_originals():
+    """Ascendance transforms friendly minions and gives them original-summoning deathrattles."""
+    game = prepare_empty_game()
+    player = game.player1
+    player.max_mana = 10
+    player.used_mana = 0
+    original = player.summon("CS2_182")
+
+    player.give("CATA_567").play()
+
+    transformed = player.field[0]
+    assert transformed is not original
+    assert transformed.id != "CS2_182"
+    assert transformed.data.cost == original.data.cost + 1
+    assert transformed.has_deathrattle
+
+    transformed.destroy()
+
+    assert any(minion.id == "CS2_182" for minion in player.field)
+
+
 ##
 # CATA_564: 飞行助翼
 # 战吼：使一个友方随从获得Mega-Windfury
