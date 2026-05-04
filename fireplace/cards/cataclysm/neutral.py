@@ -344,14 +344,10 @@ class CATA_720:
 class CATA_721:
     """Escape Artist"""
 
-    requirements = {
-        PlayReq.REQ_TARGET_TO_PLAY: 0,
-        PlayReq.REQ_MINION_TARGET: 0,
-        PlayReq.REQ_FRIENDLY_TARGET: 0,
-    }
-
     # 战吼：洗一张手牌回牌库，抽一张牌
-    play = Shuffle(CONTROLLER, TARGET), Draw(CONTROLLER)
+    play = Choice(CONTROLLER, FRIENDLY_HAND - SELF).then(
+        Shuffle(CONTROLLER, Choice.CARD), Draw(CONTROLLER)
+    )
 
 
 # CATA_722: 末世特使 (5费 5/4 嘲讽)

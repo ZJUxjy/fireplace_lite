@@ -420,6 +420,33 @@ def test_carrier_whelp_can_give_dragon_that_costs_less_than_three():
 
 
 ##
+# CATA_721: 避难的幸存者
+# 战吼：选择一张你的手牌洗入你的牌库。抽一张牌。
+
+def test_escape_artist_chooses_hand_card_to_shuffle_then_draws():
+    """Escape Artist chooses a hand card, shuffles it into deck, then draws."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    deck_card = player.give(FIREBALL)
+    deck_card.shuffle_into_deck()
+    selected = player.give("CS2_182")
+
+    player.give("CATA_721").play()
+    choice = player.choice
+
+    assert choice is not None
+    assert choice.cards == [selected]
+
+    game.random.seed(1)
+    choice.choose(selected)
+
+    assert selected.zone == Zone.DECK
+    assert deck_card.zone == Zone.HAND
+
+
+##
 # CATA_591: 指挥官迦顿
 # 战吼：从你的牌库中发现一张卡牌，它的费用为(0)
 
