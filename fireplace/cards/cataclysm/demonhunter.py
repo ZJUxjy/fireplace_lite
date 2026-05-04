@@ -236,24 +236,28 @@ class CATA_530e:
     events = OWN_TURN_END.on(Destroy(SELF))
 
 
+class CATA_533_HitEdges(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        enemy_minions = player.opponent.field
+        if not enemy_minions:
+            return
+        left_target = enemy_minions[0]
+        right_target = enemy_minions[-1]
+        actions = [Hit(left_target, 5)]
+        if left_target is not right_target:
+            actions.append(Hit(right_target, 5))
+        source.game.queue_actions(source, actions)
+
+
 # CATA_533: 涣漫洪流 (5费 法术)
 # 对你的对手最左边和最右边的随从造成5点伤害。流放：重复一次
 class CATA_533:
     """Surging Tide"""
 
     # 对最左边和最右边的随从造成5点伤害
-    def play(self):
-        enemy_minions = self.controller.opponent.field
-        if not enemy_minions:
-            yield Hit(ENEMY_HERO, 5)
-            return
-        left_target = enemy_minions[0]
-        right_target = enemy_minions[-1]
-        yield Hit(left_target, 5)
-        if left_target != right_target:
-            yield Hit(right_target, 5)
+    play = CATA_533_HitEdges(CONTROLLER)
 
     # 流放：重复一次
-    events = Play(CONTROLLER, PLAY_OUTCAST).after(
-        Hit(RANDOM(ENEMY_MINIONS), 5)
-    )
+    outcast = CATA_533_HitEdges(CONTROLLER) * 2

@@ -1847,16 +1847,16 @@ def test_terrace_dredger_steals_enemy_minion_health_three_times():
 
 ##
 # CATA_533: 涣漫洪流
-# 对最左边和最右边的敌方随从造成5点伤害; 无随从时对敌方英雄造成5点伤害
+# 对最左边和最右边的敌方随从造成5点伤害。流放：重复一次
 
-def test_surging_tide_hits_hero_when_no_enemy_minions():
-    """Surging Tide hits enemy hero for 5 when there are no enemy minions."""
+def test_surging_tide_does_nothing_without_enemy_minions():
+    """Surging Tide has no targets when the opponent controls no minions."""
     game = prepare_empty_game()
     game.player1.max_mana = 10
     hero_hp = game.player2.hero.health
     spell = game.player1.give("CATA_533")
     spell.play()
-    assert game.player2.hero.health == hero_hp - 5
+    assert game.player2.hero.health == hero_hp
 
 
 def test_surging_tide_hits_leftmost_and_rightmost_minions():
@@ -1871,6 +1871,43 @@ def test_surging_tide_hits_leftmost_and_rightmost_minions():
     assert left not in game.player2.field   # killed by 5 dmg
     assert mid in game.player2.field        # untouched middle
     assert right not in game.player2.field  # killed by 5 dmg
+
+
+def test_surging_tide_non_outcast_hits_leftmost_and_rightmost_once():
+    """Surging Tide only deals one wave when it is not played as Outcast."""
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    left = player.opponent.summon("EX1_572")
+    mid = player.opponent.summon("EX1_572")
+    right = player.opponent.summon("EX1_572")
+    player.max_mana = 10
+    player.used_mana = 0
+    player.give("CS2_029")
+    spell = player.give("CATA_533")
+    player.give("CS2_029")
+
+    spell.play()
+
+    assert left.health == 7
+    assert mid.health == 12
+    assert right.health == 7
+
+
+def test_surging_tide_outcast_repeats_leftmost_and_rightmost_damage():
+    """Surging Tide repeats the leftmost/rightmost damage when played as Outcast."""
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    left = player.opponent.summon("EX1_572")
+    mid = player.opponent.summon("EX1_572")
+    right = player.opponent.summon("EX1_572")
+    player.max_mana = 10
+    player.used_mana = 0
+
+    player.give("CATA_533").play()
+
+    assert left.health == 2
+    assert mid.health == 12
+    assert right.health == 2
 
 
 ##
