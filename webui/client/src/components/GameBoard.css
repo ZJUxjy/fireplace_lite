@@ -1377,6 +1377,65 @@
   color: #c86432;
 }
 
+/* 现代机制资源计数器 — 公共样式（fatigue-counter 模板） */
+.resource-counter {
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid currentColor;
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+/* DK 尸体（紫红） */
+.corpse-counter {
+  color: #c850ff;
+  background: rgba(200, 80, 255, 0.18);
+  border-color: #c850ff;
+}
+
+/* Imbue 赋予（金） */
+.imbue-counter {
+  color: #f0c850;
+  background: rgba(240, 200, 80, 0.18);
+  border-color: #f0c850;
+}
+
+/* Excavate 挖掘（土黄） */
+.excavate-counter {
+  color: #d4a06a;
+  background: rgba(212, 160, 106, 0.18);
+  border-color: #d4a06a;
+}
+
+/* Herald 先驱（红） */
+.herald-counter {
+  color: #ff5050;
+  background: rgba(255, 80, 80, 0.18);
+  border-color: #ff5050;
+}
+
+/* Starship 星舰（蓝） */
+.starship-counter {
+  color: #5090ff;
+  background: rgba(80, 144, 255, 0.18);
+  border-color: #5090ff;
+}
+
+/* Dark Gift 暗礼（深紫） */
+.dark-gift-counter {
+  color: #a050c8;
+  background: rgba(160, 80, 200, 0.18);
+  border-color: #a050c8;
+}
+
+/* Jade Golem 翡翠（绿） */
+.jade-counter {
+  color: #50c878;
+  background: rgba(80, 200, 120, 0.18);
+  border-color: #50c878;
+}
+
 /* 玩家手牌区 */
 .player-hand-area {
   min-height: calc(var(--card-height) * 1.5 + 1rem);

@@ -164,6 +164,15 @@ export type GameState = {
     temp_mana?: number;
     used_mana?: number;
     choice?: ChoiceData | null;
+    // Modern mechanic resource counters (default 0 — only render when > 0)
+    corpses?: number;
+    herald_count?: number;
+    imbue_count?: number;
+    excavate_count?: number;
+    starship_pieces?: number;
+    is_building_starship?: boolean;
+    dark_gifts_given?: number;
+    jade_golem?: number;
   };
   opponent: {
     hero: string;
@@ -185,6 +194,15 @@ export type GameState = {
     secret_count: number;
     overload_locked?: number;
     overloaded?: number;
+    // Mirror modern resource counters for opponent
+    corpses?: number;
+    herald_count?: number;
+    imbue_count?: number;
+    excavate_count?: number;
+    starship_pieces?: number;
+    is_building_starship?: boolean;
+    dark_gifts_given?: number;
+    jade_golem?: number;
   };
   logs: LogEntry[];
 };

@@ -1141,6 +1141,42 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
                   😫 {gameState.opponent.fatigue_counter}
                 </div>
               )}
+              {/* 现代机制资源计数器 - 仅在 > 0 时渲染 */}
+              {(gameState.opponent.corpses ?? 0) > 0 && (
+                <div className="resource-counter corpse-counter" title="尸体（死亡骑士资源）">
+                  💀 {gameState.opponent.corpses}
+                </div>
+              )}
+              {(gameState.opponent.imbue_count ?? 0) > 0 && (
+                <div className="resource-counter imbue-counter" title="赋予次数">
+                  ✨ {gameState.opponent.imbue_count}
+                </div>
+              )}
+              {(gameState.opponent.excavate_count ?? 0) > 0 && (
+                <div className="resource-counter excavate-counter" title={`挖掘等级 ${gameState.opponent.excavate_count}`}>
+                  ⛏️ {gameState.opponent.excavate_count}
+                </div>
+              )}
+              {(gameState.opponent.herald_count ?? 0) > 0 && (
+                <div className="resource-counter herald-counter" title="先驱次数">
+                  ⚔️ {gameState.opponent.herald_count}
+                </div>
+              )}
+              {gameState.opponent.is_building_starship && (
+                <div className="resource-counter starship-counter" title={`星舰部件 ${gameState.opponent.starship_pieces ?? 0}`}>
+                  🚀 {gameState.opponent.starship_pieces ?? 0}
+                </div>
+              )}
+              {(gameState.opponent.dark_gifts_given ?? 0) > 0 && (
+                <div className="resource-counter dark-gift-counter" title="暗礼次数">
+                  🎁 {gameState.opponent.dark_gifts_given}
+                </div>
+              )}
+              {(gameState.opponent.jade_golem ?? 0) > 0 && (
+                <div className="resource-counter jade-counter" title={`下一个翡翠魔像 ${(gameState.opponent.jade_golem ?? 0) + 1}/${(gameState.opponent.jade_golem ?? 0) + 1}`}>
+                  💚 {(gameState.opponent.jade_golem ?? 0) + 1}
+                </div>
+              )}
             </div>
             <div
               className="hero-power opponent-hero-power"
@@ -1422,6 +1458,42 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
               {(gameState.player.fatigue_counter ?? 0) > 0 && (
                 <div className="fatigue-counter" title="疲劳">
                   😫 {gameState.player.fatigue_counter}
+                </div>
+              )}
+              {/* 现代机制资源计数器 - 仅在 > 0 时渲染 */}
+              {(gameState.player.corpses ?? 0) > 0 && (
+                <div className="resource-counter corpse-counter" title="尸体（死亡骑士资源）">
+                  💀 {gameState.player.corpses}
+                </div>
+              )}
+              {(gameState.player.imbue_count ?? 0) > 0 && (
+                <div className="resource-counter imbue-counter" title="赋予次数">
+                  ✨ {gameState.player.imbue_count}
+                </div>
+              )}
+              {(gameState.player.excavate_count ?? 0) > 0 && (
+                <div className="resource-counter excavate-counter" title={`挖掘等级 ${gameState.player.excavate_count}`}>
+                  ⛏️ {gameState.player.excavate_count}
+                </div>
+              )}
+              {(gameState.player.herald_count ?? 0) > 0 && (
+                <div className="resource-counter herald-counter" title="先驱次数">
+                  ⚔️ {gameState.player.herald_count}
+                </div>
+              )}
+              {gameState.player.is_building_starship && (
+                <div className="resource-counter starship-counter" title={`星舰部件 ${gameState.player.starship_pieces ?? 0}`}>
+                  🚀 {gameState.player.starship_pieces ?? 0}
+                </div>
+              )}
+              {(gameState.player.dark_gifts_given ?? 0) > 0 && (
+                <div className="resource-counter dark-gift-counter" title="暗礼次数">
+                  🎁 {gameState.player.dark_gifts_given}
+                </div>
+              )}
+              {(gameState.player.jade_golem ?? 0) > 0 && (
+                <div className="resource-counter jade-counter" title={`下一个翡翠魔像 ${(gameState.player.jade_golem ?? 0) + 1}/${(gameState.player.jade_golem ?? 0) + 1}`}>
+                  💚 {(gameState.player.jade_golem ?? 0) + 1}
                 </div>
               )}
             </div>

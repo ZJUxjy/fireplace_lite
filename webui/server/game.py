@@ -47,6 +47,7 @@ CLASS_NAME_MAP = {
     'rogue': CardClassEnum.ROGUE,
     'druid': CardClassEnum.DRUID,
     'demonhunter': CardClassEnum.DEMONHUNTER,
+    'deathknight': CardClassEnum.DEATHKNIGHT,
 }
 
 def get_card_class(class_name: str):
@@ -106,21 +107,108 @@ IMPLEMENTED_CARD_PREFIXES = {
     'BT',
     # Descent of Dragons
     'DRG',
-    # The Shrouded City - 暂时移除，因为没有 Python 实现
-    # 'DINO', 'TLC',
+    # Forged in the Barrens
+    'BAR',
+    # United in Stormwind
+    'SW',
+    # Onyxia mini-set
+    'WC',
+    # Fractured in Alterac Valley
+    'AV',
+    # Voyage to the Sunken City
+    'TSC',
+    # Murder at Castle Nathria
+    'REV',
+    # March of the Lich King (Death Knight)
+    'RLK',
+    # Festival of Legends
+    'ETC',
+    # TITANS
+    'TTN',
+    # Showdown in the Badlands
+    'WW',
+    # Whizbang's Workshop
+    'WORK',
+    # Year of the Pegasus / Whizbang's
+    'YOP',
+    # Perils in Paradise / Island Vacation
+    'VAC',
+    # The Great Dark Beyond
+    'SC',
+    # Heroes of Starcraft
+    'TID',
+    # Into the Emerald Dream
+    'EDR',
+    # The Shrouded City (Dinotamer)
+    'DINO', 'TLC',
+    # Cataclysm — Phase 6 implementation
+    'CATA',
+    # Wonders bonus pack — Phase 3A implementation
+    'WON',
+    # Darkmoon Faire
+    'DMF',
+    # Forged in the Barrens — Survival
+    'CORE',
 }
 
 # 黑名单：即使在前缀列表中，这些卡牌也有问题，需要排除
 CARD_BLACKLIST = set()
 
 
+def _card_has_real_script(card) -> bool:
+    """卡的 scripts 类是否绑定了任何 action / event / quest / choose。"""
+    cls = card.scripts
+    action_slots = (
+        'play', 'combo', 'deathrattle', 'outcast', 'overkill', 'quickdraw',
+        'frenzy', 'spellburst', 'manathirst', 'start_of_game',
+        'summon_trigger', 'kindred', 'inspire', 'draw', 'enrage', 'awaken',
+        'reward', 'discard', 'magnetic', 'ability_used', 'location_action',
+        'update', 'activate', 'powered_up', 'add_progress',
+        'secret_deathrattles',
+    )
+    if any(getattr(cls, s, ()) for s in action_slots):
+        return True
+    if getattr(cls, 'events', []): return True
+    if getattr(cls, 'secret', []): return True
+    if getattr(cls, 'quest', []): return True
+    if getattr(cls, 'choose_cards', []): return True
+    return False
+
+
 def is_card_implemented(card_id: str) -> bool:
-    """检查卡牌是否来自已实现的系列"""
+    """检查卡牌能否安全加入随机牌库。
+
+    两个条件同时满足才算 implemented：
+    1) 套包前缀在白名单（否则连 vanilla minion 也算 unsupported）
+    2) 卡片有实际 script，OR 描述里没有非 keyword 效果（即 vanilla 随从只靠 tags 即可工作）
+    """
     if card_id in CARD_BLACKLIST:
         return False
-    # 提取卡牌前缀（如 EDR_889 -> EDR）
     prefix = card_id.split('_')[0] if '_' in card_id else card_id[:3]
-    return prefix in IMPLEMENTED_CARD_PREFIXES
+    if prefix not in IMPLEMENTED_CARD_PREFIXES:
+        return False
+    # If we recognize the prefix, additionally require either a real script
+    # or a description that's safe (vanilla / keyword-only).
+    if not cards.db.initialized:
+        cards.db.initialize()
+    card = cards.db.get(card_id)
+    if card is None:
+        return False
+    if _card_has_real_script(card):
+        return True
+    # Vanilla minions / weapons (description empty or tag-only) play fine via XML tags.
+    desc = (card.description or '').strip()
+    if not desc:
+        return True
+    # Trigger words signal the card needs custom logic.
+    triggers = (
+        'Battlecry', 'Deathrattle', 'At the start', 'At the end', 'Whenever',
+        'After you', 'After your', 'Combo:', 'Spellburst', 'Frenzy:',
+        'Discover', 'Choose One', 'Outcast', 'Overkill', 'Quickdraw',
+        'Manathirst', 'Spend', 'Forge:', 'Dredge', 'Excavate', 'Imbue',
+        'Tradeable', 'Magnetic',
+    )
+    return not any(t in desc for t in triggers)
 
 
 def filtered_random_draft(card_class):
@@ -173,6 +261,15 @@ TEST_DECK_CARDS = {
         'rush': ['AV_132', 'AV_215', 'SCH_311'],  # Troll Centurion, Frantic Hippogryph, Animated Broomstick
         # 战吼
         'battlecry': ['CS2_141', 'CS2_189'],  # 侏儒发明家、精灵龙
+        # Modern mechanics
+        'imbue_neutral': ['EDR_800'],  # Flutterwing Guardian
+        'kindred_neutral': ['TLC_102'],  # Torga
+        'starship': ['GDB_120', 'GDB_310', 'GDB_130'],  # The Exodar, Ethereal Oracle, Crystal Welder
+        'starship_piece': ['GDB_101'],  # Dimensional Core
+        'forge': ['WW_001'],  # Kobold Miner (forgeable)
+        'cataclysm': ['CATA_722'],  # Envoy of the End (multi-class incl. DK)
+        'wonders': ['WON_135', 'WON_357'],  # C'Thun, Acolyte of Pain (WONDERS reprints)
+        'fabled': ['TIME_020', 'TIME_005'],  # Broxigar, Timethief Rafaam
     },
     # 法师
     'MAGE': {
@@ -190,6 +287,7 @@ TEST_DECK_CARDS = {
         'beast': ['CS2_172', 'EX1_534'],  # 血沼迅猛龙、长鬃草原狮
         'deathrattle': ['EX1_534', 'ICC_825'],  # 长鬃草原狮、熊鲨
         'secrets': ['EX1_533', 'EX1_609', 'EX1_610', 'EX1_611', 'EX1_554'],  # 误导、狙击、爆炸陷阱、冰冻陷阱、毒蛇陷阱
+        'imbue': ['EDR_227'],  # Umbraclaw (Hunter Imbue)
     },
     # 战士
     'WARRIOR': {
@@ -198,6 +296,8 @@ TEST_DECK_CARDS = {
         'armor': ['EX1_402', 'EX1_606'],  # 炽炎战斧、盾牌格挡
         'enrage': ['EX1_393', 'EX1_412'],  # 阿曼尼狂战士、暴怒的狼人
         'charge': ['CS2_103', 'EX1_084'],  # 冲锋、狼骑兵
+        'herald': ['CATA_580'],  # Cataclysmic War Axe (Warrior Herald)
+        'imbue': ['EDR_456'],  # Darkrider (Warrior Imbue)
     },
     # 圣骑士
     'PALADIN': {
@@ -207,6 +307,9 @@ TEST_DECK_CARDS = {
         'hand_buff': ['UNG_950', 'CFM_650'],  # 剑龙骑术、适者生存
         'secrets': ['EX1_130', 'EX1_136', 'EX1_132', 'EX1_379'],  # 崇高牺牲、救赎、以眼还眼、忏悔
         'immune': ['CS2_087'],  # 保护之手
+        'imbue': ['EDR_451'],  # Goldpetal Drake (Paladin Imbue)
+        'kindred': ['DINO_404'],  # Firegill (Paladin Kindred Murloc)
+        'excavate': ['DEEP_018'],  # Shroomscavate (Paladin/Shaman Excavate)
     },
     # 潜行者
     'ROGUE': {
@@ -215,6 +318,9 @@ TEST_DECK_CARDS = {
         'stealth': ['NEW1_014', 'EX1_522'],  # 猢狲战士、耐心的刺客
         'weapon': ['CS2_080', 'EX1_133'],  # 刺客之刃、毁灭之刃
         'damage_spell': ['EX1_124', 'EX1_145'],  # 剔骨、准备
+        'tourist': ['VAC_336'],  # Maestra (Mask Merchant)
+        'herald': ['CATA_158'],  # Maniacal Follower (Rogue Herald)
+        'time_travel': ['TIME_001'],  # Chrono Daggers (Rogue Time)
     },
     # 牧师
     'PRIEST': {
@@ -223,6 +329,7 @@ TEST_DECK_CARDS = {
         'heal': ['CS1_130', 'CS2_004'],  # 神圣惩击、真言术：盾
         'buff': ['CS2_236', 'EX1_339'],  # 神圣之灵、暗言术：痛
         'silence': ['EX1_332'],  # 沉默
+        'kindred': ['NX2_018'],  # Rotting Necromancer (Priest Undead Kindred)
     },
     # 德鲁伊
     'DRUID': {
@@ -231,6 +338,8 @@ TEST_DECK_CARDS = {
         'choose_one': ['EX1_164', 'EX1_165'],  # 滋养、丛林守护者
         'ramp': ['CS2_013', 'EX1_169'],  # 野性成长、激活（可能为技能）
         'taunt': ['EX1_093', 'CS2_179'],  # 阿古斯之盾、森金持盾卫士
+        'herald': ['CATA_134'],  # Wildwood Circle (Druid Herald spell)
+        'kindred': ['NX2_010'],  # Death Beetle (Druid Beast Kindred)
     },
     # 萨满
     'SHAMAN': {
@@ -239,6 +348,8 @@ TEST_DECK_CARDS = {
         'overload': ['EX1_248', 'EX1_251'],  # 野性狼魂、闪电风暴
         'totem': ['CS2_050', 'UNG_201'],  # 石爪图腾、原始融合
         'windfury': ['EX1_259', 'UNG_938'],  # 风暴看守、雷霆万钧
+        'kindred': ['TLC_223'],  # Volcanic Thrasher (Shaman Kindred)
+        'excavate': ['DEEP_018'],  # Shroomscavate (Shaman/Pal Excavate)
     },
     # 术士
     'WARLOCK': {
@@ -247,6 +358,21 @@ TEST_DECK_CARDS = {
         'demon': ['CS2_064', 'EX1_306'],  # 恐惧地狱火、魅魔
         'discard': ['EX1_308', 'EX1_310'],  # 灵魂之火、末日守卫
         'spell_damage': ['EX1_597', 'NEW1_021'],  # 古拉巴什狂暴者、狂野炎术师
+        'tourist': ['VAC_336'],  # Maestra (Rogue 客串到 Warlock)
+        'imbue': ['EDR_488'],  # Avant-Gardening (Warlock Imbue)
+        'dark_gift': ['EDR_102', 'EDR_856'],  # Treacherous Tormentor / Nightmare Lord Xavius
+    },
+    # 死亡骑士 (Death Knight)
+    'DEATHKNIGHT': {
+        'titan': ['TTN_737'],  # The Primus
+        # Phase 2A Corpse 系统的关键卡
+        'corpse': ['RLK_503', 'CORE_RLK_118', 'CORE_RLK_506', 'RLK_707', 'RLK_060'],
+        'corpse_advanced': ['CORE_WW_374', 'CORE_RLK_745', 'CORE_RLK_712', 'RLK_061'],
+        # Phase 2A 基础 DK 卡
+        'rune_frost': ['RLK_024', 'RLK_048', 'CORE_RLK_087', 'RLK_709'],
+        'rune_blood': ['RLK_223', 'CORE_RLK_657', 'CORE_RLK_063'],
+        'rune_unholy': ['RLK_062', 'RLK_121', 'RLK_086'],
+        'undead': ['CORE_EDR_002', 'RLK_511'],  # Poison Breath, Harbinger of Winter
     },
 }
 
@@ -756,6 +882,17 @@ class GameManager:
                 "combo_active": getattr(player, 'cards_played_this_turn', 0) > 0,
                 "cards_played_this_turn": getattr(player, 'cards_played_this_turn', 0),
                 "choice": choice_data,
+                # Resource counters for modern mechanics. All read via
+                # getattr+default so an older engine without these fields
+                # still serializes without error.
+                "corpses": getattr(player, 'corpses', 0),
+                "herald_count": getattr(player, 'herald_count', 0),
+                "imbue_count": getattr(player, 'imbue_count', 0),
+                "excavate_count": getattr(player, 'excavate_count', 0),
+                "starship_pieces": len(getattr(player, 'starship_pieces', []) or []),
+                "is_building_starship": getattr(player, 'is_building_starship', False),
+                "dark_gifts_given": len(getattr(player, 'dark_gifts_given', []) or []),
+                "jade_golem": getattr(player, 'jade_golem', 1) - 1,  # display "0" before first golem
             },
             "opponent": {
                 "hero": str(opponent.hero),
@@ -783,6 +920,15 @@ class GameManager:
                 "weapon": get_weapon_data(opponent.hero),
                 "locations": get_locations_data(opponent),
                 "secret_count": len(opponent.secrets),
+                # Same resource counters as for `player`, mirrored for opponent.
+                "corpses": getattr(opponent, 'corpses', 0),
+                "herald_count": getattr(opponent, 'herald_count', 0),
+                "imbue_count": getattr(opponent, 'imbue_count', 0),
+                "excavate_count": getattr(opponent, 'excavate_count', 0),
+                "starship_pieces": len(getattr(opponent, 'starship_pieces', []) or []),
+                "is_building_starship": getattr(opponent, 'is_building_starship', False),
+                "dark_gifts_given": len(getattr(opponent, 'dark_gifts_given', []) or []),
+                "jade_golem": getattr(opponent, 'jade_golem', 1) - 1,
             },
             "logs": logs
         }
