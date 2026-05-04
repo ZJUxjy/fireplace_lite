@@ -2714,26 +2714,31 @@ def test_plume_of_vulcanos_gives_fire_spell_on_damage():
 # 战吼：选择你手牌中的一张法术牌，将其拆分为两张法力值消耗与其相同的随机法术牌
 
 def test_conjuration_specialist_splits_hand_spell():
-    """Conjuration Specialist discards a hand spell and gives 2 same-cost random spells."""
+    """Conjuration Specialist splits the chosen hand spell into same-cost spells."""
     game = prepare_empty_game()
     game.player1.max_mana = 10
-    # Give player a spell with known cost
     fireball = game.player1.give("CS2_029")  # Fireball, cost 4
-    original_cost = fireball.cost
+    cheap_spell = game.player1.give("CATA_528")  # Oceanic Sigil, cost 1
     specialist = game.player1.give("CATA_979")
-    # Before play: hand has [fireball, specialist]
-    hand_before = len(game.player1.hand)  # 2
+    hand_before = len(game.player1.hand)
+
     specialist.play()
-    # After: specialist leaves hand (-1), fireball discarded (-1), 2 new spells added (+2)
-    # Net change: -1 - 1 + 2 = 0, so hand stays at hand_before
+
+    assert game.player1.choice
+    assert fireball in game.player1.choice.cards
+    assert cheap_spell in game.player1.choice.cards
+    game.player1.choice.choose(cheap_spell)
+
     assert len(game.player1.hand) == hand_before
-    # No fireball in hand anymore
-    assert fireball not in game.player1.hand
-    # 2 new spells should have same cost as fireball
-    new_spells = [c for c in game.player1.hand if c.type == CardType.SPELL]
+    assert fireball in game.player1.hand
+    assert cheap_spell not in game.player1.hand
+    new_spells = [
+        c for c in game.player1.hand
+        if c.type == CardType.SPELL and c is not fireball
+    ]
     assert len(new_spells) == 2
     for spell in new_spells:
-        assert spell.cost == original_cost
+        assert spell.cost == cheap_spell.cost
 
 
 def test_conjuration_specialist_no_effect_without_hand_spell():

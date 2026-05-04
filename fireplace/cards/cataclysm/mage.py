@@ -103,19 +103,27 @@ class CATA_488te:
 
 # CATA_979: 咒术专家 (3费 3/4)
 # 战吼：选择你手牌中的一张法术牌，将其拆分为两张法力值消耗与其相同的随机法术牌
+class CATA_979_SplitSpell(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, spell):
+        cost = spell.cost
+        source.game.queue_actions(
+            source,
+            [
+                Discard(spell),
+                Give(CONTROLLER, RandomSpell(cost=cost)),
+                Give(CONTROLLER, RandomSpell(cost=cost)),
+            ],
+        )
+
+
 class CATA_979:
     """Conjuration Specialist"""
 
-    def play(self):
-        spells = [c for c in self.controller.hand if c.type == CardType.SPELL]
-        if not spells:
-            return
-        chosen = _random.choice(spells)
-        cost = chosen.cost
-        chosen_sel = FuncSelector(lambda entities, source, c=chosen: [c])
-        yield Discard(chosen_sel)
-        yield Give(CONTROLLER, RandomSpell(cost=cost))
-        yield Give(CONTROLLER, RandomSpell(cost=cost))
+    play = Choice(CONTROLLER, FRIENDLY_HAND + SPELL).then(
+        CATA_979_SplitSpell(Choice.CARD)
+    )
 
 
 ##
