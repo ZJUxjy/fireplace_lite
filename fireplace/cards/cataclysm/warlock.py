@@ -247,13 +247,64 @@ class CATA_791:
 
 # CATA_792: 暗影之怒 (6费 法术)
 # 造成8点伤害。分裂：召唤两个3/3
+@custom_card
 class CATA_792:
     """Shadow Shock"""
 
-    # 造成8点伤害
-    # 简化实现：直接造成8点伤害
+    tags = {
+        GameTag.CARDNAME: "Shadow Shock",
+        GameTag.CARDTYPE: CardType.SPELL,
+        GameTag.CLASS: CardClass.WARLOCK,
+        GameTag.COST: 6,
+    }
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+    }
+
+    # 合成后的裂变牌执行两个半张效果。
+    play = Hit(TARGET, 8), Summon(CONTROLLER, "CATA_792t3") * 2
+
+
+@custom_card
+class CATA_792t:
+    """Shadow Shock"""
+
+    tags = {
+        GameTag.CARDNAME: "Shadow Shock",
+        GameTag.CARDTYPE: CardType.SPELL,
+        GameTag.CLASS: CardClass.WARLOCK,
+        GameTag.COST: 6,
+    }
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
     }
 
     play = Hit(TARGET, 8)
+
+
+@custom_card
+class CATA_792t2:
+    """Shadow Shock"""
+
+    tags = {
+        GameTag.CARDNAME: "Shadow Shock",
+        GameTag.CARDTYPE: CardType.SPELL,
+        GameTag.CLASS: CardClass.WARLOCK,
+        GameTag.COST: 6,
+    }
+
+    play = Summon(CONTROLLER, "CATA_792t3") * 2
+
+
+@custom_card
+class CATA_792t3:
+    """Shadow Shock"""
+
+    tags = {
+        GameTag.CARDNAME: "Shadow Shock",
+        GameTag.CARDTYPE: CardType.MINION,
+        GameTag.CLASS: CardClass.WARLOCK,
+        GameTag.COST: 3,
+        GameTag.ATK: 3,
+        GameTag.HEALTH: 3,
+    }

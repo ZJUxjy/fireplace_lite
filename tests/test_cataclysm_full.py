@@ -636,6 +636,23 @@ def test_shadowflame_repeats_returns_to_hand():
     assert True  # placeholder - CATA_791 ID does not exist in DB
 
 
+def test_shadow_shock_damages_target_and_summons_two_shades():
+    """Shadow Shock performs both fissure halves: 8 damage and two 3/3 summons."""
+    game = prepare_empty_game()
+    player = game.current_player
+    opponent = player.opponent
+    player.max_mana = 10
+    player.used_mana = 0
+    target = opponent.summon("CATA_201")
+
+    player.give("CATA_792").play(target=target)
+
+    assert target.damage == 8
+    shades = [minion for minion in player.field if minion.id == "CATA_792t3"]
+    assert len(shades) == 2
+    assert all(shade.atk == 3 and shade.health == 3 for shade in shades)
+
+
 ##
 # CATA_200: 旧神特工
 # 战吼：将你手牌中的一张牌变成一枚硬币
