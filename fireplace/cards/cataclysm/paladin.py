@@ -86,14 +86,23 @@ class CATA_472:
 # CATA_473: 诺兹多姆，青铜守护巨龙
 # 5费 4/4 龙
 # 在你的回合结束时，使你的随从获得圣盾，已有圣盾的随从改为获得+3/+3
+class CATA_473_EndTurn(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        initially_shielded = [minion for minion in target.field if minion.divine_shield]
+        initially_unshielded = [
+            minion for minion in target.field if not minion.divine_shield
+        ]
+        actions = [GiveDivineShield(minion) for minion in initially_unshielded]
+        actions.extend(Buff(minion, "CATA_473e") for minion in initially_shielded)
+        source.game.queue_actions(source, actions)
+
+
 class CATA_473:
     """Nozdormu the Bronze Dragonflight"""
 
-    # 简化实现：给没有圣盾的随从圣盾，给已有圣盾的随从+3/+3
-    events = OWN_TURN_END.on(
-        GiveDivineShield(FRIENDLY_MINIONS - DIVINE_SHIELD),
-        Buff(FRIENDLY_MINIONS + DIVINE_SHIELD, "CATA_473e")
-    )
+    events = OWN_TURN_END.on(CATA_473_EndTurn(CONTROLLER))
 
 
 CATA_473e = buff(+3, +3)

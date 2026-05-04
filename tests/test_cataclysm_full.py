@@ -798,6 +798,36 @@ def test_stormbinder_deathrattle_unlocks_overload():
 
 
 ##
+# CATA_473: 诺兹多姆，青铜守护巨龙
+# 在你的回合结束时，使你的随从获得圣盾，已有圣盾的随从改为获得+3/+3。
+
+def test_nozdormu_buffs_only_minions_that_already_had_divine_shield():
+    """Nozdormu grants Divine Shield to unshielded minions and buffs only initially shielded ones."""
+    game = prepare_empty_game()
+    player = game.current_player
+    nozdormu = player.summon("CATA_473")
+    plain = player.summon(WISP)
+    shielded = player.summon(GOLDSHIRE_FOOTMAN)
+    shielded.divine_shield = True
+
+    plain_stats = (plain.atk, plain.health)
+    nozdormu_stats = (nozdormu.atk, nozdormu.health)
+    shielded_stats = (shielded.atk, shielded.health)
+
+    game.end_turn()
+
+    assert plain.divine_shield
+    assert (plain.atk, plain.health) == plain_stats
+    assert nozdormu.divine_shield
+    assert (nozdormu.atk, nozdormu.health) == nozdormu_stats
+    assert shielded.divine_shield
+    assert (shielded.atk, shielded.health) == (
+        shielded_stats[0] + 3,
+        shielded_stats[1] + 3,
+    )
+
+
+##
 # CATA_570: 莫卓克
 # 战吼：抽1张牌并减少其费用(10)
 
