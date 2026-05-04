@@ -294,6 +294,24 @@ def test_worgen_king_battlecry_sets_hero_power_cost_to_one():
 
 
 ##
+# CATA_206: 扭曲畸怪
+# 扰魔。嘲讽。本牌在你的手牌中时，每回合随机具有两项额外效果。
+
+def test_twisted_monstrosity_has_current_bonus_effects_without_colossal_limb_tag():
+    """Twisted Monstrosity has its current bonus effects and is not a Colossal limb."""
+    game = prepare_empty_game()
+    player = game.current_player
+    monstrosity = player.summon("CATA_206")
+    enemy_spell = player.opponent.give("CS2_008")  # Moonfire.
+
+    assert monstrosity.taunt
+    assert monstrosity.cant_be_targeted_by_abilities
+    assert monstrosity.cant_be_targeted_by_hero_powers
+    assert monstrosity not in enemy_spell.play_targets
+    assert not monstrosity.data.scripts.tags.get(GameTag.COLOSSAL_LIMB)
+
+
+##
 # CATA_208: 无私的保卫者
 # 嘲讽。受到的所有伤害提高一点。
 

@@ -121,16 +121,16 @@ class CATA_190h:
 
 
 # CATA_206: 扭曲畸怪 (5费 6/5)
-# 巨型。在你的回合开始时，随机获得一张"变异"牌。
+# 扰魔。嘲讽。本牌在你的手牌中时，每回合随机具有两项额外效果。
 class CATA_206:
     """Twisted Monstrosity"""
 
-    tags = {GameTag.COLOSSAL_LIMB: True}
-
-    # 巨型效果需要特殊实现，这里简化
-    # 在手牌中时每回合随机具有两项额外效果
-    # 简化实现：不做任何效果
-    pass
+    tags = {
+        GameTag.TAUNT: True,
+        GameTag.ELUSIVE: True,
+        GameTag.CANT_BE_TARGETED_BY_ABILITIES: True,
+        GameTag.CANT_BE_TARGETED_BY_HERO_POWERS: True,
+    }
 
 
 # CATA_208: 无私的保卫者 (2费 2/6)
