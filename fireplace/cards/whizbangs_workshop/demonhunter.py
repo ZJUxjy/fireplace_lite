@@ -5,6 +5,53 @@ LOWEST_HEALTH = lambda sel: RANDOM(
     sel + (CURRENT_HEALTH == OpAttr(sel, "health", min))
 )
 
+TOY_913_FIRST_EDITION_DH = ("TOY_913t1", "TOY_913t2", "TOY_913t3")
+
+
+def _return_policy_choices(entities, source):
+    choices = [
+        card
+        for card in source.controller.cards_played_this_game
+        if card.controller is source.controller and card.get_actions("deathrattle")
+    ]
+    if len(choices) > 3:
+        return source.game.random.sample(choices, 3)
+    return choices
+
+
+RETURN_POLICY_CHOICES = FuncSelector(_return_policy_choices)
+
+
+class MIS_102_ReturnPolicyChoice(Choice):
+    def choose(self, card):
+        if card not in self.cards:
+            raise InvalidAction(
+                "%r is not a valid choice (one of %r)" % (card, self.cards)
+            )
+        self.player.choice = None
+        self.source.game.queue_actions(self.source, [Deathrattle(card)])
+        self.trigger_choice_callback()
+
+
+class TOY_640_WorkshopMishap(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        amount = source.get_damage(5, target)
+        excess = 0
+        if amount and not target.divine_shield and not target.immune:
+            excess = max(0, amount - target.health)
+
+        actions = [Hit(target, 5)]
+        if excess:
+            field = target.controller.field
+            index = field.index(target)
+            if index > 0:
+                actions.append(Hit(field[index - 1], excess))
+            if index < len(field) - 1:
+                actions.append(Hit(field[index + 1], excess))
+        source.game.queue_actions(source, actions)
+
 
 ##
 # Minions
@@ -45,6 +92,12 @@ class TOY_647:
     dormant_events = OWN_TURN_END.on(Hit(ENEMY_CHARACTERS, 3))
 
 
+class TOY_913:
+    """Ci'Cigi"""
+
+    play = outcast = deathrattle = Give(CONTROLLER, RandomID(*TOY_913_FIRST_EDITION_DH))
+
+
 # TOY_652: Window Shopper (5费 3/4)
 # 微缩。战吼：发现一个恶魔（简化：不设置属性）
 class TOY_652:
@@ -55,6 +108,42 @@ class TOY_652:
 
 ##
 # Spells
+
+
+class MIS_102:
+    """Return Policy"""
+
+    play = MIS_102_ReturnPolicyChoice(CONTROLLER, RETURN_POLICY_CHOICES)
+
+
+class TOY_640:
+    """Workshop Mishap"""
+
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+    play = TOY_640_WorkshopMishap(TARGET)
+    outcast = Buff(SELF, "TOY_640e"), TOY_640_WorkshopMishap(TARGET)
+
+
+@custom_card
+class TOY_640e:
+    tags = {
+        GameTag.CARDNAME: "Workshop Mishap Lifesteal",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.LIFESTEAL: True,
+    }
+
+
+class TOY_643:
+    """Blind Box"""
+
+    play = Give(CONTROLLER, RandomDemon()) * 2
+    outcast = Discover(CONTROLLER, RandomDemon()).then(
+        Give(CONTROLLER, Discover.CARD),
+        Discover(CONTROLLER, RandomDemon()).then(Give(CONTROLLER, Discover.CARD)),
+    )
 
 
 class TOY_644:
