@@ -153,16 +153,24 @@ class CATA_560:
 
 
 # CATA_566: Tol'vir Carver (托维尔雕刻师) - 3费 3/2
-# 战吼: 随机使一个友方野兽获得+1/+1
+# 战吼：选择你手牌中的一张牌。在你的回合开始时，其法力值消耗减少（1）点。
 class CATA_566:
     """Tol'vir Carver"""
 
-    # 战吼: 随机使一个友方野兽获得+1/+1
-    powered_up = Find(FRIENDLY_MINIONS + BEAST)
-    play = powered_up & Buff(RANDOM(FRIENDLY_MINIONS + BEAST), "CATA_566e")
+    play = Choice(CONTROLLER, FRIENDLY_HAND - SELF).then(Buff(Choice.CARD, "CATA_566e"))
 
 
-CATA_566e = buff(+1, +1)
+class CATA_566e:
+    events = OWN_TURN_BEGIN.on(Buff(OWNER, "CATA_566e2"))
+
+
+@custom_card
+class CATA_566e2:
+    tags = {
+        GameTag.CARDNAME: "Carving",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.COST: -1,
+    }
 
 
 # CATA_820: Supply Run (运输补给) - 4费 法术

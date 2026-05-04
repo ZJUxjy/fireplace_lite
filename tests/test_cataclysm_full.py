@@ -1317,6 +1317,34 @@ def test_earthen_roar_holding_dragon_chooses_second_enemy_minion():
     assert second.health == 1
 
 
+def test_tolvir_carver_chosen_hand_card_discounts_each_turn_start():
+    """Tol'vir Carver chooses a hand card that discounts by 1 at each turn start."""
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    chosen = player.give("CATA_552")
+    unchosen = player.give("CATA_553")
+
+    player.give("CATA_566").play()
+
+    assert player.choice
+    assert chosen in player.choice.cards
+    player.choice.choose(chosen)
+    assert chosen.cost == chosen.data.cost
+
+    game.end_turn()
+    game.end_turn()
+
+    assert chosen.cost == chosen.data.cost - 1
+    assert unchosen.cost == unchosen.data.cost
+
+    game.end_turn()
+    game.end_turn()
+
+    assert chosen.cost == chosen.data.cost - 2
+
+
 ##
 # CATA_721: 避难的幸存者
 # 战吼：选择一张你的手牌洗入你的牌库。抽一张牌。
