@@ -374,6 +374,33 @@ def test_sanctified_priest_increases_hero_power_healing_this_game():
     assert hero.health == damaged_health + 4
 
 
+def test_alexstrasza_life_guardian_damages_enemy_after_restoring_to_full():
+    """Alexstrasza sets your hero to 15 Health and fires after a heal reaches full."""
+    from fireplace.actions import Heal
+
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    hero = player.hero
+    enemy_hero = player.opponent.hero
+
+    player.give("CATA_307").play()
+
+    assert hero.health == 15
+
+    enemy_health = enemy_hero.health
+    game.cheat_action(player.hero.power, [Heal(hero, 10)])
+
+    assert hero.health == 25
+    assert enemy_hero.health == enemy_health
+
+    game.cheat_action(player.hero.power, [Heal(hero, 5)])
+
+    assert hero.health == hero.max_health
+    assert enemy_hero.health == enemy_health - 15
+
+
 def test_ruby_sanctum_turns_next_heal_into_damage_once():
     """Ruby Sanctum converts only the next healing effect this turn into damage."""
     from fireplace.actions import Heal, Hit

@@ -10,8 +10,7 @@ class CATA_216:
     """Sanctified Priest"""
 
     # 战吼：在本局对战中，你的治疗效果恢复的生命值增加2点
-    # 简化实现：给玩家一个 buff 作为标记
-    # 实际的治疗增强在 card.py 的 get_heal 中处理
+    # 玩家级增益由 Heal action 在治疗结算时读取。
     play = Buff(CONTROLLER, "CATA_216e")
 
 
@@ -147,6 +146,14 @@ CATA_306e = buff(+2, +3, elusive=True)
 
 # CATA_307: "阿莱克丝塔萨，生命守护者" (7费 8/8 龙)
 # 战吼：将你的英雄剩余生命值变为15。当你恢复所有生命值时，对敌方英雄造成15点伤害。
+class CATA_307_DamageAfterFullHeal(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        if target is source.controller.hero and target.health == target.max_health:
+            source.game.queue_actions(source, [Hit(source.controller.opponent.hero, 15)])
+
+
 class CATA_307:
     """Alexstrasza, Guardian of Life"""
 
@@ -154,10 +161,7 @@ class CATA_307:
     play = SetCurrentHealth(FRIENDLY_HERO, 15)
 
     # 当你恢复所有生命值时，对敌方英雄造成15点伤害
-    # 简化实现：监听 Heal 事件，检查是否完全恢复
-    events = Heal(FRIENDLY_HERO).after(
-        (CURRENT_HEALTH(FRIENDLY_HERO) == MAX_HEALTH(FRIENDLY_HERO)) & Hit(ENEMY_HERO, 15)
-    )
+    events = Heal().on(CATA_307_DamageAfterFullHeal(Heal.TARGET))
 
 
 # CATA_308: "麦迪文的胜利" (5费 法术)
