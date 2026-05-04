@@ -468,7 +468,12 @@ def test_ruby_sanctum_turns_next_heal_into_damage_once():
     game.cheat_action(hero, [Hit(hero, 4)])
     damaged_health = hero.health
 
-    player.give("CATA_301").play()
+    sanctum = player.give("CATA_301")
+    sanctum.play()
+
+    assert sanctum in player.field
+
+    sanctum.use()
     game.cheat_action(player.hero.power, [Heal(hero, 2)])
 
     assert hero.health == damaged_health - 2
@@ -490,7 +495,9 @@ def test_ruby_sanctum_healing_conversion_expires_at_turn_end():
     game.cheat_action(hero, [Hit(hero, 4)])
     damaged_health = hero.health
 
-    player.give("CATA_301").play()
+    sanctum = player.give("CATA_301")
+    sanctum.play()
+    sanctum.use()
     game.end_turn()
     game.end_turn()
     game.cheat_action(player.hero.power, [Heal(hero, 2)])
@@ -594,7 +601,14 @@ def test_twilight_altar_heralds_and_draws_a_card():
     deck_card = player.give("CS2_231")
     deck_card.shuffle_into_deck()
 
-    player.give("CATA_492").play()
+    altar = player.give("CATA_492")
+    altar.play()
+
+    assert altar in player.field
+    assert deck_card not in player.hand
+    assert getattr(player, "_cataclysm_heralds", {}).get("guldan", 0) == 0
+
+    altar.use()
 
     assert deck_card in player.hand
     assert getattr(player, "_cataclysm_heralds", {}).get("guldan") == 1
@@ -2216,7 +2230,13 @@ def test_hall_of_the_dragonflight_buffs_chosen_hand_minion():
     hand_minion = player.give("CS2_182")
     base_stats = (hand_minion.atk, hand_minion.health)
 
-    player.give("CATA_477").play()
+    hall = player.give("CATA_477")
+    hall.play()
+
+    assert hall in player.field
+    assert player.choice is None
+
+    hall.use()
     choice = player.choice
 
     assert choice is not None
@@ -2966,6 +2986,11 @@ def test_erupting_volcano_deals_3_damage():
     )
     volcano = game.player1.give("CATA_584")
     volcano.play()
+    assert volcano in game.player1.field
+    assert game.player2.hero.health + sum(
+        m.health for m in game.player2.field
+    ) == total_hp_before
+    volcano.use()
     total_hp_after = game.player2.hero.health + sum(
         m.health for m in game.player2.field
     )
@@ -2981,6 +3006,8 @@ def test_erupting_volcano_bonus_damage_with_fire_spell():
     hero_hp_before = game.player2.hero.health
     volcano = game.player1.give("CATA_584")
     volcano.play()
+    assert game.player2.hero.health == hero_hp_before
+    volcano.use()
     # Should deal 3 + 3 = 6 additional damage beyond fireball
     # But damage can go to either hero or field, so just check total decreased by 6
     total_hp_after = game.player2.hero.health

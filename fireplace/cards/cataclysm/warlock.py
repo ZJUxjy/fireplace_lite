@@ -41,7 +41,7 @@ class CATA_492:
     """Twilight Altar"""
 
     # 兆示。抽一张牌
-    play = CATA_GuldanHerald(CONTROLLER), Draw(CONTROLLER)
+    activate = CATA_GuldanHerald(CONTROLLER), Draw(CONTROLLER)
 
 
 def _fiendish_servant_stats(entity, amount):

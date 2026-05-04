@@ -63,7 +63,7 @@ class CATA_580t:
 class CATA_584:
     """Erupting Volcano"""
 
-    def play(self):
+    def activate(self):
         yield Hit(RANDOM(ENEMY_CHARACTERS), 3)
         # 如果本回合使用过火焰法术，再造成3点伤害
         fire_spells_this_turn = [

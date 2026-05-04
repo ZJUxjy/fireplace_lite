@@ -50,7 +50,7 @@ class CATA_301:
     """Ruby Sanctum"""
 
     # 在本回合中，你的下一次治疗效果转而造成等量的伤害
-    play = Buff(CONTROLLER, "CATA_301e")
+    activate = Buff(CONTROLLER, "CATA_301e")
 
 
 class CATA_301e:

@@ -166,7 +166,7 @@ class CATA_478t:
 class CATA_477:
     """Hall of the Dragonflight"""
 
-    play = Choice(CONTROLLER, FRIENDLY_HAND + MINION).then(
+    activate = Choice(CONTROLLER, FRIENDLY_HAND + MINION).then(
         Buff(Choice.CARD, "CATA_477e")
     )
 
