@@ -18,22 +18,33 @@ class CATA_154:
     pass
 
 
+SINESTRA_TOKEN_SPELL = Give(CONTROLLER, RandomSpell(card_class=ANOTHER_CLASS)).then(
+    Buff(Give.CARD, "CATA_154te")
+)
+
+
+@custom_card
+class CATA_154te:
+    tags = {
+        GameTag.CARDNAME: "Sinestra Spell Discount",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.COST: -1,
+    }
+
+
 # CATA_154t: Sinestra's Wing (1费 1/1 龙)
 # 召唤时获取一张其他职业的随机法术，使其费用减少(0)
-# 简化实现: 战吼：获取一张随机法术
 class CATA_154t:
     """Sinestra's Wing"""
 
-    # 简化实现: 战吼，获取一张随机法术
-    play = Discover(CONTROLLER, RandomSpell())
+    play = SINESTRA_TOKEN_SPELL
 
 
 # CATA_154t1: Sinestra's Wing (升级版)
 class CATA_154t1:
     """Sinestra's Wing (upgraded)"""
 
-    # 简化实现: 战吼，获取一张随机法术
-    play = Discover(CONTROLLER, RandomSpell())
+    play = SINESTRA_TOKEN_SPELL
 
 
 # CATA_158: Maniacal Follower (3费 3/1)
@@ -49,12 +60,10 @@ class CATA_158:
 
 
 # CATA_158t: Soldier of Sinestra (1费 1/1 龙)
-# 简化实现: 战吼，获取一张随机法术
 class CATA_158t:
     """Soldier of Sinestra"""
 
-    # 简化实现: 战吼，获取一张随机法术
-    play = Discover(CONTROLLER, RandomSpell())
+    play = SINESTRA_TOKEN_SPELL
 
 
 

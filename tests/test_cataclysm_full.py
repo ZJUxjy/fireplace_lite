@@ -594,6 +594,26 @@ def test_isorath_devours_two_opponent_hand_cards_and_deathrattle_returns_them():
     assert all(card in opponent.hand for card in hand_cards)
 
 
+def test_sinestra_tokens_give_discounted_other_class_spell():
+    """Sinestra tokens give a discounted spell from another class."""
+    for card_id in ("CATA_154t", "CATA_154t1", "CATA_158t"):
+        game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+        player = game.current_player
+        player.max_mana = 10
+        player.used_mana = 0
+        for card in list(player.hand):
+            card.zone = Zone.REMOVEDFROMGAME
+        token = player.give(card_id)
+
+        token.play()
+
+        generated = next(card for card in player.hand if card is not token)
+        assert player.choice is None
+        assert generated.type == CardType.SPELL
+        assert generated.card_class != CardClass.ROGUE
+        assert generated.cost == max(0, generated.data.cost - 1)
+
+
 ##
 # CATA_180: 速逝鱼人
 # 战吼：你的下一张法力值消耗小于或等于（3）点的鱼人牌会消耗生命值，而非法力值。
