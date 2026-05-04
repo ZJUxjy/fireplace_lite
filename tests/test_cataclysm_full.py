@@ -879,6 +879,26 @@ def test_hall_of_the_dragonflight_buffs_chosen_hand_minion():
 
 
 ##
+# CATA_479: 飞龙机动
+# 裂变：召唤两条4/2的幼龙。使你的随从获得+1/+1和圣盾。
+
+def test_dragonriding_summons_buffed_divine_shield_whelps():
+    """Dragonriding summons two whelps, then gives friendly minions +1/+1 and Divine Shield."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    player.give("CATA_479").play()
+
+    whelps = [minion for minion in player.field if minion.id == "CATA_479t3"]
+    assert len(whelps) == 2
+    for whelp in whelps:
+        assert (whelp.atk, whelp.health) == (5, 3)
+        assert whelp.divine_shield
+
+
+##
 # CATA_570: 莫卓克
 # 战吼：抽1张牌并减少其费用(10)
 
