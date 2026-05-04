@@ -53,11 +53,25 @@ class CATA_155e:
 
 # CATA_155t: 奥妮克希亚之翼 (1费 1/1 龙)
 # 被召唤时，获取一张消耗为(1)的随从牌，它在本回合中会消耗生命值。兆示两次后升级。
+def _cataclysm_herald_count(player, herald):
+    return getattr(player, "_cataclysm_heralds", {}).get(herald, 0)
+
+
+class CATA_OnyxiaHerald(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        heralds = getattr(target, "_cataclysm_heralds", {}).copy()
+        heralds["onyxia"] = heralds.get("onyxia", 0) + 1
+        target._cataclysm_heralds = heralds
+
+
 class CATA_155t_GiveHealthCostMinion(TargetedAction):
     TARGET = ActionArg()
-    CARD = CardArg()
 
-    def do(self, source, target, cards):
+    def do(self, source, target):
+        cost = 2 if _cataclysm_herald_count(target, "onyxia") >= 2 else 1
+        cards = RandomMinion(cost=cost).evaluate(source)
         if not hasattr(cards, "__iter__"):
             cards = [cards]
         for card in cards:
@@ -73,7 +87,7 @@ class CATA_155t:
     }
 
     # 被召唤时，获取一张消耗为(1)的随从牌，它在本回合中会消耗生命值
-    play = CATA_155t_GiveHealthCostMinion(CONTROLLER, RandomMinion(cost=1))
+    play = CATA_155t_GiveHealthCostMinion(CONTROLLER)
 
 
 # CATA_155t1: 奥妮克希亚之翼（升级版）
@@ -85,7 +99,7 @@ class CATA_155t1:
     }
 
     # 被召唤时，获取一张消耗为(1)的随从牌，它在本回合中会消耗生命值
-    play = CATA_155t_GiveHealthCostMinion(CONTROLLER, RandomMinion(cost=1))
+    play = CATA_155t_GiveHealthCostMinion(CONTROLLER)
 
 
 # CATA_161: 残恶梦魇 (3费 3/3)
@@ -222,8 +236,7 @@ class CATA_780:
     }
 
     # 战吼：兆示
-    # 简化实现：造成2点伤害
-    play = Hit(RANDOM(ENEMY_MINIONS), 2)
+    play = CATA_OnyxiaHerald(CONTROLLER)
 
 
 # CATA_780t: 奥妮克希亚的士兵 (1费 1/1 龙)
@@ -236,7 +249,7 @@ class CATA_780t:
     }
 
     # 被召唤时，获取一张消耗为(1)的随从牌
-    play = CATA_155t_GiveHealthCostMinion(CONTROLLER, RandomMinion(cost=1))
+    play = CATA_155t_GiveHealthCostMinion(CONTROLLER)
 
 
 ##

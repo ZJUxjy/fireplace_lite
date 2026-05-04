@@ -302,6 +302,23 @@ def test_soldier_of_onyxia_generated_minion_costs_health_this_turn():
     assert player.used_mana == player.max_mana
 
 
+def test_onyxia_heralds_upgrade_health_cost_generation_to_two_cost_minions():
+    """Two Onyxia Heralds upgrade Onyxia tokens to generate 2-Cost minions."""
+    game = prepare_empty_game()
+    game.random.seed(0)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    player.give("CATA_780").play()
+    player.give("CATA_780").play()
+    player.give("CATA_155t").play()
+
+    generated = player.hand[-1]
+    assert generated.cost == 2
+    assert getattr(generated, "costs_health_turn", None) == game.turn
+
+
 def test_sanctified_priest_increases_hero_power_healing_this_game():
     """Sanctified Priest increases the controller's healing effects by 2."""
     from fireplace.actions import Hit
