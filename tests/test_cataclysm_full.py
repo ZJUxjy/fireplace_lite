@@ -447,6 +447,33 @@ def test_escape_artist_chooses_hand_card_to_shuffle_then_draws():
 
 
 ##
+# CATA_897: 宝石囤积者
+# 战吼：选择你手牌中的一张牌并弃掉。亡语：重新获取弃掉的牌，其法力值消耗减少（1）点。
+
+def test_jewel_collector_returns_discarded_card_discounted_on_death():
+    """Jewel Collector remembers the chosen discarded hand card for its Deathrattle."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    discarded = player.give(FIREBALL)
+
+    collector = player.give("CATA_897")
+    collector.play()
+    choice = player.choice
+
+    assert choice is not None
+    assert choice.cards == [discarded]
+
+    choice.choose(discarded)
+    assert discarded.zone == Zone.REMOVEDFROMGAME
+
+    collector.destroy()
+    returned = next(card for card in player.hand if card.id == FIREBALL)
+    assert returned.cost == 3
+
+
+##
 # CATA_591: 指挥官迦顿
 # 战吼：从你的牌库中发现一张卡牌，它的费用为(0)
 

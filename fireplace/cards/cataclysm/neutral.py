@@ -372,22 +372,26 @@ class CATA_723:
 
 # CATA_897: 宝石囤积者 (3费 3/4)
 # 战吼：选择你手牌中的一张牌并弃掉。亡语：重新获取弃掉的牌，其法力值消耗减少（1）点。
+class CATA_897_RememberDiscard(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        source._jewel_collector_card_id = target.id
+        source.game.queue_actions(source, [Discard(target)])
+
+
 class CATA_897:
     """Jewel Collector"""
 
-    requirements = {
-        PlayReq.REQ_TARGET_TO_PLAY: 0,
-        PlayReq.REQ_MINION_TARGET: 0,
-        PlayReq.REQ_FRIENDLY_TARGET: 0,
-    }
-
     # 战吼：弃掉一张手牌
-    play = Discard(TARGET)
-
-    # 亡语：获取弃掉的牌并-1费
-    deathrattle = Give(CONTROLLER, RandomCard()).then(
-        Buff(Give.CARD, "CATA_897e")
+    play = Choice(CONTROLLER, FRIENDLY_HAND - SELF).then(
+        CATA_897_RememberDiscard(Choice.CARD)
     )
+
+    def deathrattle(self):
+        card_id = getattr(self, "_jewel_collector_card_id", None)
+        if card_id:
+            return (Give(CONTROLLER, card_id).then(Buff(Give.CARD, "CATA_897e")),)
 
 
 # CATA_897e: 减费buff
