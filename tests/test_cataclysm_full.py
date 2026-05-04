@@ -505,27 +505,35 @@ def test_jewel_collector_returns_discarded_card_discounted_on_death():
 
 ##
 # CATA_591: 指挥官迦顿
-# 战吼：从你的牌库中发现一张卡牌，它的费用为(0)
+# 战吼：你在每回合开始时的抽牌改为从你的牌库中发现一张牌，其法力值消耗减少（3）点，并摧毁未选的牌。
 
-def test_commander_geddon_discover_choice_and_zero_cost():
-    """Commander Geddon gives a discover choice; chosen card costs (0)."""
+def test_commander_geddon_replaces_turn_draw_with_discounted_deck_discover():
+    """Commander Geddon replaces the start-of-turn draw with deck Discover."""
     game = prepare_empty_game()
     player = game.current_player
     player.max_mana = 10
     player.used_mana = 0
-    for card_id in ("CS2_029", "CS2_182", WISP):
+    for card_id in (FIREBALL, "CS2_182", WISP):
         player.give(card_id).shuffle_into_deck()
 
     geddon = player.give("CATA_591")
     geddon.play()
-    assert player.choice is not None
+    assert player.choice is None
+    hand_before_turn = len(player.hand)
 
+    game.end_turn()
+    game.end_turn()
+
+    assert player.choice is not None
+    assert len(player.hand) == hand_before_turn
+    assert {card.id for card in player.choice.cards} == {FIREBALL, "CS2_182", WISP}
     chosen = player.choice.cards[0]
+    unchosen = [card for card in player.choice.cards if card is not chosen]
     player.choice.choose(chosen)
 
-    card_in_hand = next((c for c in player.hand if c.id == chosen.id), None)
-    assert card_in_hand is not None
-    assert card_in_hand.cost == 0
+    assert chosen in player.hand
+    assert chosen.cost == max(0, chosen.data.cost - 3)
+    assert all(card.zone == Zone.GRAVEYARD for card in unchosen)
 
 
 ##

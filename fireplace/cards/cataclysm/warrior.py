@@ -77,19 +77,48 @@ class CATA_586:
     deathrattle = Hit(RANDOM(ENEMY_CHARACTERS), 2)
 
 
+class CATA_591_DeckChoice(Choice):
+    def choose(self, card):
+        if card not in self.cards:
+            raise InvalidAction(
+                "%r is not a valid choice (one of %r)" % (card, self.cards)
+            )
+        self.player.choice = None
+        actions = [Buff(card, "CATA_591e2"), ForceDraw(card)]
+        actions.extend(Destroy(other) for other in self.cards if other is not card)
+        self.source.game.queue_actions(self.source, actions)
+        self.trigger_choice_callback()
+
+
+class CATA_591_StartTurnDeckDiscover(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        target.skip_next_turn_draw = True
+        if not target.deck:
+            return source.game.queue_actions(source, [Fatigue(target)])
+        cards = list(target.deck)
+        if len(cards) > 3:
+            cards = source.game.random.sample(cards, 3)
+        return source.game.queue_actions(source, [
+            CATA_591_DeckChoice(target, cards)
+        ])
+
+
 # CATA_591: 指挥官迦顿 (7费 7/7)
-# 战吼：改为每回合从你的牌库中发现一张卡牌，它的费用为(0)
+# 战吼：你在每回合开始时的抽牌改为从你的牌库中发现一张牌，其法力值消耗减少（3）点，并摧毁未选的牌。
 class CATA_591:
     """Commander Geddon"""
 
-    # 战吼：从牌库中发现一张牌，费用变为(0)
-    play = Choice(CONTROLLER, RANDOM(DeDuplicate(FRIENDLY_DECK)) * 3).then(
-        Buff(Choice.CARD, "CATA_591e"), ForceDraw(Choice.CARD)
-    )
+    play = Buff(CONTROLLER, "CATA_591e")
 
 
 class CATA_591e:
-    cost = SET(0)
+    events = OWN_TURN_BEGIN.on(CATA_591_StartTurnDeckDiscover(CONTROLLER))
+
+
+class CATA_591e2:
+    tags = {GameTag.COST: -3}
 
 
 # Spells

@@ -87,6 +87,7 @@ class Player(Entity, TargetableByAuras):
         self.max_resources = 10
         self.max_deck_size = 60
         self.cant_draw = False
+        self.skip_next_turn_draw = False
         self.cant_fatigue = False
         self.combo = False
         self.fatigue_counter = 0
@@ -393,6 +394,10 @@ class Player(Entity, TargetableByAuras):
         self.game.random.shuffle(self.deck)
 
     def draw(self, count=1):
+        if self.skip_next_turn_draw:
+            self.skip_next_turn_draw = False
+            self.log("%s skips their normal turn draw", self)
+            return None
         if self.cant_draw:
             self.log("%s tries to draw %i cards, but can't draw", self, count)
             return None
