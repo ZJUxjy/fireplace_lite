@@ -142,6 +142,15 @@ class CATA_203:
 
 # CATA_215: Daze (3费 法术)
 # 将一个敌方随从移回其拥有者的手牌，该随从在下回合无法使用
+class CATA_215_Daze(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        source.game.queue_actions(source, [Bounce(target)])
+        target.unplayable_until_turn = source.game.turn + 1
+        return target
+
+
 class CATA_215:
     """Daze"""
 
@@ -152,7 +161,7 @@ class CATA_215:
     }
 
     # 将目标移回拥有者的手牌
-    play = Bounce(TARGET)
+    play = CATA_215_Daze(TARGET)
 
 
 # CATA_785: Rite of Twilight (2费 法术)

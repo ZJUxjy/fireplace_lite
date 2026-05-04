@@ -231,6 +231,7 @@ def test_arisen_onyxia_does_not_replace_opponent_turn_hero_damage():
 def test_onyxias_wing_generated_minion_costs_health_this_turn():
     """Onyxia's Wing gives a 1-Cost minion that costs Health this turn."""
     game = prepare_empty_game()
+    game.random.seed(0)
     player = game.current_player
     player.max_mana = 1
     player.used_mana = 0
@@ -255,6 +256,7 @@ def test_onyxias_wing_generated_minion_costs_health_this_turn():
 def test_onyxias_wing_health_cost_expires_after_this_turn():
     """Onyxia's Wing generated minion uses mana again after the current turn."""
     game = prepare_empty_game()
+    game.random.seed(0)
     player = game.current_player
     player.max_mana = 1
     player.used_mana = 0
@@ -278,6 +280,7 @@ def test_onyxias_wing_health_cost_expires_after_this_turn():
 def test_soldier_of_onyxia_generated_minion_costs_health_this_turn():
     """Soldier of Onyxia uses the same temporary Health-cost generation."""
     game = prepare_empty_game()
+    game.random.seed(0)
     player = game.current_player
     player.max_mana = 1
     player.used_mana = 0
@@ -767,6 +770,31 @@ def test_veranus_does_not_buff_deck_when_minion_cost_sum_is_not_100():
     player.give("CATA_213").play()
 
     assert _total_deck_minion_bonus(player) == 0
+
+
+def test_daze_bounced_minion_cannot_be_played_next_turn_then_expires():
+    """Daze prevents the returned minion from being played on its owner's next turn."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    target = player.opponent.summon("CS2_231")
+
+    player.give("CATA_215").play(target=target)
+
+    assert target in player.opponent.hand
+
+    game.end_turn()
+    player.opponent.max_mana = 10
+    player.opponent.used_mana = 0
+
+    assert not target.is_playable()
+
+    game.end_turn()
+    game.end_turn()
+    player.opponent.used_mana = 0
+
+    assert target.is_playable()
 
 
 ##

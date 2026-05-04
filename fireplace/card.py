@@ -430,6 +430,9 @@ class PlayableCard(BaseCard, Entity, TargetableByAuras):
         if not self.controller.current_player:
             return False
 
+        if getattr(self, "unplayable_until_turn", None) == self.game.turn:
+            return False
+
         if self.parent_card:
             zone = self.parent_card.zone
             playable_zone = self.parent_card.playable_zone
