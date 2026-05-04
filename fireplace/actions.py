@@ -997,6 +997,8 @@ class Damage(TargetedAction):
             target.damaged_this_turn += amount
             if source.type == CardType.HERO_POWER:
                 source.controller.hero_power_damage_this_game += amount
+            if source.type == CardType.SPELL:
+                source.controller.spell_damage_this_turn += amount
         return amount
 
 

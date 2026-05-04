@@ -1293,6 +1293,32 @@ def test_unstable_spellcaster_no_copy_without_spell_damage():
     assert game.player1.field[0].id == "CATA_483"
 
 
+def test_unstable_spellcaster_ignores_non_damage_spell():
+    """Unstable Spellcaster does not count spells that dealt no damage."""
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    game.player1.give(THE_COIN).play()
+
+    game.player1.give("CATA_483").play()
+
+    assert [minion.id for minion in game.player1.field].count("CATA_483") == 1
+
+
+##
+# CATA_452: 织法者的光辉
+# 召唤一条6/6的龙。在本回合中，你每用法术造成一点伤害，本牌的法力值消耗便减少（1）点。
+
+def test_spellweavers_brilliance_cost_reduced_by_spell_damage_this_turn():
+    """Spellweaver's Brilliance costs 1 less per spell damage dealt this turn."""
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    brilliance = game.player1.give("CATA_452")
+
+    game.player1.give(FIREBALL).play(target=game.player2.hero)
+
+    assert brilliance.cost == 4
+
+
 ##
 # CATA_308: 麦迪文的胜利
 # 对所有随从造成$4点伤害。如果你控制着传说牌，本牌的法力值消耗为（1）点。

@@ -29,11 +29,7 @@ class CATA_483:
 
     # 战吼：如果你在本回合中用法术造成过伤害，召唤一个复制
     def play(self):
-        spells_this_turn = [
-            c for c in self.controller.cards_played_this_game
-            if c.type == CardType.SPELL and c.turn_played == self.game.turn
-        ]
-        if spells_this_turn:
+        if self.controller.spell_damage_this_turn:
             yield Summon(CONTROLLER, Copy(SELF))
 
 
@@ -126,14 +122,20 @@ class CATA_979:
 # Spells
 
 
+def _spellweavers_brilliance_cost(entity, amount):
+    return amount - entity.controller.spell_damage_this_turn
+
+
 # CATA_452: 织法者的光辉 (10费 法术)
 # 召唤一条6/6的龙。在本回合中，你每用法术造成一点伤害，本牌的法力值消耗便减少（1）点
 class CATA_452:
     """Spellweaver's Brilliance"""
 
     # 召唤一条6/6的龙
-    # 简化实现：直接召唤6/6龙，忽略费用减免
     play = Summon(CONTROLLER, "CATA_452t")
+
+    class Hand:
+        update = Refresh(SELF, {GameTag.COST: _spellweavers_brilliance_cost})
 
 
 # CATA_452t: 碧蓝守卫 (6费 6/6 龙)

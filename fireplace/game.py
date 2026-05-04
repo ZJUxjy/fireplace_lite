@@ -376,6 +376,7 @@ class BaseGame(Entity):
 
         for p in self.players:
             p.cards_drawn_this_turn = 0
+            p.spell_damage_this_turn = 0
 
         player.turn_start = timegm(time.gmtime())
         player.last_turn = player.turn
