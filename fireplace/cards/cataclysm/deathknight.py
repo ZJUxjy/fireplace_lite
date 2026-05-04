@@ -7,6 +7,25 @@ from hearthstone.enums import Race
 
 # CATA_155: 复活的奥妮克希亚 (9费 3/6)
 # 巨型+2。当你的英雄在你的回合即将失去生命值时，改为获得等量的生命值上限。
+class CATA_155_ReplaceHeroDamage(TargetedAction):
+    TARGET = ActionArg()
+    AMOUNT = IntArg()
+
+    def do(self, source, target, amount):
+        if not source.controller.current_player:
+            return
+
+        current_health = target.health
+        return source.game.queue_actions(
+            source,
+            [
+                Predamage(target, 0),
+                Buff(target, "CATA_155e", max_health=amount),
+                SetCurrentHealth(target, current_health),
+            ],
+        )
+
+
 class CATA_155:
     """Arisen Onyxia"""
 
@@ -18,14 +37,17 @@ class CATA_155:
     play = Summon(CONTROLLER, "CATA_155t") * 2
 
     # 当你的英雄在你的回合即将失去生命值时，改为获得等量的生命值上限
-    # 简化实现：在你的回合开始时，给英雄+2最大生命值（模拟）
-    events = OWN_TURN_BEGIN.on(Buff(FRIENDLY_HERO, "CATA_155e"))
+    events = Predamage(FRIENDLY_HERO).on(
+        CATA_155_ReplaceHeroDamage(Predamage.TARGET, Predamage.AMOUNT)
+    )
 
 
 # CATA_155e: 奥妮克希亚的鳞片
+@custom_card
 class CATA_155e:
     tags = {
-        GameTag.HEALTH: 2,
+        GameTag.CARDNAME: "Black Scales",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
     }
 
 

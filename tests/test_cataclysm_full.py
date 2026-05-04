@@ -187,6 +187,48 @@ def test_merithra_discounts_dragons_after_spending_25_mana_while_in_hand():
 
 
 ##
+# CATA_155: 复活的奥妮克希亚
+# 当你的英雄在你的回合即将失去生命值时，改为获得等量的生命值上限。
+
+def test_arisen_onyxia_replaces_own_turn_hero_damage_with_max_health():
+    """Arisen Onyxia converts own-turn hero damage into max Health instead."""
+    from fireplace.actions import Hit
+
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    hero = player.hero
+    base_health = hero.health
+    base_max_health = hero.max_health
+    player.give("CATA_155").play()
+
+    game.cheat_action(hero, [Hit(hero, 3)])
+
+    assert hero.health == base_health
+    assert hero.max_health == base_max_health + 3
+
+
+def test_arisen_onyxia_does_not_replace_opponent_turn_hero_damage():
+    """Arisen Onyxia only replaces hero damage during its controller's turn."""
+    from fireplace.actions import Hit
+
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    hero = player.hero
+    base_max_health = hero.max_health
+    player.give("CATA_155").play()
+
+    game.end_turn()
+    game.cheat_action(player.opponent.hero, [Hit(hero, 3)])
+
+    assert hero.health == base_max_health - 3
+    assert hero.max_health == base_max_health
+
+
+##
 # CATA_491: 怪异触手
 # 对所有随从造成$3点伤害。重复（打出后回到手牌）
 
