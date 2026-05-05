@@ -1142,3 +1142,32 @@ def test_core_blood_razor_battlecry_and_deathrattle_damage_all_minions():
 
     assert friendly.damage == 2
     assert enemy.damage == 2
+
+
+def test_primordial_protector_draws_highest_cost_spell_and_summons_same_cost_minion():
+    game = prepare_empty_game(CardClass.MAGE, CardClass.MAGE)
+    player = game.player1
+    low_spell = player.give("CS2_024")
+    low_spell.shuffle_into_deck()
+    high_spell = player.give(FIREBALL)
+    high_spell.shuffle_into_deck()
+
+    protector = player.give("BAR_042").play()
+
+    assert high_spell.zone == Zone.HAND
+    assert low_spell.zone == Zone.DECK
+    summoned = [minion for minion in player.field if minion is not protector][0]
+    assert summoned.type == CardType.MINION
+    assert summoned.cost == high_spell.cost
+
+
+def test_core_bone_baron_adds_two_skeletons_on_deathrattle():
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    player = game.player1
+
+    baron = player.give("CORE_ICC_065").play()
+    baron.destroy()
+
+    skeletons = player.hand.filter(id="ICC_026t")
+    assert len(skeletons) == 2
+    assert all(skeleton.atk == 1 and skeleton.health == 1 for skeleton in skeletons)

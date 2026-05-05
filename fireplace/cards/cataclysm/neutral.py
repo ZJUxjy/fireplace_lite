@@ -304,7 +304,7 @@ class CATA_614:
 # CATA_615: 吉恩，咒厄国王 (4费 3/5)
 # 当本牌在你手牌中时，如果你其他手牌的法力值消耗均为偶数或奇数，变形成为狼人国王。
 class CATA_615:
-    """Genn Greymane"""
+    """Genn, Cursed King"""
 
     class Hand:
         update = Find(_GENN_READY) & Morph(SELF, "CATA_615t")

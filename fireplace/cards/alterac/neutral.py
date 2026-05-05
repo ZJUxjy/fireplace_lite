@@ -957,6 +957,35 @@ class CORE_ICC_064:
     deathrattle = Hit(ALL_MINIONS, 1)
 
 
+class BAR_042_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        spells = [card for card in player.deck if card.type == CardType.SPELL]
+        if not spells:
+            return
+        spell = max(spells, key=lambda card: card.cost)
+        return source.game.queue_actions(
+            source,
+            [
+                ForceDraw(spell),
+                Summon(player, RandomMinion(cost=spell.cost)),
+            ],
+        )
+
+
+class BAR_042:
+    """Primordial Protector"""
+
+    play = BAR_042_Play(CONTROLLER)
+
+
+class CORE_ICC_065:
+    """Bone Baron"""
+
+    deathrattle = Give(CONTROLLER, "ICC_026t") * 2
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
