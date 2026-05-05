@@ -1286,6 +1286,43 @@ class CORE_LOE_050:
     deathrattle = Summon(CONTROLLER, RandomMinion(cost=1))
 
 
+class BAR_081_Choice(Choice):
+    def choose(self, card):
+        if card not in self.cards:
+            raise InvalidAction(
+                "%r is not a valid choice (one of %r)" % (card, self.cards)
+        )
+        self.player.choice = None
+        copy = self.player.card(card.id, source=self.source)
+        self.source.game.queue_actions(
+            self.source, [Give(self.player, copy), Draw(card.controller, card)]
+        )
+        self.trigger_choice_callback()
+
+
+class BAR_081_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        cards = list(player.opponent.deck)
+        if len(cards) > 3:
+            cards = source.game.random.sample(cards, 3)
+        if cards:
+            return source.game.queue_actions(source, [BAR_081_Choice(player, cards)])
+
+
+class BAR_081:
+    """Southsea Scoundrel"""
+
+    play = BAR_081_Play(CONTROLLER)
+
+
+class CORE_LOOT_413:
+    """Plated Beetle"""
+
+    deathrattle = GainArmor(FRIENDLY_HERO, 3)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -1451,6 +1488,12 @@ class BAR_326:
     """Razorfen Beastmaster"""
 
     deathrattle = Summon(CONTROLLER, RANDOM(FRIENDLY_HAND + DEATHRATTLE + (COST <= 4)))
+
+
+class BAR_307:
+    """Void Flayer"""
+
+    play = Hit(RANDOM_ENEMY_MINION, 1) * Count(FRIENDLY_HAND + SPELL)
 
 
 class BAR_330:
@@ -1632,6 +1675,27 @@ class BAR_310:
     """Lightshower Elemental"""
 
     deathrattle = Heal(FRIENDLY_CHARACTERS, 8)
+
+
+class MAW_022_Deathrattle(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        cards = list(player.opponent.hand)
+        if not cards:
+            return
+        count = min(2, len(cards))
+        copies = [
+            player.card(card.id, source=source)
+            for card in source.game.random.sample(cards, count)
+        ]
+        return source.game.queue_actions(source, [Give(player, copies)])
+
+
+class MAW_022:
+    """Incriminating Psychic"""
+
+    deathrattle = MAW_022_Deathrattle(CONTROLLER)
 
 
 class BAR_026:

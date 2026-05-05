@@ -165,7 +165,7 @@ class CATA_725:
 # 巨型+2
 # 你的手臂和士兵改为消灭敌方牌库中的随从
 class CATA_726:
-    """Gul'dan, Aspect of the Void"""
+    """Cho'gall, Mastermind"""
 
     tags = {GameTag.ELITE: True}
 
@@ -177,7 +177,7 @@ class CATA_726:
 # CATA_726t: 古加尔的手臂 (1费 1/1)
 # 在你的回合结束时，消灭本随从右边的随从以获得+2/+2
 class CATA_726t:
-    """Gul'dan's Arm"""
+    """Cho's Arm"""
 
     tags = {
         GameTag.COLOSSAL_LIMB: True,
@@ -195,7 +195,7 @@ CATA_726te = buff(+2, +2)
 
 # CATA_726t1: 加尔的手臂 (1费 1/1)
 class CATA_726t1:
-    """Gahz'rilla's Arm"""
+    """Gall's Arm"""
 
     tags = {
         GameTag.COLOSSAL_LIMB: True,

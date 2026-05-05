@@ -1465,3 +1465,64 @@ def test_core_mounted_raptor_deathrattle_summons_one_cost_minion():
 
     assert len(player.field) == 1
     assert player.field[0].cost == 1
+
+
+def test_southsea_scoundrel_discovers_opponent_deck_card_for_both_players():
+    game = prepare_empty_game()
+    player = game.player1
+    opponent = game.player2
+    first = opponent.card(WISP, zone=Zone.DECK)
+    second = opponent.card("CS2_182", zone=Zone.DECK)
+
+    player.give("BAR_081").play()
+
+    assert player.choice is not None
+    assert set(player.choice.cards) == {first, second}
+    player.choice.choose(first)
+
+    assert first in opponent.hand
+    assert second in opponent.deck
+    assert len(player.hand) == 1
+    assert player.hand[0].id == first.id
+
+
+def test_core_plated_beetle_deathrattle_gains_armor():
+    game = prepare_empty_game()
+    player = game.player1
+
+    beetle = player.give("CORE_LOOT_413").play()
+    beetle.destroy()
+
+    assert player.hero.armor == 3
+
+
+def test_void_flayer_hits_random_enemy_minions_for_each_spell_in_hand():
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.player1
+    opponent = game.player2
+    first = opponent.summon("CS2_200")
+    second = opponent.summon("CS2_200")
+    player.give("CS2_008")
+    player.give("CS2_029")
+    player.give(WISP)
+
+    player.give("BAR_307").play()
+
+    assert first.damage + second.damage == 2
+
+
+def test_core_incriminating_psychic_copies_two_random_opponent_hand_cards():
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.player1
+    opponent = game.player2
+    opponent.hand.clear()
+    first = opponent.give(WISP)
+    second = opponent.give("CS2_182")
+
+    psychic = player.give("CORE_MAW_022").play()
+    psychic.destroy()
+
+    assert sorted(card.id for card in player.hand) == sorted([first.id, second.id])
+    assert first in opponent.hand
+    assert second in opponent.hand
+    assert all(card is not first and card is not second for card in player.hand)
