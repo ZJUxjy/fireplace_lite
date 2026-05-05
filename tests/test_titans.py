@@ -209,3 +209,17 @@ def test_norgannon_ancient_knowledge_raises_enemy_hand_cost_next_turn():
     assert enemy_card.cost == base_cost + 1
     game.end_turn()
     assert enemy_card.cost == base_cost
+
+
+def test_yogg_saron_induce_insanity_forces_enemy_minions_to_attack_each_other():
+    game = prepare_empty_game()
+    player = game.player1
+    enemy = player.opponent
+    attacker = enemy.summon("CS2_182")
+    defender = enemy.summon("CS2_182")
+    ability = player.card("YOG_516t2")
+
+    game.main_power(ability, ability.get_actions("play"), None)
+
+    assert attacker.zone.name == "GRAVEYARD"
+    assert defender.zone.name == "GRAVEYARD"

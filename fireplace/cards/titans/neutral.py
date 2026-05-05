@@ -28,11 +28,28 @@ class YOG_516t:
 
 
 # YOG_516t2: Induce Insanity - Force each enemy minion to attack a random enemy minion
+class YOG_516_InduceInsanity(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        for attacker in list(player.opponent.field):
+            if attacker.dead or attacker.zone != Zone.PLAY:
+                continue
+            defenders = [
+                minion
+                for minion in player.opponent.field
+                if minion is not attacker and not minion.dead and minion.zone == Zone.PLAY
+            ]
+            if defenders:
+                source.game.queue_actions(
+                    source, [Attack(attacker, source.game.random.choice(defenders))]
+                )
+
+
 class YOG_516t2:
     """Induce Insanity"""
 
-    # 简化：对所有敌方随从造成3点伤害
-    play = Hit(ENEMY_MINIONS, 3)
+    play = YOG_516_InduceInsanity(CONTROLLER)
 
 
 # YOG_516t3: Tentacle Swarm - Fill your hand with 1/1 Chaotic Tendrils
