@@ -242,7 +242,7 @@ class CATA_476:
 
 # CATA_476t: 沙鳞巨龙 (6费 6/6 元素 圣盾)
 class CATA_476t:
-    """Sand Elemental"""
+    """Sandscale Dragon"""
 
     tags = {
         GameTag.DIVINE_SHIELD: True,

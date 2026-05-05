@@ -337,6 +337,24 @@ class AV_206:
     play = Hit(ENEMY_CHARACTERS, 2), Summon(CONTROLLER, "AV_146")
 
 
+class AV_207_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        deathrattles = [
+            Deathrattle(card)
+            for card in player.graveyard
+            if card.type == CardType.MINION and card.has_deathrattle
+        ]
+        return source.game.queue_actions(source, deathrattles)
+
+
+class AV_207:
+    """Xyrella, the Devout"""
+
+    play = AV_207_Play(CONTROLLER)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -520,6 +538,16 @@ class BAR_751:
     """Spawnpool Forager"""
 
     deathrattle = Summon(CONTROLLER, "BAR_751t")
+
+
+BAR_915e = buff(+1, +1)
+
+
+class BAR_915:
+    """Kabal Outfitter"""
+
+    play = Buff(RANDOM(FRIENDLY_MINIONS - SELF), "BAR_915e")
+    deathrattle = Buff(RANDOM(FRIENDLY_MINIONS - SELF), "BAR_915e")
 
 
 class BAR_310:

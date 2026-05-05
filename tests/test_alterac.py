@@ -216,3 +216,33 @@ def test_spawnpool_forager_deathrattle_summons_tinyfin():
     assert len(tinyfins) == 1
     assert tinyfins[0].atk == 1
     assert tinyfins[0].health == 1
+
+
+def test_xyrella_the_devout_triggers_friendly_dead_minion_deathrattles():
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.player1
+    berserker = player.give("BAR_027").play()
+    berserker.destroy()
+    assert player.hero.health == 25
+    assert berserker.zone == Zone.GRAVEYARD
+
+    player.used_mana = 0
+    player.give("AV_207").play()
+
+    assert player.hero.health == 20
+
+
+def test_kabal_outfitter_battlecry_and_deathrattle_buff_other_friendly_minion():
+    game = prepare_empty_game(CardClass.MAGE, CardClass.MAGE)
+    player = game.player1
+    target = player.summon("CS2_231")
+
+    outfitter = player.give("BAR_915").play()
+
+    assert target.atk == 2
+    assert target.health == 2
+
+    outfitter.destroy()
+
+    assert target.atk == 3
+    assert target.health == 3
