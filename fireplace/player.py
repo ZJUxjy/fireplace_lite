@@ -69,6 +69,12 @@ class Player(Entity, TargetableByAuras):
     def _card_costs_health_this_turn(self, card):
         return getattr(card, "costs_health_turn", None) == self.game.turn
 
+    def _has_next_card_opponent_health_cost(self):
+        return getattr(self, "_next_card_costs_opponent_health", False)
+
+    def _opponent_health_cost_amount(self, amount):
+        return min(amount, getattr(self, "_next_card_costs_opponent_health_max", 0) or amount)
+
     @property
     def healing_bonus(self):
         return sum(
@@ -398,6 +404,12 @@ class Player(Entity, TargetableByAuras):
         """
         Returns whether the player can pay the resource cost of a card.
         """
+        if self._has_next_card_opponent_health_cost():
+            health_cost = self._opponent_health_cost_amount(card.cost)
+            return (
+                self.opponent.hero.health > health_cost
+                and self.mana >= card.cost - health_cost
+            )
         if self._card_costs_health_this_turn(card):
             return self.hero.health > card.cost
         if self.spells_cost_health and card.type == CardType.SPELL:
@@ -411,6 +423,16 @@ class Player(Entity, TargetableByAuras):
         Make player pay \a amount mana.
         Returns how much mana is spent, after temporary mana adjustments.
         """
+        if self._has_next_card_opponent_health_cost():
+            health_cost = self._opponent_health_cost_amount(amount)
+            self._next_card_costs_opponent_health = False
+            self._next_card_costs_opponent_health_max = 0
+            self.log("%s pays %i opponent health for %r", self, health_cost, source)
+            self.game.queue_actions(self, [Hit(self.opponent.hero, health_cost)])
+            mana_cost = amount - health_cost
+            if mana_cost:
+                self.game.queue_actions(source, [SpendMana(self, mana_cost)])
+            return amount
         if self._card_costs_health_this_turn(source):
             self.log("%s pays %i health for %r", self, amount, source)
             self.game.queue_actions(self, [Hit(self.hero, amount)])
