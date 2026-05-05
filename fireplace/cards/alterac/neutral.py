@@ -628,6 +628,17 @@ AV_294e = buff(atk=1)
 AV_294e.events = REMOVED_IN_PLAY
 
 
+class AV_296:
+    """Pride Seeker"""
+
+    play = Buff(CONTROLLER, "AV_296e")
+
+
+class AV_296e:
+    update = Refresh(FRIENDLY_HAND + CHOOSE_ONE, {GameTag.COST: -2})
+    events = Play(CONTROLLER, CHOOSE_ONE).on(Destroy(SELF)), OWN_TURN_END.on(Destroy(SELF))
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -934,6 +945,12 @@ class CORE_EX1_534:
     """Savannah Highmane"""
 
     deathrattle = Summon(CONTROLLER, "EX1_534t") * 2
+
+
+class CORE_FP1_007:
+    """Nerubian Egg"""
+
+    deathrattle = Summon(CONTROLLER, "FP1_007t")
 
 
 class BAR_751:

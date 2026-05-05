@@ -72,7 +72,7 @@ class CATA_AzsharaHerald(TargetedAction):
 # CATA_525: 装甲放血纳迦 (3费 3/1)
 # 突袭。战吼：兆示
 class CATA_525:
-    """Armored Bloodsail Naga"""
+    """Armored Bloodletter"""
 
     tags = {GameTag.RUSH: True}
 

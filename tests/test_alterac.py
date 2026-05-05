@@ -723,3 +723,30 @@ def test_core_savannah_highmane_summons_two_hyenas_on_deathrattle():
 
     hyenas = player.field.filter(id="EX1_534t")
     assert len(hyenas) == 2
+
+
+def test_pride_seeker_discounts_next_choose_one_card():
+    game = prepare_empty_game(CardClass.DRUID, CardClass.DRUID)
+    player = game.player1
+    choose_one = player.give("EX1_164")
+    other_card = player.give(WISP)
+
+    player.give("AV_296").play()
+
+    assert choose_one.cost == choose_one.data.cost - 2
+    assert other_card.cost == other_card.data.cost
+
+    choose_one.play(choose="EX1_164a")
+
+    assert not any(buff.id == "AV_296e" for buff in player.buffs)
+
+
+def test_core_nerubian_egg_summons_nerubian_on_deathrattle():
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    player = game.player1
+
+    egg = player.give("CORE_FP1_007").play()
+    egg.destroy()
+
+    nerubians = player.field.filter(id="FP1_007t")
+    assert len(nerubians) == 1
