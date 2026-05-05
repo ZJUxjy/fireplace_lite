@@ -1001,6 +1001,18 @@ class CORE_ICC_067:
     deathrattle = CurrentPlayer(OPPONENT) & Summon(CONTROLLER, "ICC_900t")
 
 
+class BAR_060:
+    """Hog Rancher"""
+
+    play = Summon(CONTROLLER, "BAR_060t")
+
+
+class CORE_ICC_099:
+    """Ticking Abomination"""
+
+    deathrattle = Hit(FRIENDLY_MINIONS, 5)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 

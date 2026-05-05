@@ -1219,3 +1219,29 @@ def test_core_vryghoul_does_not_summon_ghoul_on_own_turn():
     vryghoul.destroy()
 
     assert not player.field.filter(id="ICC_900t")
+
+
+def test_hog_rancher_summons_rushing_hog():
+    game = prepare_empty_game()
+    player = game.player1
+
+    player.give("BAR_060").play()
+
+    hogs = player.field.filter(id="BAR_060t")
+    assert len(hogs) == 1
+    assert hogs[0].atk == 2
+    assert hogs[0].health == 1
+    assert hogs[0].rush
+
+
+def test_core_ticking_abomination_deathrattle_damages_friendly_minions():
+    game = prepare_empty_game()
+    player = game.player1
+    friendly = player.summon("CS2_200")
+    enemy = game.player2.summon("CS2_200")
+
+    abomination = player.give("CORE_ICC_099").play()
+    abomination.destroy()
+
+    assert friendly.damage == 5
+    assert enemy.damage == 0

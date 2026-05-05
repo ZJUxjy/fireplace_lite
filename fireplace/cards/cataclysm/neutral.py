@@ -335,7 +335,7 @@ def _gruul_cost(entity, i):
 # CATA_616: 戈隆巨人 (9费 8/8)
 # 本随从的法力值消耗会随你使用的上一张牌的法力值消耗而降低。
 class CATA_616:
-    """Gruul"""
+    """Gronn Giant"""
 
     class Hand:
         update = Refresh(SELF, {GameTag.COST: _gruul_cost})
