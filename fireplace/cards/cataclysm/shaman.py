@@ -250,7 +250,7 @@ class CATA_567:
 
 
 class CATA_567e:
-    """Ascendance enchantment"""
+    """Ascended"""
 
     tags = {GameTag.DEATHRATTLE: True}
     deathrattle = Summon(CONTROLLER, STORE_CARD)

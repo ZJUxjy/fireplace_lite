@@ -1,6 +1,7 @@
 from ..utils import *
+from fireplace import cards
 from fireplace.utils import CardList
-from hearthstone.enums import SpellSchool
+from hearthstone.enums import CardClass, SpellSchool
 
 
 AV_113_SECRETS = [
@@ -829,6 +830,46 @@ class CORE_ICC_025:
 
     play = Summon(CONTROLLER, "ICC_025t")
     deathrattle = Summon(OPPONENT, "ICC_025t")
+
+
+class AV_403_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def _replacement_pool(self, source):
+        cards.db.initialize()
+        return [
+            card_id
+            for card_id, data in cards.db.items()
+            if data.collectible
+            and data.type == CardType.MINION
+            and CardClass.ROGUE not in data.classes
+            and CardClass.NEUTRAL not in data.classes
+        ]
+
+    def do(self, source, player):
+        pool = self._replacement_pool(source)
+        actions = []
+        for minion in list(player.hand) + list(player.deck):
+            if minion.type != CardType.MINION or not pool:
+                continue
+            replacement = player.card(source.game.random.choice(pool), source=source)
+            actions.append(Morph(minion, replacement).then(Buff(Morph.CARD, "AV_403e2")))
+        return source.game.queue_actions(source, actions)
+
+
+class AV_403:
+    """Cera'thine Fleetrunner"""
+
+    play = AV_403_Play(CONTROLLER)
+
+
+AV_403e2 = buff(cost=-2)
+
+
+class CORE_ICC_027:
+    """Bone Drake"""
+
+    deathrattle = Give(CONTROLLER, RandomDragon())
 
 
 class AV_100_Play(TargetedAction):

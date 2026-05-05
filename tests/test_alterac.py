@@ -977,3 +977,36 @@ def test_core_rattling_rascal_summons_skeleton_for_each_side():
     rascal.destroy()
 
     assert len(opponent.field.filter(id="ICC_025t")) == 1
+
+
+def test_cerathine_replaces_hand_and_deck_minions_with_discounted_other_class_minions():
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    player = game.player1
+    hand_minion = player.give(WISP)
+    deck_minion = player.give("CS2_120")
+    deck_minion.shuffle_into_deck()
+    spell = player.give("CS2_072")
+    spell.shuffle_into_deck()
+
+    player.give("AV_403").play()
+
+    assert hand_minion.morphed.type == CardType.MINION
+    assert CardClass.ROGUE not in hand_minion.morphed.data.classes
+    assert CardClass.NEUTRAL not in hand_minion.morphed.data.classes
+    assert hand_minion.morphed.cost == max(0, hand_minion.morphed.data.cost - 2)
+    assert deck_minion.morphed.type == CardType.MINION
+    assert CardClass.ROGUE not in deck_minion.morphed.data.classes
+    assert CardClass.NEUTRAL not in deck_minion.morphed.data.classes
+    assert spell.zone == Zone.DECK
+    assert spell.morphed is None
+
+
+def test_core_bone_drake_adds_random_dragon_on_deathrattle():
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.player1
+
+    bone_drake = player.give("CORE_ICC_027").play()
+    bone_drake.destroy()
+
+    assert player.hand
+    assert Race.DRAGON in player.hand[0].races
