@@ -1,6 +1,6 @@
 from utils import *
 from fireplace.actions import Hit
-from hearthstone.enums import CardType
+from hearthstone.enums import CardType, Zone
 
 
 ##
@@ -8,39 +8,35 @@ from hearthstone.enums import CardType
 # Destroy an enemy minion; restore health equal to its Health to your hero
 
 def test_runes_of_blood_heals_hero_by_minion_health():
-    """Runes of Blood destroys a minion and heals hero by its health."""
+    """Runes of Blood destroys a minion and grants its Health to the hero."""
     game = prepare_empty_game()
     game.player1.max_mana = 10
     # Summon a 3/5 minion for player2
     target = game.player2.summon("CS2_189")  # Elven Archer 1/1
-    # Damage player1's hero a bit first
-    game.player1.hero.damage = 5
-    hero_hp_before = game.player1.hero.health  # 25
+    hero_max_health_before = game.player1.hero.max_health
 
     primus = game.player1.summon("TTN_737")
     primus.use_titan_ability(0, target=target)  # TTN_737t: Runes of Blood
 
     # Target should be dead
     assert target.zone.name == "GRAVEYARD"
-    # Hero should have gained 1 health (Elven Archer = 1/1, health = 1)
-    assert game.player1.hero.health == hero_hp_before + 1
+    assert game.player1.hero.max_health == hero_max_health_before + 1
 
 
-def test_runes_of_blood_heals_by_larger_minion_health():
-    """Runes of Blood heals hero by the full health of a bigger minion."""
+def test_runes_of_blood_grants_health_to_primus_and_hero():
     game = prepare_empty_game()
     game.player1.max_mana = 10
-    # Summon a minion with 4 health
-    target = game.player2.summon("CS2_222")  # Stormwind Champion 6/6
-    game.player1.hero.damage = 10
-    hero_hp_before = game.player1.hero.health  # 20
-
-    target_health = target.health  # capture before destroying
+    target = game.player2.summon("CS2_222")
+    hero_max_health_before = game.player1.hero.max_health
     primus = game.player1.summon("TTN_737")
+    primus_health_before = primus.max_health
+    target_health = target.health
+
     primus.use_titan_ability(0, target=target)  # TTN_737t: Runes of Blood
 
     assert target.zone.name == "GRAVEYARD"
-    assert game.player1.hero.health == min(game.player1.hero.max_health, hero_hp_before + target_health)
+    assert primus.max_health == primus_health_before + target_health
+    assert game.player1.hero.max_health == hero_max_health_before + target_health
 
 
 ##
@@ -180,6 +176,50 @@ def test_v07tr0n_prime_repeats_ability_on_another_friendly_minion():
     assert ally.atk == ally.data.atk + 2
     assert ally.max_health == ally.data.health + 1
     assert target.damage == 8
+
+
+def test_amanthul_strike_from_history_removes_two_enemy_minions_from_game():
+    game = prepare_empty_game()
+    player = game.player1
+    targets = [player.opponent.summon("CS2_231") for _ in range(2)]
+    amanthul = player.summon("TTN_429")
+
+    amanthul.use_titan_ability(1)
+
+    assert all(target.zone == Zone.REMOVEDFROMGAME for target in targets)
+
+
+def test_primus_runes_of_frost_discounts_and_empowers_next_spell():
+    game = prepare_empty_game()
+    player = game.player1
+    player.max_mana = 10
+    primus = player.summon("TTN_737")
+    spell = player.give("CS2_029")
+    base_cost = spell.data.cost
+
+    primus.use_titan_ability(2)
+    if player.choice:
+        player.choice.choose(player.choice.cards[0])
+    player.used_mana = 0
+
+    assert spell.cost == base_cost - 3
+    spell.play(target=player.opponent.hero)
+    assert player.opponent.hero.damage == 9
+    next_spell = player.give("CS2_024")
+    assert next_spell.cost == next_spell.data.cost
+
+
+def test_primus_runes_of_unholy_summons_two_reborn_taunt_undead():
+    game = prepare_empty_game()
+    player = game.player1
+    primus = player.summon("TTN_737")
+
+    primus.use_titan_ability(1)
+
+    servants = [minion for minion in player.field if minion.id == "TTN_737t2"]
+    assert len(servants) == 2
+    assert all(servant.atk == 3 and servant.max_health == 3 for servant in servants)
+    assert all(servant.taunt and servant.reborn for servant in servants)
 
 
 def test_aggramar_maintain_order_draws_after_hero_attacks():
