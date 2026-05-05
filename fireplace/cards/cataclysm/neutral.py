@@ -234,7 +234,7 @@ class CATA_DeathwingHerald(TargetedAction):
 # CATA_476: 青铜护卫者 (8费 3/7)
 # 在你的回合结束时，召唤一条6/6并具有圣盾的元素巨龙。
 class CATA_476:
-    """Bronze Warden"""
+    """Bronze Keeper"""
 
     # 回合结束时召唤6/6圣盾龙
     events = OWN_TURN_END.on(Summon(CONTROLLER, "CATA_476t"))

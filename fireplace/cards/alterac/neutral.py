@@ -331,6 +331,12 @@ class AV_205:
     play = AV_205_Play(CONTROLLER)
 
 
+class AV_206:
+    """Lightforged Cariel"""
+
+    play = Hit(ENEMY_CHARACTERS, 2), Summon(CONTROLLER, "AV_146")
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -508,6 +514,12 @@ class BAR_535:
     """Thickhide Kodo"""
 
     deathrattle = GainArmor(FRIENDLY_HERO, 5)
+
+
+class BAR_751:
+    """Spawnpool Forager"""
+
+    deathrattle = Summon(CONTROLLER, "BAR_751t")
 
 
 class BAR_310:

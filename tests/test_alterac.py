@@ -188,3 +188,31 @@ def test_thickhide_kodo_deathrattle_gains_armor():
 
     assert player.hero.armor == 5
     assert player.armor_gained_this_game == 5
+
+
+def test_lightforged_cariel_damages_enemies_and_equips_weapon():
+    game = prepare_empty_game(CardClass.PALADIN, CardClass.PALADIN)
+    player = game.player1
+    opponent = player.opponent
+    enemy_minion = opponent.summon("CS2_182")
+
+    player.give("AV_206").play()
+
+    assert opponent.hero.health == 28
+    assert enemy_minion.damage == 2
+    assert player.weapon.id == "AV_146"
+    assert player.weapon.atk == 2
+    assert player.weapon.durability == 5
+
+
+def test_spawnpool_forager_deathrattle_summons_tinyfin():
+    game = prepare_empty_game(CardClass.SHAMAN, CardClass.SHAMAN)
+    player = game.player1
+
+    forager = player.give("BAR_751").play()
+    forager.destroy()
+
+    tinyfins = player.field.filter(id="BAR_751t")
+    assert len(tinyfins) == 1
+    assert tinyfins[0].atk == 1
+    assert tinyfins[0].health == 1
