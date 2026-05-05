@@ -247,6 +247,32 @@ class AV_145:
 AV_145e = buff(+3, +3)
 
 
+class AV_200_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        spells_by_school = {}
+        for card in player.cards_played_this_game:
+            if card.type != CardType.SPELL:
+                continue
+            school = getattr(getattr(card, "data", None), "spell_school", None)
+            if school:
+                spells_by_school.setdefault(school, []).append(card)
+        actions = []
+        for spells in spells_by_school.values():
+            chosen = source.game.random.choice(spells)
+            actions.append(
+                CastSpellTargetsEnemiesIfPossible(player.card(chosen.id, source=source))
+            )
+        return source.game.queue_actions(source, actions)
+
+
+class AV_200:
+    """Magister Dawngrasp"""
+
+    play = AV_200_Play(CONTROLLER)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -376,6 +402,30 @@ class BAR_072:
     """Burning Blade Acolyte"""
 
     deathrattle = Summon(CONTROLLER, "BAR_072t")
+
+
+BAR_324_POISONS = [
+    "CORE_CS2_074",
+    "CORE_ICC_221",
+    "YOP_015",
+    "BAR_318",
+    "BAR_321",
+]
+
+
+class BAR_324_AddPoison(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        poison = source.game.random.choice(BAR_324_POISONS)
+        return source.game.queue_actions(source, [Give(player, poison)])
+
+
+class BAR_324:
+    """Apothecary Helbrim"""
+
+    play = BAR_324_AddPoison(CONTROLLER)
+    deathrattle = BAR_324_AddPoison(CONTROLLER)
 
 
 class BAR_310:

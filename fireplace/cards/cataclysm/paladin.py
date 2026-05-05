@@ -21,7 +21,7 @@ class CATA_432:
 # 2费 2/3 龙
 # 嘲讽。亡语：移除克洛玛图斯的嘲讽
 class CATA_432t1:
-    """Chromatus's Green Head"""
+    """Green Head of Chromatus"""
 
     tags = {
         GameTag.TAUNT: True,
@@ -36,7 +36,7 @@ class CATA_432t1:
 # 2费 2/3 龙
 # 吸血。亡语：移除克洛玛图斯的吸血
 class CATA_432t2:
-    """Chromatus's Red Head"""
+    """Red Head of Chromatus"""
 
     tags = {
         GameTag.LIFESTEAL: True,
@@ -51,7 +51,7 @@ class CATA_432t2:
 # 2费 2/3 龙
 # 扰魔。亡语：移除克洛玛图斯的扰魔
 class CATA_432t3:
-    """Chromatus's Blue Head"""
+    """Blue Head of Chromatus"""
 
     tags = {
         GameTag.ELUSIVE: True,
@@ -65,7 +65,7 @@ class CATA_432t3:
 # 2费 2/3 龙
 # 圣盾。亡语：移除克洛玛图斯的圣盾
 class CATA_432t4:
-    """Chromatus's Bronze Head"""
+    """Bronze Head of Chromatus"""
 
     tags = {
         GameTag.DIVINE_SHIELD: True,
