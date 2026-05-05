@@ -744,7 +744,7 @@ class LiveEntity(PlayableCard, Entity):
     secret_deathrattle = int_property("secret_deathrattle")
     atk = int_property("atk")
     cant_be_damaged = boolean_property("cant_be_damaged")
-    immune_while_attacking = slot_property("immune_while_attacking")
+    immune_while_attacking = boolean_property("immune_while_attacking")
     incoming_damage_multiplier = int_property("incoming_damage_multiplier")
     max_health = int_property("max_health")
     poisonous = boolean_property("poisonous")

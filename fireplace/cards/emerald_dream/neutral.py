@@ -370,10 +370,18 @@ class EDR_889e:
     pass
 
 
-class EDR_940:
-    """Zaqali Flamemancer"""
+class EDR_940_MageEndTurn(TargetedAction):
+    TARGET = ActionArg()
 
-    events = Attack(SELF).on(Damage(ENEMY_MINIONS, 1))
+    def do(self, source, player):
+        wisps = len(player.field.filter(id="EDR_851t"))
+        return source.game.queue_actions(source, [GainArmor(player.hero, 1 + wisps)])
+
+
+class EDR_940:
+    """Merry Moonkin"""
+
+    events = OWN_TURN_END.on(EDR_940_MageEndTurn(CONTROLLER))
 
 
 class EDR_942:
