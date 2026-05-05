@@ -34,6 +34,25 @@ def _kindred_repeats(card):
     return repeats
 
 
+def _collectible_cards(source, predicate):
+    cards = []
+    for card_id, data in db.items():
+        if not data.collectible or (source.game.is_standard and not data.is_standard):
+            continue
+        card = source.controller.card(card_id, source=source)
+        if predicate(card):
+            cards.append(card)
+    if len(cards) < 3 and source.game.is_standard:
+        for card_id, data in db.items():
+            if not data.collectible or data.is_standard:
+                continue
+            card = source.controller.card(card_id, source=source)
+            if predicate(card):
+                cards.append(card)
+    source.game.random.shuffle(cards)
+    return cards
+
+
 class TLC_NeutralSetStats(TargetedAction):
     TARGET = ActionArg()
     ATK = IntArg()
@@ -139,6 +158,85 @@ class TLC_249:
     """Blazing Accretion"""
 
     deathrattle = Hit(RANDOM_ENEMY_CHARACTER, 1) * 2
+
+
+class TLC_107_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        if _kindred(source):
+            return source.game.queue_actions(source, [GiveRush(source)])
+
+
+class TLC_107:
+    """Stormbrewer"""
+
+    play = TLC_107_Play(CONTROLLER)
+    events = Attack(SELF).on(Hit(Attack.DEFENDER, 3))
+
+
+class TLC_109_Choice(Choice):
+    def choose(self, card):
+        if card not in self.cards:
+            raise InvalidAction(
+                "%r is not a valid choice (one of %r)" % (card, self.cards)
+            )
+        self.player.choice = None
+        self.source.game.queue_actions(self.source, [Give(self.player, card)])
+        self.trigger_choice_callback()
+
+
+class TLC_109_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        if not player.deck:
+            return
+        top = player.deck[-1]
+        cards = _collectible_cards(
+            source,
+            lambda card: card.id != top.id and card.rarity == top.rarity,
+        )
+        return source.game.queue_actions(
+            source, [Mill(player), TLC_109_Choice(player, cards[:3])]
+        )
+
+
+class TLC_109:
+    """Relic Miner"""
+
+    play = TLC_109_Play(CONTROLLER)
+
+
+class TLC_110_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        deck_minions = [card for card in player.deck if card.type == CardType.MINION]
+        if not deck_minions:
+            return
+        common = None
+        for card in deck_minions:
+            races = _card_races(card) - {Race.INVALID}
+            if not races:
+                return
+            common = set(races) if common is None else common.intersection(races)
+        if not common:
+            return
+        minions = [
+            card
+            for card in list(player.field) + list(player.hand) + list(player.deck)
+            if card is not source and card.type == CardType.MINION
+        ]
+        return source.game.queue_actions(
+            source, [Buff(card, "TLC_110e", atk=2, max_health=2) for card in minions]
+        )
+
+
+class TLC_110:
+    """City Chief Esho"""
+
+    play = TLC_110_Play(CONTROLLER)
 
 
 class DINO_435_Play(TargetedAction):
@@ -397,6 +495,29 @@ class TLC_250e:
     events = OWN_TURN_BEGIN.on(TLC_250_Clear(OWNER), Destroy(SELF))
 
 
+class TLC_252_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        bone = source.controller.card("TLC_829t", source=source)
+        bone._tlc_bone_atk = target.atk
+        bone._tlc_bone_health = target.max_health
+        return source.game.queue_actions(
+            source, [Destroy(target), Give(source.controller, bone)]
+        )
+
+
+class TLC_252:
+    """Dissolving Ooze"""
+
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_FRIENDLY_TARGET: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+    play = TLC_252_Play(TARGET)
+
+
 class TLC_251:
     """Misty Mountain Hopster"""
 
@@ -518,6 +639,42 @@ class TLC_603:
     deathrattle = TLC_603_Deathrattle(CONTROLLER)
 
 
+class TLC_465_Deathrattle(TargetedAction):
+    TARGET = ActionArg()
+
+    bonuses = ("rush", "taunt", "divine_shield", "windfury", "lifesteal", "poisonous")
+
+    def do(self, source, player):
+        candidates = [minion for minion in player.field if minion is not source]
+        if not candidates:
+            return
+        target = source.game.random.choice(candidates)
+        bonus = source.game.random.choice(self.bonuses)
+        actions = []
+        if bonus == "rush":
+            actions.append(GiveRush(target))
+        elif bonus == "taunt":
+            actions.append(Taunt(target))
+        elif bonus == "divine_shield":
+            actions.append(GiveDivineShield(target))
+        elif bonus == "windfury":
+            actions.append(GiveWindfury(target))
+        elif bonus == "lifesteal":
+            actions.append(GiveLifesteal(target))
+        elif bonus == "poisonous":
+            actions.append(GivePoisonous(target))
+        target.tags[GameTag.DEATHRATTLE] = True
+        target.additional_deathrattles.append((TLC_465_Deathrattle(CONTROLLER),))
+        return source.game.queue_actions(source, actions)
+
+
+class TLC_465:
+    """Stranglevine"""
+
+    tags = {GameTag.DEATHRATTLE: True}
+    deathrattle = TLC_465_Deathrattle(CONTROLLER)
+
+
 class TLC_468:
     """Blob of Tar"""
 
@@ -584,6 +741,80 @@ class TLC_454:
     """Scalhide Kodo"""
 
     play = TLC_454_Play(CONTROLLER)
+
+
+class TLC_829_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        actions = [Destroy(target)]
+        if _kindred(source):
+            actions.append(
+                Buff(source, "TLC_829te2", atk=target.atk, max_health=target.max_health)
+            )
+        return source.game.queue_actions(source, actions)
+
+
+class TLC_829:
+    """Ravenous Devilsaur"""
+
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+    play = TLC_829_Play(TARGET)
+
+
+class TLC_829t_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        return source.game.queue_actions(
+            source,
+            [
+                Buff(
+                    target,
+                    "TLC_829te",
+                    atk=getattr(source, "_tlc_bone_atk", 0),
+                    max_health=getattr(source, "_tlc_bone_health", 0),
+                )
+            ],
+        )
+
+
+class TLC_829t:
+    """Bone"""
+
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+    play = TLC_829t_Play(TARGET)
+
+
+class TLC_831_StealHealth(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, hatchling):
+        others = [minion for minion in hatchling.game.board if minion is not hatchling]
+        actions = []
+        for minion in others:
+            actions.append(Buff(minion, "TLC_831e", max_health=-1))
+        if others:
+            actions.append(Buff(hatchling, "TLC_831e2", max_health=len(others)))
+        return source.game.queue_actions(source, actions)
+
+
+class TLC_831:
+    """Pterrordax Egg"""
+
+    deathrattle = Summon(CONTROLLER, "TLC_831t").then(TLC_831_StealHealth(Summon.CARD))
+
+
+class TLC_831t:
+    """Pterrordax Hatchling"""
+
+    pass
 
 
 class TLC_605:

@@ -363,3 +363,107 @@ def test_questing_assistant_hits_enemy_minion_after_quest_played():
     player.give("TLC_987").play(target=target)
 
     assert target.damage == 3
+
+
+def test_stormbrewer_damages_target_before_attacking_and_kindred_grants_rush():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+    player.give("TLC_468").play()
+    game.end_turn()
+    game.end_turn()
+    stormbrewer = player.give("TLC_107").play()
+    target = player.opponent.summon("TLC_605")
+
+    assert stormbrewer.rush
+    stormbrewer.attack(target)
+
+    assert target.damage >= 3
+
+
+def test_relic_miner_mills_top_card_and_discovers_same_rarity():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+    top = _add_to_deck(player, WISP)[0]
+
+    player.give("TLC_109").play()
+
+    assert top.zone == Zone.REMOVEDFROMGAME
+    assert player.choice
+    assert all(card.rarity == top.rarity for card in player.choice.cards)
+
+
+def test_city_chief_esho_buffs_other_minions_if_deck_minions_share_type():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+    field_minion = player.summon("TLC_469")
+    hand_minion = player.give(WISP)
+    deck_minion = _add_to_deck(player, "TLC_603")[0]
+
+    player.give("TLC_110").play()
+
+    assert (field_minion.atk, field_minion.max_health) == (6, 5)
+    assert (hand_minion.atk, hand_minion.max_health) == (3, 3)
+    assert (deck_minion.atk, deck_minion.max_health) == (3, 4)
+
+
+def test_dissolving_ooze_destroys_friendly_minion_and_gives_bone_buff():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+    target = player.summon("TLC_469")
+    recipient = player.summon(WISP)
+
+    player.give("TLC_252").play(target=target)
+    bone = next(card for card in player.hand if card.id == "TLC_829t")
+    bone.play(target=recipient)
+
+    assert target.zone == Zone.GRAVEYARD
+    assert (recipient.atk, recipient.max_health) == (5, 4)
+
+
+def test_stranglevine_deathrattle_passes_random_bonus_and_deathrattle():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    recipient = player.summon(WISP)
+    vine = player.summon("TLC_465")
+    game.random.choice = lambda options: "taunt" if "taunt" in options else recipient
+
+    vine.destroy()
+
+    assert recipient.taunt
+    assert recipient.has_deathrattle
+    recipient.destroy()
+    assert recipient.zone == Zone.GRAVEYARD
+
+
+def test_ravenous_devilsaur_destroys_minion_and_kindred_gains_stats():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+    player.give("TLC_469").play()
+    target = player.opponent.summon("TLC_454")
+    game.end_turn()
+    game.end_turn()
+
+    devilsaur = player.give("TLC_829").play(target=target)
+
+    assert target.zone == Zone.GRAVEYARD
+    assert (devilsaur.atk, devilsaur.max_health) == (6, 9)
+
+
+def test_pterrordax_egg_summons_hatchling_that_steals_health():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    friendly = player.summon("TLC_469")
+    enemy = player.opponent.summon("TLC_454")
+    egg = player.summon("TLC_831")
+
+    egg.destroy()
+
+    hatchling = next(minion for minion in player.field if minion.id == "TLC_831t")
+    assert (hatchling.atk, hatchling.max_health) == (3, 5)
+    assert friendly.max_health == friendly.data.health - 1
+    assert enemy.max_health == enemy.data.health - 1
