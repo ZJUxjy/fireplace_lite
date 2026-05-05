@@ -98,12 +98,38 @@ class TOY_913:
     play = outcast = deathrattle = Give(CONTROLLER, RandomID(*TOY_913_FIRST_EDITION_DH))
 
 
-# TOY_652: Window Shopper (5费 3/4)
-# 微缩。战吼：发现一个恶魔（简化：不设置属性）
+class TOY_652_AdjustDemon(TargetedAction):
+    TARGET = ActionArg()
+    CARD = ActionArg()
+
+    def get_target_args(self, source, target):
+        chosen = self._args[1].evaluate(source)
+        return [chosen]
+
+    def do(self, source, player, chosen):
+        return source.game.queue_actions(
+            source,
+            [
+                Buff(
+                    chosen,
+                    "TOY_652e",
+                    atk=source.atk - chosen.atk,
+                    max_health=source.max_health - chosen.max_health,
+                ),
+                Buff(chosen, "TOY_652e2", cost=source.cost - chosen.cost),
+                Give(player, chosen),
+            ],
+        )
+
+
+# TOY_652: Window Shopper (5费 6/5)
+# 微缩。战吼：发现一个恶魔，将其属性值与法力值消耗变为与本随从相同
 class TOY_652:
     """Window Shopper"""
 
-    play = Discover(CONTROLLER, RandomMinion(race=Race.DEMON))
+    play = Discover(CONTROLLER, RandomMinion(race=Race.DEMON)).then(
+        TOY_652_AdjustDemon(CONTROLLER, Discover.CARD)
+    )
 
 
 ##

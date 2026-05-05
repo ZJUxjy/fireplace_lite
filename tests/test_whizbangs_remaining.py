@@ -120,7 +120,7 @@ def test_sandbox_scoundrel_cost_reduction():
 
 ##
 # TOY_652: Window Shopper (DemonHunter, 5费)
-# 微缩。战吼：发现一个恶魔（简化）
+# 微缩。战吼：发现一个恶魔，将其属性值与法力值消耗变为与本随从相同
 
 def test_window_shopper_mini_copy():
     """Playing Window Shopper should add TOY_652t to hand."""
@@ -131,20 +131,30 @@ def test_window_shopper_mini_copy():
     shopper.play()
     # Player should have a discover choice or mini in hand
     assert game.player1.choice is not None or any(c.id == "TOY_652t" for c in game.player1.hand)
+    if game.player1.choice is not None:
+        game.player1.choice.choose(game.player1.choice.cards[0])
 
 
 def test_window_shopper_discovers_demon():
-    """Window Shopper battlecry should trigger a Discover of a Demon."""
+    """Window Shopper battlecry should discover a Demon and reshape it."""
     game = prepare_empty_game()
     game.player1.max_mana = 10
     game.player1.used_mana = 0
     shopper = game.player1.give("TOY_652")
     shopper.play()
     assert game.player1.choice is not None
-    # All choices should be Demons
+
     for card in game.player1.choice.cards:
         from hearthstone.enums import Race
         assert card.race == Race.DEMON
+
+    chosen = game.player1.choice.cards[0]
+    game.player1.choice.choose(chosen)
+
+    assert chosen in game.player1.hand
+    assert chosen.atk == shopper.atk
+    assert chosen.max_health == shopper.max_health
+    assert chosen.cost == shopper.cost
 
 
 ##
