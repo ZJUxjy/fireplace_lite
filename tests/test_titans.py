@@ -133,3 +133,48 @@ def test_legion_invasion_does_not_buff_non_demons():
     played_wisp = game.player1.field[-1]
     assert played_wisp.max_health == played_wisp.data.health  # unchanged
     assert played_wisp.taunt is False
+
+
+def test_aggramar_maintain_order_draws_after_hero_attacks():
+    game = prepare_empty_game()
+    player = game.player1
+    player.max_mana = 10
+    player.deck.append(player.card("CS2_189"))
+    aggramar = player.give("TTN_092").play()
+    hand_before = len(player.hand)
+
+    aggramar.use_titan_ability(0)
+
+    assert len(player.hand) == hand_before
+    player.hero.attack(player.opponent.hero)
+    assert len(player.hand) == hand_before + 1
+    assert player.hand[-1].id == "CS2_189"
+
+
+def test_aggramar_commanding_presence_summons_after_hero_attacks():
+    game = prepare_empty_game()
+    player = game.player1
+    player.max_mana = 10
+    aggramar = player.give("TTN_092").play()
+    field_before = len(player.field)
+
+    aggramar.use_titan_ability(1)
+
+    assert len(player.field) == field_before
+    player.hero.attack(player.opponent.hero)
+    assert any(minion.id == "TTN_092e2t" for minion in player.field)
+
+
+def test_aggramar_swift_slash_grants_attack_and_immune_while_attacking():
+    game = prepare_empty_game()
+    player = game.player1
+    player.max_mana = 10
+    target = player.opponent.summon("CS2_222")
+    aggramar = player.give("TTN_092").play()
+    hero_damage_before = player.hero.damage
+
+    aggramar.use_titan_ability(2)
+
+    assert player.hero.atk == 5
+    player.hero.attack(target)
+    assert player.hero.damage == hero_damage_before
