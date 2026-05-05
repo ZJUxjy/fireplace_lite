@@ -99,6 +99,87 @@ def test_card_grader_discovers_from_deck_after_spell_cast_while_held():
     assert deck_card in player.choice.cards
 
 
+def test_card_grader_choice_draws_selected_deck_card():
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    grader = player.give("TOY_054")
+    deck_card = player.card(WISP)
+    deck_card.zone = Zone.DECK
+
+    player.give("GAME_005").play()
+    grader.play()
+    before_draws = player.cards_drawn_this_game
+    player.choice.choose(deck_card)
+
+    assert deck_card in player.hand
+    assert deck_card not in player.deck
+    assert player.cards_drawn_this_game == before_draws + 1
+
+
+def test_sweetened_snowflurry_frost_spells_are_temporary():
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    snowflurry = player.give("TOY_307").play()
+    spells = [card for card in player.hand if card.type == CardType.SPELL]
+
+    assert len(spells) == 2
+    assert all(card.type == CardType.SPELL for card in spells)
+
+    game.end_turn()
+
+    assert all(card not in player.hand for card in spells)
+
+
+def test_nostalgic_initiate_buffs_once_and_stays_in_play():
+    game = prepare_empty_game()
+    player = game.current_player
+    initiate = player.summon("TOY_340")
+
+    player.give("GAME_005").play()
+
+    assert initiate in player.field
+    assert initiate.atk == 4
+    assert initiate.health == 5
+
+    player.give("GAME_005").play()
+
+    assert initiate.atk == 4
+    assert initiate.health == 5
+
+
+def test_nostalgic_clown_deals_four_after_higher_cost_card_played_while_held():
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    clown = player.give("TOY_341")
+    target = player.opponent.summon("CS2_200")
+
+    player.give("CS2_200").play()
+    player.used_mana = 0
+    clown.play(target=target)
+
+    assert target.damage == 4
+
+
+def test_nostalgic_clown_does_not_damage_without_higher_cost_card():
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    clown = player.give("TOY_341")
+    target = player.opponent.summon("CS2_200")
+
+    clown.play(target=target)
+
+    assert target.damage == 0
+
+
 def test_giftwrapped_whelp_buffs_held_dragon_and_itself():
     game = prepare_empty_game()
     player = game.current_player
@@ -198,6 +279,24 @@ def test_observer_of_mysteries_casts_temporary_secrets():
     assert len(player.secrets) == 0
 
 
+def test_multiple_observers_remove_all_temporary_secrets():
+    game = prepare_empty_game(CardClass.MAGE, CardClass.MAGE)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    player.give("TOY_520").play()
+    player.used_mana = 0
+    player.give("TOY_520").play()
+
+    assert len(player.secrets) >= 3
+
+    game.end_turn()
+    game.end_turn()
+
+    assert len(player.secrets) == 0
+
+
 def test_sing_along_buddy_doubles_hero_power():
     game = prepare_empty_game()
     player = game.current_player
@@ -233,6 +332,19 @@ def test_lina_fills_board_with_minions_matching_spell_cost():
     assert lina in player.field
     assert len(player.field) == game.MAX_MINIONS_ON_FIELD
     assert all(card.cost == 0 or card is lina for card in player.field)
+
+
+def test_factory_assemblybot_summons_six_seven_bot_that_attacks_enemy_hero():
+    game = prepare_empty_game()
+    player = game.current_player
+    player.summon("TOY_601")
+
+    game.end_turn()
+
+    bot = player.field.filter(id="TOY_601t2")[0]
+    assert bot.atk == 6
+    assert bot.health == 7
+    assert player.opponent.hero.damage == 6
 
 
 def test_messmaker_deathrattle_damages_all_enemies():
@@ -355,6 +467,18 @@ def test_nesting_golem_resummons_with_minus_one_minus_one():
     assert nested.atk == 3
     assert nested.health == 2
 
+    nested.destroy()
+
+    smaller = player.field[0]
+    assert smaller.id == "TOY_893"
+    assert smaller.atk == 2
+    assert smaller.health == 1
+
+    smaller.destroy()
+
+    assert not player.field.filter(id="TOY_893")
+
+
 
 def test_origami_minions_swap_attack_health_and_stats():
     game = prepare_empty_game()
@@ -417,3 +541,17 @@ def test_joymancer_jepetto_gets_copies_of_played_one_attack_or_health_minions():
 
     assert any(card.id == WISP for card in player.hand)
     assert not any(card.id == "CS2_200" for card in player.hand)
+
+
+def test_replicator_inator_gigantify_adds_gigantic_copy():
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    player.give("MIS_025").play()
+
+    assert any(card.id == "MIS_025t" for card in player.hand)
+    gigantic = player.hand.filter(id="MIS_025t1")[0]
+    assert gigantic.atk == 8
+    assert gigantic.health == 8

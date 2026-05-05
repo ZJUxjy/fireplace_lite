@@ -79,7 +79,7 @@ class TOY_054_DeckChoice(Choice):
                 "%r is not a valid choice (one of %r)" % (card, self.cards)
             )
         self.player.choice = None
-        self.source.game.queue_actions(self.source, [Give(self.player, card)])
+        self.source.game.queue_actions(self.source, [ForceDraw(card)])
         self.trigger_choice_callback()
 
 
@@ -93,6 +93,33 @@ class TOY_054_CardGrader(TargetedAction):
         if len(cards) > 3:
             cards = source.game.random.sample(cards, 3)
         return source.game.queue_actions(source, [TOY_054_DeckChoice(player, cards)])
+
+
+class TOY_340_FirstSpell(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, card):
+        if getattr(card, "_toy_340_triggered", False):
+            return
+        card._toy_340_triggered = True
+        return source.game.queue_actions(source, [Buff(card, "TOY_340e")])
+
+
+class TOY_341_RememberHigherCost(TargetedAction):
+    TARGET = ActionArg()
+    CARD = ActionArg()
+
+    def do(self, source, clown, played):
+        if played.cost > clown.cost:
+            clown._toy_341_higher_cost = True
+
+
+class TOY_341_Damage(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        if getattr(source, "_toy_341_higher_cost", False) and target is not None:
+            return source.game.queue_actions(source, [Hit(target, 4)])
 
 
 class TOY_386_GiftwrappedWhelp(TargetedAction):
@@ -182,7 +209,9 @@ class TOY_520_CastSecrets(TargetedAction):
                 break
             if card_id not in [card.id for card in player.secrets]:
                 cards.append(player.card(card_id, source=source))
-        player._observer_of_mysteries_secrets = cards
+        player._observer_of_mysteries_secrets = (
+            getattr(player, "_observer_of_mysteries_secrets", []) + cards
+        )
         return source.game.queue_actions(
             source, [Summon(player, card) for card in cards]
         )
@@ -286,13 +315,21 @@ class TOY_893_NestingGolem(TargetedAction):
     TARGET = ActionArg()
 
     def do(self, source, golem):
-        if golem.atk <= 1 or golem.health <= 1:
+        atk = golem.atk - 1
+        health = golem.max_health - 1
+        if atk <= 0 or health <= 0:
             return
+        copy = golem.controller.card(golem.id, source=source)
         return source.game.queue_actions(
             source,
             [
-                Summon(golem.controller, golem.id).then(
-                    Buff(Summon.CARD, "TOY_893e", atk=-1, max_health=-1)
+                Summon(golem.controller, copy).then(
+                    Buff(
+                        Summon.CARD,
+                        "TOY_893e",
+                        atk=atk - copy.atk,
+                        max_health=health - copy.max_health,
+                    )
                 )
             ],
         )
@@ -386,6 +423,23 @@ class MIS_025:
     """The Replicator-inator"""
 
     miniaturize_mini = "MIS_025t"
+    play = Give(CONTROLLER, "MIS_025t1")
+    events = Play(CONTROLLER, MINION + (ATK == Attr(SELF, GameTag.ATK))).on(
+        Summon(CONTROLLER, Copy(Play.CARD))
+    )
+
+
+class MIS_025t:
+    """The Replicator-inator"""
+
+    events = Play(CONTROLLER, MINION + (ATK == Attr(SELF, GameTag.ATK))).on(
+        Summon(CONTROLLER, Copy(Play.CARD))
+    )
+
+
+class MIS_025t1:
+    """The Replicator-inator"""
+
     events = Play(CONTROLLER, MINION + (ATK == Attr(SELF, GameTag.ATK))).on(
         Summon(CONTROLLER, Copy(Play.CARD))
     )
@@ -440,7 +494,23 @@ class TOY_307:
     """Sweetened Snowflurry"""
 
     miniaturize_mini = "TOY_307t"
-    play = Give(CONTROLLER, RandomSpell(spell_school=SpellSchool.FROST)) * 2
+    play = (
+        Give(CONTROLLER, RandomSpell(spell_school=SpellSchool.FROST)).then(
+            Buff(Give.CARD, "TOY_307e")
+        )
+        * 2
+    )
+
+
+class TOY_307t:
+    """Sweetened Snowflurry"""
+
+    play = (
+        Give(CONTROLLER, RandomSpell(spell_school=SpellSchool.FROST)).then(
+            Buff(Give.CARD, "TOY_307e")
+        )
+        * 2
+    )
 
 
 class TOY_312:
@@ -459,17 +529,34 @@ class TOY_340:
     """Nostalgic Initiate"""
 
     miniaturize_mini = "TOY_340t1"
-    events = OWN_SPELL_PLAY.on(Buff(SELF, "TOY_340e"), Destroy(SELF))
+    events = OWN_SPELL_PLAY.on(TOY_340_FirstSpell(SELF))
+
+
+class TOY_340t1:
+    """Nostalgic Initiate"""
+
+    events = OWN_SPELL_PLAY.on(TOY_340_FirstSpell(SELF))
 
 
 class TOY_341:
     """Nostalgic Clown"""
 
     miniaturize_mini = "TOY_341t"
+    requirements = {PlayReq.REQ_TARGET_IF_AVAILABLE: 0}
+    play = TOY_341_Damage(TARGET)
 
-    def play(self):
-        if self.controller.hero_power.activations_this_turn >= 1:
-            yield SetTags(SELF, {GameTag.TAUNT: True, GameTag.DIVINE_SHIELD: True})
+    class Hand:
+        events = Play(CONTROLLER).on(TOY_341_RememberHigherCost(SELF, Play.CARD))
+
+
+class TOY_341t:
+    """Nostalgic Clown"""
+
+    requirements = {PlayReq.REQ_TARGET_IF_AVAILABLE: 0}
+    play = TOY_341_Damage(TARGET)
+
+    class Hand:
+        events = Play(CONTROLLER).on(TOY_341_RememberHigherCost(SELF, Play.CARD))
 
 
 class TOY_386:
@@ -539,13 +626,25 @@ class TOY_601:
     """Factory Assemblybot"""
 
     miniaturize_mini = "TOY_601t"
-    events = OWN_TURN_END.on(Summon(CONTROLLER, "TOY_601t"))
+    events = OWN_TURN_END.on(
+        Summon(CONTROLLER, "TOY_601t2").then(
+            Attack(Summon.CARD, RANDOM_ENEMY_CHARACTER)
+        )
+    )
 
 
 class TOY_601t:
-    """Assembly Bot"""
+    """Factory Assemblybot"""
 
-    tags = {GameTag.RUSH: True}
+    events = OWN_TURN_END.on(
+        Summon(CONTROLLER, "TOY_601t2").then(
+            Attack(Summon.CARD, RANDOM_ENEMY_CHARACTER)
+        )
+    )
+
+
+class TOY_601t2:
+    """Copybot"""
 
 
 class TOY_646:
@@ -664,7 +763,6 @@ class TOY_960:
 
 
 MIS_026e = buff()
-TOY_340e = buff(+2, +2)
 TOY_386e = buff()
 TOY_390e = buff(cost=-1)
 TOY_391e = buff()
@@ -673,6 +771,29 @@ TOY_878e = buff()
 TOY_894e = buff()
 TOY_895e = buff()
 TOY_896e = buff()
+
+
+@custom_card
+class TOY_340e:
+    tags = {
+        GameTag.CARDNAME: "Nostalgic",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 2,
+        GameTag.HEALTH: 2,
+    }
+
+
+@custom_card
+class TOY_307e:
+    tags = {
+        GameTag.CARDNAME: "Temporary",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
+
+    class Hand:
+        events = OWN_TURN_END.on(Discard(OWNER))
+
+    events = REMOVED_IN_PLAY
 
 
 @custom_card
