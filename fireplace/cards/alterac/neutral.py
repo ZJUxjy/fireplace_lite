@@ -1062,6 +1062,18 @@ class CORE_ICC_812:
     )
 
 
+class BAR_065:
+    """Venomous Scorpid"""
+
+    play = DISCOVER(RandomSpell())
+
+
+class CORE_ICC_825:
+    """Abominable Bowman"""
+
+    deathrattle = Summon(CONTROLLER, Copy(FRIENDLY + KILLED + BEAST))
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 

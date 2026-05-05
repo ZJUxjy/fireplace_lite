@@ -353,7 +353,7 @@ class CATA_720:
 # CATA_721: 避难的幸存者 (3费 2/3)
 # 战吼：选择一张你的手牌洗入你的牌库。抽一张牌。
 class CATA_721:
-    """Escape Artist"""
+    """Sheltered Survivor"""
 
     # 战吼：洗一张手牌回牌库，抽一张牌
     play = Choice(CONTROLLER, FRIENDLY_HAND - SELF).then(

@@ -1321,3 +1321,29 @@ def test_core_meat_wagon_deathrattle_summons_lower_attack_minion_from_deck():
 
     assert wisp in player.field
     assert ogre in player.deck
+
+
+def test_venomous_scorpid_discovers_spell():
+    game = prepare_empty_game()
+    player = game.player1
+
+    scorpid = player.give("BAR_065").play()
+
+    assert scorpid.poisonous
+    assert player.choice
+    assert len(player.choice.cards) == 3
+    assert all(card.type == CardType.SPELL for card in player.choice.cards)
+
+
+def test_core_abominable_bowman_summons_friendly_dead_beast_copy():
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.player1
+    beast = player.summon("CS2_171")
+    beast.destroy()
+
+    bowman = player.give("CORE_ICC_825").play()
+    bowman.destroy()
+
+    summoned = player.field.filter(id="CS2_171")
+    assert len(summoned) == 1
+    assert summoned[0] is not beast
