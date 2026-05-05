@@ -1971,6 +1971,7 @@ class Shuffle(TargetedAction):
             if len(target.deck) >= target.max_deck_size:
                 log.info("Shuffle(%r) fails because %r's deck is full", card, target)
                 continue
+            target._tlc_shuffle_count = getattr(target, "_tlc_shuffle_count", 0) + 1
             card.zone = Zone.DECK
             target.shuffle_deck()
             source.game.manager.targeted_action(self, source, target, card)
