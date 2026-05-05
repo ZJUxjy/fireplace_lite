@@ -596,7 +596,9 @@ class Play(GameAction):
         summon_action = Summon(player, card)
 
         if card.type == CardType.SPELL and card.twinspell:
-            source.game.queue_actions(card, [Give(player, card.twinspell_copy)])
+            twinspell_copy = card.twinspell_copy
+            if twinspell_copy:
+                source.game.queue_actions(card, [Give(player, twinspell_copy)])
 
         if card.type == CardType.MINION and card.data.tags.get(GameTag.MINIATURIZE):
             mini_id = card.miniaturize_mini_id
@@ -2030,7 +2032,9 @@ class CastSpell(TargetedAction):
         player.choice = None
 
         if card.twinspell:
-            source.game.queue_actions(card, [Give(player, card.twinspell_copy)])
+            twinspell_copy = card.twinspell_copy
+            if twinspell_copy:
+                source.game.queue_actions(card, [Give(player, twinspell_copy)])
         if card.must_choose_one:
             card = source.game.random.choice(card.choose_cards)
         for target in targets:

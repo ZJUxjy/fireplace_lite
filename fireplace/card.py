@@ -1449,8 +1449,13 @@ class Spell(PlayableCard):
 
     @property
     def twinspell_copy(self):
-        if self._twinspell_copy:
-            return cards.db.dbf[self._twinspell_copy]
+        twinspell_copy = getattr(self, "_twinspell_copy", None)
+        if twinspell_copy:
+            return cards.db.dbf[twinspell_copy]
+        if not self.id.endswith("ts"):
+            fallback_id = "%sts" % (self.id)
+            if fallback_id in cards.db:
+                return fallback_id
         return None
 
     @twinspell_copy.setter
