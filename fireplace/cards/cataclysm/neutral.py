@@ -253,7 +253,7 @@ class CATA_476t:
 # CATA_497: 奥卓克希昂 (6费 6/7)
 # 战吼：兆示1。使其余“死亡之翼”卡牌的法力值消耗减少（1）点。
 class CATA_497:
-    """Ysera the Unleashed"""
+    """Ultraxion"""
 
     # 战吼：兆示。使死亡之翼的法力值消耗减少（1）点
     play = (

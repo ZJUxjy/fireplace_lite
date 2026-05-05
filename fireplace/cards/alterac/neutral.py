@@ -572,6 +572,36 @@ class AV_267e:
     max_health = SET(6)
 
 
+class AV_284_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        spells = [card for card in player.deck if card.type == CardType.SPELL]
+        actions = []
+        for spell in spells[-2:]:
+            actions.append(ForceDraw(spell))
+        for spell, stat in zip(spells[-2:], (source.atk, source.health)):
+            actions.append(Buff(spell, "AV_284e", cost=stat - spell.cost))
+        if spells:
+            actions.append(Buff(source, "AV_284e2", atk=spells[-2].cost - source.atk))
+        if len(spells) > 1:
+            actions.append(
+                Buff(source, "AV_284e3", max_health=spells[-1].cost - source.health)
+            )
+        return source.game.queue_actions(source, actions)
+
+
+class AV_284:
+    """Balinda Stonehearth"""
+
+    play = AV_284_Play(CONTROLLER)
+
+
+AV_284e = buff()
+AV_284e2 = buff()
+AV_284e3 = buff()
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -860,6 +890,12 @@ class CORE_EX1_096:
     """Loot Hoarder"""
 
     deathrattle = Draw(CONTROLLER)
+
+
+class CORE_EX1_110:
+    """Cairne Bloodhoof"""
+
+    deathrattle = Summon(CONTROLLER, "EX1_110t")
 
 
 class BAR_751:

@@ -642,3 +642,31 @@ def test_core_loot_hoarder_draws_on_deathrattle():
     hoarder.destroy()
 
     assert drawn.zone == Zone.HAND
+
+
+def test_balinda_stonehearth_draws_two_spells_and_swaps_costs_with_stats():
+    game = prepare_empty_game(CardClass.MAGE, CardClass.MAGE)
+    player = game.player1
+    first_spell = player.give("CS2_024")
+    second_spell = player.give("CS2_029")
+    original_costs = sorted([first_spell.cost, second_spell.cost])
+    first_spell.shuffle_into_deck()
+    second_spell.shuffle_into_deck()
+
+    balinda = player.give("AV_284").play()
+
+    assert first_spell.zone == Zone.HAND
+    assert second_spell.zone == Zone.HAND
+    assert first_spell.cost == 5
+    assert second_spell.cost == 5
+    assert sorted([balinda.atk, balinda.health]) == original_costs
+
+
+def test_core_cairne_bloodhoof_summons_baine_on_deathrattle():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.player1
+
+    cairne = player.give("CORE_EX1_110").play()
+    cairne.destroy()
+
+    assert player.field.filter(id="EX1_110t")
