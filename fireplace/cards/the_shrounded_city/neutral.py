@@ -1045,6 +1045,12 @@ class TLC_247:
     )
 
 
+class TLC_248:
+    """Ultragigasaur"""
+
+    pass
+
+
 class TLC_250_Play(TargetedAction):
     TARGET = ActionArg()
 
