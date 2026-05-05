@@ -3,6 +3,7 @@ from .demonhunter import *
 from .druid import *
 from .hunter import *
 from .mage import *
+from .neutral import *
 from .paladin import *
 from .priest import *
 from .rogue import *

@@ -236,11 +236,15 @@ def test_hiking_trail_discovers_unused_minion_type_and_followup():
     remaining = [card.id for card in player.choice.cards if card is not first]
     player.choice.choose(first)
     _set_mana(player)
+    expected = set(remaining)
     first.play()
+    for _ in range(3):
+        if player.choice and {card.id for card in player.choice.cards} != expected:
+            player.choice.choose(player.choice.cards[0])
 
     assert Race.ELEMENTAL not in _all_races(first)
     assert player.choice
-    assert {card.id for card in player.choice.cards} == set(remaining)
+    assert {card.id for card in player.choice.cards} == expected
 
 
 def test_moltenclaw_summons_two_and_kindred_triggers_their_deathrattles():
