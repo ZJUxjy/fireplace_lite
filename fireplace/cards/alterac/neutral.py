@@ -639,6 +639,14 @@ class AV_296e:
     events = Play(CONTROLLER, CHOOSE_ONE).on(Destroy(SELF)), OWN_TURN_END.on(Destroy(SELF))
 
 
+class AV_308:
+    """Grave Defiler"""
+
+    play = Choice(CONTROLLER, FRIENDLY_HAND + FEL_SPELL).then(
+        Give(CONTROLLER, Copy(Choice.CARD))
+    )
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -951,6 +959,12 @@ class CORE_FP1_007:
     """Nerubian Egg"""
 
     deathrattle = Summon(CONTROLLER, "FP1_007t")
+
+
+class CORE_FP1_011:
+    """Webspinner"""
+
+    deathrattle = Give(CONTROLLER, RandomBeast())
 
 
 class BAR_751:

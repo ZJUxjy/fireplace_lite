@@ -750,3 +750,27 @@ def test_core_nerubian_egg_summons_nerubian_on_deathrattle():
 
     nerubians = player.field.filter(id="FP1_007t")
     assert len(nerubians) == 1
+
+
+def test_grave_defiler_copies_chosen_fel_spell_from_hand():
+    game = prepare_empty_game(CardClass.WARLOCK, CardClass.WARLOCK)
+    player = game.player1
+    fel_spell = player.give("EX1_596")
+
+    player.give("AV_308").play()
+    choice = player.choice
+    choice.choose(fel_spell)
+
+    copies = player.hand.filter(id="EX1_596")
+    assert len(copies) == 2
+
+
+def test_core_webspinner_adds_random_beast_on_deathrattle():
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.player1
+
+    webspinner = player.give("CORE_FP1_011").play()
+    webspinner.destroy()
+
+    assert player.hand
+    assert Race.BEAST in player.hand[0].races

@@ -83,7 +83,7 @@ class CATA_525:
 # CATA_525t: 艾萨拉的士兵 (1费 2/1)
 # 被召唤时，使你的英雄在当回合获得+1攻击力
 class CATA_525t:
-    """Azshara's Mariner"""
+    """Soldier of Azshara"""
 
     play = CATA_151_BuffHeroAttack(CONTROLLER)
 
