@@ -355,6 +355,21 @@ class AV_207:
     play = AV_207_Play(CONTROLLER)
 
 
+class AV_210_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        spell_id = getattr(player, "_last_other_choose_one_spell", None)
+        if spell_id:
+            return source.game.queue_actions(source, [CastSpell(player.card(spell_id, source=source))])
+
+
+class AV_210:
+    """Pathmaker"""
+
+    play = AV_210_Play(CONTROLLER)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -529,6 +544,12 @@ class BAR_330:
 
 
 class BAR_535:
+    """Thickhide Kodo"""
+
+    deathrattle = GainArmor(FRIENDLY_HERO, 5)
+
+
+class CORE_BAR_535:
     """Thickhide Kodo"""
 
     deathrattle = GainArmor(FRIENDLY_HERO, 5)

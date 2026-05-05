@@ -246,3 +246,31 @@ def test_kabal_outfitter_battlecry_and_deathrattle_buff_other_friendly_minion():
 
     assert target.atk == 3
     assert target.health == 3
+
+
+def test_pathmaker_casts_other_choice_from_last_choose_one_spell():
+    game = prepare_empty_game(CardClass.DRUID, CardClass.DRUID)
+    player = game.player1
+    drawn = player.give("CS2_231")
+    drawn.shuffle_into_deck()
+
+    nourish = player.give("EX1_164")
+    nourish.play(choose="EX1_164a")
+    assert player.max_mana == 10
+    assert drawn.zone == Zone.DECK
+
+    player.used_mana = 0
+    player.give("AV_210").play()
+
+    assert drawn.zone == Zone.HAND
+
+
+def test_core_thickhide_kodo_deathrattle_gains_armor():
+    game = prepare_empty_game(CardClass.DRUID, CardClass.DRUID)
+    player = game.player1
+
+    kodo = player.give("CORE_BAR_535").play()
+    kodo.destroy()
+
+    assert player.hero.armor == 5
+    assert player.armor_gained_this_game == 5

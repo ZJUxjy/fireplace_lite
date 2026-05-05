@@ -185,7 +185,7 @@ class CATA_478e:
 # 2费 法术
 # 选择你手牌中的一张随从牌，使其获得+2/+2
 class CATA_477:
-    """Hall of the Dragonflight"""
+    """Chamber of Aspects"""
 
     activate = Choice(CONTROLLER, FRIENDLY_HAND + MINION).then(
         Buff(Choice.CARD, "CATA_477e")

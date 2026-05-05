@@ -599,6 +599,11 @@ class Play(GameAction):
         card.target = target
         card._summon_index = index
 
+        if choose and card.type == CardType.SPELL and card.must_choose_one:
+            other_choices = [choice for choice in card.choose_cards if choice is not choose]
+            if other_choices:
+                player._last_other_choose_one_spell = other_choices[0].id
+
         battlecry_card = choose or card
         # We check whether the battlecry will trigger, before the card.zone changes
         if battlecry_card.battlecry_requires_target() and not target:
