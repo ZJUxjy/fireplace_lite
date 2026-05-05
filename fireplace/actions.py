@@ -85,6 +85,33 @@ def _recombine_shattered_cards(player):
     return None
 
 
+def _after_discover_choice(choice, card, other_options=None):
+    player = choice.player
+    source = choice.source
+    player._tlc_discovered_turn = source.game.turn
+
+    actions = []
+    for quest in list(player.secrets.filter(id="TLC_460")):
+        actions.append(AddProgress(quest, card))
+    for vault_breaker in list(player.field.filter(id="TLC_483")):
+        actions.append(Buff(card, "TLC_483e"))
+    if actions:
+        source.game.queue_actions(source, actions)
+
+    weapon = player.weapon
+    if not weapon or weapon.id != "TLC_460t":
+        return
+    for other in [other for other in choice.cards if other is not card]:
+        if other_options:
+            source.game.queue_actions(source, other_options(other))
+            continue
+        for action in getattr(choice, "_callback", []):
+            source.game.trigger(source, [action], [choice.target, choice.cards, other])
+    weapon.damage += 1
+    if weapon.durability <= 0:
+        source.game.queue_actions(source, [Destroy(weapon)])
+
+
 def _update_shatter_hand(player, card=None):
     split_cards = _split_shatter_card(card) if card is not None else None
     recombined = []
@@ -1343,6 +1370,7 @@ class Discover(TargetedAction):
             self.source.game.trigger(
                 self.source, [action], [self.target, self.cards, card]
             )
+        _after_discover_choice(self, card)
         self.callback = self._callback
         self.trigger_choice_callback()
 
