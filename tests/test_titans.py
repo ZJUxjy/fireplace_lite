@@ -100,39 +100,38 @@ def test_sharghans_wrath_draws_overload_cards():
 
 ##
 # TTN_960t4: Legion Invasion!
-# Your future Demons get +2 Health and Taunt
+# Future Demons summoned from the Twisting Nether have +2 Health and Taunt
 
-def test_legion_invasion_future_demons_get_buff():
-    """Legion Invasion gives +2 Health and Taunt to future demons played."""
+def test_legion_invasion_buffs_future_portal_demons():
     game = prepare_empty_game()
-    game.player1.max_mana = 10
-    sargeras = game.player1.summon("TTN_960")
+    player = game.player1
+    player.max_mana = 10
+    player.summon("TTN_960t")
+    sargeras = player.summon("TTN_960")
     sargeras.use_titan_ability(2)  # TTN_960t4: Legion Invasion!
 
-    # Play a demon after Legion Invasion — Wrathguard AT_026 (2/3 Demon)
-    demon = game.player1.give("AT_026")
-    base_health = demon.data.health  # 3
+    game.end_turn()
+
+    demons = [minion for minion in player.field if minion.id == "TTN_960t6"]
+    assert len(demons) == 2
+    assert all(demon.max_health == demon.data.health + 2 for demon in demons)
+    assert all(demon.taunt for demon in demons)
+
+
+def test_legion_invasion_does_not_buff_demons_played_from_hand():
+    game = prepare_empty_game()
+    player = game.player1
+    player.max_mana = 10
+    sargeras = player.summon("TTN_960")
+    sargeras.use_titan_ability(2)  # TTN_960t4: Legion Invasion!
+
+    demon = player.give("AT_026")
+    base_health = demon.data.health
     demon.play()
 
-    # The demon should have +2 health and Taunt
-    played_demon = game.player1.field[-1]
-    assert played_demon.max_health == base_health + 2
-    assert played_demon.taunt is True
-
-
-def test_legion_invasion_does_not_buff_non_demons():
-    """Legion Invasion does not buff non-demon minions."""
-    game = prepare_empty_game()
-    game.player1.max_mana = 10
-    sargeras = game.player1.summon("TTN_960")
-    sargeras.use_titan_ability(2)  # TTN_960t4: Legion Invasion!
-
-    # Play a non-demon — Wisp (CS2_231) 1/1
-    wisp = game.player1.give("CS2_231")
-    wisp.play()
-    played_wisp = game.player1.field[-1]
-    assert played_wisp.max_health == played_wisp.data.health  # unchanged
-    assert played_wisp.taunt is False
+    played_demon = player.field[-1]
+    assert played_demon.max_health == base_health
+    assert played_demon.taunt is False
 
 
 def test_aggramar_maintain_order_draws_after_hero_attacks():
