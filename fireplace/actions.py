@@ -1482,6 +1482,7 @@ class GainArmor(TargetedAction):
 
     def do(self, source, target, amount):
         target.armor += amount
+        target.controller.armor_gained_this_game += amount
         source.game.manager.targeted_action(self, source, target, amount)
         self.broadcast(source, EventListener.ON, target, amount)
 

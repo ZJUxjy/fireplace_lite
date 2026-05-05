@@ -1,4 +1,5 @@
 from utils import *
+from fireplace.actions import GainArmor
 
 
 def test_popsicooler_deathrattle_freezes_two_enemy_minions():
@@ -30,3 +31,17 @@ def test_humongous_owl_deathrattle_hits_random_enemy():
     owl.destroy()
 
     assert game.player2.hero.health == 22
+
+
+def test_captain_galvangar_checks_armor_gained_this_game():
+    game = prepare_empty_game()
+    player = game.player1
+    game.cheat_action(player.hero, [GainArmor(player.hero, 15)])
+
+    galvangar = player.give("AV_145").play()
+
+    assert player.hero.armor == 15
+    assert player.armor_gained_this_game == 15
+    assert galvangar.atk == 9
+    assert galvangar.health == 9
+    assert galvangar.charge

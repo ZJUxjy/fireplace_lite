@@ -235,6 +235,18 @@ class AV_143:
     deathrattle = AV_143_Deathrattle(CONTROLLER)
 
 
+class AV_145:
+    """Captain Galvangar"""
+
+    play = (Attr(CONTROLLER, "armor_gained_this_game") >= 15) & (
+        Buff(SELF, "AV_145e"),
+        GiveCharge(SELF),
+    )
+
+
+AV_145e = buff(+3, +3)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -364,6 +376,12 @@ class BAR_072:
     """Burning Blade Acolyte"""
 
     deathrattle = Summon(CONTROLLER, "BAR_072t")
+
+
+class BAR_310:
+    """Lightshower Elemental"""
+
+    deathrattle = Heal(FRIENDLY_CHARACTERS, 8)
 
 
 class BAR_026:

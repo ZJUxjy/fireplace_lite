@@ -106,7 +106,7 @@ class CATA_304:
 # CATA_305: "盛怒主母" (4费 3/3 恶魔)
 # 在你的回合结束时，如果本随从具有所有生命值，获得+3生命值。
 class CATA_305:
-    """Mother of Fury"""
+    """Incensed Matriarch"""
 
     # 在回合结束时，如果本随从具有所有生命值，获得+3生命值
     events = OWN_TURN_END.on(
