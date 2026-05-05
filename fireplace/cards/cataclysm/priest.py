@@ -7,7 +7,7 @@ from ..utils import *
 # CATA_216: "净化祭司" (4费 4/5)
 # 战吼：在本局对战中，你的治疗效果恢复的生命值增加2点
 class CATA_216:
-    """Sanctified Priest"""
+    """Cleansing Cleric"""
 
     # 战吼：在本局对战中，你的治疗效果恢复的生命值增加2点
     # 玩家级增益由 Heal action 在治疗结算时读取。

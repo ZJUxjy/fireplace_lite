@@ -121,6 +121,12 @@ class AV_125:
 AV_125e = buff(+2, +2)
 
 
+class AV_126:
+    """Bunker Sergeant"""
+
+    play = (Count(ENEMY_MINIONS) >= 2) & Hit(ENEMY_MINIONS, 1)
+
+
 class AV_130:
     """Legionnaire"""
 
@@ -249,3 +255,9 @@ class AV_337:
     """Mountain Bear"""
 
     deathrattle = Summon(CONTROLLER, "AV_337t") * 2
+
+
+class AV_341:
+    """Cavalry Horn"""
+
+    deathrattle = Summon(CONTROLLER, LOWEST_COST(FRIENDLY_HAND + MINION))
