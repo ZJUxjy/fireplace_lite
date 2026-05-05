@@ -213,7 +213,7 @@ class CATA_213_BuffDeck(TargetedAction):
 
 
 class CATA_213:
-    """Veranus"""
+    """Vyranoth"""
 
     play = CATA_213_BuffDeck(CONTROLLER)
 

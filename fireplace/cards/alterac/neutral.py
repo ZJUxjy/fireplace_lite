@@ -112,6 +112,15 @@ class AV_115e:
     )
 
 
+class AV_125:
+    """Tower Sergeant"""
+
+    play = (Count(FRIENDLY_MINIONS - SELF) >= 2) & Buff(SELF, "AV_125e")
+
+
+AV_125e = buff(+2, +2)
+
+
 class AV_130:
     """Legionnaire"""
 
@@ -234,3 +243,9 @@ class AV_334:
 class AV_334e:
     events = Play(CONTROLLER, BEAST).on(Destroy(SELF))
     update = Refresh(FRIENDLY_HAND + BEAST, {GameTag.COST: -2})
+
+
+class AV_337:
+    """Mountain Bear"""
+
+    deathrattle = Summon(CONTROLLER, "AV_337t") * 2
