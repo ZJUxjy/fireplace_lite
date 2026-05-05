@@ -166,6 +166,22 @@ def test_argus_grants_positional_rush_and_lifesteal_as_aura():
     assert left.lifesteal is True
 
 
+def test_v07tr0n_prime_repeats_ability_on_another_friendly_minion():
+    game = prepare_empty_game()
+    player = game.player1
+    ally = player.summon("CS2_231")
+    target = player.opponent.hero
+    prime = player.summon("TTN_721")
+
+    prime.use_titan_ability(0)
+
+    assert prime.atk == prime.data.atk + 2
+    assert prime.max_health == prime.data.health + 1
+    assert ally.atk == ally.data.atk + 2
+    assert ally.max_health == ally.data.health + 1
+    assert target.damage == 8
+
+
 def test_aggramar_maintain_order_draws_after_hero_attacks():
     game = prepare_empty_game()
     player = game.player1
