@@ -75,3 +75,29 @@ def test_apothecary_helbrim_adds_random_poison_twice():
 
     assert len(player.hand) == 2
     assert all("Poison" in card.data.name for card in player.hand)
+
+
+def test_rokkara_the_valorous_equips_unstoppable_force():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.player1
+
+    player.give("AV_202").play()
+
+    assert player.weapon.id == "AV_202t2"
+    assert player.weapon.atk == 5
+    assert player.weapon.durability == 2
+
+
+def test_razorboar_summons_cheap_deathrattle_minion_from_hand():
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.player1
+    player.give("BAR_325")
+    cheap_deathrattle = player.give("BAR_026")
+    player.give("CS2_142")
+
+    razorboar = player.hand[0].play()
+    razorboar.destroy()
+
+    assert cheap_deathrattle.zone == Zone.PLAY
+    assert cheap_deathrattle in player.field
+    assert all(card.id != "CS2_142" for card in player.field)

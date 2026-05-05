@@ -273,6 +273,12 @@ class AV_200:
     play = AV_200_Play(CONTROLLER)
 
 
+class AV_202:
+    """Rokara, the Valorous"""
+
+    play = Summon(CONTROLLER, "AV_202t2")
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -426,6 +432,12 @@ class BAR_324:
 
     play = BAR_324_AddPoison(CONTROLLER)
     deathrattle = BAR_324_AddPoison(CONTROLLER)
+
+
+class BAR_325:
+    """Razorboar"""
+
+    deathrattle = Summon(CONTROLLER, RANDOM(FRIENDLY_HAND + DEATHRATTLE + (COST <= 3)))
 
 
 class BAR_310:

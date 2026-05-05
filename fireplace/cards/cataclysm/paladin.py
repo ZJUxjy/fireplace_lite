@@ -79,7 +79,7 @@ class CATA_432t4:
 # 2费 2/2 武器
 # 亡语：随机触发一个友方随从的回合结束效果
 class CATA_472:
-    """Inspiring Hammer"""
+    """Inspiring Maul"""
 
     deathrattle = Activate(RANDOM(FRIENDLY_MINIONS))
 
