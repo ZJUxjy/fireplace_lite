@@ -1347,3 +1347,29 @@ def test_core_abominable_bowman_summons_friendly_dead_beast_copy():
     summoned = player.field.filter(id="CS2_171")
     assert len(summoned) == 1
     assert summoned[0] is not beast
+
+
+def test_injured_marauder_damages_itself():
+    game = prepare_empty_game()
+    player = game.player1
+
+    marauder = player.give("BAR_069").play()
+
+    assert marauder.taunt
+    assert marauder.damage == 6
+    assert marauder.health == 4
+
+
+def test_core_hadronox_summons_friendly_dead_taunt_minions():
+    game = prepare_empty_game(CardClass.DRUID, CardClass.DRUID)
+    player = game.player1
+    taunt = player.summon(GOLDSHIRE_FOOTMAN)
+    non_taunt = player.summon(WISP)
+    taunt.destroy()
+    non_taunt.destroy()
+
+    hadronox = player.give("CORE_ICC_835").play()
+    hadronox.destroy()
+
+    assert len(player.field.filter(id=GOLDSHIRE_FOOTMAN)) == 1
+    assert not player.field.filter(id=WISP)

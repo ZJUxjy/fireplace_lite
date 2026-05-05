@@ -1074,6 +1074,18 @@ class CORE_ICC_825:
     deathrattle = Summon(CONTROLLER, Copy(FRIENDLY + KILLED + BEAST))
 
 
+class BAR_069:
+    """Injured Marauder"""
+
+    play = Hit(SELF, 6)
+
+
+class CORE_ICC_835:
+    """Hadronox"""
+
+    deathrattle = Summon(CONTROLLER, Copy(FRIENDLY + KILLED + TAUNT))
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 

@@ -364,7 +364,7 @@ class CATA_721:
 # CATA_722: 末世特使 (5费 5/4 嘲讽)
 # 嘲讽。战吼：兆示1。
 class CATA_722:
-    """Fearsome Doomkin"""
+    """Envoy of the End"""
 
     tags = {GameTag.TAUNT: True}
 
