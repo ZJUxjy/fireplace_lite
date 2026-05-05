@@ -884,6 +884,8 @@ class Character(LiveEntity):
 
     @property
     def attackable(self):
+        if self.tags.get(GameTag.UNTOUCHABLE) or self.data.tags.get(GameTag.UNTOUCHABLE):
+            return False
         return not self.immune
 
     @property
@@ -1350,6 +1352,39 @@ class Minion(Character):
         body_actions = self.get_actions("ability_used")
         if body_actions:
             self.game.trigger(self, body_actions, event_args=None)
+
+    def is_usable(self):
+        interactable_object = getattr(GameTag, "INTERACTABLE_OBJECT", 4089)
+        if not (
+            self.tags.get(interactable_object)
+            or self.tags.get(4089)
+            or self.data.tags.get(interactable_object)
+            or self.data.tags.get(4089)
+        ):
+            return False
+        if self.controller.choice:
+            return False
+        if self.zone != Zone.PLAY:
+            return False
+        if not self.controller.current_player:
+            return False
+        if getattr(self, "_interactable_used_turn", None) == self.game.turn:
+            return False
+        if self.dead:
+            return False
+        return bool(self.get_actions("activate"))
+
+    def use(self, target=None, choose=None):
+        if choose:
+            raise InvalidAction("%r cannot be used with choice %r" % (self, choose))
+        if not self.is_usable():
+            raise InvalidAction("%r can't be used." % (self))
+
+        self.target = target
+        ret = self.game.cheat_action(self, [actions.PlayHeroPower(self, target)])
+        self.target = None
+        self._interactable_used_turn = self.game.turn
+        return ret
 
     def silence(self):
         return self.game.cheat_action(self, [actions.Silence(self)])

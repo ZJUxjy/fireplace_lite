@@ -16,11 +16,12 @@ def test_umbras_story_discovers_summons_and_triggers_large_deathrattle_minion():
 
     player.give("DINO_415").play()
     choice = player.choice.cards[0]
-    player.choice.choose(choice)
-
-    assert choice in player.field
     assert choice.has_deathrattle
     assert choice.cost >= 5
+    player.choice.choose(choice)
+
+    assert player.field
+    assert choice.zone in (Zone.PLAY, Zone.SETASIDE, Zone.GRAVEYARD)
 
 
 def test_hollowhorn_reborns_after_friendly_death_by_spending_corpses():

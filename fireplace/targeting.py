@@ -2,7 +2,7 @@
 Targeting logic
 """
 
-from hearthstone.enums import CardType, Rarity
+from hearthstone.enums import CardType, GameTag, Rarity
 
 from .enums import PlayReq
 
@@ -41,6 +41,8 @@ def is_valid_target(self, target, requirements=None):
         return False
 
     if target.type == CardType.MINION:
+        if target.tags.get(GameTag.UNTOUCHABLE) or target.data.tags.get(GameTag.UNTOUCHABLE):
+            return False
         if target.dormant:
             return False
         if target.dead:

@@ -67,6 +67,8 @@ class Player(Entity, TargetableByAuras):
         return not max_cost or card.cost <= max_cost
 
     def _card_costs_health_this_turn(self, card):
+        if getattr(card, "_costs_health", False):
+            return True
         return getattr(card, "costs_health_turn", None) == self.game.turn
 
     def _has_next_card_opponent_health_cost(self):
