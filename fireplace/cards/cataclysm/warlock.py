@@ -141,7 +141,7 @@ class CATA_498e:
 # CATA_499: 助祭耗材 (3费 2/3)
 # 当你使用或弃掉本牌时，随机召唤两个法力值消耗为（1）的随从
 class CATA_499:
-    """Sacrificial Summoner"""
+    """Disposable Acolytes"""
 
     # 战吼（使用时）：召唤两个1费随从
     play = Summon(CONTROLLER, RandomMinion(cost=1)) * 2

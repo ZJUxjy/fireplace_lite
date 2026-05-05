@@ -618,6 +618,16 @@ class AV_286:
     play = Find(FRIENDLY_HAND + FEL_SPELL) & CastSpell(HIGHEST_COST(FRIENDLY_HAND + FEL_SPELL))
 
 
+class AV_294:
+    """Clawfury Adept"""
+
+    play = Buff(FRIENDLY_CHARACTERS - SELF, "AV_294e")
+
+
+AV_294e = buff(atk=1)
+AV_294e.events = REMOVED_IN_PLAY
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -918,6 +928,12 @@ class CORE_EX1_383:
     """Tirion Fordring"""
 
     deathrattle = Summon(CONTROLLER, "EX1_383t")
+
+
+class CORE_EX1_534:
+    """Savannah Highmane"""
+
+    deathrattle = Summon(CONTROLLER, "EX1_534t") * 2
 
 
 class BAR_751:

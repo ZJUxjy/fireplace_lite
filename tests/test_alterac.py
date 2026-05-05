@@ -694,3 +694,32 @@ def test_core_tirion_fordring_equips_ashbringer_on_deathrattle():
     assert player.weapon.id == "EX1_383t"
     assert player.weapon.atk == 5
     assert player.weapon.durability == 3
+
+
+def test_clawfury_adept_gives_other_friendly_characters_attack_this_turn():
+    game = prepare_empty_game(CardClass.DRUID, CardClass.DRUID)
+    player = game.player1
+    minion = player.summon(WISP)
+    base_hero_atk = player.hero.atk
+
+    adept = player.give("AV_294").play()
+
+    assert player.hero.atk == base_hero_atk + 1
+    assert minion.atk == 2
+    assert adept.atk == 2
+
+    game.end_turn()
+
+    assert player.hero.atk == base_hero_atk
+    assert minion.atk == 1
+
+
+def test_core_savannah_highmane_summons_two_hyenas_on_deathrattle():
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.player1
+
+    highmane = player.give("CORE_EX1_534").play()
+    highmane.destroy()
+
+    hyenas = player.field.filter(id="EX1_534t")
+    assert len(hyenas) == 2
