@@ -415,6 +415,15 @@ class AV_255:
     play = Freeze(ALL_MINIONS - SELF)
 
 
+class AV_256:
+    """Reflecto Engineer"""
+
+    play = Buff((FRIENDLY_HAND | ENEMY_HAND) + MINION, "AV_256e")
+
+
+AV_256e = AttackHealthSwapBuff()
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -649,6 +658,17 @@ class CORE_CS3_003:
 
     play = CORE_CS3_003_Jail(CONTROLLER)
     deathrattle = CORE_CS3_003_Return(CONTROLLER)
+
+
+class CORE_DMF_067:
+    """Prize Vendor"""
+
+    play = Draw(CONTROLLER), Draw(OPPONENT)
+    deathrattle = Draw(CONTROLLER), Draw(OPPONENT)
+
+
+class DMF_067(CORE_DMF_067):
+    """Prize Vendor"""
 
 
 class BAR_751:

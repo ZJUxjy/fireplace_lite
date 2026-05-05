@@ -414,3 +414,44 @@ def test_core_felsoul_jailer_ignores_opponent_hand_without_minions():
     assert spell.zone == Zone.HAND
     assert len(opponent.hand) == 2
     assert all(card.type != CardType.MINION for card in opponent.hand)
+
+
+def test_reflecto_engineer_swaps_attack_and_health_of_hand_minions():
+    game = prepare_empty_game()
+    player = game.player1
+    opponent = game.player2
+    friendly_ogre = player.give("CS2_200")
+    friendly_spell = player.give(FIREBALL)
+    enemy_crocolisk = opponent.give("CS2_120")
+    board_minion = player.summon(WISP)
+
+    player.give("AV_256").play()
+
+    assert (friendly_ogre.atk, friendly_ogre.health) == (7, 6)
+    assert friendly_spell.cost == 4
+    assert (enemy_crocolisk.atk, enemy_crocolisk.health) == (3, 2)
+    assert (board_minion.atk, board_minion.health) == (1, 1)
+
+
+def test_core_prize_vendor_draws_for_both_players_on_play_and_deathrattle():
+    game = prepare_empty_game()
+    player = game.player1
+    opponent = game.player2
+    player_card_1 = player.give(WISP)
+    player_card_1.shuffle_into_deck()
+    player_card_2 = player.give("CS2_120")
+    player_card_2.shuffle_into_deck()
+    opponent_card_1 = opponent.give(WISP)
+    opponent_card_1.shuffle_into_deck()
+    opponent_card_2 = opponent.give("CS2_120")
+    opponent_card_2.shuffle_into_deck()
+
+    vendor = player.give("CORE_DMF_067").play()
+
+    assert len(player.hand) == 1
+    assert len(opponent.hand) == 2
+
+    vendor.destroy()
+
+    assert len(player.hand) == 2
+    assert len(opponent.hand) == 3

@@ -235,7 +235,7 @@ class CATA_479t3:
 # 3费 法术
 # 你的随从的回合结束效果会触发两次。持续3回合
 class CATA_480:
-    """Sandwind Aura"""
+    """Sandfury Aura"""
 
     def play(self):
         turns = 3 + getattr(self, "_aura_duration_bonus", 0)
@@ -262,7 +262,7 @@ class CATA_480e:
         return None
 
     tags = {
-        GameTag.CARDNAME: "Sandwind Aura",
+        GameTag.CARDNAME: "Sandfury Aura",
         GameTag.CARDTYPE: CardType.ENCHANTMENT,
     }
     update = Refresh(CONTROLLER, {enums.MINION_EXTRA_END_TURN_EFFECT: True})
