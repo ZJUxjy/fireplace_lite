@@ -799,3 +799,30 @@ def test_core_voidcaller_summons_demon_from_hand_on_deathrattle():
 
     assert demon.zone == Zone.PLAY
     assert demon in player.field
+
+
+def test_hollow_abomination_honorable_kill_gains_minion_attack():
+    game = prepare_empty_game(CardClass.WARLOCK, CardClass.WARLOCK)
+    player = game.player1
+    enemy = game.player2
+    dying_minion = enemy.summon(WISP)
+    surviving_minion = enemy.summon("CS2_120")
+
+    abomination = player.give("AV_313").play()
+
+    assert dying_minion.dead
+    assert surviving_minion.health == 2
+    assert abomination.atk == 3
+
+
+def test_core_woodcutters_axe_buffs_random_friendly_minion_on_deathrattle():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.player1
+    minion = player.summon(WISP)
+
+    weapon = player.give("CORE_GIL_653").play()
+    weapon.destroy()
+
+    assert minion.atk == 3
+    assert minion.health == 2
+    assert not minion.rush

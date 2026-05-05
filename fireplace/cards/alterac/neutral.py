@@ -675,6 +675,47 @@ class AV_312:
     play = AV_312_Play(TARGET)
 
 
+class AV_313_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        honorable_targets = [
+            (minion, minion.atk)
+            for minion in player.opponent.field
+            if minion.health == 1
+        ]
+        ret = source.game.queue_actions(source, [Hit(ENEMY_MINIONS, 1)])
+        attack_gained = sum(atk for minion, atk in honorable_targets if minion.dead)
+        if attack_gained:
+            source.game.queue_actions(source, [Buff(source, "AV_313e", atk=attack_gained)])
+        return ret
+
+
+class AV_313:
+    """Hollow Abomination"""
+
+    play = AV_313_Play(CONTROLLER)
+
+
+AV_313e = buff()
+
+
+class CORE_GIL_653:
+    """Woodcutter's Axe"""
+
+    deathrattle = Buff(RANDOM_FRIENDLY_MINION, "CORE_GIL_653e")
+
+
+@custom_card
+class CORE_GIL_653e:
+    tags = {
+        GameTag.CARDNAME: "Woodcutter's Axe",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 2,
+        GameTag.HEALTH: 1,
+    }
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 

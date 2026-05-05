@@ -98,7 +98,7 @@ class CATA_527_Reopen(TargetedAction):
 # CATA_527: 奈瑟匹拉，蒙难古灵 (3费 地标)
 # 造成1点伤害。在你施放一个邪能法术后，重新开启。亡语：召唤奈瑟匹拉，脱困古灵
 class CATA_527:
-    """Naga, the Dissenter"""
+    """Nespirah, Enthralled"""
 
     tags = {GameTag.DEATHRATTLE: True}
 
