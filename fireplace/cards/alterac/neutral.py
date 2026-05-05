@@ -602,6 +602,22 @@ AV_284e2 = buff()
 AV_284e3 = buff()
 
 
+FEL_SPELL = SPELL + FuncSelector(
+    lambda entities, source: [
+        entity
+        for entity in entities
+        if getattr(getattr(entity, "data", None), "spell_school", None)
+        == SpellSchool.FEL
+    ]
+)
+
+
+class AV_286:
+    """Felwalker"""
+
+    play = Find(FRIENDLY_HAND + FEL_SPELL) & CastSpell(HIGHEST_COST(FRIENDLY_HAND + FEL_SPELL))
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -896,6 +912,12 @@ class CORE_EX1_110:
     """Cairne Bloodhoof"""
 
     deathrattle = Summon(CONTROLLER, "EX1_110t")
+
+
+class CORE_EX1_383:
+    """Tirion Fordring"""
+
+    deathrattle = Summon(CONTROLLER, "EX1_383t")
 
 
 class BAR_751:

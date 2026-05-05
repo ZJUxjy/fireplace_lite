@@ -670,3 +670,27 @@ def test_core_cairne_bloodhoof_summons_baine_on_deathrattle():
     cairne.destroy()
 
     assert player.field.filter(id="EX1_110t")
+
+
+def test_felwalker_casts_highest_cost_fel_spell_from_hand():
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.player1
+    cheap_fel = player.give("BT_035")
+    expensive_fel = player.give("BT_235")
+
+    player.give("AV_286").play()
+
+    assert expensive_fel.zone == Zone.GRAVEYARD
+    assert cheap_fel.zone == Zone.HAND
+
+
+def test_core_tirion_fordring_equips_ashbringer_on_deathrattle():
+    game = prepare_empty_game(CardClass.PALADIN, CardClass.PALADIN)
+    player = game.player1
+
+    tirion = player.give("CORE_EX1_383").play()
+    tirion.destroy()
+
+    assert player.weapon.id == "EX1_383t"
+    assert player.weapon.atk == 5
+    assert player.weapon.durability == 3
