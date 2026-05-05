@@ -229,6 +229,17 @@ def test_hiking_trail_discovers_unused_minion_type_and_followup():
     game = prepare_empty_game(CardClass.SHAMAN, CardClass.SHAMAN)
     player = game.current_player
     _set_mana(player)
+    preferred = ["TLC_454", "TLC_242", "TLC_603"]
+
+    def stable_shuffle(cards):
+        cards.sort(
+            key=lambda card: (
+                preferred.index(card.id) if card.id in preferred else len(preferred),
+                card.id,
+            )
+        )
+
+    game.random.shuffle = stable_shuffle
 
     player.give("TLC_225").play()
     player.give("TLC_464").play()

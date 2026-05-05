@@ -34,6 +34,33 @@ def _kindred_repeats(card):
     return repeats
 
 
+class TLC_NeutralSetStats(TargetedAction):
+    TARGET = ActionArg()
+    ATK = IntArg()
+    HEALTH = IntArg()
+
+    def do(self, source, target, atk, health):
+        return source.game.queue_actions(
+            source,
+            [
+                Buff(
+                    target,
+                    "TLC_NEUTRAL_SET_STATS",
+                    atk=atk - target.atk,
+                    max_health=health - target.max_health,
+                )
+            ],
+        )
+
+
+@custom_card
+class TLC_NEUTRAL_SET_STATS:
+    tags = {
+        GameTag.CARDNAME: "Set Stats",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
+
+
 class DINO_410:
     """Khelos' Egg"""
 
@@ -337,6 +364,39 @@ class TLC_NEUTRAL_246e3:
     events = OWN_TURN_BEGIN.on(Unstealth(OWNER), Destroy(SELF))
 
 
+class TLC_247:
+    """Primal Sabretooth"""
+
+    events = Attack(SELF, ALL_MINIONS).after(
+        Dead(Attack.DEFENDER) & Give(CONTROLLER, Copy(Attack.DEFENDER))
+    )
+
+
+class TLC_250_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        player.opponent._tlc_250_no_hero_heal = True
+        return source.game.queue_actions(source, [Buff(player, "TLC_250e")])
+
+
+class TLC_250_Clear(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        player.opponent._tlc_250_no_hero_heal = False
+
+
+class TLC_250:
+    """Crater Gator"""
+
+    play = TLC_250_Play(CONTROLLER)
+
+
+class TLC_250e:
+    events = OWN_TURN_BEGIN.on(TLC_250_Clear(OWNER), Destroy(SELF))
+
+
 class TLC_251:
     """Misty Mountain Hopster"""
 
@@ -390,6 +450,72 @@ class TLC_256:
     """Marshland Thresher"""
 
     events = Play(CONTROLLER, SPELL).after(GiveDivineShield(SELF))
+
+
+class TLC_255_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        amount = max(0, player.opponent.max_mana - player.max_mana)
+        return source.game.queue_actions(source, [GainEmptyMana(player, amount)])
+
+
+class TLC_255:
+    """Crystal Tender"""
+
+    play = TLC_255_Play(CONTROLLER)
+
+
+class TLC_427:
+    """Rockskipper"""
+
+    play = Give(CONTROLLER, "TLC_427t")
+
+
+@custom_card
+class TLC_427t:
+    tags = {
+        GameTag.CARDNAME: "Rock",
+        GameTag.CARDTYPE: CardType.SPELL,
+        GameTag.COST: 1,
+    }
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_ENEMY_TARGET: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+    play = Hit(TARGET, 3)
+
+
+class TLC_480:
+    """Krog, Crater King"""
+
+    events = OWN_TURN_END.on(TLC_NeutralSetStats(ENEMY_MINIONS, 1, 1))
+
+
+class TLC_603_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        if player.deck:
+            source._tlc_603_drawn_card = player.deck[-1]
+        return source.game.queue_actions(source, [Draw(player)])
+
+
+class TLC_603_Deathrattle(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        card = getattr(source, "_tlc_603_drawn_card", None)
+        if card and card.zone == Zone.HAND:
+            return source.game.queue_actions(source, [Discard(card)])
+
+
+class TLC_603:
+    """Platysaur"""
+
+    play = TLC_603_Play(CONTROLLER)
+    deathrattle = TLC_603_Deathrattle(CONTROLLER)
 
 
 class TLC_468:
@@ -470,3 +596,49 @@ class TLC_621:
     """Stubborn Guardian"""
 
     deathrattle = Mill(CONTROLLER) * 3
+
+
+class TLC_888_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        candidates = [
+            card
+            for card in player.hand
+            if card is not source
+            and (Race.ELEMENTAL in _card_races(card) or Race.DRAGON in _card_races(card))
+        ]
+        if candidates:
+            card = source.game.random.choice(candidates)
+            return source.game.queue_actions(
+                source, [Give(player, ExactCopy(SELF).copy(source, card))]
+            )
+
+
+class TLC_888:
+    """Cloud Serpent"""
+
+    play = TLC_888_Play(CONTROLLER)
+
+
+class TLC_987_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        played_quest = any(
+            card.tags.get(GameTag.QUEST)
+            for card in getattr(source.controller, "cards_played_this_game", [])
+        )
+        if played_quest:
+            return source.game.queue_actions(source, [Hit(target, 3)])
+
+
+class TLC_987:
+    """Questing Assistant"""
+
+    requirements = {
+        PlayReq.REQ_TARGET_IF_AVAILABLE: 0,
+        PlayReq.REQ_ENEMY_TARGET: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+    play = TLC_987_Play(TARGET)

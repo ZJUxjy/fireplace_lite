@@ -256,3 +256,110 @@ def test_tar_tyrant_has_bonus_attack_on_opponents_turn():
     assert tyrant.atk == 1
     game.end_turn()
     assert tyrant.atk == 7
+
+
+def test_primal_sabretooth_copies_minion_it_kills_by_attacking():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    sabretooth = player.summon("TLC_247")
+    target = player.opponent.summon(WISP)
+    game.end_turn()
+    game.end_turn()
+
+    sabretooth.attack(target)
+
+    copied = [card for card in player.hand if card.id == WISP]
+    assert len(copied) == 1
+
+
+def test_crater_gator_prevents_enemy_hero_healing_until_next_turn():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+    enemy_hero = player.opponent.hero
+    enemy_hero.hit(5)
+
+    player.give("TLC_250").play()
+    Heal(enemy_hero, 3).trigger(player)
+    assert enemy_hero.damage == 5
+
+    game.end_turn()
+    game.end_turn()
+    Heal(enemy_hero, 3).trigger(player)
+    assert enemy_hero.damage == 2
+
+
+def test_crystal_tender_catches_up_empty_mana_crystals():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player.opponent, 7)
+    player.max_mana = 3
+    player.used_mana = 0
+
+    player.give("TLC_255").play()
+
+    assert player.max_mana == 7
+    assert player.mana == 1
+
+
+def test_rockskipper_gives_one_cost_rock_that_deals_three():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+    target = player.opponent.summon("TLC_454")
+
+    player.give("TLC_427").play()
+    rock = next(card for card in player.hand if card.id == "TLC_427t")
+    assert rock.cost == 1
+
+    rock.play(target=target)
+
+    assert target.damage == 3
+
+
+def test_krog_sets_enemy_minions_to_one_one_at_end_of_turn():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    target = player.opponent.summon("TLC_454")
+    player.summon("TLC_480")
+
+    game.end_turn()
+
+    assert (target.atk, target.max_health, target.health) == (1, 1, 1)
+
+
+def test_platysaur_discards_drawn_card_on_death():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+    drawn = _add_to_deck(player, "TLC_469")[0]
+
+    platysaur = player.give("TLC_603").play()
+    assert drawn in player.hand
+
+    platysaur.destroy()
+
+    assert drawn.zone == Zone.REMOVEDFROMGAME
+
+
+def test_cloud_serpent_copies_another_elemental_or_dragon_in_hand():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+    player.give("TLC_468")
+
+    player.give("TLC_888").play()
+
+    assert len([card for card in player.hand if card.id == "TLC_468"]) == 2
+
+
+def test_questing_assistant_hits_enemy_minion_after_quest_played():
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+    target = player.opponent.summon("TLC_454")
+
+    player.give("TLC_830").play()
+    player.give("TLC_987").play(target=target)
+
+    assert target.damage == 3

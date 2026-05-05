@@ -1628,6 +1628,11 @@ class Heal(TargetedAction):
     AMOUNT = IntArg()
 
     def do(self, source, target, amount):
+        if (
+            target.type == CardType.HERO
+            and getattr(target.controller, "_tlc_250_no_hero_heal", False)
+        ):
+            return
         amount = source.get_heal(amount, target)
         amount += source.controller.healing_bonus
         if source.controller.healing_as_damage:
