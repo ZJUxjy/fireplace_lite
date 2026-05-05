@@ -169,10 +169,19 @@ class FIR_961:
 # Minion Tokens
 
 
+class EDR_271_GiveSpell(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, treant):
+        spell_id = getattr(treant, "_edr_271_spell_id", None)
+        if spell_id:
+            return source.game.queue_actions(source, [Give(treant.controller, spell_id)])
+
+
 class EDR_271t:
     """Treant of Life"""
 
-    deathrattle = Summon(CONTROLLER, "CS2_101t")
+    deathrattle = EDR_271_GiveSpell(SELF)
 
 
 class EDR_272:
