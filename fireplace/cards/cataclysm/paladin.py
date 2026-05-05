@@ -284,7 +284,7 @@ class CATA_621_AddDuration(TargetedAction):
 
 
 class CATA_621:
-    """Galakrond's Triumph"""
+    """Gelbin's Triumph"""
 
     play = Give(CONTROLLER, RandomID("CATA_480")).then(
         CATA_621_AddDuration(Give.CARD)

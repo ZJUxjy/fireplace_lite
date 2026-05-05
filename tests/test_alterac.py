@@ -1245,3 +1245,28 @@ def test_core_ticking_abomination_deathrattle_damages_friendly_minions():
 
     assert friendly.damage == 5
     assert enemy.damage == 0
+
+
+def test_ratchet_privateer_gives_weapon_attack():
+    game = prepare_empty_game(CardClass.PALADIN, CardClass.PALADIN)
+    player = game.player1
+    weapon = player.give("CS2_091").play()
+
+    player.give("BAR_061").play()
+
+    assert player.weapon is weapon
+    assert weapon.atk == 2
+    assert weapon.durability == 4
+
+
+def test_core_obsidian_statue_deathrattle_destroys_random_enemy_minion():
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.player1
+    friendly = player.summon("CS2_200")
+    enemy = game.player2.summon("CS2_200")
+
+    statue = player.give("CORE_ICC_214").play()
+    statue.destroy()
+
+    assert enemy.dead
+    assert not friendly.dead

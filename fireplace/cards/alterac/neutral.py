@@ -1013,6 +1013,21 @@ class CORE_ICC_099:
     deathrattle = Hit(FRIENDLY_MINIONS, 5)
 
 
+class BAR_061:
+    """Ratchet Privateer"""
+
+    play = Buff(FRIENDLY_WEAPON, "BAR_061e")
+
+
+BAR_061e = buff(atk=1)
+
+
+class CORE_ICC_214:
+    """Obsidian Statue"""
+
+    deathrattle = Destroy(RANDOM_ENEMY_MINION)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
