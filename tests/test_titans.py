@@ -1,4 +1,5 @@
 from utils import *
+from fireplace.actions import Hit
 from hearthstone.enums import CardType
 
 
@@ -132,6 +133,17 @@ def test_legion_invasion_does_not_buff_demons_played_from_hand():
     played_demon = player.field[-1]
     assert played_demon.max_health == base_health
     assert played_demon.taunt is False
+
+
+def test_amitus_caps_damage_to_friendly_minions_at_two():
+    game = prepare_empty_game()
+    player = game.player1
+    target = player.summon("CS2_222")
+    player.summon("TTN_858")
+
+    game.queue_actions(game.player2.hero, [Hit(target, 6)])
+
+    assert target.damage == 2
 
 
 def test_aggramar_maintain_order_draws_after_hero_attacks():
