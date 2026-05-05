@@ -169,7 +169,7 @@ class CATA_697:
 # CATA_699: 恐怖海兽 (9费 9/6)
 # 嘲讽。战吼：选择一个敌方随从，偷取其3点生命值，触发三次
 class CATA_699:
-    """Terrace Dredger"""
+    """Dread Leviathan"""
 
     tags = {GameTag.TAUNT: True}
 

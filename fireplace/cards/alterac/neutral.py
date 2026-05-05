@@ -1043,6 +1043,25 @@ class CORE_ICC_702:
     deathrattle = Give(CONTROLLER, RandomMinion(deathrattle=True))
 
 
+class BAR_064:
+    """Talented Arcanist"""
+
+    play = Buff(CONTROLLER, "BAR_064e")
+
+
+class BAR_064e:
+    update = Refresh(CONTROLLER, {GameTag.SPELLPOWER: 2})
+    events = Play(CONTROLLER, SPELL).after(Destroy(SELF)), OWN_TURN_END.on(Destroy(SELF))
+
+
+class CORE_ICC_812:
+    """Meat Wagon"""
+
+    deathrattle = Summon(
+        CONTROLLER, RANDOM(FRIENDLY_DECK + MINION + (ATK <= ATK(SELF)))
+    )
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 

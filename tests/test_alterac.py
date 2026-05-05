@@ -1293,3 +1293,31 @@ def test_core_shallow_gravedigger_deathrattle_adds_deathrattle_minion():
     card = player.hand[0]
     assert card.type == CardType.MINION
     assert card.data.tags.get(GameTag.DEATHRATTLE)
+
+
+def test_talented_arcanist_gives_next_spell_spell_damage():
+    game = prepare_empty_game()
+    player = game.player1
+    enemy = game.player2.summon("CS2_200")
+
+    player.give("BAR_064").play()
+    assert player.spellpower == 2
+
+    player.give(MOONFIRE).play(target=enemy)
+
+    assert enemy.damage == 3
+    assert player.spellpower == 0
+
+
+def test_core_meat_wagon_deathrattle_summons_lower_attack_minion_from_deck():
+    game = prepare_empty_game()
+    player = game.player1
+    wisp = player.card(WISP, zone=Zone.DECK)
+    ogre = player.card("CS2_200", zone=Zone.DECK)
+    wagon = player.give("CORE_ICC_812").play()
+    wagon.buff(wagon, "BAR_062e")
+
+    wagon.destroy()
+
+    assert wisp in player.field
+    assert ogre in player.deck
