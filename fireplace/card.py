@@ -958,7 +958,7 @@ class Character(LiveEntity):
     @property
     def races(self):
         if self.race == Race.ALL:
-            return [
+            races = [
                 Race.ELEMENTAL,
                 Race.MECHANICAL,
                 Race.DEMON,
@@ -968,7 +968,12 @@ class Character(LiveEntity):
                 Race.PIRATE,
                 Race.TOTEM,
             ]
-        return [self.race]
+        else:
+            races = [self.race]
+        for race in getattr(self.data.scripts, "extra_races", ()):
+            if race not in races:
+                races.append(race)
+        return races
 
     @property
     def should_exit_combat(self):
