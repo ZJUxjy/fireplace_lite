@@ -1270,3 +1270,26 @@ def test_core_obsidian_statue_deathrattle_destroys_random_enemy_minion():
 
     assert enemy.dead
     assert not friendly.dead
+
+
+def test_lushwater_murcenary_buffs_itself_as_controlled_murloc():
+    game = prepare_empty_game()
+    player = game.player1
+
+    murcenary = player.give("BAR_062").play()
+
+    assert murcenary.atk == 4
+    assert murcenary.health == 3
+
+
+def test_core_shallow_gravedigger_deathrattle_adds_deathrattle_minion():
+    game = prepare_empty_game()
+    player = game.player1
+    gravedigger = player.give("CORE_ICC_702").play()
+
+    gravedigger.destroy()
+
+    assert len(player.hand) == 1
+    card = player.hand[0]
+    assert card.type == CardType.MINION
+    assert card.data.tags.get(GameTag.DEATHRATTLE)

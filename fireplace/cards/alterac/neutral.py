@@ -1028,6 +1028,21 @@ class CORE_ICC_214:
     deathrattle = Destroy(RANDOM_ENEMY_MINION)
 
 
+class BAR_062:
+    """Lushwater Murcenary"""
+
+    play = Find(FRIENDLY_MINIONS + MURLOC) & Buff(SELF, "BAR_062e")
+
+
+BAR_062e = buff(+1, +1)
+
+
+class CORE_ICC_702:
+    """Shallow Gravedigger"""
+
+    deathrattle = Give(CONTROLLER, RandomMinion(deathrattle=True))
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 

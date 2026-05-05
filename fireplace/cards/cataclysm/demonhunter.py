@@ -159,7 +159,7 @@ class CATA_529:
 # CATA_697: 恶念变异体 (3费 3/4)
 # 战吼：选择你手牌中的一张邪能法术牌，获取一张它的复制
 class CATA_697:
-    """Fel Void Mutant"""
+    """Malevolent Mutant"""
 
     play = Choice(CONTROLLER, FRIENDLY_HAND + FEL_SPELL).then(
         Give(CONTROLLER, Copy(Choice.CARD))
