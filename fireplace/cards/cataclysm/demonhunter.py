@@ -192,7 +192,7 @@ class CATA_699:
 # CATA_526: 布洛克斯加的奋战 (2费 法术)
 # 对所有随从造成$1点伤害。每有一个随从死亡，抽一张牌
 class CATA_526:
-    """Blink Fox's Struggle"""
+    """Broxigar's Last Stand"""
 
     def play(self):
         # Count minions that will die from 1 damage (health == 1, no divine shield)

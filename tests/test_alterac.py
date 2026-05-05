@@ -774,3 +774,28 @@ def test_core_webspinner_adds_random_beast_on_deathrattle():
 
     assert player.hand
     assert Race.BEAST in player.hand[0].races
+
+
+def test_sacrificial_summoner_destroys_friendly_minion_and_summons_plus_one_cost():
+    game = prepare_empty_game(CardClass.WARLOCK, CardClass.WARLOCK)
+    player = game.player1
+    sacrifice = player.summon("CS2_122")
+    summoned = player.give("CS2_182")
+    summoned.shuffle_into_deck()
+
+    player.give("AV_312").play(target=sacrifice)
+
+    assert sacrifice.zone == Zone.GRAVEYARD
+    assert summoned.zone == Zone.PLAY
+
+
+def test_core_voidcaller_summons_demon_from_hand_on_deathrattle():
+    game = prepare_empty_game(CardClass.WARLOCK, CardClass.WARLOCK)
+    player = game.player1
+    demon = player.give("CS2_064")
+
+    voidcaller = player.give("CORE_FP1_022").play()
+    voidcaller.destroy()
+
+    assert demon.zone == Zone.PLAY
+    assert demon in player.field

@@ -647,6 +647,34 @@ class AV_308:
     )
 
 
+class AV_312_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        player = source.controller
+        cost = target.cost + 1
+        candidates = [
+            card
+            for card in player.deck
+            if card.type == CardType.MINION and card.cost == cost
+        ]
+        actions = [Destroy(target)]
+        if candidates:
+            actions.append(Summon(player, source.game.random.choice(candidates)))
+        return source.game.queue_actions(source, actions)
+
+
+class AV_312:
+    """Sacrificial Summoner"""
+
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_FRIENDLY_TARGET: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+    play = AV_312_Play(TARGET)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -965,6 +993,12 @@ class CORE_FP1_011:
     """Webspinner"""
 
     deathrattle = Give(CONTROLLER, RandomBeast())
+
+
+class CORE_FP1_022:
+    """Voidcaller"""
+
+    deathrattle = Summon(CONTROLLER, RANDOM(FRIENDLY_HAND + DEMON))
 
 
 class BAR_751:
