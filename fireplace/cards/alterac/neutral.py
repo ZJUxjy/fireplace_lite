@@ -526,6 +526,12 @@ class AV_258pt7:
     activate = AV_258pt7_Activate(CONTROLLER)
 
 
+class AV_260:
+    """Sleetbreaker"""
+
+    play = Give(CONTROLLER, "AV_266")
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -796,6 +802,12 @@ class DMF_734(CORE_DMF_734):
 class DMF_734e:
     tags = {GameTag.DEATHRATTLE: True}
     deathrattle = Summon(CONTROLLER, "DMF_734")
+
+
+class CORE_EX1_012:
+    """Bloodmage Thalnos"""
+
+    deathrattle = Draw(CONTROLLER)
 
 
 class BAR_751:

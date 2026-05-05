@@ -549,3 +549,24 @@ def test_core_greybough_grants_summon_greybough_deathrattle():
     recipient.destroy()
 
     assert player.field.filter(id="DMF_734")
+
+
+def test_sleetbreaker_adds_windchill_to_hand():
+    game = prepare_empty_game(CardClass.SHAMAN, CardClass.SHAMAN)
+    player = game.player1
+
+    player.give("AV_260").play()
+
+    assert player.hand.filter(id="AV_266")
+
+
+def test_core_bloodmage_thalnos_draws_on_deathrattle():
+    game = prepare_empty_game(CardClass.MAGE, CardClass.MAGE)
+    player = game.player1
+    drawn = player.give(WISP)
+    drawn.shuffle_into_deck()
+
+    thalnos = player.give("CORE_EX1_012").play()
+    thalnos.destroy()
+
+    assert drawn.zone == Zone.HAND

@@ -55,7 +55,7 @@ def _fiendish_servant_stats(entity, amount):
 # CATA_493: 地狱公爵 (4费 2/2 突袭)
 # 在本局对战中，你每弃掉一张牌，便拥有+2/+2
 class CATA_493:
-    """Fiendish Servant"""
+    """Duke of Below"""
 
     tags = {GameTag.RUSH: True}
 
