@@ -472,7 +472,11 @@ class FIR_918e1:
 class FIR_919e:
     """Everburning"""
 
-    pass
+    tags = {
+        GameTag.CARDNAME: "Everburning",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
+    events = OWN_TURN_END.on(Give(CONTROLLER, "FIR_919"), Destroy(SELF))
 
 
 class FIR_921:

@@ -277,7 +277,7 @@ class EDR_493:
 class EDR_493e2:
     """Demon Form"""
 
-    pass
+    tags = {GameTag.CARDRACE: Race.DEMON}
 
 
 class EDR_521e1:
