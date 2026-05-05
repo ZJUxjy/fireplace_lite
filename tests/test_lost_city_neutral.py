@@ -113,3 +113,146 @@ def test_stubborn_guardian_mills_top_three_cards():
 
     assert [card.id for card in player.deck] == ["TLC_469"]
     assert all(card.zone == Zone.REMOVEDFROMGAME for card in milled)
+
+
+def test_crater_experiment_kindred_summons_copy():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+
+    player.give("DINO_435").play()
+    assert len([minion for minion in player.field if minion.id == "DINO_435"]) == 1
+
+    game.end_turn()
+    game.end_turn()
+    player.give("DINO_435").play()
+
+    assert len([minion for minion in player.field if minion.id == "DINO_435"]) == 3
+
+
+def test_ancient_stegodon_choice_options():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+
+    stegodon = player.give("TLC_242").play()
+    player.choice.choose("poisonous")
+
+    assert stegodon.poisonous
+
+
+def test_ancient_raptor_can_gain_deathrattle_plants():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+
+    raptor = player.give("TLC_245").play()
+    player.choice.choose("plants")
+    raptor.destroy()
+
+    plants = [minion for minion in player.field if minion.id == "TLC_245t"]
+    assert len(plants) == 2
+    assert all((plant.atk, plant.max_health) == (1, 1) for plant in plants)
+
+
+def test_ancient_pterrordax_stealth_expires_next_turn():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+
+    pterror = player.give("TLC_246").play()
+    player.choice.choose("stealth")
+
+    assert pterror.stealthed
+    game.end_turn()
+    game.end_turn()
+    assert not pterror.stealthed
+
+
+def test_misty_mountain_hopster_doubles_next_kindred_effect():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+
+    player.give("TLC_251").play()
+    game.end_turn()
+    game.end_turn()
+    player.give("TLC_429").play()
+
+    assert len([minion for minion in player.field if minion.id == "TLC_429t"]) == 4
+
+
+def test_storyteller_buffs_one_friendly_minion_per_type():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    player.summon("TLC_254")
+    beast1 = player.summon("TLC_469")
+    beast2 = player.summon("TLC_250")
+    murloc = player.summon("TLC_429")
+    elemental = player.summon("TLC_468")
+
+    game.end_turn()
+
+    buffed_beasts = [minion for minion in (beast1, beast2) if minion.atk > minion.data.atk]
+    assert len(buffed_beasts) == 1
+    assert (murloc.atk, murloc.max_health) == (
+        murloc.data.atk + 1,
+        murloc.data.health + 1,
+    )
+    assert (elemental.atk, elemental.max_health) == (
+        elemental.data.atk + 1,
+        elemental.data.health + 1,
+    )
+
+
+def test_marshland_thresher_gains_divine_shield_after_spell():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+    thresher = player.summon("TLC_256")
+
+    player.give("TLC_446").play()
+
+    assert thresher.divine_shield
+
+
+def test_steamfin_thief_kindred_summons_rushing_murlocs():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+
+    player.give("TLC_251").play()
+    game.end_turn()
+    game.end_turn()
+    player.give("TLC_429").play()
+
+    tokens = [minion for minion in player.field if minion.id == "TLC_429t"]
+    assert len(tokens) == 4
+    assert all(token.rush for token in tokens)
+
+
+def test_scalhide_kodo_destroys_lowest_or_highest_attack_with_kindred():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+    low = player.opponent.summon(WISP)
+    high = player.opponent.summon("TLC_469")
+
+    player.give("TLC_454").play()
+    assert low.zone == Zone.GRAVEYARD
+    assert high.zone == Zone.PLAY
+
+    game.end_turn()
+    game.end_turn()
+    player.give("TLC_454").play()
+    assert high.zone == Zone.GRAVEYARD
+
+
+def test_tar_tyrant_has_bonus_attack_on_opponents_turn():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    tyrant = player.summon("TLC_605")
+
+    assert tyrant.atk == 1
+    game.end_turn()
+    assert tyrant.atk == 7

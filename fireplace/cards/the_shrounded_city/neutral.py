@@ -1,6 +1,39 @@
 from ..utils import *
 
 
+def _spell_school(card):
+    return card.tags.get(GameTag.SPELL_SCHOOL) or getattr(
+        getattr(card, "data", None), "spell_school", None
+    )
+
+
+def _card_races(card):
+    races = set(getattr(card, "races", []) or [])
+    races.update(getattr(getattr(card, "data", None), "races", []) or [])
+    return races
+
+
+def _kindred(card):
+    school = _spell_school(card)
+    for played in getattr(card.controller, "cards_played_last_turn", []):
+        if card.type == CardType.MINION and played.type == CardType.MINION:
+            if _card_races(card).intersection(_card_races(played)):
+                return True
+        if school and _spell_school(played) == school:
+            return True
+    return False
+
+
+def _kindred_repeats(card):
+    if not _kindred(card):
+        return 0
+    player = card.controller
+    repeats = 1 + getattr(player, "_tlc_251_next_kindred_bonus", 0)
+    if getattr(player, "_tlc_251_next_kindred_bonus", 0):
+        player._tlc_251_next_kindred_bonus = 0
+    return repeats
+
+
 class DINO_410:
     """Khelos' Egg"""
 
@@ -81,6 +114,284 @@ class TLC_249:
     deathrattle = Hit(RANDOM_ENEMY_CHARACTER, 1) * 2
 
 
+class DINO_435_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        actions = [Summon(player, ExactCopy(SELF).copy(source, source))]
+        return source.game.queue_actions(source, actions * _kindred_repeats(source))
+
+
+class DINO_435:
+    """Crater Experiment"""
+
+    play = DINO_435_Play(CONTROLLER)
+
+
+class TLC_NeutralTextChoice(Choice):
+    def get_target_args(self, source, target):
+        cards = self._args[1]
+        return [cards]
+
+
+class TLC_242_Choice(TLC_NeutralTextChoice):
+    def choose(self, card):
+        if card not in self.cards:
+            raise InvalidAction(
+                "%r is not a valid choice (one of %r)" % (card, self.cards)
+            )
+        self.player.choice = None
+        actions = {
+            "taunt": [Buff(self.source, "TLC_NEUTRAL_242e1")],
+            "poisonous": [Buff(self.source, "TLC_NEUTRAL_242e2")],
+            "stats": [Buff(self.source, "TLC_NEUTRAL_242e3")],
+        }[card]
+        self.source.game.queue_actions(self.source, actions)
+        self.trigger_choice_callback()
+
+
+class TLC_242_StartChoice(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        return source.game.queue_actions(
+            source, [TLC_242_Choice(player, ["taunt", "poisonous", "stats"])]
+        )
+
+
+class TLC_242:
+    """Ancient Stegodon"""
+
+    play = TLC_242_StartChoice(CONTROLLER)
+
+
+@custom_card
+class TLC_NEUTRAL_242e1:
+    tags = {
+        GameTag.CARDNAME: "Ancient Hide",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.TAUNT: True,
+    }
+
+
+@custom_card
+class TLC_NEUTRAL_242e2:
+    tags = {
+        GameTag.CARDNAME: "Ancient Venom",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.POISONOUS: True,
+    }
+
+
+@custom_card
+class TLC_NEUTRAL_242e3:
+    tags = {
+        GameTag.CARDNAME: "Ancient Strength",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 1,
+        GameTag.HEALTH: 1,
+    }
+
+
+class TLC_243_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        if _kindred(source):
+            return source.game.queue_actions(source, [Buff(source, "TLC_243e")])
+
+
+class TLC_243:
+    """Doommaiden"""
+
+    play = TLC_243_Play(CONTROLLER)
+
+
+@custom_card
+class TLC_243e:
+    tags = {
+        GameTag.CARDNAME: "Doomed",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.IMMUNE: True,
+    }
+    events = OWN_TURN_END.on(Destroy(SELF))
+
+
+class TLC_245_AddPlantDeathrattle(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        target.tags[GameTag.DEATHRATTLE] = True
+        target.additional_deathrattles.append(
+            (Summon(CONTROLLER, "TLC_245t"), Summon(CONTROLLER, "TLC_245t"))
+        )
+
+
+class TLC_245_Choice(TLC_NeutralTextChoice):
+    def choose(self, card):
+        if card not in self.cards:
+            raise InvalidAction(
+                "%r is not a valid choice (one of %r)" % (card, self.cards)
+            )
+        self.player.choice = None
+        actions = {
+            "attack": [Buff(self.source, "TLC_NEUTRAL_245e1")],
+            "divine_shield": [GiveDivineShield(self.source)],
+            "plants": [TLC_245_AddPlantDeathrattle(self.source)],
+        }[card]
+        self.source.game.queue_actions(self.source, actions)
+        self.trigger_choice_callback()
+
+
+class TLC_245_StartChoice(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        return source.game.queue_actions(
+            source, [TLC_245_Choice(player, ["attack", "divine_shield", "plants"])]
+        )
+
+
+class TLC_245:
+    """Ancient Raptor"""
+
+    play = TLC_245_StartChoice(CONTROLLER)
+
+
+@custom_card
+class TLC_NEUTRAL_245e1:
+    tags = {
+        GameTag.CARDNAME: "Ancient Claws",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 3,
+    }
+
+
+@custom_card
+class TLC_245t:
+    tags = {
+        GameTag.CARDNAME: "Plant",
+        GameTag.CARDTYPE: CardType.MINION,
+        GameTag.COST: 1,
+        GameTag.ATK: 1,
+        GameTag.HEALTH: 1,
+    }
+
+
+class TLC_246_Choice(TLC_NeutralTextChoice):
+    def choose(self, card):
+        if card not in self.cards:
+            raise InvalidAction(
+                "%r is not a valid choice (one of %r)" % (card, self.cards)
+            )
+        self.player.choice = None
+        actions = {
+            "elusive": [Buff(self.source, "TLC_NEUTRAL_246e1")],
+            "windfury": [Buff(self.source, "TLC_NEUTRAL_246e2")],
+            "stealth": [Stealth(self.source), Buff(self.source, "TLC_NEUTRAL_246e3")],
+        }[card]
+        self.source.game.queue_actions(self.source, actions)
+        self.trigger_choice_callback()
+
+
+class TLC_246_StartChoice(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        return source.game.queue_actions(
+            source, [TLC_246_Choice(player, ["elusive", "windfury", "stealth"])]
+        )
+
+
+class TLC_246:
+    """Ancient Pterrordax"""
+
+    play = TLC_246_StartChoice(CONTROLLER)
+
+
+@custom_card
+class TLC_NEUTRAL_246e1:
+    tags = {
+        GameTag.CARDNAME: "Ancient Scales",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.CANT_BE_TARGETED_BY_SPELLS: True,
+        GameTag.CANT_BE_TARGETED_BY_HERO_POWERS: True,
+    }
+
+
+@custom_card
+class TLC_NEUTRAL_246e2:
+    tags = {
+        GameTag.CARDNAME: "Ancient Wings",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.WINDFURY: True,
+    }
+
+
+@custom_card
+class TLC_NEUTRAL_246e3:
+    tags = {
+        GameTag.CARDNAME: "Ancient Camouflage",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
+    events = OWN_TURN_BEGIN.on(Unstealth(OWNER), Destroy(SELF))
+
+
+class TLC_251:
+    """Misty Mountain Hopster"""
+
+    play = Buff(CONTROLLER, "TLC_251e")
+
+
+class TLC_251e:
+    def apply(self, player):
+        player._tlc_251_next_kindred_bonus = (
+            getattr(player, "_tlc_251_next_kindred_bonus", 0) + 1
+        )
+
+
+class TLC_254_EndTurn(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        seen_races = set()
+        actions = []
+        for minion in player.field:
+            if minion is source:
+                continue
+            race = next(
+                (race for race in _card_races(minion) if race not in seen_races),
+                None,
+            )
+            if not race:
+                continue
+            seen_races.add(race)
+            actions.append(Buff(minion, "TLC_NEUTRAL_254e"))
+        return source.game.queue_actions(source, actions)
+
+
+class TLC_254:
+    """Storyteller"""
+
+    events = OWN_TURN_END.on(TLC_254_EndTurn(CONTROLLER))
+
+
+@custom_card
+class TLC_NEUTRAL_254e:
+    tags = {
+        GameTag.CARDNAME: "Typecast",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 1,
+        GameTag.HEALTH: 1,
+    }
+
+
+class TLC_256:
+    """Marshland Thresher"""
+
+    events = Play(CONTROLLER, SPELL).after(GiveDivineShield(SELF))
+
+
 class TLC_468:
     """Blob of Tar"""
 
@@ -97,6 +408,62 @@ class TLC_468t2:
     """Thick Blob"""
 
     pass
+
+
+class TLC_429_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        actions = []
+        for _ in range(_kindred_repeats(source)):
+            actions.extend(
+                [
+                    Summon(player, "TLC_429t").then(GiveRush(Summon.CARD)),
+                    Summon(player, "TLC_429t").then(GiveRush(Summon.CARD)),
+                ]
+            )
+        return source.game.queue_actions(source, actions)
+
+
+class TLC_429:
+    """Steamfin Thief"""
+
+    play = TLC_429_Play(CONTROLLER)
+
+
+class TLC_429t:
+    """Tadpole"""
+
+    pass
+
+
+class TLC_454_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        enemies = list(player.opponent.field)
+        if not enemies:
+            return
+        if _kindred_repeats(source):
+            attack = max(minion.atk for minion in enemies)
+        else:
+            attack = min(minion.atk for minion in enemies)
+        target = source.game.random.choice(
+            [minion for minion in enemies if minion.atk == attack]
+        )
+        return source.game.queue_actions(source, [Destroy(target)])
+
+
+class TLC_454:
+    """Scalhide Kodo"""
+
+    play = TLC_454_Play(CONTROLLER)
+
+
+class TLC_605:
+    """Tar Tyrant"""
+
+    update = CurrentPlayer(OPPONENT) & Refresh(SELF, {GameTag.ATK: +6})
 
 
 class TLC_621:
