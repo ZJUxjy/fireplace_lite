@@ -1,5 +1,5 @@
 from utils import *
-from hearthstone.enums import CardClass, GameTag, Zone
+from hearthstone.enums import CardClass, CardType, GameTag, Rarity, Zone
 
 
 def test_snuggle_teddy_gigantify_adds_gigantic_copy_with_keywords():
@@ -103,3 +103,91 @@ def test_magical_dollhouse_gives_temporary_spellpower():
     game.end_turn()
 
     assert player.spellpower == 0
+
+
+def test_sparkling_phial_discounts_next_card_by_damage_dealt():
+    game = prepare_empty_game(CardClass.DRUID, CardClass.DRUID)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    next_card = player.give("CS2_182")
+
+    player.give("TOY_800").play(target=player.opponent.hero)
+
+    assert player.opponent.hero.health == 28
+    assert next_card.cost == max(0, next_card.data.cost - 2)
+
+    next_card.play()
+
+    assert not any(buff.id == "TOY_800e1" for buff in player.buffs)
+
+
+def test_wind_up_sapling_refreshes_one_mana_crystal():
+    game = prepare_empty_game(CardClass.DRUID, CardClass.DRUID)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 5
+
+    player.give("TOY_802").play()
+
+    assert player.used_mana == 6
+
+
+def test_jade_display_deathrattle_buffs_future_displays_and_shuffles_two():
+    game = prepare_empty_game(CardClass.DRUID, CardClass.DRUID)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    display = player.give("TOY_803").play()
+
+    display.destroy()
+
+    shuffled = [card for card in player.deck if card.id == "TOY_803"]
+    assert len(shuffled) == 2
+    assert all(card.atk == card.data.atk + 1 for card in shuffled)
+    assert all(card.max_health == card.data.health + 1 for card in shuffled)
+
+
+def test_sky_mother_aviana_shuffles_ten_one_cost_legendary_minions():
+    game = prepare_empty_game(CardClass.DRUID, CardClass.DRUID)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    player.give("TOY_806").play()
+
+    assert len(player.deck) == 10
+    assert all(card.type == CardType.MINION for card in player.deck)
+    assert all(card.data.rarity == Rarity.LEGENDARY for card in player.deck)
+    assert all(card.cost == 1 for card in player.deck)
+
+
+def test_owlonius_doubles_spell_damage_bonus():
+    game = prepare_empty_game(CardClass.DRUID, CardClass.DRUID)
+    player = game.current_player
+    player.summon("CS2_142")
+    player.summon("TOY_807")
+    game.refresh_auras()
+
+    assert player.spellpower == 2
+    assert player.get_spell_damage(2) == 8
+
+
+def test_bottomless_toy_chest_discovers_from_deck_and_copies_with_spellpower():
+    game = prepare_empty_game(CardClass.DRUID, CardClass.DRUID)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    player.summon("CS2_142")
+    wisp = player.card(WISP)
+    wisp.zone = Zone.DECK
+
+    player.give("TOY_851").play()
+
+    assert player.choice is not None
+    assert player.choice.cards == [wisp]
+    player.choice.choose(wisp)
+
+    wisps = [card for card in player.hand if card.id == WISP]
+    assert len(wisps) == 2
+    assert wisp in wisps
