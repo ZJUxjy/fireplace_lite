@@ -159,7 +159,7 @@ def test_window_shopper_discovers_demon():
 
 ##
 # TOY_801: Chia Drake (Druid, 4费 3/5)
-# 微缩。抉择 - 获得+1法术伤害；或抽一张法术牌（简化）
+# 微缩。抉择 - 获得+1法术伤害；或抽一张法术牌
 
 def test_chia_drake_mini_copy():
     """Playing Chia Drake should add TOY_801t to hand."""
@@ -182,6 +182,21 @@ def test_chia_drake_choose_spellpower():
     before = game.player1.spellpower
     drake.play(choose=drake.choose_cards[0])  # option a: spell damage
     assert game.player1.spellpower == before + 1
+
+
+def test_chia_drake_choose_draw_spell():
+    """Chia Drake option B should draw a spell from deck."""
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    game.player1.used_mana = 0
+    minion = game.player1.give("CS2_231")
+    spell = game.player1.give("CS2_029")
+    minion.shuffle_into_deck()
+    spell.shuffle_into_deck()
+    drake = game.player1.give("TOY_801")
+    drake.play(choose=drake.choose_cards[1])
+    assert spell in game.player1.hand
+    assert minion in game.player1.deck
 
 
 ##
@@ -313,7 +328,7 @@ def test_replicator_inator_copies_same_atk_minion():
 
 ##
 # TOY_501: Shudderblock (Shaman, 6费)
-# 微缩。战吼：你下一个战吼触发3次（简化：战吼多触发一次）
+# 微缩。战吼：你的下一个战吼触发3次，但无法伤害敌方英雄
 
 def test_shudderblock_mini_copy():
     """Playing Shudderblock should add TOY_501t to hand."""
@@ -326,7 +341,7 @@ def test_shudderblock_mini_copy():
 
 
 def test_shudderblock_extra_battlecry():
-    """Shudderblock makes battlecries trigger twice (like Brann): King Mukla gives 4 bananas instead of 2."""
+    """Shudderblock makes the next battlecry trigger three times."""
     from hearthstone.enums import CardClass
     game = prepare_game(CardClass.SHAMAN, CardClass.MAGE)
     game.player1.max_mana = 10
@@ -339,3 +354,16 @@ def test_shudderblock_extra_battlecry():
     mukla.play()
     # Normal: +2 bananas. With Shudderblock: +4 bananas
     assert len(game.player2.hand) >= opponent_hand_before + 4
+
+
+def test_shudderblock_prevents_enemy_hero_battlecry_damage():
+    """Shudderblock repeats damage battlecries but blocks enemy hero damage."""
+    from hearthstone.enums import CardClass
+    game = prepare_game(CardClass.SHAMAN, CardClass.MAGE)
+    game.player1.max_mana = 10
+    game.player1.used_mana = 0
+    shudder = game.player1.give("TOY_501")
+    shudder.play()
+    rifleman = game.player1.give("CS2_141")
+    rifleman.play(target=game.player2.hero)
+    assert game.player2.hero.damage == 0
