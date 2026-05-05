@@ -1582,3 +1582,33 @@ def test_core_possessed_villager_deathrattle_summons_shadowbeast():
     assert player.field[0].id == "OG_241a"
     assert player.field[0].atk == 1
     assert player.field[0].health == 1
+
+
+def test_oil_rig_ambusher_deals_two_or_four_if_entered_hand_this_turn():
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    player = game.player1
+    target = game.player2.summon("CS2_200")
+
+    ambusher = player.give("BAR_316")
+    ambusher.turn_drawn = game.turn
+    ambusher.play(target=target)
+    assert target.damage == 4
+
+    old_ambusher = player.give("BAR_316")
+    old_ambusher.turn_drawn = game.turn - 1
+    old_ambusher.play(target=target)
+    assert target.damage == 6
+
+
+def test_core_bog_beast_deathrattle_summons_muckmare():
+    game = prepare_empty_game()
+    player = game.player1
+
+    bog_beast = player.give("CORE_REV_012").play()
+    bog_beast.destroy()
+
+    assert len(player.field) == 1
+    assert player.field[0].id == "REV_012t"
+    assert player.field[0].atk == 2
+    assert player.field[0].health == 4
+    assert player.field[0].taunt

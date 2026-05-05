@@ -891,18 +891,22 @@ class BAR_030_Play(TargetedAction):
     def _pool(self, source):
         cards.db.initialize()
         discover_classes = {source.controller.hero.card_class, CardClass.NEUTRAL}
-        return [
-            card_id
-            for card_id, data in cards.db.items()
-            if data.collectible
-            and (not source.game.is_standard or data.is_standard)
-            and any(card_class in discover_classes for card_class in data.classes)
-            and (
-                data.type == CardType.WEAPON
-                or data.tags.get(GameTag.SECRET)
-                or (data.type == CardType.MINION and Race.BEAST in data.races)
-            )
-        ]
+        pool = []
+        for card_id, data in cards.db.items():
+            if not (
+                data.collectible
+                and (not source.game.is_standard or data.is_standard)
+                and any(card_class in discover_classes for card_class in data.classes)
+            ):
+                continue
+            card = source.controller.card(card_id, source=source)
+            if (
+                card.type == CardType.WEAPON
+                or card.tags.get(GameTag.SECRET)
+                or (card.type == CardType.MINION and Race.BEAST in card.races)
+            ):
+                pool.append(card_id)
+        return pool
 
     def do(self, source, player):
         pool = self._pool(source)
@@ -1756,6 +1760,23 @@ class BAR_315:
     play = BAR_315_StealStats(TARGET)
 
 
+class BAR_316_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        amount = 4 if source.turn_drawn == source.game.turn else 2
+        return source.game.queue_actions(source, [Hit(target, amount)])
+
+
+class BAR_316:
+    """Oil Rig Ambusher"""
+
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+    }
+    play = BAR_316_Play(TARGET)
+
+
 class CORE_OG_109:
     """Darkshire Librarian"""
 
@@ -1767,3 +1788,9 @@ class CORE_OG_241:
     """Possessed Villager"""
 
     deathrattle = Summon(CONTROLLER, "OG_241a")
+
+
+class REV_012:
+    """Bog Beast"""
+
+    deathrattle = Summon(CONTROLLER, "REV_012t")

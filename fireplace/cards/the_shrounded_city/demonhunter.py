@@ -189,7 +189,7 @@ DINO_136e = buff(immune_while_attacking=True)
 
 
 class DINO_136t:
-    """Voracious Raptor"""
+    """Ravenous Raptor"""
 
     tags = {GameTag.RUSH: True}
 
