@@ -1440,3 +1440,28 @@ def test_core_tomb_pillager_deathrattle_adds_coin():
 
     assert len(player.hand) == 1
     assert player.hand[0].id == THE_COIN
+
+
+def test_shadow_hunter_voljin_swaps_minion_with_owner_hand_minion():
+    game = prepare_empty_game()
+    player = game.player1
+    target = player.summon(WISP)
+    hand_minion = player.give("CS2_200")
+
+    player.give("BAR_080").play(target=target)
+
+    assert hand_minion in player.field
+    assert target in player.hand
+    assert hand_minion not in player.hand
+    assert target not in player.field
+
+
+def test_core_mounted_raptor_deathrattle_summons_one_cost_minion():
+    game = prepare_empty_game(CardClass.DRUID, CardClass.DRUID)
+    player = game.player1
+
+    raptor = player.give("CORE_LOE_050").play()
+    raptor.destroy()
+
+    assert len(player.field) == 1
+    assert player.field[0].cost == 1

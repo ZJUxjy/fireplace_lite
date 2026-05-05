@@ -1252,6 +1252,40 @@ class CORE_LOE_012:
     deathrattle = Give(CONTROLLER, THE_COIN)
 
 
+class BAR_080_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        owner = target.controller
+        hand_minions = [card for card in owner.hand if card.type == CardType.MINION]
+        if not hand_minions:
+            return
+        replacement = source.game.random.choice(hand_minions)
+        target_index = target.zone_position
+        target.zone = Zone.HAND
+        replacement._summon_index = target_index
+        replacement.zone = Zone.PLAY
+        replacement._summon_index = None
+        source.game.manager.targeted_action(self, source, target, replacement)
+        return replacement
+
+
+class BAR_080:
+    """Shadow Hunter Vol'jin"""
+
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+    play = BAR_080_Play(TARGET)
+
+
+class CORE_LOE_050:
+    """Mounted Raptor"""
+
+    deathrattle = Summon(CONTROLLER, RandomMinion(cost=1))
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 

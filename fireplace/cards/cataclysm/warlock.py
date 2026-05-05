@@ -210,7 +210,7 @@ class CATA_726t1:
 # CATA_725t: 古加尔的士兵 (1费 1/1)
 # 在你的回合结束时，消灭本随从右边的随从以获得+2/+2
 class CATA_725t:
-    """Gul'dan's Soldier"""
+    """Soldier of Cho'gall"""
 
     events = OWN_TURN_END.on(
         Destroy(RIGHT_OF(SELF)),
