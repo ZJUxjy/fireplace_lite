@@ -800,6 +800,37 @@ class CORE_ICC_021:
     deathrattle = Hit(ENEMY_MINIONS, 2)
 
 
+class AV_343_Draw(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        spells = [card for card in player.deck if card.type == CardType.SPELL and card.cost <= 3]
+        if not spells:
+            return
+        spell = source.game.random.choice(spells)
+        return source.game.queue_actions(
+            source, [ForceDraw(spell).then(Buff(ForceDraw.TARGET, "AV_343e"))]
+        )
+
+
+class AV_343:
+    """Stonehearth Vindicator"""
+
+    play = AV_343_Draw(CONTROLLER)
+
+
+class AV_343e:
+    cost = SET(0)
+    events = REMOVED_IN_PLAY
+
+
+class CORE_ICC_025:
+    """Rattling Rascal"""
+
+    play = Summon(CONTROLLER, "ICC_025t")
+    deathrattle = Summon(OPPONENT, "ICC_025t")
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 

@@ -268,7 +268,7 @@ CATA_497e = buff(cost=-1)
 # CATA_556: 载蛋雏龙 (2费 1/2)
 # 战吼：随机获取一张法力值消耗小于或等于（3）点的龙牌。
 class CATA_556:
-    """Egg Alarm-o-Bot"""
+    """Carrier Whelp"""
 
     # 战吼：随机获取一张≤3费的龙牌
     play = Give(CONTROLLER, RandomMinion(cost=list(range(4)), race=Race.DRAGON))

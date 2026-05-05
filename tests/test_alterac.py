@@ -945,3 +945,35 @@ def test_core_exploding_bloatbat_deathrattle_damages_enemy_minions_only():
 
     assert friendly.health == 3
     assert enemy.health == 1
+
+
+def test_stonehearth_vindicator_draws_cheap_spell_and_discounts_this_turn():
+    game = prepare_empty_game(CardClass.PALADIN, CardClass.PALADIN)
+    player = game.player1
+    cheap_spell = player.give("CS2_087")
+    cheap_spell.shuffle_into_deck()
+    expensive_spell = player.give("CS2_092")
+    expensive_spell.shuffle_into_deck()
+
+    player.give("AV_343").play()
+
+    assert cheap_spell.zone == Zone.HAND
+    assert cheap_spell.cost == 0
+    assert expensive_spell.zone == Zone.DECK
+
+    game.end_turn()
+
+    assert cheap_spell.cost == cheap_spell.data.cost
+
+
+def test_core_rattling_rascal_summons_skeleton_for_each_side():
+    game = prepare_empty_game(CardClass.MAGE, CardClass.MAGE)
+    player = game.player1
+    opponent = game.player2
+
+    rascal = player.give("CORE_ICC_025").play()
+    assert len(player.field.filter(id="ICC_025t")) == 1
+
+    rascal.destroy()
+
+    assert len(opponent.field.filter(id="ICC_025t")) == 1
