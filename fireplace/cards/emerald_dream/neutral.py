@@ -460,13 +460,13 @@ class EDR_COIN2:
 class FIR_777e2:
     """Amirdrassil's Agony"""
 
-    pass
+    tags = {GameTag.ATK: 3, GameTag.HEALTH: 3}
 
 
 class FIR_918e1:
     """Elune's Light"""
 
-    pass
+    tags = {GameTag.ATK: 3, GameTag.HEALTH: 3}
 
 
 class FIR_919e:
