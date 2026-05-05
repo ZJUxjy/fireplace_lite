@@ -191,6 +191,36 @@ class AV_138:
     play = Destroy(TARGET + LEGENDARY)
 
 
+class AV_142t_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        mana = player.mana
+        player.mana = 0
+        bonuses = ("stats", "rush", "divine_shield", "taunt")
+        actions = []
+        for _ in range(mana):
+            bonus = source.game.random.choice(bonuses)
+            if bonus == "stats":
+                actions.append(Buff(source, "AV_142te"))
+            elif bonus == "rush":
+                actions.append(GiveRush(source))
+            elif bonus == "divine_shield":
+                actions.append(GiveDivineShield(source))
+            else:
+                actions.append(Taunt(source))
+        return source.game.queue_actions(source, actions)
+
+
+class AV_142t:
+    """Ivus, the Forest Lord"""
+
+    play = AV_142t_Play(CONTROLLER)
+
+
+AV_142te = buff(+2, +2)
+
+
 class AV_143_Deathrattle(TargetedAction):
     TARGET = ActionArg()
 
@@ -328,6 +358,12 @@ class BAR_027:
     """Darkspear Berserker"""
 
     deathrattle = Hit(FRIENDLY_HERO, 5)
+
+
+class BAR_072:
+    """Burning Blade Acolyte"""
+
+    deathrattle = Summon(CONTROLLER, "BAR_072t")
 
 
 class BAR_026:

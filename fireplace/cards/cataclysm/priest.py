@@ -94,7 +94,7 @@ class CATA_303:
 # CATA_304: "受伤的侍者" (3费 3/8 野兽)
 # 吸血。战吼：对本随从造成4点伤害。
 class CATA_304:
-    """Injured Khadgar"""
+    """Injured Attendant"""
 
     # 战吼：对本随从造成4点伤害
     play = Hit(SELF, 4)
