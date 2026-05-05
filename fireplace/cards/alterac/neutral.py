@@ -180,6 +180,17 @@ class AV_136t:
 AV_136e = buff(health=2)
 
 
+class AV_138:
+    """Grimtotem Bounty Hunter"""
+
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_ENEMY_TARGET: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+    play = Destroy(TARGET + LEGENDARY)
+
+
 class AV_143_Deathrattle(TargetedAction):
     TARGET = ActionArg()
 
@@ -311,6 +322,12 @@ class AV_704:
     """Humongous Owl"""
 
     deathrattle = Hit(RANDOM(ENEMY_CHARACTERS - DEAD), 8)
+
+
+class BAR_027:
+    """Darkspear Berserker"""
+
+    deathrattle = Hit(FRIENDLY_HERO, 5)
 
 
 class BAR_026:

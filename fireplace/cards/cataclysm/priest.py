@@ -61,7 +61,7 @@ class CATA_301e:
 # CATA_302: "愈合" (1费 法术)
 # 为一个随从恢复所有生命值。抽一张牌。
 class CATA_302:
-    """Mending"""
+    """Mend"""
 
     requirements = {PlayReq.REQ_TARGET_TO_PLAY: 0, PlayReq.REQ_MINION_TARGET: 0}
 
