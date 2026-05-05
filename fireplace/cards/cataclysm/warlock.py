@@ -29,7 +29,7 @@ class CATA_490:
 # CATA_491: 怪异触手 (6费 法术)
 # 对所有随从造成$3点伤害。重复此效果，每次伤害减少1点。
 class CATA_491:
-    """Tentacle"""
+    """Eldritch Tentacles"""
 
     def play(self):
         yield Hit(ALL_MINIONS, 3)

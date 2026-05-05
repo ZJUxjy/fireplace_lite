@@ -424,6 +424,34 @@ class AV_256:
 AV_256e = AttackHealthSwapBuff()
 
 
+class AV_257_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        frost_spells = [
+            card
+            for card in player.cards_played_this_game
+            if card.type == CardType.SPELL
+            and getattr(getattr(card, "data", None), "spell_school", None)
+            == SpellSchool.FROST
+        ]
+        return source.game.queue_actions(
+            source, [Summon(player, "AV_257t") for _ in frost_spells]
+        )
+
+
+class AV_257:
+    """Bearon Gla'shear"""
+
+    play = AV_257_Play(CONTROLLER)
+
+
+class AV_257t:
+    """Frozen Stagguard"""
+
+    events = Damage(CHARACTER, None, SELF).on(Freeze(Damage.TARGET))
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -669,6 +697,16 @@ class CORE_DMF_067:
 
 class DMF_067(CORE_DMF_067):
     """Prize Vendor"""
+
+
+class CORE_DMF_194:
+    """Redscale Dragontamer"""
+
+    deathrattle = ForceDraw(RANDOM(FRIENDLY_DECK + DRAGON))
+
+
+class DMF_194(CORE_DMF_194):
+    """Redscale Dragontamer"""
 
 
 class BAR_751:

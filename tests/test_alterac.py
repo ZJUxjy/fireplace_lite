@@ -1,5 +1,5 @@
 from utils import *
-from fireplace.actions import GainArmor
+from fireplace.actions import GainArmor, Hit
 
 
 def test_popsicooler_deathrattle_freezes_two_enemy_minions():
@@ -455,3 +455,46 @@ def test_core_prize_vendor_draws_for_both_players_on_play_and_deathrattle():
 
     assert len(player.hand) == 2
     assert len(opponent.hand) == 3
+
+
+def test_bearon_glashear_summons_stagguards_for_frost_spells_cast():
+    game = prepare_empty_game(CardClass.SHAMAN, CardClass.SHAMAN)
+    player = game.player1
+    enemy_hero = game.player2.hero
+
+    player.give("CS2_037").play(target=enemy_hero)
+    player.give("CS2_037").play(target=enemy_hero)
+    player.give(FIREBALL).play(target=enemy_hero)
+
+    player.used_mana = 0
+    player.give("AV_257").play()
+
+    stagguards = player.field.filter(id="AV_257t")
+    assert len(stagguards) == 2
+    assert all(stag.atk == 3 and stag.health == 4 for stag in stagguards)
+
+
+def test_frozen_stagguard_freezes_damaged_character():
+    game = prepare_empty_game(CardClass.SHAMAN, CardClass.SHAMAN)
+    player = game.player1
+    target = game.player2.summon(WISP)
+
+    stagguard = player.summon("AV_257t")
+    game.cheat_action(stagguard, [Hit(target, 1)])
+
+    assert target.frozen
+
+
+def test_core_redscale_dragontamer_draws_a_dragon():
+    game = prepare_empty_game(CardClass.PALADIN, CardClass.PALADIN)
+    player = game.player1
+    dragon = player.give("EX1_043")
+    dragon.shuffle_into_deck()
+    non_dragon = player.give(WISP)
+    non_dragon.shuffle_into_deck()
+
+    dragontamer = player.give("CORE_DMF_194").play()
+    dragontamer.destroy()
+
+    assert dragon.zone == Zone.HAND
+    assert non_dragon.zone == Zone.DECK
