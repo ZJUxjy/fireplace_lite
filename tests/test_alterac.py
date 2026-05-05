@@ -367,3 +367,50 @@ def test_core_mistress_of_mixtures_heals_both_heroes():
 
     assert player.hero.health == 24
     assert opponent.hero.health == 22
+
+
+def test_snowfall_guardian_freezes_all_other_minions():
+    game = prepare_empty_game(CardClass.SHAMAN, CardClass.SHAMAN)
+    player = game.player1
+    friendly = player.summon(WISP)
+    enemy = game.player2.summon("CS2_120")
+
+    guardian = player.give("AV_255").play()
+
+    assert friendly.frozen
+    assert enemy.frozen
+    assert not guardian.frozen
+    assert guardian.atk == 5
+    assert guardian.health == 5
+
+
+def test_core_felsoul_jailer_discards_opponent_minion_then_returns_it():
+    game = prepare_empty_game(CardClass.WARLOCK, CardClass.WARLOCK)
+    player = game.player1
+    opponent = game.player2
+    minion = opponent.give(WISP)
+    spell = opponent.give(FIREBALL)
+
+    jailer = player.give("CORE_CS3_003").play()
+
+    assert minion.zone == Zone.REMOVEDFROMGAME
+    assert spell.zone == Zone.HAND
+
+    jailer.destroy()
+
+    assert minion.zone == Zone.HAND
+    assert minion in opponent.hand
+
+
+def test_core_felsoul_jailer_ignores_opponent_hand_without_minions():
+    game = prepare_empty_game(CardClass.WARLOCK, CardClass.WARLOCK)
+    player = game.player1
+    opponent = game.player2
+    spell = opponent.give(FIREBALL)
+
+    jailer = player.give("CORE_CS3_003").play()
+    jailer.destroy()
+
+    assert spell.zone == Zone.HAND
+    assert len(opponent.hand) == 2
+    assert all(card.type != CardType.MINION for card in opponent.hand)

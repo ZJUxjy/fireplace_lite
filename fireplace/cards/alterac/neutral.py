@@ -409,6 +409,12 @@ class AV_223:
 AV_223e = buff(cost=-3)
 
 
+class AV_255:
+    """Snowfall Guardian"""
+
+    play = Freeze(ALL_MINIONS - SELF)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -611,6 +617,38 @@ class CORE_CFM_120:
     """Mistress of Mixtures"""
 
     deathrattle = Heal(ALL_HEROES, 4)
+
+
+class CORE_CS3_003_Jail(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        minions = [card for card in player.opponent.hand if card.type == CardType.MINION]
+        if minions:
+            card = source.game.random.choice(minions)
+            source._felsoul_jailed_card = card
+            return source.game.queue_actions(source, [Discard(card)])
+
+
+class CORE_CS3_003_Return(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        card = getattr(source, "_felsoul_jailed_card", None)
+        if (
+            card
+            and card.zone == Zone.REMOVEDFROMGAME
+            and len(card.controller.hand) < card.controller.max_hand_size
+        ):
+            card.zone = Zone.HAND
+            source.game.manager.targeted_action(self, source, card)
+
+
+class CORE_CS3_003:
+    """Felsoul Jailer"""
+
+    play = CORE_CS3_003_Jail(CONTROLLER)
+    deathrattle = CORE_CS3_003_Return(CONTROLLER)
 
 
 class BAR_751:

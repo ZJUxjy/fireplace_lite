@@ -226,7 +226,7 @@ CATA_479e = buff(+1, +1)
 # CATA_479t3: 天空幼龙
 # 3费 4/2 龙
 class CATA_479t3:
-    """Sky Roar"""
+    """Sky Drake"""
 
     tags = {GameTag.CARDRACE: Race.DRAGON}
 
