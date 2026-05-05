@@ -541,6 +541,37 @@ class AV_262:
 AV_262e2 = buff(+1, +2)
 
 
+class AV_267_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        demons = [card for card in player.deck if card.type == CardType.MINION and Race.DEMON in card.races]
+        if demons:
+            demon = source.game.random.choice(demons)
+            copy = player.card(demon.id, source=source)
+            return source.game.queue_actions(
+                source,
+                [Morph(source, copy).then(Buff(Morph.CARD, "AV_267e"))],
+            )
+
+
+class AV_267:
+    """Caria Felsoul"""
+
+    play = AV_267_Play(CONTROLLER)
+
+
+@custom_card
+class AV_267e:
+    tags = {
+        GameTag.CARDNAME: "Felsoul",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
+
+    atk = SET(6)
+    max_health = SET(6)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -823,6 +854,12 @@ class CORE_EX1_016:
     """Sylvanas Windrunner"""
 
     deathrattle = Steal(RANDOM_ENEMY_MINION)
+
+
+class CORE_EX1_096:
+    """Loot Hoarder"""
+
+    deathrattle = Draw(CONTROLLER)
 
 
 class BAR_751:

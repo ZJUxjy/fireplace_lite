@@ -606,3 +606,39 @@ def test_core_sylvanas_steals_enemy_minion_on_deathrattle():
 
     assert enemy.controller is player
     assert enemy in player.field
+
+
+def test_caria_felsoul_transforms_into_six_six_deck_demon_copy():
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.player1
+    demon = player.give("CS2_064")
+    demon.shuffle_into_deck()
+
+    caria = player.give("AV_267").play()
+
+    assert caria.morphed.id == "CS2_064"
+    assert caria.morphed.atk == 6
+    assert caria.morphed.health == 6
+
+
+def test_caria_felsoul_does_not_transform_without_deck_demon():
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.player1
+    player.give(WISP).shuffle_into_deck()
+
+    caria = player.give("AV_267").play()
+
+    assert caria.id == "AV_267"
+    assert not caria.morphed
+
+
+def test_core_loot_hoarder_draws_on_deathrattle():
+    game = prepare_empty_game(CardClass.MAGE, CardClass.MAGE)
+    player = game.player1
+    drawn = player.give(WISP)
+    drawn.shuffle_into_deck()
+
+    hoarder = player.give("CORE_EX1_096").play()
+    hoarder.destroy()
+
+    assert drawn.zone == Zone.HAND

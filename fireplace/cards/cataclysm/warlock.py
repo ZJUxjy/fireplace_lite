@@ -95,7 +95,7 @@ class CATA_496_ReturnAtEnemyTurnEnd(TargetedAction):
 
 
 class CATA_496:
-    """Cursed Chain"""
+    """Cursed Chains"""
 
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
