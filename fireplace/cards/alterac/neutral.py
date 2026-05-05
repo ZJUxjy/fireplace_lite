@@ -389,6 +389,26 @@ class AV_222:
                 break
 
 
+class AV_223_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        minions = [card for card in player.deck if card.type == CardType.MINION]
+        if minions and all(card.cost > source.cost for card in minions):
+            return source.game.queue_actions(
+                source, [Buff(card, "AV_223e") for card in minions]
+            )
+
+
+class AV_223:
+    """Vanndar Stormpike"""
+
+    play = AV_223_Play(CONTROLLER)
+
+
+AV_223e = buff(cost=-3)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -585,6 +605,12 @@ class CORE_BT_304:
     """Enhanced Dreadlord"""
 
     deathrattle = Summon(CONTROLLER, "BT_304t")
+
+
+class CORE_CFM_120:
+    """Mistress of Mixtures"""
+
+    deathrattle = Heal(ALL_HEROES, 4)
 
 
 class BAR_751:

@@ -199,7 +199,7 @@ CATA_477e = buff(+2, +2)
 # 4费 法术
 # 裂变：召唤两条4/2的幼龙。使你的随从获得+1/+1和圣盾
 class CATA_479:
-    """Dragonriding"""
+    """Flight Maneuvers"""
 
     play = (
         Summon(CONTROLLER, "CATA_479t3") * 2,
@@ -209,13 +209,13 @@ class CATA_479:
 
 
 class CATA_479t:
-    """Dragonriding"""
+    """Flight Maneuvers"""
 
     play = Summon(CONTROLLER, "CATA_479t3") * 2
 
 
 class CATA_479t2:
-    """Dragonriding"""
+    """Flight Maneuvers"""
 
     play = Buff(FRIENDLY_MINIONS, "CATA_479e"), GiveDivineShield(FRIENDLY_MINIONS)
 

@@ -325,3 +325,45 @@ def test_core_enhanced_dreadlord_summons_lifesteal_dreadlord():
     assert token.atk == 5
     assert token.health == 5
     assert token.lifesteal
+
+
+def test_vanndar_stormpike_discounts_more_expensive_deck_minions():
+    game = prepare_empty_game()
+    player = game.player1
+    ogre = player.give("CS2_200")
+    ogre.shuffle_into_deck()
+    spell = player.give(FIREBALL)
+    spell.shuffle_into_deck()
+
+    player.give("AV_223").play()
+
+    assert ogre.cost == 3
+    assert spell.cost == 4
+
+
+def test_vanndar_stormpike_requires_every_deck_minion_to_cost_more():
+    game = prepare_empty_game()
+    player = game.player1
+    ogre = player.give("CS2_200")
+    ogre.shuffle_into_deck()
+    wisp = player.give(WISP)
+    wisp.shuffle_into_deck()
+
+    player.give("AV_223").play()
+
+    assert ogre.cost == 6
+    assert wisp.cost == 0
+
+
+def test_core_mistress_of_mixtures_heals_both_heroes():
+    game = prepare_empty_game()
+    player = game.player1
+    opponent = game.player2
+    player.hero.set_current_health(20)
+    opponent.hero.set_current_health(18)
+
+    mistress = player.give("CORE_CFM_120").play()
+    mistress.destroy()
+
+    assert player.hero.health == 24
+    assert opponent.hero.health == 22
