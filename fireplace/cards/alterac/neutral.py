@@ -295,6 +295,26 @@ class AV_203:
     play = AV_203_Play(CONTROLLER)
 
 
+class AV_204_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        amount = player.hero_attacks_this_game
+        actions = []
+        for _ in range(2):
+            demon = player.card("AV_204t2", source=source)
+            if amount:
+                actions.append(Buff(demon, "AV_204e", atk=amount))
+            actions.append(Summon(player, demon))
+        return source.game.queue_actions(source, actions)
+
+
+class AV_204:
+    """Kurtrus, Demon-Render"""
+
+    play = AV_204_Play(CONTROLLER)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -460,6 +480,12 @@ class BAR_326:
     """Razorfen Beastmaster"""
 
     deathrattle = Summon(CONTROLLER, RANDOM(FRIENDLY_HAND + DEATHRATTLE + (COST <= 4)))
+
+
+class BAR_330:
+    """Tuskpiercer"""
+
+    deathrattle = ForceDraw(RANDOM(FRIENDLY_DECK + MINION + DEATHRATTLE))
 
 
 class BAR_310:

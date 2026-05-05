@@ -113,7 +113,7 @@ CATA_473e = buff(+3, +3)
 # 4费 3/4 龙
 # 在你的回合结束时，随机获取一张神圣法术牌，其法力值消耗减少（3）点
 class CATA_474:
-    """Spearhead Paladin"""
+    """Spearheart Sentry"""
 
     events = OWN_TURN_END.on(
         Give(CONTROLLER, RandomSpell(spell_school=SpellSchool.HOLY)).then(

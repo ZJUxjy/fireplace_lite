@@ -131,3 +131,36 @@ def test_razorfen_beastmaster_summons_four_or_less_deathrattle_from_hand():
     assert four_cost_deathrattle.zone == Zone.PLAY
     assert four_cost_deathrattle in player.field
     assert all(card.id != "CS2_142" for card in player.field)
+
+
+def test_kurtrus_demon_render_uses_hero_attacks_this_game():
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.player1
+    enemy_hero = game.player2.hero
+    player.give("CS2_091").play()
+
+    player.hero.attack(enemy_hero)
+    player.hero.num_attacks = 0
+    player.hero.attack(enemy_hero)
+    assert player.hero_attacks_this_game == 2
+
+    player.give("AV_204").play()
+
+    shriekers = player.field.filter(id="AV_204t2")
+    assert len(shriekers) == 2
+    assert all(shrieker.atk == 3 and shrieker.health == 4 and shrieker.rush for shrieker in shriekers)
+
+
+def test_tuskpiercer_deathrattle_draws_deathrattle_minion():
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.player1
+    deathrattle_minion = player.give("BAR_026")
+    non_deathrattle_minion = player.give("CS2_142")
+    deathrattle_minion.shuffle_into_deck()
+    non_deathrattle_minion.shuffle_into_deck()
+
+    weapon = player.give("BAR_330").play()
+    weapon.destroy()
+
+    assert deathrattle_minion.zone == Zone.HAND
+    assert non_deathrattle_minion.zone == Zone.DECK

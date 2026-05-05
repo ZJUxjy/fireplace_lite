@@ -375,6 +375,8 @@ class Attack(GameAction):
         attacker.attack_target = None
         defender.defending = False
         attacker.controller.friendly_attacks_this_game += 1
+        if attacker.type == CardType.HERO:
+            attacker.controller.hero_attacks_this_game += 1
         if source == attacker:
             attacker.num_attacks += 1
 
