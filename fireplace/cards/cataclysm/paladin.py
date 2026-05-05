@@ -157,7 +157,7 @@ class CATA_478_SummonCurrentStats(TargetedAction):
 # 5费 3/3 龙
 # 在你的回合结束时，召唤一条属性值等同于本随从的龙
 class CATA_478:
-    """Bronze Redemption"""
+    """Bronze Redeemer"""
 
     events = OWN_TURN_END.on(CATA_478_SummonCurrentStats(CONTROLLER))
 

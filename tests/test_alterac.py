@@ -274,3 +274,26 @@ def test_core_thickhide_kodo_deathrattle_gains_armor():
 
     assert player.hero.armor == 5
     assert player.armor_gained_this_game == 5
+
+
+def test_ram_commander_adds_two_rams_to_hand():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.player1
+
+    player.give("AV_219").play()
+
+    rams = player.hand.filter(id="AV_219t")
+    assert len(rams) == 2
+    assert all(ram.atk == 1 and ram.health == 1 and ram.rush for ram in rams)
+
+
+def test_core_replicating_menace_summons_three_microbots():
+    game = prepare_empty_game()
+    player = game.player1
+
+    menace = player.give("CORE_BOT_312").play()
+    menace.destroy()
+
+    microbots = player.field.filter(id="BOT_312t")
+    assert len(microbots) == 3
+    assert all(bot.atk == 1 and bot.health == 1 for bot in microbots)

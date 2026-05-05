@@ -370,6 +370,12 @@ class AV_210:
     play = AV_210_Play(CONTROLLER)
 
 
+class AV_219:
+    """Ram Commander"""
+
+    play = Give(CONTROLLER, "AV_219t") * 2
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -553,6 +559,13 @@ class CORE_BAR_535:
     """Thickhide Kodo"""
 
     deathrattle = GainArmor(FRIENDLY_HERO, 5)
+
+
+class CORE_BOT_312:
+    """Replicating Menace"""
+
+    magnetic = MAGNETIC("BOT_312e")
+    deathrattle = Summon(CONTROLLER, "BOT_312t") * 3
 
 
 class BAR_751:
