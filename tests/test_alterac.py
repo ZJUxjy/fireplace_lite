@@ -1398,3 +1398,45 @@ def test_core_arfus_deathrattle_adds_lich_king_card():
 
     assert len(player.hand) == 1
     assert player.hand[0].id in LICH_KING_CARDS
+
+
+def test_kazakus_golem_shaper_builds_custom_golem_without_four_cost_deck_cards():
+    game = prepare_empty_game()
+    player = game.player1
+
+    player.give("BAR_079").play()
+    choice = player.choice
+    assert choice
+    choice.choose(next(card for card in choice.cards if card.id == "BAR_079_m1"))
+    choice.choose(next(card for card in choice.cards if card.id == "BAR_079t4"))
+    choice.choose(next(card for card in choice.cards if card.id == "BAR_079t5"))
+
+    golem = player.hand[0]
+    assert golem.id == "BAR_079_m1"
+    assert golem.custom_card
+    assert golem.cost == 1
+    assert golem.atk == 1
+    assert golem.health == 1
+    assert golem.rush
+    assert golem.taunt
+
+
+def test_kazakus_golem_shaper_requires_no_four_cost_deck_cards():
+    game = prepare_empty_game()
+    player = game.player1
+    player.card("CS2_182", zone=Zone.DECK)
+
+    player.give("BAR_079").play()
+
+    assert player.choice is None
+
+
+def test_core_tomb_pillager_deathrattle_adds_coin():
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    player = game.player1
+
+    pillager = player.give("CORE_LOE_012").play()
+    pillager.destroy()
+
+    assert len(player.hand) == 1
+    assert player.hand[0].id == THE_COIN

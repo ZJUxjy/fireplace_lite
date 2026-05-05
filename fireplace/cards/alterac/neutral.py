@@ -1120,6 +1120,138 @@ class CORE_ICC_854:
     deathrattle = Give(CONTROLLER, RandomEntourage())
 
 
+BAR_079_GOLEMS = ["BAR_079_m1", "BAR_079_m2", "BAR_079_m3"]
+BAR_079_BASE_HERBS = [
+    "BAR_079t4",
+    "BAR_079t5",
+    "BAR_079t6",
+    "BAR_079t7",
+    "BAR_079t8",
+    "BAR_079t9",
+]
+BAR_079_BATTLECRY_HERBS = {
+    1: [
+        "BAR_079t10",
+        "BAR_079t11",
+        "BAR_079t12",
+        "BAR_079t13",
+        "BAR_079t14",
+        "BAR_079t15",
+    ],
+    5: [
+        "BAR_079t10b",
+        "BAR_079t11",
+        "BAR_079t12b",
+        "BAR_079t13b",
+        "BAR_079t14b",
+        "BAR_079t15b",
+    ],
+    10: [
+        "BAR_079t10",
+        "BAR_079t11",
+        "BAR_079t12c",
+        "BAR_079t13c",
+        "BAR_079t14c",
+        "BAR_079t15c",
+    ],
+}
+
+
+class BAR_079_KazakusAction(MultipleChoice):
+    PLAYER = ActionArg()
+    choose_times = 3
+
+    def do_step1(self):
+        self.cards = [self.player.card(card_id, source=self.source) for card_id in BAR_079_GOLEMS]
+
+    def do_step2(self):
+        self.golem_id = self.choosed_cards[0].id
+        self.golem_cost = self.choosed_cards[0].cost
+        herb_ids = BAR_079_BASE_HERBS + BAR_079_BATTLECRY_HERBS[self.golem_cost]
+        self.cards = [self.player.card(card_id, source=self.source) for card_id in herb_ids]
+
+    def do_step3(self):
+        chosen = {card.id for card in self.choosed_cards}
+        herb_ids = BAR_079_BASE_HERBS + BAR_079_BATTLECRY_HERBS[self.golem_cost]
+        self.cards = [
+            self.player.card(card_id, source=self.source)
+            for card_id in herb_ids
+            if card_id not in chosen
+        ]
+
+    def done(self):
+        herbs = self.choosed_cards[1:]
+        golem = self.player.card(self.golem_id, source=self.source)
+        golem.custom_card = True
+
+        def create_custom_card(card):
+            play_actions = []
+            for herb in herbs:
+                herb_id = herb.id
+                if herb_id in ("BAR_079t4",):
+                    card.tags[GameTag.RUSH] = True
+                elif herb_id in ("BAR_079t5",):
+                    card.tags[GameTag.TAUNT] = True
+                elif herb_id in ("BAR_079t6",):
+                    card.tags[GameTag.DIVINE_SHIELD] = True
+                elif herb_id in ("BAR_079t7",):
+                    card.tags[GameTag.LIFESTEAL] = True
+                elif herb_id in ("BAR_079t8",):
+                    card.tags[GameTag.STEALTH] = True
+                elif herb_id in ("BAR_079t9",):
+                    card.tags[GameTag.POISONOUS] = True
+                elif herb_id in ("BAR_079t10",):
+                    play_actions.append(Buff(FRIENDLY_MINIONS - SELF, "BAR_079t10e"))
+                elif herb_id in ("BAR_079t10b",):
+                    play_actions.append(Buff(FRIENDLY_MINIONS - SELF, "BAR_079t10be"))
+                elif herb_id in ("BAR_079t11",):
+                    play_actions.append(Summon(CONTROLLER, ExactCopy(SELF)))
+                elif herb_id in ("BAR_079t12",):
+                    play_actions.append(Freeze(RANDOM_ENEMY_MINION))
+                elif herb_id in ("BAR_079t12b",):
+                    play_actions.append(Freeze(RANDOM_ENEMY_MINION * 2))
+                elif herb_id in ("BAR_079t12c",):
+                    play_actions.append(Freeze(ENEMY_MINIONS))
+                elif herb_id in ("BAR_079t13",):
+                    play_actions.append(Hit(RANDOM_ENEMY_MINION, 3))
+                elif herb_id in ("BAR_079t13b",):
+                    play_actions.append(Hit(RANDOM_ENEMY_MINION * 2, 3))
+                elif herb_id in ("BAR_079t13c",):
+                    play_actions.append(Hit(ENEMY_MINIONS, 3))
+                elif herb_id in ("BAR_079t14",):
+                    card.tags[GameTag.SPELLPOWER] = 1
+                elif herb_id in ("BAR_079t14b",):
+                    card.tags[GameTag.SPELLPOWER] = 2
+                elif herb_id in ("BAR_079t14c",):
+                    card.tags[GameTag.SPELLPOWER] = 4
+                elif herb_id in ("BAR_079t15",):
+                    play_actions.append(Draw(CONTROLLER))
+                elif herb_id in ("BAR_079t15b",):
+                    play_actions.append(Draw(CONTROLLER) * 2)
+                elif herb_id in ("BAR_079t15c",):
+                    play_actions.append(Draw(CONTROLLER) * 4)
+            card.data.scripts.play = tuple(play_actions)
+            card.tags[GameTag.CARDTEXT_ENTITY_0] = herbs[0].description
+            card.tags[GameTag.CARDTEXT_ENTITY_1] = herbs[1].description
+
+        golem.create_custom_card = create_custom_card
+        golem.create_custom_card(golem)
+        self.player.give(golem)
+
+
+class BAR_079:
+    """Kazakus, Golem Shaper"""
+
+    powered_up = -Find(FRIENDLY_DECK + (COST == 4))
+    play = powered_up & BAR_079_KazakusAction(CONTROLLER)
+
+
+class CORE_LOE_012:
+    """Tomb Pillager"""
+
+    deathrattle = Give(CONTROLLER, THE_COIN)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 

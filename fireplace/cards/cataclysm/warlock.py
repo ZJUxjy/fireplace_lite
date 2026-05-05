@@ -152,7 +152,7 @@ class CATA_499:
 # CATA_725: 暗誓信徒 (2费 2/1)
 # 战吼：兆示{0}。亡语：为你的英雄恢复#3点生命值
 class CATA_725:
-    """Dark Inquisitor"""
+    """Shadowsworn Disciple"""
 
     # 战吼：兆示
     play = CATA_GuldanHerald(CONTROLLER)
