@@ -295,7 +295,7 @@ class CATA_613:
 # CATA_614: 蔽影密探 (2费 2/2)
 # 战吼：发现一张你的职业的法术牌。
 class CATA_614:
-    """Spyder"""
+    """Shadowed Informant"""
 
     # 战吼：发现一张职业法术
     play = Discover(CONTROLLER, RandomSpell())

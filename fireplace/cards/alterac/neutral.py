@@ -924,6 +924,39 @@ class CORE_ICC_062:
     deathrattle = CurrentPlayer(OPPONENT) & GainArmor(FRIENDLY_HERO, 6)
 
 
+class BAR_037_BuffCopies(TargetedAction):
+    TARGET = ActionArg()
+    CARD = ActionArg()
+
+    def do(self, source, player, card):
+        copies = [
+            candidate
+            for candidate in list(player.hand) + list(player.deck) + list(player.field)
+            if candidate.id == card.id
+        ]
+        return source.game.queue_actions(
+            source, [Buff(copy, "BAR_037e") for copy in copies]
+        )
+
+
+class BAR_037:
+    """Warsong Wrangler"""
+
+    play = Choice(CONTROLLER, DeDuplicate(FRIENDLY_DECK + BEAST)).then(
+        Give(CONTROLLER, Choice.CARD), BAR_037_BuffCopies(CONTROLLER, Choice.CARD)
+    )
+
+
+BAR_037e = buff(+2, +1)
+
+
+class CORE_ICC_064:
+    """Blood Razor"""
+
+    play = Hit(ALL_MINIONS, 1)
+    deathrattle = Hit(ALL_MINIONS, 1)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 

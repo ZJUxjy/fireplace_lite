@@ -1099,3 +1099,46 @@ def test_core_mountainfire_armor_does_not_gain_armor_on_own_turn():
     armor.destroy()
 
     assert player.hero.armor == 0
+
+
+def test_warsong_wrangler_discovers_deck_beast_and_buffs_all_copies():
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.player1
+    deck_beast = player.give("CS2_120")
+    deck_beast.shuffle_into_deck()
+    hand_copy = player.give("CS2_120")
+    board_copy = player.summon("CS2_120")
+    non_beast = player.give(WISP)
+    non_beast.shuffle_into_deck()
+
+    player.give("BAR_037").play()
+
+    assert player.choice is not None
+    assert deck_beast in player.choice.cards
+    player.choice.choose(deck_beast)
+
+    assert deck_beast.zone == Zone.HAND
+    assert deck_beast.atk == 4
+    assert deck_beast.health == 4
+    assert hand_copy.atk == 4
+    assert hand_copy.health == 4
+    assert board_copy.atk == 4
+    assert board_copy.health == 4
+    assert non_beast.zone == Zone.DECK
+
+
+def test_core_blood_razor_battlecry_and_deathrattle_damage_all_minions():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.player1
+    friendly = player.summon("CS2_120")
+    enemy = game.player2.summon("CS2_120")
+
+    razor = player.give("CORE_ICC_064").play()
+
+    assert friendly.damage == 1
+    assert enemy.damage == 1
+
+    razor.destroy()
+
+    assert friendly.damage == 2
+    assert enemy.damage == 2
