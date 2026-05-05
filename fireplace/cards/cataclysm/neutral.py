@@ -313,7 +313,7 @@ class CATA_615:
 # CATA_615t: 吉恩，狼人国王 (4费 6/5)
 # 战吼：升级你的初始英雄技能，其法力值消耗为（1）点。
 class CATA_615e:
-    """Moon Howl"""
+    """The Moooon"""
 
     cost = SET(1)
 

@@ -1171,3 +1171,51 @@ def test_core_bone_baron_adds_two_skeletons_on_deathrattle():
     skeletons = player.hand.filter(id="ICC_026t")
     assert len(skeletons) == 2
     assert all(skeleton.atk == 1 and skeleton.health == 1 for skeleton in skeletons)
+
+
+def test_arid_stormer_gains_rush_and_windfury_after_elemental_previous_turn():
+    game = prepare_empty_game(CardClass.SHAMAN, CardClass.SHAMAN)
+    player = game.player1
+    player.give("CS2_118").play()
+
+    game.end_turn()
+    game.end_turn()
+
+    stormer = player.give("BAR_045").play()
+
+    assert stormer.rush
+    assert stormer.windfury
+
+
+def test_arid_stormer_without_previous_turn_elemental_keeps_base_keywords():
+    game = prepare_empty_game(CardClass.SHAMAN, CardClass.SHAMAN)
+    player = game.player1
+
+    stormer = player.give("BAR_045").play()
+
+    assert not stormer.rush
+    assert not stormer.windfury
+
+
+def test_core_vryghoul_summons_ghoul_on_opponent_turn_deathrattle():
+    game = prepare_empty_game(CardClass.DEATHKNIGHT, CardClass.DEATHKNIGHT)
+    player = game.player1
+    vryghoul = player.give("CORE_ICC_067").play()
+
+    game.end_turn()
+    vryghoul.destroy()
+
+    ghouls = player.field.filter(id="ICC_900t")
+    assert len(ghouls) == 1
+    assert ghouls[0].atk == 2
+    assert ghouls[0].health == 2
+
+
+def test_core_vryghoul_does_not_summon_ghoul_on_own_turn():
+    game = prepare_empty_game(CardClass.DEATHKNIGHT, CardClass.DEATHKNIGHT)
+    player = game.player1
+    vryghoul = player.give("CORE_ICC_067").play()
+
+    vryghoul.destroy()
+
+    assert not player.field.filter(id="ICC_900t")

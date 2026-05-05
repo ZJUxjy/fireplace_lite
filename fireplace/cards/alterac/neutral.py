@@ -986,6 +986,21 @@ class CORE_ICC_065:
     deathrattle = Give(CONTROLLER, "ICC_026t") * 2
 
 
+class BAR_045:
+    """Arid Stormer"""
+
+    play = ELEMENTAL_PLAYED_LAST_TURN & Buff(SELF, "BAR_045e")
+
+
+BAR_045e = buff(rush=True, windfury=True)
+
+
+class CORE_ICC_067:
+    """Vryghoul"""
+
+    deathrattle = CurrentPlayer(OPPONENT) & Summon(CONTROLLER, "ICC_900t")
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
