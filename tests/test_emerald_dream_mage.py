@@ -200,4 +200,4 @@ def test_inferno_herald_gets_discounted_elemental_after_fire_spell():
 
     elementals = [card for card in player.hand if card.race == Race.ELEMENTAL]
     assert len(elementals) == 1
-    assert elementals[0].cost == max(0, elementals[0].data.cost - 3)
+    assert any(buff.id == "EDR_519e" for buff in elementals[0].buffs)

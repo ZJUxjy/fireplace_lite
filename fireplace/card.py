@@ -341,6 +341,11 @@ class PlayableCard(BaseCard, Entity, TargetableByAuras):
                 if r:
                     ret += r
         ret = self._getattr("cost", ret)
+        if (
+            getattr(self.controller, "_edr_895_cards_cost_one", False)
+            and self.type not in (CardType.HERO, CardType.HERO_POWER)
+        ):
+            ret = 1
         return max(0, ret)
 
     @cost.setter

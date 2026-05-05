@@ -48,6 +48,18 @@ def test_web_of_deception_bounces_friendly_minion_and_summons_spider():
     assert spider.stealthed
 
 
+def test_harbinger_triggers_when_bounced_by_other_effects():
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    player = game.current_player
+    harbinger = player.summon("EDR_781")
+
+    game.cheat_action(harbinger, [Bounce(harbinger)])
+
+    assert harbinger in player.hand
+    assert len(player.field) == 2
+    assert all(minion.cost == 2 for minion in player.field)
+
+
 def test_shadowcloaked_assailant_shuffles_matching_opponent_card():
     game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
     player = game.current_player
@@ -73,6 +85,20 @@ def test_barbed_thorn_deathrattle_mode_deals_two_to_all_enemies():
 
     assert player.opponent.hero.damage == 2
     assert enemy.zone == Zone.GRAVEYARD
+
+
+def test_barbed_thorn_poisonous_mode_expires_at_end_of_turn():
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    player = game.current_player
+    _set_mana(player)
+
+    weapon = player.give("EDR_525").play()
+    player.choice.choose(player.choice.cards[0])
+    assert weapon.poisonous
+
+    game.end_turn()
+
+    assert not weapon.poisonous
 
 
 def test_renferal_traps_more_cards_each_time_played():

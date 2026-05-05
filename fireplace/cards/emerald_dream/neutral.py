@@ -33,6 +33,56 @@ class EDR_102t:
     deathrattle = Buff(FRIENDLY_MINIONS, "+2/+2")
 
 
+@custom_card
+class EDR_DG_ATTACK_LIFESTEAL:
+    """Dark Gift"""
+
+    tags = {
+        GameTag.CARDNAME: "Dark Gift",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 3,
+        GameTag.LIFESTEAL: 1,
+    }
+    lifesteal = True
+
+
+@custom_card
+class EDR_DG_HEALTH_TAUNT:
+    """Dark Gift"""
+
+    tags = {
+        GameTag.CARDNAME: "Dark Gift",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.HEALTH: 4,
+        GameTag.TAUNT: 1,
+    }
+    taunt = True
+
+
+@custom_card
+class EDR_DG_CHARGE:
+    """Dark Gift"""
+
+    tags = {
+        GameTag.CARDNAME: "Dark Gift",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.CHARGE: 1,
+    }
+    charge = True
+
+
+@custom_card
+class EDR_DG_REBORN:
+    """Dark Gift"""
+
+    tags = {
+        GameTag.CARDNAME: "Dark Gift",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.REBORN: 1,
+    }
+    reborn = True
+
+
 class EDR_105:
     """Creature of Madness"""
 

@@ -147,6 +147,7 @@ class EDR_895t_Tick(TargetedAction):
         cycle._edr_895_turns_remaining = remaining
         if remaining <= 0:
             player = cycle.controller
+            player._edr_895_cards_cost_one = True
             actions = [Buff(card, "EDR_895e") for card in list(player.hand) + list(player.deck)]
             actions.append(Buff(player, "EDR_895e"))
             cycle.remove()

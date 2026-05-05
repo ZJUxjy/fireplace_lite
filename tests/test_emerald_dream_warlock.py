@@ -1,12 +1,27 @@
 from utils import *
-from hearthstone.enums import CardClass, Race, Zone
+from hearthstone.enums import CardClass, PlayState, Race, Zone
+import pytest
 
 from fireplace.actions import Hit
+from fireplace.exceptions import GameOver
 
 
 def _set_mana(player, amount=10):
     player.max_mana = amount
     player.used_mana = 0
+
+
+def _has_dark_gift_bonus(card):
+    return (
+        card.atk != card.data.atk
+        or card.max_health != card.data.health
+        or card.lifesteal
+        or card.taunt
+        or card.charge
+        or card.reborn
+        or getattr(card, "_extra_battlecry_repeats", 0)
+        or getattr(card, "_extra_deathrattle_repeats", 0)
+    )
 
 
 def test_rotten_apple_heals_now_then_damages_on_next_two_own_turns():
@@ -66,8 +81,10 @@ def test_wallow_copies_dark_gifts_given_to_minions_while_in_hand():
     assert chosen in player.hand
     assert chosen.has_deathrattle
     assert getattr(chosen, "_dark_gift", False)
+    assert _has_dark_gift_bonus(chosen)
     assert getattr(wallow, "_dark_gift", False)
     assert wallow._edr_487_gifts == 1
+    assert _has_dark_gift_bonus(wallow)
 
 
 def test_avant_gardening_discovers_deathrattle_minion_with_dark_gift():
@@ -83,6 +100,22 @@ def test_avant_gardening_discovers_deathrattle_minion_with_dark_gift():
     assert chosen.type == CardType.MINION
     assert chosen.has_deathrattle
     assert chosen._dark_gift
+    assert _has_dark_gift_bonus(chosen)
+
+
+def test_dark_gift_applies_bonus_and_wallow_copies_same_bonus():
+    game = prepare_empty_game(CardClass.WARLOCK, CardClass.WARLOCK)
+    player = game.current_player
+    target = player.give(WISP)
+    wallow = player.give("EDR_487")
+
+    game.cheat_action(target, [EDR_DarkGift(target, "EDR_DG_ATTACK_LIFESTEAL")])
+
+    assert target._dark_gift
+    assert (target.atk, target.lifesteal) == (target.data.atk + 3, True)
+    assert wallow._dark_gift
+    assert wallow._edr_487_gifts == 1
+    assert (wallow.atk, wallow.lifesteal) == (wallow.data.atk + 3, True)
 
 
 def test_agamaggan_makes_next_card_cost_opponents_health_instead_of_mana():
@@ -97,6 +130,26 @@ def test_agamaggan_makes_next_card_cost_opponents_health_instead_of_mana():
 
     assert player.used_mana == player.max_mana
     assert player.opponent.hero.damage == 1
+
+
+def test_agamaggan_health_cost_ignores_armor_damage_triggers_and_can_be_lethal():
+    game = prepare_empty_game(CardClass.WARLOCK, CardClass.WARLOCK)
+    player = game.current_player
+    _set_mana(player)
+    player.opponent.hero.armor = 10
+    player.opponent.hero.damage = player.opponent.hero.max_health - 10
+    watcher = player.opponent.summon("FIR_955")
+    friendly = player.summon(WISP)
+
+    player.give("EDR_489").play()
+    player.used_mana = player.max_mana
+    with pytest.raises(GameOver):
+        player.give("EDR_489").play()
+
+    assert player.opponent.hero.armor == 10
+    assert watcher.damage == 0
+    assert friendly.damage == 0
+    assert player.opponent.playstate == PlayState.LOST
 
 
 def test_sleep_paralysis_summons_taunt_demons_or_destroys_enemy_minion():
@@ -174,6 +227,7 @@ def test_shadowflame_stalker_discovers_demon_with_dark_gift():
     assert chosen in player.hand
     assert Race.DEMON in chosen.races
     assert chosen._dark_gift
+    assert _has_dark_gift_bonus(chosen)
 
 
 def test_conflagrate_damages_minion_and_its_owner_draws():

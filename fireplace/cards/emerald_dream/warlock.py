@@ -15,15 +15,6 @@ def _collectible_ids(source, predicate):
     return ids
 
 
-def _apply_dark_gift(player, card):
-    card._dark_gift = True
-    for wallow in list(player.hand) + list(player.deck):
-        if wallow.id == "EDR_487":
-            wallow._dark_gift = True
-            wallow._edr_487_gifts = getattr(wallow, "_edr_487_gifts", 0) + 1
-    return card
-
-
 class EDR_482e_Tick(TargetedAction):
     TARGET = ActionArg()
 
@@ -78,10 +69,9 @@ class EDR_488_Choice(Choice):
         if card not in self.cards:
             raise InvalidAction(
                 "%r is not a valid choice (one of %r)" % (card, self.cards)
-            )
+        )
         self.player.choice = None
-        _apply_dark_gift(self.player, card)
-        self.source.game.queue_actions(self.source, [Give(self.player, card)])
+        self.source.game.queue_actions(self.source, [EDR_DarkGift(card), Give(self.player, card)])
         self.trigger_choice_callback()
 
 
@@ -176,10 +166,9 @@ class FIR_924_Choice(Choice):
         if card not in self.cards:
             raise InvalidAction(
                 "%r is not a valid choice (one of %r)" % (card, self.cards)
-            )
+        )
         self.player.choice = None
-        _apply_dark_gift(self.player, card)
-        self.source.game.queue_actions(self.source, [Give(self.player, card)])
+        self.source.game.queue_actions(self.source, [EDR_DarkGift(card), Give(self.player, card)])
         self.trigger_choice_callback()
 
 

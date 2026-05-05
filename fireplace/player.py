@@ -406,10 +406,7 @@ class Player(Entity, TargetableByAuras):
         """
         if self._has_next_card_opponent_health_cost():
             health_cost = self._opponent_health_cost_amount(card.cost)
-            return (
-                self.opponent.hero.health > health_cost
-                and self.mana >= card.cost - health_cost
-            )
+            return self.mana >= card.cost - health_cost
         if self._card_costs_health_this_turn(card):
             return self.hero.health > card.cost
         if self.spells_cost_health and card.type == CardType.SPELL:
@@ -428,7 +425,9 @@ class Player(Entity, TargetableByAuras):
             self._next_card_costs_opponent_health = False
             self._next_card_costs_opponent_health_max = 0
             self.log("%s pays %i opponent health for %r", self, health_cost, source)
-            self.game.queue_actions(self, [Hit(self.opponent.hero, health_cost)])
+            self.opponent.hero.damage += health_cost
+            if self.opponent.hero.health <= 0:
+                self.opponent.playstate = PlayState.LOSING
             mana_cost = amount - health_cost
             if mana_cost:
                 self.game.queue_actions(source, [SpendMana(self, mana_cost)])

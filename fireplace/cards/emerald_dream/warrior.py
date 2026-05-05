@@ -2,11 +2,6 @@
 from ..utils import *
 
 
-def _dark_gift(card):
-    card._dark_gift = True
-    return card
-
-
 def _collectible_ids(source, predicate):
     ids = [
         card_id for card_id, data in db.items()
@@ -101,10 +96,9 @@ class EDR_456_Choice(Choice):
         if card not in self.cards:
             raise InvalidAction(
                 "%r is not a valid choice (one of %r)" % (card, self.cards)
-            )
+        )
         self.player.choice = None
-        _dark_gift(card)
-        self.source.game.queue_actions(self.source, [Give(self.player, card)])
+        self.source.game.queue_actions(self.source, [EDR_DarkGift(card), Give(self.player, card)])
         self.trigger_choice_callback()
 
 
@@ -185,10 +179,9 @@ class FIR_939_Choice(Choice):
         if card not in self.cards:
             raise InvalidAction(
                 "%r is not a valid choice (one of %r)" % (card, self.cards)
-            )
+        )
         self.player.choice = None
-        _dark_gift(card)
-        self.source.game.queue_actions(self.source, [Give(self.player, card)])
+        self.source.game.queue_actions(self.source, [EDR_DarkGift(card), Give(self.player, card)])
         self.trigger_choice_callback()
 
 

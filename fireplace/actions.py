@@ -880,6 +880,14 @@ class Bounce(TargetedAction):
             log.info("%r is bounced back to %s's hand", target, target.controller)
             target.zone = Zone.HAND
             source.game.manager.targeted_action(self, source, target)
+            if target.id == "EDR_781":
+                return source.game.queue_actions(
+                    source,
+                    [
+                        Summon(target.controller, RandomMinion(cost=2)),
+                        Summon(target.controller, RandomMinion(cost=2)),
+                    ],
+                )
 
 
 class Choice(TargetedAction):
@@ -1116,6 +1124,10 @@ class Deathrattle(TargetedAction):
                     actions = deathrattle
                 source.game.queue_actions(entity, actions)
 
+                for _ in range(getattr(target, "_extra_deathrattle_repeats", 0)):
+                    log.info("Triggering extra deathrattle for %r", target)
+                    source.game.queue_actions(entity, actions)
+
                 if target.controller.extra_deathrattles:
                     log.info("Triggering deathrattles for %r again", target)
                     source.game.queue_actions(entity, actions)
@@ -1190,6 +1202,10 @@ class Battlecry(TargetedAction):
         source.game.main_power(source, actions, target)
 
         for _ in range(shudderblock_repeats):
+            source.game.main_power(source, actions, target)
+
+        for _ in range(getattr(card, "_extra_battlecry_repeats", 0)):
+            log.info("Triggering extra battlecry for %r", card)
             source.game.main_power(source, actions, target)
 
         if shudderblock_repeats:

@@ -6,11 +6,6 @@ def _copy_card_for(player, source, card):
     return player.card(card.id, source=source)
 
 
-def _dark_gift(card):
-    card._dark_gift = True
-    return card
-
-
 class EDR_521_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -41,8 +36,6 @@ class EDR_523_Play(TargetedAction):
     def do(self, source, target):
         player = source.controller
         actions = [Bounce(target)]
-        if target.id == "EDR_781":
-            actions.extend([Summon(player, RandomMinion(cost=2)), Summon(player, RandomMinion(cost=2))])
         actions.append(Summon(player, "EDR_523t"))
         return source.game.queue_actions(source, actions)
 
@@ -74,7 +67,10 @@ class EDR_525_Choice(Choice):
         self.player.choice = None
         weapon = self.source
         if card.id == "EDR_525A":
-            actions = [GivePoisonous(weapon)]
+            actions = [
+                Buff(weapon, "EDR_525ae"),
+                Buff(weapon.controller, "EDR_525ate", _edr_525_weapon=weapon),
+            ]
         else:
             actions = [Buff(weapon, "EDR_525e")]
         self.source.game.queue_actions(self.source, actions)
@@ -117,7 +113,7 @@ class EDR_528_Choice(Choice):
             )
         self.player.choice = None
         if self.dark_gift:
-            _dark_gift(card)
+            self.source.game.queue_actions(self.source, [EDR_DarkGift(card)])
         self.source.game.queue_actions(self.source, [Give(self.player, card)])
         self.trigger_choice_callback()
 
@@ -158,6 +154,19 @@ class EDR_526e_RemoveTraps(TargetedAction):
         source.game.manager.targeted_action(self, source, aura)
 
 
+class EDR_525a_RemovePoison(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, aura):
+        weapon = getattr(aura, "_edr_525_weapon", None)
+        if weapon:
+            for buff in list(weapon.buffs):
+                if buff.id == "EDR_525ae":
+                    buff.remove()
+        aura.remove()
+        source.game.manager.targeted_action(self, source, aura)
+
+
 class FIR_919e_EndTurn(TargetedAction):
     TARGET = ActionArg()
 
@@ -172,8 +181,9 @@ class FIR_920_Choice(Choice):
                 "%r is not a valid choice (one of %r)" % (card, self.cards)
             )
         self.player.choice = None
-        _dark_gift(card)
-        self.source.game.queue_actions(self.source, [Give(self.player, card)])
+        self.source.game.queue_actions(
+            self.source, [EDR_DarkGift(card), Give(self.player, card)]
+        )
         self.trigger_choice_callback()
 
 
@@ -251,6 +261,30 @@ class EDR_525B:
     """Extra Thorns"""
 
     pass
+
+
+@custom_card
+class EDR_525ae:
+    """Extra Eyes"""
+
+    tags = {
+        GameTag.CARDNAME: "Extra Eyes",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.POISONOUS: 1,
+    }
+    poisonous = True
+    events = OWN_TURN_END.on(Destroy(SELF))
+
+
+@custom_card
+class EDR_525ate:
+    """Extra Eyes Cleanup"""
+
+    tags = {
+        GameTag.CARDNAME: "Extra Eyes Cleanup",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
+    events = OWN_TURN_END.on(EDR_525a_RemovePoison(SELF))
 
 
 class EDR_525e:

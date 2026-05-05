@@ -64,10 +64,10 @@ class EDR_811_Choice(Choice):
         if card not in self.cards:
             raise InvalidAction(
                 "%r is not a valid choice (one of %r)" % (card, self.cards)
-            )
+        )
         self.player.choice = None
         if getattr(self.source, "_edr_811_dark_gift", False):
-            card._dark_gift = True
+            self.source.game.queue_actions(self.source, [EDR_DarkGift(card)])
         self.source.game.queue_actions(self.source, [Give(self.player, card)])
         self.trigger_choice_callback()
 
@@ -174,11 +174,10 @@ class FIR_900_Choice(Choice):
         if card not in self.cards:
             raise InvalidAction(
                 "%r is not a valid choice (one of %r)" % (card, self.cards)
-            )
+        )
         self.player.choice = None
-        card._dark_gift = True
         self.source.game.queue_actions(
-            self.source, [Buff(card, "FIR_900e"), Give(self.player, card)]
+            self.source, [EDR_DarkGift(card), Buff(card, "FIR_900e"), Give(self.player, card)]
         )
         self.trigger_choice_callback()
 

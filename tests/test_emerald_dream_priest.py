@@ -169,6 +169,21 @@ def test_aviana_starts_lunar_cycle_that_makes_cards_cost_one():
     assert held.cost == 1
 
 
+def test_aviana_full_moon_makes_later_generated_cards_cost_one():
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.current_player
+    _set_mana(player)
+
+    player.give("EDR_895").play()
+    for _ in range(3):
+        game.end_turn()
+        game.end_turn()
+
+    generated = player.give("EDR_462")
+
+    assert generated.cost == 1
+
+
 def test_spirit_of_the_kaldorei_gains_stats_after_hero_power():
     game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
     player = game.current_player

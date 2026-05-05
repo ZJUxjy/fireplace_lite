@@ -181,10 +181,10 @@ class EDR_882_Choice(Choice):
         if card not in self.cards:
             raise InvalidAction(
                 "%r is not a valid choice (one of %r)" % (card, self.cards)
-            )
+        )
         self.player.choice = None
-        card._dark_gift = True
         actions = [Give(self.player, card)]
+        actions.insert(0, EDR_DarkGift(card))
         actions.extend(Shuffle(self.player, other) for other in self.cards if other is not card)
         self.source.game.queue_actions(self.source, actions)
         self.trigger_choice_callback()
