@@ -149,6 +149,8 @@ class Player(Entity, TargetableByAuras):
         self.cards_drawn_this_turn = 0
         self.cards_drawn_this_game = 0
         self.cards_played_this_turn = 0
+        self.cards_played_this_turn_list = CardList()
+        self.cards_played_last_turn = CardList()
         self.cards_played_this_game = CardList()
         self.hero_power_damage_this_game = 0
         self.spell_damage_this_turn = 0

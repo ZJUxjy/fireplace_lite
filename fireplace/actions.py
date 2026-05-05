@@ -649,6 +649,7 @@ class Play(GameAction):
             if Race.ELEMENTAL in card.races:
                 player.elemental_played_this_turn += 1
         player.cards_played_this_turn += 1
+        player.cards_played_this_turn_list.append(card)
         player.cards_played_this_game.append(card)
         card.turn_played = source.game.turn
         card.choose = None
