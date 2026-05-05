@@ -375,7 +375,7 @@ class CATA_722:
 # CATA_723: 龙脉混血兽 (7费 8/6)
 # 亡语：随机召唤两个法力值消耗为（4）的随从。
 class CATA_723:
-    """Murloc Warleader"""
+    """Drakeadon Mongrel"""
 
     # 亡语：召唤两个4费随机随从
     deathrattle = Summon(CONTROLLER, RandomMinion(cost=4)) * 2

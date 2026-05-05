@@ -1086,6 +1086,40 @@ class CORE_ICC_835:
     deathrattle = Summon(CONTROLLER, Copy(FRIENDLY + KILLED + TAUNT))
 
 
+BAR_077_WATCH_POSTS = {"BAR_074", "BAR_075", "BAR_076"}
+
+
+class BAR_077_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        watch_posts = []
+        for collection in (
+            player.field,
+            player.graveyard,
+            player.cards_played_this_game,
+        ):
+            for card in collection:
+                if card.id in BAR_077_WATCH_POSTS and card not in watch_posts:
+                    watch_posts.append(card)
+        return source.game.queue_actions(
+            source, [Summon(player, "BAR_077t") for _ in watch_posts]
+        )
+
+
+class BAR_077:
+    """Kargal Battlescar"""
+
+    play = BAR_077_Play(CONTROLLER)
+
+
+class CORE_ICC_854:
+    """Arfus"""
+
+    entourage = LICH_KING_CARDS
+    deathrattle = Give(CONTROLLER, RandomEntourage())
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 

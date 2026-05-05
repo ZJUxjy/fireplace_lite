@@ -1,4 +1,5 @@
 from utils import *
+from fireplace.cards.utils import LICH_KING_CARDS
 from fireplace.actions import GainArmor, Hit
 
 
@@ -1373,3 +1374,27 @@ def test_core_hadronox_summons_friendly_dead_taunt_minions():
 
     assert len(player.field.filter(id=GOLDSHIRE_FOOTMAN)) == 1
     assert not player.field.filter(id=WISP)
+
+
+def test_kargal_battlescar_summons_lookouts_for_summoned_watch_posts():
+    game = prepare_empty_game()
+    player = game.player1
+    player.summon("BAR_074")
+    player.summon("BAR_076")
+
+    player.give("BAR_077").play()
+
+    lookouts = player.field.filter(id="BAR_077t")
+    assert len(lookouts) == 2
+    assert all(lookout.atk == 5 and lookout.health == 5 for lookout in lookouts)
+
+
+def test_core_arfus_deathrattle_adds_lich_king_card():
+    game = prepare_empty_game()
+    player = game.player1
+
+    arfus = player.give("CORE_ICC_854").play()
+    arfus.destroy()
+
+    assert len(player.hand) == 1
+    assert player.hand[0].id in LICH_KING_CARDS
