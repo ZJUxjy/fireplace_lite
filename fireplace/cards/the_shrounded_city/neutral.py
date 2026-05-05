@@ -320,13 +320,225 @@ class TLC_110:
     play = TLC_110_Play(CONTROLLER)
 
 
+TLC_100_LOCATION_MODULES = {
+    "TLC_100t1": (
+        "TLC_100t11",
+        "TLC_100t12",
+        "TLC_100t13",
+        "TLC_100t14",
+        "TLC_100t15",
+        "TLC_100t16",
+        "TLC_100t17",
+    ),
+    "TLC_100t2": (
+        "TLC_100t21",
+        "TLC_100t22",
+        "TLC_100t23",
+        "TLC_100t24",
+        "TLC_100t25",
+        "TLC_100t26",
+        "TLC_100t27",
+    ),
+    "TLC_100t3": (
+        "TLC_100t31",
+        "TLC_100t32",
+        "TLC_100t33",
+        "TLC_100t34",
+        "TLC_100t35",
+        "TLC_100t36",
+        "TLC_100t37",
+    ),
+}
+
+TLC_100_DAMAGE_MODULES = {
+    "TLC_100t11": 3,
+    "TLC_100t21": 5,
+    "TLC_100t31": 10,
+}
+
+TLC_100_SPELLPOWER_MODULES = {
+    "TLC_100t12": "TLC_100t12e",
+    "TLC_100t22": "TLC_100t22e",
+    "TLC_100t32": "TLC_100t32e",
+}
+
+TLC_100_DISCOVER_MODULES = {
+    "TLC_100t13": 1,
+    "TLC_100t23": 4,
+    "TLC_100t33": 7,
+}
+
+TLC_100_ATTACK_MODULES = {
+    "TLC_100t14": "TLC_100t14e",
+    "TLC_100t24": "TLC_100t24e",
+    "TLC_100t34": "TLC_100t34e",
+}
+
+TLC_100_RAPTOR_MODULES = {
+    "TLC_100t15": 1,
+    "TLC_100t25": 3,
+    "TLC_100t35": 6,
+}
+
+TLC_100_ARMOR_MODULES = {
+    "TLC_100t16": 3,
+    "TLC_100t26": 6,
+    "TLC_100t36": 12,
+}
+
+TLC_100_COPY_MODULES = {
+    "TLC_100t17": 1,
+    "TLC_100t27": 5,
+    "TLC_100t37": 10,
+}
+
+
+def _tlc_100_module_actions(source, module_id):
+    if module_id in TLC_100_SPELLPOWER_MODULES:
+        return [Buff(CONTROLLER, TLC_100_SPELLPOWER_MODULES[module_id])]
+    if module_id in TLC_100_DISCOVER_MODULES:
+        return [TLC_100_DiscoverSpell(CONTROLLER, TLC_100_DISCOVER_MODULES[module_id])]
+    if module_id in TLC_100_ATTACK_MODULES:
+        return [Buff(FRIENDLY_HERO, TLC_100_ATTACK_MODULES[module_id])]
+    if module_id in TLC_100_RAPTOR_MODULES:
+        return [Summon(CONTROLLER, "TLC_101t") * TLC_100_RAPTOR_MODULES[module_id]]
+    if module_id in TLC_100_ARMOR_MODULES:
+        return [GainArmor(FRIENDLY_HERO, TLC_100_ARMOR_MODULES[module_id])]
+    if module_id in TLC_100_COPY_MODULES:
+        return [TLC_100_CopyFriendly(SELF, TLC_100_COPY_MODULES[module_id])]
+    return []
+
+
+class TLC_100_DiscountedSpellChoice(Choice):
+    def choose(self, card):
+        if card not in self.cards:
+            raise InvalidAction(
+                "%r is not a valid choice (one of %r)" % (card, self.cards)
+            )
+        self.player.choice = None
+        self.source.game.queue_actions(
+            self.source,
+            [
+                Buff(card, "TLC_100_SPELL_DISCOUNT", cost=-self.discount),
+                Give(self.player, card),
+            ],
+        )
+        self.trigger_choice_callback()
+
+
+class TLC_100_DiscoverSpell(TargetedAction):
+    TARGET = ActionArg()
+    DISCOUNT = IntArg()
+
+    def do(self, source, player, discount):
+        cards = _collectible_cards(source, lambda card: card.type == CardType.SPELL)
+        if not cards:
+            return
+        choice = TLC_100_DiscountedSpellChoice(player, cards[:3])
+        choice.discount = discount
+        return source.game.queue_actions(source, [choice])
+
+
+class TLC_100_CopyFriendly(TargetedAction):
+    TARGET = ActionArg()
+    STATS = IntArg()
+
+    def do(self, source, location, stats):
+        target = getattr(location, "target", None)
+        if target not in location.controller.field:
+            candidates = list(location.controller.field)
+            if not candidates:
+                return
+            target = source.game.random.choice(candidates)
+        copy = ExactCopy(target).copy(source, target)
+        source.game.queue_actions(source, [Summon(location.controller, copy)])
+        return source.game.queue_actions(
+            source, [TLC_NeutralSetStats(copy, stats, stats)]
+        )
+
+
+class TLC_100_Activate(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, location):
+        actions = []
+        for module_id in getattr(location, "_tlc_100_modules", ()):
+            actions.extend(_tlc_100_module_actions(location, module_id))
+        if actions:
+            return source.game.queue_actions(location, actions)
+
+
+class TLC_100_ModuleDeathrattle(TargetedAction):
+    TARGET = ActionArg()
+    MODULE = ActionArg()
+
+    def do(self, source, location, module_id):
+        amount = TLC_100_DAMAGE_MODULES[module_id]
+        return source.game.queue_actions(location, [Hit(ENEMY_CHARACTERS, amount)])
+
+
+class TLC_100_ModuleChoice(Choice):
+    def choose(self, card):
+        if card not in self.cards:
+            raise InvalidAction(
+                "%r is not a valid choice (one of %r)" % (card, self.cards)
+            )
+        self.player.choice = None
+        self.location._tlc_100_modules.append(card.id)
+        if card.id in TLC_100_DAMAGE_MODULES:
+            self.location.tags[GameTag.DEATHRATTLE] = True
+            self.location.additional_deathrattles.append(
+                (TLC_100_ModuleDeathrattle(SELF, card.id),)
+            )
+        remaining = [
+            module_id
+            for module_id in self.module_ids
+            if module_id not in self.location._tlc_100_modules
+        ]
+        if len(self.location._tlc_100_modules) < 2 and remaining:
+            choice = TLC_100_ModuleChoice(
+                self.player,
+                [self.player.card(module_id, source=self.source) for module_id in remaining],
+            )
+            choice.location = self.location
+            choice.module_ids = self.module_ids
+            self.source.game.queue_actions(self.source, [choice])
+        else:
+            self.source.game.queue_actions(self.source, [Give(self.player, self.location)])
+        self.trigger_choice_callback()
+
+
+class TLC_100_LocationChoice(Choice):
+    def choose(self, card):
+        if card not in self.cards:
+            raise InvalidAction(
+                "%r is not a valid choice (one of %r)" % (card, self.cards)
+            )
+        self.player.choice = None
+        location = self.player.card(card.id, source=self.source)
+        location._tlc_100_modules = []
+        module_ids = TLC_100_LOCATION_MODULES[card.id]
+        choice = TLC_100_ModuleChoice(
+            self.player,
+            [self.player.card(module_id, source=self.source) for module_id in module_ids],
+        )
+        choice.location = location
+        choice.module_ids = module_ids
+        self.source.game.queue_actions(self.source, [choice])
+        self.trigger_choice_callback()
+
+
 class TLC_100_Play(TargetedAction):
     TARGET = ActionArg()
 
     def do(self, source, player):
         costs = {card.cost for card in player.deck}
         if len(costs) >= 10:
-            return source.game.queue_actions(source, [Give(player, "TLC_100t1")])
+            locations = [
+                player.card(card_id, source=source)
+                for card_id in TLC_100_LOCATION_MODULES
+            ]
+            return source.game.queue_actions(source, [TLC_100_LocationChoice(player, locations)])
 
 
 class TLC_100:
@@ -338,7 +550,213 @@ class TLC_100:
 class TLC_100t1:
     """Un'Goro Jungle"""
 
-    pass
+    activate = TLC_100_Activate(SELF)
+
+
+class TLC_100t2:
+    """Terror Run"""
+
+    activate = TLC_100_Activate(SELF)
+
+
+class TLC_100t3:
+    """Fire Plume Ridge"""
+
+    activate = TLC_100_Activate(SELF)
+
+
+class TLC_100t11:
+    """Gushing Geyser"""
+
+    deathrattle = Hit(ENEMY_CHARACTERS, 3)
+
+
+class TLC_100t21:
+    """Gushing Geyser"""
+
+    deathrattle = Hit(ENEMY_CHARACTERS, 5)
+
+
+class TLC_100t31:
+    """Gushing Geyser"""
+
+    deathrattle = Hit(ENEMY_CHARACTERS, 10)
+
+
+class TLC_100t12:
+    """Clear Moonlight"""
+
+    play = Buff(CONTROLLER, "TLC_100t12e")
+
+
+class TLC_100t22:
+    """Clear Moonlight"""
+
+    play = Buff(CONTROLLER, "TLC_100t22e")
+
+
+class TLC_100t32:
+    """Clear Moonlight"""
+
+    play = Buff(CONTROLLER, "TLC_100t32e")
+
+
+@custom_card
+class TLC_100_SPELL_DISCOUNT:
+    tags = {
+        GameTag.CARDNAME: "Runic Discount",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
+
+
+class TLC_100t13:
+    """Runic Carving"""
+
+    play = TLC_100_DiscoverSpell(CONTROLLER, 1)
+
+
+class TLC_100t23:
+    """Runic Carving"""
+
+    play = TLC_100_DiscoverSpell(CONTROLLER, 4)
+
+
+class TLC_100t33:
+    """Runic Carving"""
+
+    play = TLC_100_DiscoverSpell(CONTROLLER, 7)
+
+
+class TLC_100t14:
+    """Carnivorous Plant"""
+
+    play = Buff(FRIENDLY_HERO, "TLC_100t14e")
+
+
+class TLC_100t24:
+    """Carnivorous Plant"""
+
+    play = Buff(FRIENDLY_HERO, "TLC_100t24e")
+
+
+class TLC_100t34:
+    """Carnivorous Plant"""
+
+    play = Buff(FRIENDLY_HERO, "TLC_100t34e")
+
+
+class TLC_100t15:
+    """Nesting Grounds"""
+
+    play = Summon(CONTROLLER, "TLC_101t")
+
+
+class TLC_100t25:
+    """Nesting Grounds"""
+
+    play = Summon(CONTROLLER, "TLC_101t") * 3
+
+
+class TLC_100t35:
+    """Nesting Grounds"""
+
+    play = Summon(CONTROLLER, "TLC_101t") * 6
+
+
+class TLC_100t16:
+    """Flowing Lava"""
+
+    play = GainArmor(FRIENDLY_HERO, 3)
+
+
+class TLC_100t26:
+    """Flowing Lava"""
+
+    play = GainArmor(FRIENDLY_HERO, 6)
+
+
+class TLC_100t36:
+    """Flowing Lava"""
+
+    play = GainArmor(FRIENDLY_HERO, 12)
+
+
+class TLC_100t17:
+    """Reflecting Crystal"""
+
+    requirements = {PlayReq.REQ_MINIMUM_TOTAL_MINIONS: 1}
+    play = TLC_100_CopyFriendly(SELF, 1)
+
+
+class TLC_100t27:
+    """Reflecting Crystal"""
+
+    requirements = {PlayReq.REQ_MINIMUM_TOTAL_MINIONS: 1}
+    play = TLC_100_CopyFriendly(SELF, 5)
+
+
+class TLC_100t37:
+    """Reflecting Crystal"""
+
+    requirements = {PlayReq.REQ_MINIMUM_TOTAL_MINIONS: 1}
+    play = TLC_100_CopyFriendly(SELF, 10)
+
+
+class TLC_100t12e:
+    tags = {
+        GameTag.CARDNAME: "Clear Moonlight",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
+    update = Refresh(CONTROLLER, {GameTag.SPELLPOWER: 1})
+    events = Play(CONTROLLER, SPELL).after(Destroy(SELF))
+
+
+class TLC_100t22e:
+    tags = {
+        GameTag.CARDNAME: "Clear Moonlight",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
+    update = Refresh(CONTROLLER, {GameTag.SPELLPOWER: 2})
+    events = Play(CONTROLLER, SPELL).after(Destroy(SELF))
+
+
+class TLC_100t32e:
+    tags = {
+        GameTag.CARDNAME: "Clear Moonlight",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
+    update = Refresh(CONTROLLER, {GameTag.SPELLPOWER: 4})
+    events = Play(CONTROLLER, SPELL).after(Destroy(SELF))
+
+
+class TLC_100t14e:
+    tags = {
+        GameTag.CARDNAME: "Bite!",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 1,
+        GameTag.TAG_ONE_TURN_EFFECT: True,
+    }
+    events = OWN_TURN_END.on(Destroy(SELF))
+
+
+class TLC_100t24e:
+    tags = {
+        GameTag.CARDNAME: "Bite!",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 2,
+        GameTag.TAG_ONE_TURN_EFFECT: True,
+    }
+    events = OWN_TURN_END.on(Destroy(SELF))
+
+
+class TLC_100t34e:
+    tags = {
+        GameTag.CARDNAME: "Bite!",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 4,
+        GameTag.TAG_ONE_TURN_EFFECT: True,
+    }
+    events = OWN_TURN_END.on(Destroy(SELF))
 
 
 class TLC_102_Play(TargetedAction):
@@ -376,7 +794,6 @@ class TLC_106_Play(TargetedAction):
     TARGET = ActionArg()
 
     def do(self, source, player):
-        actions = []
         deathrattle_minions = [
             card
             for card in player.graveyard
@@ -384,11 +801,11 @@ class TLC_106_Play(TargetedAction):
         ][-5:]
         for minion in deathrattle_minions:
             for deathrattle in minion.deathrattles:
-                if isinstance(deathrattle, tuple):
-                    actions.extend(deathrattle)
+                if callable(deathrattle):
+                    actions = deathrattle(minion)
                 else:
-                    actions.append(deathrattle)
-        return source.game.queue_actions(source, actions)
+                    actions = deathrattle
+                source.game.queue_actions(minion, actions)
 
 
 class TLC_106:

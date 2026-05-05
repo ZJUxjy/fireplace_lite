@@ -519,6 +519,19 @@ def test_endbringer_umbra_replays_friendly_deathrattles_that_died_this_game():
     assert len([minion for minion in player.field if minion.id == "DINO_410t2"]) == 2
 
 
+def test_endbringer_umbra_replays_deathrattle_with_original_entity_source():
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+    stored = player.card("TLC_841t", zone=Zone.SETASIDE)
+    jar = player.card("TLC_841t", zone=Zone.GRAVEYARD)
+    jar._tlc_841_stored = stored
+
+    player.give("TLC_106").play()
+
+    assert stored.zone == Zone.PLAY
+
+
 def test_beast_speaker_taka_stores_legendary_beast_stats_and_summons_it():
     game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
     player = game.current_player
@@ -553,5 +566,13 @@ def test_elise_creates_custom_location_when_deck_has_ten_costs():
         _add_to_deck(player, card_id)
 
     player.give("TLC_100").play()
+    player.choice.choose(next(card for card in player.choice.cards if card.id == "TLC_100t1"))
+    player.choice.choose(next(card for card in player.choice.cards if card.id == "TLC_100t15"))
+    player.choice.choose(next(card for card in player.choice.cards if card.id == "TLC_100t16"))
 
-    assert any(card.id == "TLC_100t1" for card in player.hand)
+    location = next(card for card in player.hand if card.id == "TLC_100t1")
+    location.play()
+    assert location.is_usable()
+    location.use()
+    assert any(minion.id == "TLC_101t" for minion in player.field)
+    assert player.hero.armor == 3
