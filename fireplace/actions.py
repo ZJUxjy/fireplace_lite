@@ -1679,6 +1679,9 @@ class Reveal(TargetedAction):
     def do(self, source, target):
         log.info("Revealing %r", target)
         if target.zone == Zone.SECRET and target.data.secret:
+            triggered = getattr(target.controller, "triggered_secrets_this_game", [])
+            triggered.append(target.id)
+            target.controller.triggered_secrets_this_game = triggered
             self.broadcast(source, EventListener.ON, target)
             target.zone = Zone.GRAVEYARD
         source.game.manager.targeted_action(self, source, target)
