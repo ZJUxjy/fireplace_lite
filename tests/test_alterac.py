@@ -101,3 +101,33 @@ def test_razorboar_summons_cheap_deathrattle_minion_from_hand():
     assert cheap_deathrattle.zone == Zone.PLAY
     assert cheap_deathrattle in player.field
     assert all(card.id != "CS2_142" for card in player.field)
+
+
+def test_shadowcrafter_scabbs_bounces_minions_and_summons_shadows():
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    player = game.player1
+    friendly = player.summon("CS2_142")
+    enemy = game.player2.summon("CS2_231")
+
+    player.give("AV_203").play()
+
+    shadows = player.field.filter(id="AV_203t")
+    assert friendly.zone == Zone.HAND
+    assert enemy.zone == Zone.HAND
+    assert len(shadows) == 2
+    assert all(shadow.atk == 4 and shadow.health == 2 and shadow.stealthed for shadow in shadows)
+
+
+def test_razorfen_beastmaster_summons_four_or_less_deathrattle_from_hand():
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.player1
+    player.give("BAR_326")
+    four_cost_deathrattle = player.give("BAR_027")
+    player.give("CS2_142")
+
+    beastmaster = player.hand[0].play()
+    beastmaster.destroy()
+
+    assert four_cost_deathrattle.zone == Zone.PLAY
+    assert four_cost_deathrattle in player.field
+    assert all(card.id != "CS2_142" for card in player.field)

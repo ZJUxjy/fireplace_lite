@@ -279,6 +279,22 @@ class AV_202:
     play = Summon(CONTROLLER, "AV_202t2")
 
 
+class AV_203_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        minions = list(source.game.board)
+        actions = [Bounce(minion) for minion in minions]
+        actions.extend([Summon(player, "AV_203t"), Summon(player, "AV_203t")])
+        return source.game.queue_actions(source, actions)
+
+
+class AV_203:
+    """Shadowcrafter Scabbs"""
+
+    play = AV_203_Play(CONTROLLER)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -438,6 +454,12 @@ class BAR_325:
     """Razorboar"""
 
     deathrattle = Summon(CONTROLLER, RANDOM(FRIENDLY_HAND + DEATHRATTLE + (COST <= 3)))
+
+
+class BAR_326:
+    """Razorfen Beastmaster"""
+
+    deathrattle = Summon(CONTROLLER, RANDOM(FRIENDLY_HAND + DEATHRATTLE + (COST <= 4)))
 
 
 class BAR_310:

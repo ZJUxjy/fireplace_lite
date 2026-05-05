@@ -101,7 +101,7 @@ class CATA_473_EndTurn(TargetedAction):
 
 
 class CATA_473:
-    """Nozdormu the Bronze Dragonflight"""
+    """Nozdormu, Bronze Aspect"""
 
     events = OWN_TURN_END.on(CATA_473_EndTurn(CONTROLLER))
 
