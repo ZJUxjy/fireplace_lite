@@ -165,7 +165,7 @@ class CATA_478:
 # CATA_478t: 青铜蛮兵
 # 1费 1/1 龙
 class CATA_478t:
-    """Bronze Sellsword"""
+    """Bronze Brute"""
 
     tags = {GameTag.CARDRACE: Race.DRAGON}
 

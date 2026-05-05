@@ -297,3 +297,31 @@ def test_core_replicating_menace_summons_three_microbots():
     microbots = player.field.filter(id="BOT_312t")
     assert len(microbots) == 3
     assert all(bot.atk == 1 and bot.health == 1 for bot in microbots)
+
+
+def test_spammy_arcanist_repeats_while_minions_die():
+    game = prepare_empty_game()
+    player = game.player1
+    friendly_wisp = player.summon(WISP)
+    enemy_wisp = game.player2.summon(WISP)
+    enemy_crocolisk = game.player2.summon("CS2_120")
+
+    spammy = player.give("AV_222").play()
+
+    assert friendly_wisp.dead
+    assert enemy_wisp.dead
+    assert enemy_crocolisk.health == 1
+    assert spammy.health == 4
+
+
+def test_core_enhanced_dreadlord_summons_lifesteal_dreadlord():
+    game = prepare_empty_game(CardClass.WARLOCK, CardClass.WARLOCK)
+    player = game.player1
+
+    dreadlord = player.give("CORE_BT_304").play()
+    dreadlord.destroy()
+
+    token = player.field.filter(id="BT_304t")[0]
+    assert token.atk == 5
+    assert token.health == 5
+    assert token.lifesteal

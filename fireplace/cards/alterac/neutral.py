@@ -376,6 +376,19 @@ class AV_219:
     play = Give(CONTROLLER, "AV_219t") * 2
 
 
+class AV_222:
+    """Spammy Arcanist"""
+
+    def play(self):
+        yield Hit(ALL_MINIONS - SELF, 1)
+        for _ in range(29):
+            if Dead(ALL_MINIONS).check(self):
+                yield Deaths()
+                yield Hit(ALL_MINIONS - SELF, 1)
+            else:
+                break
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -566,6 +579,12 @@ class CORE_BOT_312:
 
     magnetic = MAGNETIC("BOT_312e")
     deathrattle = Summon(CONTROLLER, "BOT_312t") * 3
+
+
+class CORE_BT_304:
+    """Enhanced Dreadlord"""
+
+    deathrattle = Summon(CONTROLLER, "BT_304t")
 
 
 class BAR_751:
