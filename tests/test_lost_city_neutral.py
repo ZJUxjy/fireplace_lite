@@ -467,3 +467,91 @@ def test_pterrordax_egg_summons_hatchling_that_steals_health():
     assert (hatchling.atk, hatchling.max_health) == (3, 5)
     assert friendly.max_health == friendly.data.health - 1
     assert enemy.max_health == enemy.data.health - 1
+
+
+def test_ultragigasaur_is_large_beast_with_no_scripted_effect():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    dinosaur = player.summon("TLC_248")
+
+    assert (dinosaur.atk, dinosaur.max_health, dinosaur.cost) == (14, 28, 11)
+    assert Race.BEAST in dinosaur.races
+
+
+def test_petrified_ogre_starts_dormant_and_can_buff_before_waking():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    ogre = player.summon("TLC_253")
+    game.random.choice = lambda options: False
+
+    assert ogre.dormant
+    game.end_turn()
+    game.end_turn()
+
+    assert ogre.dormant
+    assert (ogre.atk, ogre.max_health) == (7, 7)
+    game.random.choice = lambda options: True
+    game.end_turn()
+    game.end_turn()
+    assert not ogre.dormant
+
+
+def test_torga_draws_kindred_card_and_matching_enabler():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+    kindred = _add_to_deck(player, "TLC_603", "TLC_829")
+
+    player.give("TLC_102").play()
+
+    assert all(card in player.hand for card in kindred)
+
+
+def test_endbringer_umbra_replays_friendly_deathrattles_that_died_this_game():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+    egg = player.summon("DINO_410")
+    egg.destroy()
+
+    player.give("TLC_106").play()
+
+    assert len([minion for minion in player.field if minion.id == "DINO_410t2"]) == 2
+
+
+def test_beast_speaker_taka_stores_legendary_beast_stats_and_summons_it():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+
+    taka = player.give("DINO_430").play()
+    choice = player.choice.cards[0]
+    expected_id = choice.id
+    player.choice.choose(choice)
+
+    assert (taka.atk, taka.max_health) == (choice.atk, choice.max_health)
+    taka.destroy()
+    assert any(minion.id == expected_id for minion in player.field)
+
+
+def test_elise_creates_custom_location_when_deck_has_ten_costs():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    _set_mana(player)
+    for card_id in [
+        WISP,
+        "TLC_603",
+        "TLC_244",
+        "TLC_101",
+        "TLC_250",
+        "DINO_435",
+        "TLC_110",
+        "TLC_829",
+        "TLC_605",
+        "TLC_248",
+    ]:
+        _add_to_deck(player, card_id)
+
+    player.give("TLC_100").play()
+
+    assert any(card.id == "TLC_100t1" for card in player.hand)

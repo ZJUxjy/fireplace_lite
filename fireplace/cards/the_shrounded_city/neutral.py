@@ -1,6 +1,35 @@
 from ..utils import *
 
 
+KINDRED_CARD_IDS = {
+    "DINO_138",
+    "DINO_404",
+    "DINO_413",
+    "DINO_435",
+    "TLC_107",
+    "TLC_223",
+    "TLC_226",
+    "TLC_236",
+    "TLC_243",
+    "TLC_366",
+    "TLC_428",
+    "TLC_429",
+    "TLC_432",
+    "TLC_440",
+    "TLC_447",
+    "TLC_454",
+    "TLC_463",
+    "TLC_482",
+    "TLC_519",
+    "TLC_600",
+    "TLC_815",
+    "TLC_816",
+    "TLC_825",
+    "TLC_829",
+    "TLC_903",
+}
+
+
 def _spell_school(card):
     return card.tags.get(GameTag.SPELL_SCHOOL) or getattr(
         getattr(card, "data", None), "spell_school", None
@@ -160,6 +189,58 @@ class TLC_249:
     deathrattle = Hit(RANDOM_ENEMY_CHARACTER, 1) * 2
 
 
+class DINO_430_Choice(Choice):
+    def choose(self, card):
+        if card not in self.cards:
+            raise InvalidAction(
+                "%r is not a valid choice (one of %r)" % (card, self.cards)
+            )
+        self.player.choice = None
+        self.source._dino_430_beast_id = card.id
+        self.source.game.queue_actions(
+            self.source,
+            [
+                Buff(
+                    self.source,
+                    "DINO_430e",
+                    atk=card.atk - self.source.atk,
+                    max_health=card.max_health - self.source.max_health,
+                )
+            ],
+        )
+        self.trigger_choice_callback()
+
+
+class DINO_430_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        cards = _collectible_cards(
+            source,
+            lambda card: card.type == CardType.MINION
+            and Race.BEAST in _card_races(card)
+            and card.rarity == Rarity.LEGENDARY,
+        )
+        cards.sort(key=lambda card: (card.id != "TLC_480", card.id))
+        return source.game.queue_actions(source, [DINO_430_Choice(player, cards[:3])])
+
+
+class DINO_430_Deathrattle(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        beast_id = getattr(source, "_dino_430_beast_id", None)
+        if beast_id:
+            return source.game.queue_actions(source, [Summon(player, beast_id)])
+
+
+class DINO_430:
+    """Beast Speaker Taka"""
+
+    play = DINO_430_Play(CONTROLLER)
+    deathrattle = DINO_430_Deathrattle(CONTROLLER)
+
+
 class TLC_107_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -237,6 +318,83 @@ class TLC_110:
     """City Chief Esho"""
 
     play = TLC_110_Play(CONTROLLER)
+
+
+class TLC_100_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        costs = {card.cost for card in player.deck}
+        if len(costs) >= 10:
+            return source.game.queue_actions(source, [Give(player, "TLC_100t1")])
+
+
+class TLC_100:
+    """Elise the Navigator"""
+
+    play = TLC_100_Play(CONTROLLER)
+
+
+class TLC_100t1:
+    """Un'Goro Jungle"""
+
+    pass
+
+
+class TLC_102_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        actions = []
+        kindred_cards = [card for card in player.deck if card.id in KINDRED_CARD_IDS]
+        if kindred_cards:
+            kindred = kindred_cards[-1]
+            actions.append(ForceDraw(kindred))
+            races = _card_races(kindred) - {Race.INVALID}
+            school = _spell_school(kindred)
+            enablers = [
+                card
+                for card in player.deck
+                if card is not kindred
+                and (
+                    (card.type == CardType.MINION and races.intersection(_card_races(card)))
+                    or (school and _spell_school(card) == school)
+                )
+            ]
+            if enablers:
+                actions.append(ForceDraw(enablers[-1]))
+        return source.game.queue_actions(source, actions)
+
+
+class TLC_102:
+    """Torga"""
+
+    play = TLC_102_Play(CONTROLLER)
+
+
+class TLC_106_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        actions = []
+        deathrattle_minions = [
+            card
+            for card in player.graveyard
+            if card.type == CardType.MINION and card.has_deathrattle
+        ][-5:]
+        for minion in deathrattle_minions:
+            for deathrattle in minion.deathrattles:
+                if isinstance(deathrattle, tuple):
+                    actions.extend(deathrattle)
+                else:
+                    actions.append(deathrattle)
+        return source.game.queue_actions(source, actions)
+
+
+class TLC_106:
+    """Endbringer Umbra"""
+
+    play = TLC_106_Play(CONTROLLER)
 
 
 class DINO_435_Play(TargetedAction):
@@ -516,6 +674,26 @@ class TLC_252:
         PlayReq.REQ_MINION_TARGET: 0,
     }
     play = TLC_252_Play(TARGET)
+
+
+class TLC_253_Begin(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, ogre):
+        if source.game.random.choice([True, False]):
+            return source.game.queue_actions(source, [Awaken(ogre)])
+        return source.game.queue_actions(source, [Buff(ogre, "TLC_253e2")])
+
+
+class TLC_253:
+    """Petrified Ogre"""
+
+    tags = {GameTag.DORMANT: True}
+    dormant_turns = 999
+    dormant_events = OWN_TURN_BEGIN.on(TLC_253_Begin(SELF))
+
+
+TLC_253e2 = buff(2, 2)
 
 
 class TLC_251:
