@@ -22,7 +22,7 @@ class CATA_216e:
 # CATA_300: "黑血" (7费 4/8 巨型+3)
 # 在你为一个角色恢复生命值后，随机攻击一个敌方随从
 class CATA_300:
-    """Black Blood"""
+    """The Black Blood"""
 
     colossal_limb_count = 3
 
@@ -35,7 +35,7 @@ class CATA_300:
 
 # CATA_300t1, CATA_300t2, CATA_300t3: 黑血之腿 (1费 0/2)
 class CATA_300t1:
-    """Black Blood Limb"""
+    """Black Blood's Body"""
 
     events = OWN_TURN_END.on(Heal(RANDOM(FRIENDLY + DAMAGED_CHARACTERS), 3))
 

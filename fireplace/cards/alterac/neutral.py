@@ -136,6 +136,50 @@ class AV_130:
 AV_130e = buff(+2, +2)
 
 
+class AV_131_Hit(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        honorable_kill = target.type != CardType.HERO and target.health == 3
+        ret = source.game.queue_actions(source, [Hit(target, 3)])
+        if honorable_kill and target.dead:
+            source.game.queue_actions(source, [Buff(source, "AV_131e")])
+        return ret
+
+
+class AV_131:
+    """Knight-Captain"""
+
+    requirements = {
+        PlayReq.REQ_TARGET_IF_AVAILABLE: 0,
+        PlayReq.REQ_MINION_OR_ENEMY_HERO: 0,
+    }
+    play = AV_131_Hit(TARGET)
+
+
+AV_131e = buff(+3, +3)
+
+
+class AV_136:
+    """Kobold Taskmaster"""
+
+    play = Give(CONTROLLER, "AV_136t") * 2
+
+
+class AV_136t:
+    """Armor Scrap"""
+
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_FRIENDLY_TARGET: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+    play = Buff(TARGET, "AV_136e")
+
+
+AV_136e = buff(health=2)
+
+
 class AV_143_Deathrattle(TargetedAction):
     TARGET = ActionArg()
 
@@ -261,3 +305,15 @@ class AV_341:
     """Cavalry Horn"""
 
     deathrattle = Summon(CONTROLLER, LOWEST_COST(FRIENDLY_HAND + MINION))
+
+
+class AV_704:
+    """Humongous Owl"""
+
+    deathrattle = Hit(RANDOM(ENEMY_CHARACTERS - DEAD), 8)
+
+
+class BAR_026:
+    """Death's Head Cultist"""
+
+    deathrattle = Heal(FRIENDLY_HERO, 4)
