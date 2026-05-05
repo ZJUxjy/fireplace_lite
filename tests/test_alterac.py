@@ -856,3 +856,28 @@ def test_core_rotten_applebaum_restores_six_health_on_deathrattle():
     applebaum.destroy()
 
     assert player.hero.health == 26
+
+
+def test_scrapsmith_adds_two_scrappy_grunts_to_hand():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.player1
+
+    player.give("AV_323").play()
+
+    grunts = player.hand.filter(id="AV_323t")
+    assert len(grunts) == 2
+    assert all(grunt.atk == 2 and grunt.health == 4 and grunt.taunt for grunt in grunts)
+
+
+def test_core_explosive_sheep_deathrattle_damages_all_minions():
+    game = prepare_empty_game(CardClass.MAGE, CardClass.MAGE)
+    player = game.player1
+    opponent = game.player2
+    friendly = player.summon("CS2_120")
+    enemy = opponent.summon("CS2_120")
+
+    sheep = player.give("CORE_GVG_076").play()
+    sheep.destroy()
+
+    assert friendly.health == 1
+    assert enemy.health == 1

@@ -209,10 +209,10 @@ class CATA_526:
 # 在你的下个回合开始时，召唤一个3/3并具有嘲讽的纳迦
 @custom_card
 class CATA_528e:
-    """Oceanic Sigil"""
+    """Sigil of the Seas"""
 
     tags = {
-        GameTag.CARDNAME: "Oceanic Sigil",
+        GameTag.CARDNAME: "Sigil of the Seas",
         GameTag.CARDTYPE: CardType.ENCHANTMENT,
     }
     # 在下个回合开始时召唤纳迦，然后销毁自身（一次性效果）
@@ -220,7 +220,7 @@ class CATA_528e:
 
 
 class CATA_528:
-    """Oceanic Sigil"""
+    """Sigil of the Seas"""
 
     # 施放时给英雄添加一个下回合触发效果
     play = Buff(FRIENDLY_HERO, "CATA_528e")
@@ -228,7 +228,7 @@ class CATA_528:
 
 # CATA_528t: 纳迦畸体 (3费 3/3 纳迦 嘲讽)
 class CATA_528t:
-    """Naga Spawn"""
+    """Naga Monstrosity"""
 
     tags = {
         GameTag.TAUNT: True,

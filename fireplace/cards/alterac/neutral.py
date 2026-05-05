@@ -741,6 +741,18 @@ class CORE_GIL_667:
     deathrattle = Heal(FRIENDLY_HERO, 6)
 
 
+class AV_323:
+    """Scrapsmith"""
+
+    play = Give(CONTROLLER, "AV_323t") * 2
+
+
+class CORE_GVG_076:
+    """Explosive Sheep"""
+
+    deathrattle = Hit(ALL_MINIONS, 2)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
