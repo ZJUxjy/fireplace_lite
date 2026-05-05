@@ -42,7 +42,7 @@ class CATA_491:
 # CATA_492: 暮光神坛 (3费 2/5)
 # 兆示{0}。抽一张牌
 class CATA_492:
-    """Twilight Altar"""
+    """Shrine of Twilight"""
 
     # 兆示。抽一张牌
     activate = CATA_GuldanHerald(CONTROLLER), Draw(CONTROLLER)

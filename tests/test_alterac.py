@@ -498,3 +498,54 @@ def test_core_redscale_dragontamer_draws_a_dragon():
 
     assert dragon.zone == Zone.HAND
     assert non_dragon.zone == Zone.DECK
+
+
+def test_brukan_of_the_elements_chooses_two_battlecry_powers():
+    game = prepare_empty_game(CardClass.SHAMAN, CardClass.SHAMAN)
+    player = game.player1
+    opponent = game.player2
+
+    player.give("AV_258").play()
+    choice = player.choice
+    choice.choose(choice.cards.filter(id="AV_258t")[0])
+    choice = player.choice
+    choice.choose(choice.cards.filter(id="AV_258t3")[0])
+
+    guardians = player.field.filter(id="AV_258t6")
+    assert len(guardians) == 2
+    assert all(guardian.taunt and guardian.atk == 2 and guardian.health == 3 for guardian in guardians)
+    assert opponent.hero.health == 24
+    assert player.hero.id == "AV_258"
+    assert player.hero.armor == 5
+    assert player.hero_power.id == "AV_258pt7"
+
+
+def test_brukan_command_the_elements_uses_current_invocation():
+    game = prepare_empty_game(CardClass.SHAMAN, CardClass.SHAMAN)
+    player = game.player1
+
+    player.give("AV_258").play()
+    choice = player.choice
+    choice.choose(choice.cards.filter(id="AV_258t2")[0])
+    choice = player.choice
+    choice.choose(choice.cards.filter(id="AV_258t3")[0])
+
+    player.hero_power.use()
+
+    guardians = player.field.filter(id="AV_258t6")
+    assert len(guardians) == 2
+
+
+def test_core_greybough_grants_summon_greybough_deathrattle():
+    game = prepare_empty_game(CardClass.DRUID, CardClass.DRUID)
+    player = game.player1
+    recipient = player.summon(WISP)
+
+    greybough = player.give("CORE_DMF_734").play()
+    greybough.destroy()
+
+    assert recipient.has_deathrattle
+
+    recipient.destroy()
+
+    assert player.field.filter(id="DMF_734")

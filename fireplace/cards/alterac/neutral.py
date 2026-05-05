@@ -1,4 +1,5 @@
 from ..utils import *
+from fireplace.utils import CardList
 from hearthstone.enums import SpellSchool
 
 
@@ -452,6 +453,79 @@ class AV_257t:
     events = Damage(CHARACTER, None, SELF).on(Freeze(Damage.TARGET))
 
 
+class AV_258_Play(MultipleChoice):
+    choose_times = 2
+    invocation_ids = ("AV_258t", "AV_258t2", "AV_258t3", "AV_258t4")
+
+    def do_step1(self):
+        chosen_ids = {card.id for card in self.choosed_cards}
+        self.cards = CardList(
+            self.player.card(card_id, source=self.source)
+            for card_id in self.invocation_ids
+            if card_id not in chosen_ids
+        )
+
+    def do_step2(self):
+        self.do_step1()
+
+    def done(self):
+        actions = [
+            CastSpell(card)
+            for card in self.choosed_cards
+        ]
+        actions.append(GainArmor(self.source, 5))
+        return self.source.game.queue_actions(self.source, actions)
+
+
+class AV_258:
+    """Bru'kan of the Elements"""
+
+    play = AV_258_Play(CONTROLLER)
+
+
+class AV_258t:
+    """Earth Invocation"""
+
+    play = Summon(CONTROLLER, "AV_258t6") * 2
+
+
+class AV_258t2:
+    """Water Invocation"""
+
+    play = Heal(FRIENDLY_CHARACTERS, 6)
+
+
+class AV_258t3:
+    """Fire Invocation"""
+
+    play = Hit(ENEMY_HERO, 6)
+
+
+class AV_258t4:
+    """Lightning Invocation"""
+
+    play = Hit(ENEMY_MINIONS, 2)
+
+
+class AV_258pt7_Activate(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        invocation_id = getattr(player, "_brukan_current_invocation", "AV_258t")
+        next_index = (AV_258_Play.invocation_ids.index(invocation_id) + 1) % len(
+            AV_258_Play.invocation_ids
+        )
+        player._brukan_current_invocation = AV_258_Play.invocation_ids[next_index]
+        invocation = player.card(invocation_id, source=source)
+        return source.game.queue_actions(source, [CastSpell(invocation)])
+
+
+class AV_258pt7:
+    """Command the Elements"""
+
+    activate = AV_258pt7_Activate(CONTROLLER)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -707,6 +781,21 @@ class CORE_DMF_194:
 
 class DMF_194(CORE_DMF_194):
     """Redscale Dragontamer"""
+
+
+class CORE_DMF_734:
+    """Greybough"""
+
+    deathrattle = Buff(RANDOM(FRIENDLY_MINIONS - SELF), "DMF_734e")
+
+
+class DMF_734(CORE_DMF_734):
+    """Greybough"""
+
+
+class DMF_734e:
+    tags = {GameTag.DEATHRATTLE: True}
+    deathrattle = Summon(CONTROLLER, "DMF_734")
 
 
 class BAR_751:
