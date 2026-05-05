@@ -1702,3 +1702,68 @@ class BAR_026:
     """Death's Head Cultist"""
 
     deathrattle = Heal(FRIENDLY_HERO, 4)
+
+
+class BAR_313_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        if any(character.healed_this_turn for character in player.characters):
+            return source.game.queue_actions(source, [Buff(source, "BAR_313e")])
+
+
+BAR_313e = buff(+3, +3)
+
+
+class BAR_313:
+    """Priest of An'she"""
+
+    play = BAR_313_Play(CONTROLLER)
+
+
+class BAR_315_StealStats(TargetedAction):
+    TARGET = ActionArg()
+
+    def _amount_to_steal(self, source_stat, target_stat):
+        if source_stat > target_stat:
+            return 0
+        return min(target_stat, ((target_stat - source_stat) // 2) + 1)
+
+    def do(self, source, target):
+        atk = self._amount_to_steal(source.atk, target.atk)
+        health = self._amount_to_steal(source.health, target.health)
+        return source.game.queue_actions(
+            source,
+            [
+                Buff(source, "BAR_315e3", atk=atk, max_health=health),
+                Buff(target, "BAR_315e4", atk=-atk, max_health=-health),
+            ],
+        )
+
+
+BAR_315e3 = buff()
+BAR_315e4 = buff()
+
+
+class BAR_315:
+    """Serena Bloodfeather"""
+
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+        PlayReq.REQ_ENEMY_TARGET: 0,
+    }
+    play = BAR_315_StealStats(TARGET)
+
+
+class CORE_OG_109:
+    """Darkshire Librarian"""
+
+    play = Discard(RANDOM(FRIENDLY_HAND))
+    deathrattle = Draw(CONTROLLER)
+
+
+class CORE_OG_241:
+    """Possessed Villager"""
+
+    deathrattle = Summon(CONTROLLER, "OG_241a")

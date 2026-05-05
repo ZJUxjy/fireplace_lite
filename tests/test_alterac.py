@@ -1526,3 +1526,59 @@ def test_core_incriminating_psychic_copies_two_random_opponent_hand_cards():
     assert first in opponent.hand
     assert second in opponent.hand
     assert all(card is not first and card is not second for card in player.hand)
+
+
+def test_priest_of_anshe_gains_stats_after_restoring_health_this_turn():
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.player1
+    player.hero.damage = 3
+    game.cheat_action(player.hero, [Heal(player.hero, 1)])
+
+    priest = player.give("BAR_313").play()
+
+    assert priest.atk == 8
+    assert priest.health == 8
+
+
+def test_core_darkshire_librarian_discards_random_card_and_draws_on_deathrattle():
+    game = prepare_empty_game(CardClass.WARLOCK, CardClass.WARLOCK)
+    player = game.player1
+    player.hand.clear()
+    discarded = player.give(WISP)
+    drawn = player.card("CS2_182", zone=Zone.DECK)
+
+    librarian = player.give("CORE_OG_109").play()
+
+    assert discarded.zone == Zone.REMOVEDFROMGAME
+    assert discarded.discarded
+    assert not player.hand
+
+    librarian.destroy()
+
+    assert drawn in player.hand
+
+
+def test_serena_bloodfeather_steals_stats_until_higher_than_target():
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.player1
+    target = game.player2.summon("CS2_200")
+
+    serena = player.give("BAR_315").play(target=target)
+
+    assert serena.atk == 4
+    assert serena.health == 5
+    assert target.atk == 3
+    assert target.health == 3
+
+
+def test_core_possessed_villager_deathrattle_summons_shadowbeast():
+    game = prepare_empty_game(CardClass.WARLOCK, CardClass.WARLOCK)
+    player = game.player1
+
+    villager = player.give("CORE_OG_241").play()
+    villager.destroy()
+
+    assert len(player.field) == 1
+    assert player.field[0].id == "OG_241a"
+    assert player.field[0].atk == 1
+    assert player.field[0].health == 1

@@ -392,7 +392,7 @@ class CATA_897_RememberDiscard(TargetedAction):
 
 
 class CATA_897:
-    """Jewel Collector"""
+    """Gemstone Hoarder"""
 
     # 战吼：弃掉一张手牌
     play = Choice(CONTROLLER, FRIENDLY_HAND - SELF).then(
@@ -427,7 +427,7 @@ class CATA_898:
 # CATA_999: 土石幼龙 (5费 4/4)
 # 在你的回合结束时，对敌方英雄造成4点伤害。
 class CATA_999:
-    """Wee Whelp"""
+    """Earthen Drake"""
 
     # 回合结束时对敌方英雄造成4点伤害
     events = OWN_TURN_END.on(Hit(ENEMY_HERO, 4))
