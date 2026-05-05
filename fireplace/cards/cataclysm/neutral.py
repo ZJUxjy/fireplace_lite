@@ -126,7 +126,7 @@ class CATA_186t:
 # CATA_190h: 灭世者死亡之翼 (10费 30/12 英雄)
 # 战吼：选择并释放灾变！
 class CATA_190h:
-    """Deathwing the Destroyer"""
+    """Deathwing, Worldbreaker"""
 
     tags = {
         GameTag.ATK: 30,
@@ -155,7 +155,7 @@ class CATA_206:
 # CATA_208: 无私的保卫者 (2费 2/6)
 # 嘲讽。受到的所有伤害提高一点。
 class CATA_208:
-    """Selfless Hero"""
+    """Selfless Protector"""
 
     tags = {GameTag.TAUNT: True}
 
@@ -167,7 +167,7 @@ class CATA_208:
 # CATA_209: 战场轰炸手 (4费 4/4)
 # 战吼：选择你手牌中的一张法术牌，使其获得法术伤害+1。
 class CATA_209:
-    """Fire Hawk"""
+    """Battlefield Blaster"""
 
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
