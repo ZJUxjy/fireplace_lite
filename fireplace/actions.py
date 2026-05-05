@@ -580,6 +580,7 @@ class Play(GameAction):
 
         card.play_left_most = card is card.controller.hand[0]
         card.play_right_most = card is card.controller.hand[-1]
+        card.played_from_hand_index = card.controller.hand.index(card)
 
         card.zone = Zone.PLAY
         _update_shatter_hand(player)
