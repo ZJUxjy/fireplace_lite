@@ -570,3 +570,39 @@ def test_core_bloodmage_thalnos_draws_on_deathrattle():
     thalnos.destroy()
 
     assert drawn.zone == Zone.HAND
+
+
+def test_warden_of_chains_buffs_when_holding_costly_demon():
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.player1
+    player.give("CS2_064")
+
+    warden = player.give("AV_262").play()
+
+    assert warden.taunt
+    assert warden.atk == 3
+    assert warden.health == 8
+
+
+def test_warden_of_chains_does_not_buff_without_costly_demon():
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.player1
+    player.give(WISP)
+
+    warden = player.give("AV_262").play()
+
+    assert warden.taunt
+    assert warden.atk == 2
+    assert warden.health == 6
+
+
+def test_core_sylvanas_steals_enemy_minion_on_deathrattle():
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.player1
+    enemy = game.player2.summon(WISP)
+
+    sylvanas = player.give("CORE_EX1_016").play()
+    sylvanas.destroy()
+
+    assert enemy.controller is player
+    assert enemy in player.field

@@ -74,7 +74,7 @@ class CATA_493:
 # CATA_494: 马洛拉克 (5费 4/6)
 # 在你弃掉一张随从牌后，召唤一个该随从的复制
 class CATA_494:
-    """Malorne"""
+    """Maloriak"""
 
     # 在你弃掉一张随从牌后，召唤一个该随从的复制
     events = Discard(FRIENDLY_HAND + MINION).after(Summon(CONTROLLER, Copy(Discard.TARGET)))

@@ -532,6 +532,15 @@ class AV_260:
     play = Give(CONTROLLER, "AV_266")
 
 
+class AV_262:
+    """Warden of Chains"""
+
+    play = Find(FRIENDLY_HAND + DEMON + (COST >= 5)) & Buff(SELF, "AV_262e2")
+
+
+AV_262e2 = buff(+1, +2)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -808,6 +817,12 @@ class CORE_EX1_012:
     """Bloodmage Thalnos"""
 
     deathrattle = Draw(CONTROLLER)
+
+
+class CORE_EX1_016:
+    """Sylvanas Windrunner"""
+
+    deathrattle = Steal(RANDOM_ENEMY_MINION)
 
 
 class BAR_751:
