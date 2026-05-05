@@ -16,7 +16,7 @@ FEL_SPELL = SPELL + FuncSelector(
 # CATA_151: 艾萨拉，海洋之主 (8费 8/8)
 # 巨型+2：召唤2个触手。你的英雄拥有风怒
 class CATA_151:
-    """Azshara, Lady of the Sea"""
+    """Azshara, Ocean Lord"""
 
     # 巨型+2：召唤2个触手
     play = Summon(CONTROLLER, "CATA_151t") * 2

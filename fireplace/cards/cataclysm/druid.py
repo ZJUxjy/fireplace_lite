@@ -200,7 +200,7 @@ class CATA_140:
 
 @custom_card
 class CATA_140e:
-    """Merithra generated Dragon discount"""
+    """Merithra of the Dream Discount"""
 
     tags = {
         GameTag.CARDNAME: "Merithra of the Dream Discount",

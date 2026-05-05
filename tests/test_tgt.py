@@ -79,6 +79,18 @@ def test_aviana():
     assert molten.cost == molten_base_cost - 1
 
 
+def test_spawn_of_shadows_battlecry_and_inspire():
+    game = prepare_game(class1=CardClass.SHAMAN, class2=CardClass.SHAMAN)
+    spawn = game.player1.give("AT_012")
+    spawn.play()
+    assert game.player1.hero.health == 26
+    assert game.player2.hero.health == 26
+
+    game.player1.hero.power.use()
+    assert game.player1.hero.health == 22
+    assert game.player2.hero.health == 22
+
+
 def test_beneath_the_grounds():
     game = prepare_empty_game()
     game.player2.discard_hand()

@@ -64,7 +64,7 @@ class CATA_111:
 # CATA_180: 速逝鱼人 (2费 1/1 鱼人)
 # 战吼：你的下一张法力值消耗小于或等于（3）点的鱼人牌会消耗生命值，而非法力值。
 class CATA_180:
-    """Fished Murloc"""
+    """War'loc"""
 
     play = Buff(CONTROLLER, "CATA_180e")
 
@@ -72,7 +72,7 @@ class CATA_180:
 # CATA_180e: 毁灭！ (buff)
 # 消耗生命值，而非法力值
 class CATA_180e:
-    """Consume Life"""
+    """Doom!"""
 
     events = Play(CONTROLLER, MURLOC + (COST <= 3)).on(Destroy(SELF))
     update = Refresh(
@@ -87,7 +87,7 @@ class CATA_180e:
 # CATA_185: 无面复制者 (3费 3/3)
 # 扰魔。亡语：将消灭本随从的随从变形成为无面复制者。
 class CATA_185:
-    """Facelessifier"""
+    """Faceless Replicator"""
 
     tags = {
         GameTag.ELUSIVE: True,
@@ -106,7 +106,7 @@ class CATA_185:
 # CATA_186: 黏弹爆破手 (4费 4/4)
 # 战吼：使你的对手获得一张法力值消耗为（2）的黏弹。黏弹相邻的卡牌法力值消耗增加（1）点。
 class CATA_186:
-    """Sticky Grenadier"""
+    """Stickybomb Saboteur"""
 
     # 战吼：对手获得一张2费黏弹
     play = Give(OPPONENT, "CATA_186t")
@@ -115,7 +115,7 @@ class CATA_186:
 # CATA_186t: 黏弹 (2费 衍生物)
 # 手牌中相邻卡牌的法力值消耗增加（1）点。
 class CATA_186t:
-    """Goo"""
+    """Sabotage!"""
 
     tags = {GameTag.COST: 2}
 

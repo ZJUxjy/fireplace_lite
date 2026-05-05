@@ -147,7 +147,7 @@ class END_003p:
     """Blessing of the Infinite"""
 
     # +2/+2
-    play = Buff(TARGET, "END_003pe")
+    activate = Buff(TARGET, "END_003pe")
 
 
 END_003pe = buff(+2, +2)

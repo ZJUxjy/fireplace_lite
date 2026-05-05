@@ -306,7 +306,8 @@ def decode_deckstring(deckstring: str):
     cards = []
     for card_id, num in deck.cards:
         card_id: str = db.dbf[card_id]
-        card_id = card_id.removeprefix("CORE_")
+        if card_id.startswith("CORE_"):
+            card_id = card_id[len("CORE_") :]
         cards += [card_id] * num
     return hero_id, cards
 
