@@ -768,6 +768,38 @@ class CORE_ICC_019:
     deathrattle = CurrentPlayer(OPPONENT) & Summon(CONTROLLER, "ICC_019t")
 
 
+class AV_336_SummonBeast(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        beasts = [card for card in player.deck if card.type == CardType.MINION and Race.BEAST in card.races]
+        if not beasts:
+            return
+        beast = source.game.random.choice(beasts)
+        return source.game.queue_actions(
+            source,
+            [Summon(player, beast).then(GiveRush(Summon.CARD), Buff(Summon.CARD, "AV_336e"))],
+        )
+
+
+class AV_336:
+    """Wing Commander Ichman"""
+
+    play = AV_336_SummonBeast(CONTROLLER)
+
+
+class AV_336e:
+    events = Attack(OWNER, ALL_MINIONS).after(
+        Dead(Attack.DEFENDER) & AV_336_SummonBeast(CONTROLLER)
+    ), OWN_TURN_END.on(Destroy(SELF))
+
+
+class CORE_ICC_021:
+    """Exploding Bloatbat"""
+
+    deathrattle = Hit(ENEMY_MINIONS, 2)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 

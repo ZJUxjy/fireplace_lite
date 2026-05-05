@@ -907,3 +907,41 @@ def test_core_skelemancer_summons_skeleton_on_opponent_turn_deathrattle():
     assert len(skeletons) == 1
     assert skeletons[0].atk == 8
     assert skeletons[0].health == 8
+
+
+def test_wing_commander_ichman_summons_rushing_beast_and_repeats_on_kill():
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.player1
+    opponent = game.player2
+    first_beast = player.give("CS2_120")
+    first_beast.shuffle_into_deck()
+
+    player.give("AV_336").play()
+
+    beast = player.field.filter(id="CS2_120")[0]
+    assert beast.rush
+    assert first_beast.zone == Zone.PLAY
+
+    second_beast = player.give("CS2_120")
+    second_beast.shuffle_into_deck()
+    target = opponent.summon(WISP)
+
+    beast.attack(target)
+
+    assert target.dead
+    assert second_beast.zone == Zone.PLAY
+    assert second_beast.rush
+
+
+def test_core_exploding_bloatbat_deathrattle_damages_enemy_minions_only():
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.player1
+    opponent = game.player2
+    friendly = player.summon("CS2_120")
+    enemy = opponent.summon("CS2_120")
+
+    bloatbat = player.give("CORE_ICC_021").play()
+    bloatbat.destroy()
+
+    assert friendly.health == 3
+    assert enemy.health == 1

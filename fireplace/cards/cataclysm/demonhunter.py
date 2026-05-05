@@ -274,7 +274,7 @@ class CATA_533_HitEdges(TargetedAction):
 # CATA_533: 涣漫洪流 (5费 法术)
 # 对你的对手最左边和最右边的随从造成5点伤害。流放：重复一次
 class CATA_533:
-    """Surging Tide"""
+    """Flash Flood"""
 
     # 对最左边和最右边的随从造成5点伤害
     play = CATA_533_HitEdges(CONTROLLER)
