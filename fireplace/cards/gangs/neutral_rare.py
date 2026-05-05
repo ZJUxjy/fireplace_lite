@@ -68,21 +68,25 @@ class CFM_667:
     deathrattle = Hit(FRIENDLY_HERO, 5)
 
 
+CFM_668_IDS = ("CFM_668", "CFM_668t", "CFM_668t2")
+
+
+class CFM_668_SummonGang(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        if source.id in CFM_668_IDS:
+            copy_ids = [id for id in CFM_668_IDS if id != source.id]
+            copies = [ExactCopy(SELF, id=id).copy(source, source) for id in copy_ids]
+        else:
+            copies = [ExactCopy(SELF).copy(source, source) for _ in range(2)]
+        return Summon(target, copies).trigger(source)
+
+
 class CFM_668:
     """Doppelgangster"""
 
-    # TODO
-    # The 'copies' summoned by this minion's Battlecry are in fact distinct
-    # uncollectible minions. However, they will copy the stats and enchantments of
-    # the Doppelgangster, and have the same base stats.
-    #
-    # The two copies look identical, but are in fact separate cards in the game data,
-    # with different quotes (see below).
-    #
-    # Whichever Doppelgangster is played (either the original card or one of the
-    # uncollectible cards), its Battlecry will summon copies of the two other versions,
-    # meaning all three versions will always be summoned.[1]
-    play = SummonBothSides(CONTROLLER, ExactCopy(SELF)) * 2
+    play = CFM_668_SummonGang(CONTROLLER)
 
 
 class CFM_688:

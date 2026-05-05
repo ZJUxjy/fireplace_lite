@@ -154,8 +154,11 @@ def test_doppelgangster_and_shudderwock():
     doppelgangster = game.player1.give("CFM_668").play()
     game.skip_turn()
     shudderwock = game.player1.give("GIL_820").play()
-    for i in range(0, 3):
-        assert game.player1.field[i].id == doppelgangster.id
+    assert sorted(card.id for card in game.player1.field[:3]) == [
+        doppelgangster.id,
+        "CFM_668t",
+        "CFM_668t2",
+    ]
     for i in range(3, 6):
         assert game.player1.field[i].id == shudderwock.id
 
