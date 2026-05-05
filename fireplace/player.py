@@ -141,6 +141,7 @@ class Player(Entity, TargetableByAuras):
         self.elemental_played_this_turn = 0
         self.elemental_played_last_turn = 0
         self.cards_drawn_this_turn = 0
+        self.cards_drawn_this_game = 0
         self.cards_played_this_turn = 0
         self.cards_played_this_game = CardList()
         self.hero_power_damage_this_game = 0

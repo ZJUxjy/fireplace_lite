@@ -1362,6 +1362,7 @@ class Draw(TargetedAction):
             card.zone = Zone.HAND
             card.turn_drawn = source.game.turn
             source.controller.cards_drawn_this_turn += 1
+            target.cards_drawn_this_game += 1
             source.game.manager.targeted_action(self, source, target, card)
             if source.game.step > Step.BEGIN_MULLIGAN:
                 # Proc the draw script, but only if we are past mulligan
