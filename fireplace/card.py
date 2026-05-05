@@ -737,7 +737,18 @@ class PlayableCard(BaseCard, Entity, TargetableByAuras):
 
     @property
     def play_targets(self):
-        return [card for card in self.game.characters if is_valid_target(self, card)]
+        candidates = list(self.game.characters)
+        if (
+            PlayReq.REQ_LOCATION_TARGET in self.requirements
+            or PlayReq.REQ_LOCATION_OR_MINION_TARGET in self.requirements
+        ):
+            candidates.extend(
+                card
+                for player in self.game.players
+                for card in player.field
+                if card.type == CardType.LOCATION
+            )
+        return [card for card in candidates if is_valid_target(self, card)]
 
     @property
     def targets(self):

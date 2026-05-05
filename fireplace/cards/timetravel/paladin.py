@@ -1,6 +1,20 @@
 from ..utils import *
 
 
+class TIME_EVENT_998_SendMinions(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        delayed = getattr(player, "_future_hand_minions", [])
+        for card in list(player.hand):
+            if card.type != CardType.MINION:
+                continue
+            card.zone = Zone.SETASIDE
+            delayed.append((card, 2))
+        player._future_hand_minions = delayed
+        source.game.manager.targeted_action(self, source, player)
+
+
 ##
 # Minions
 
@@ -166,10 +180,16 @@ class TIME_018:
 class TIME_EVENT_998:
     """Runi, Temporal Guardian"""
 
-    # 战吼：将手牌中的所有随从移回手牌并获得+5/+5
-    # Simplified: return all hand minions to hand with buff
-    play = Buff(FRIENDLY_HAND + MINION, "TIME_EVENT_998e")
+    # 战吼：将手牌中的所有随从送入未来2个回合。它们返回时获得+5/+5
+    play = TIME_EVENT_998_SendMinions(CONTROLLER)
 
 
-TIME_EVENT_998e = buff(+5, +5)
+@custom_card
+class TIME_EVENT_998e:
+    tags = {
+        GameTag.CARDNAME: "Lost in Time",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
 
+    atk = lambda self, i: i + 5
+    max_health = lambda self, i: i + 5

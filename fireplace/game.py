@@ -10,9 +10,11 @@ from .actions import (
     Attack,
     Awaken,
     BeginTurn,
+    Buff,
     Death,
     EndTurn,
     EventListener,
+    Give,
     GameStart,
     Play,
 )
@@ -393,6 +395,21 @@ class BaseGame(Entity):
         player.overloaded = 0
         player.elemental_played_last_turn = player.elemental_played_this_turn
         player.elemental_played_this_turn = 0
+        delayed = getattr(player, "_future_hand_minions", [])
+        remaining = []
+        for card, turns in delayed:
+            turns -= 1
+            if turns <= 0:
+                self.queue_actions(
+                    player,
+                    [
+                        Buff(card, "TIME_EVENT_998e"),
+                        Give(player, card),
+                    ],
+                )
+            else:
+                remaining.append((card, turns))
+        player._future_hand_minions = remaining
 
         for entity in self.live_entities:
             if entity.type != CardType.PLAYER:

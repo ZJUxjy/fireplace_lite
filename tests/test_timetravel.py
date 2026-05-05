@@ -67,6 +67,66 @@ def test_time_event_301_destroys_extra_per_dragon():
     assert dead == 2
 
 
+def test_time_event_301_can_destroy_friendly_other_minion():
+    """Disciple of Demise can destroy any other minion, including friendly minions."""
+    game = prepare_empty_game()
+    friendly = game.player1.summon("CS2_189")
+    disc = game.player1.give("TIME_EVENT_301")
+    disc.play()
+    assert friendly.zone == Zone.GRAVEYARD
+
+
+def test_time_event_997_reopens_location_and_adds_deathrattle():
+    """Welcome Home reopens a friendly location and adds the 3-cost summon deathrattle."""
+    game = prepare_empty_game()
+    location = game.player1.give("TOY_512").play()
+    location.use()
+    assert location.location_exhausted
+    spell = game.player1.give("TIME_EVENT_997")
+    spell.play(target=location)
+    assert not location.location_exhausted
+    assert location.has_deathrattle
+    field_before = len(game.player1.field)
+    location.destroy()
+    assert len(game.player1.field) == field_before
+    assert any(card.cost == 3 for card in game.player1.field)
+
+
+def test_time_442_imprisons_and_awakes_original_minion():
+    """Timeway Warden makes the target dormant until Warden dies."""
+    game = prepare_empty_game()
+    target = game.player2.summon("CS2_222")
+    warden = game.player1.give("TIME_442")
+    warden.play(target=target)
+    assert target.zone == Zone.PLAY
+    assert target.dormant
+    assert target.dormant_turns == 10000
+    warden.destroy()
+    assert target.zone == Zone.PLAY
+    assert not target.dormant
+    assert target.dormant_turns == 0
+
+
+def test_time_event_998_sends_hand_minions_two_turns_then_buffs():
+    """Runi sends hand minions away for two own turns, then returns them with +5/+5."""
+    game = prepare_empty_game()
+    minion = game.player1.give("CS2_231")
+    spell = game.player1.give("CS2_029")
+    runi = game.player1.give("TIME_EVENT_998")
+    runi.play()
+    assert minion.zone == Zone.SETASIDE
+    assert minion not in game.player1.hand
+    assert spell in game.player1.hand
+    game.end_turn()
+    game.end_turn()
+    assert minion.zone == Zone.SETASIDE
+    game.end_turn()
+    game.end_turn()
+    assert minion in game.player1.hand
+    assert minion.atk == minion.data.atk + 5
+    assert minion.max_health == minion.data.health + 5
+
+
 ##
 # deathknight.py
 
