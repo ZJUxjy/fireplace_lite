@@ -178,3 +178,34 @@ def test_aggramar_swift_slash_grants_attack_and_immune_while_attacking():
     assert player.hero.atk == 5
     player.hero.attack(target)
     assert player.hero.damage == hero_damage_before
+
+
+def test_norgannon_progenitors_power_doubles_after_first_ability():
+    game = prepare_empty_game()
+    player = game.player1
+    player.max_mana = 10
+    norgannon = player.summon("TTN_075")
+    target = player.opponent.hero
+
+    norgannon.use_titan_ability(1)
+    norgannon.titan_ability_cooldown = False
+    norgannon.use_titan_ability(0, target=target)
+
+    assert target.damage == 10
+
+
+def test_norgannon_ancient_knowledge_raises_enemy_hand_cost_next_turn():
+    game = prepare_empty_game()
+    player = game.player1
+    player.max_mana = 10
+    enemy_card = player.opponent.give("CS2_189")
+    base_cost = enemy_card.cost
+    norgannon = player.summon("TTN_075")
+
+    norgannon.use_titan_ability(1)
+
+    assert enemy_card.cost == base_cost
+    game.end_turn()
+    assert enemy_card.cost == base_cost + 1
+    game.end_turn()
+    assert enemy_card.cost == base_cost
