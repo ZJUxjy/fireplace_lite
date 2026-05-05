@@ -115,7 +115,7 @@ class CATA_527:
 # CATA_527t2: 奈瑟匹拉，脱困古灵 (6费 6/6)
 # 在你施放一个邪能法术后，随机获取一张纳迦牌，其法力值为(1)
 class CATA_527t2:
-    """Naga, the Liberated"""
+    """Nespirah, Unshackled"""
 
     # 在你施放一个邪能法术后，随机获取一张纳迦牌，费用为1
     events = Play(CONTROLLER, FEL_SPELL).after(

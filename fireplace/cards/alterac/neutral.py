@@ -716,6 +716,31 @@ class CORE_GIL_653e:
     }
 
 
+class AV_316:
+    """Dreadlich Tamsin"""
+
+    play = Hit(ALL_MINIONS, 3), Shuffle(CONTROLLER, "AV_316t4") * 3, Draw(CONTROLLER) * 3
+
+
+class AV_316hp:
+    """Chains of Dread"""
+
+    activate = Shuffle(CONTROLLER, "AV_316t4"), Draw(CONTROLLER)
+
+
+class AV_316t4:
+    """Fel Rift"""
+
+    draw = CAST_WHEN_DRAWN
+    play = Summon(CONTROLLER, "AV_316t")
+
+
+class CORE_GIL_667:
+    """Rotten Applebaum"""
+
+    deathrattle = Heal(FRIENDLY_HERO, 6)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 

@@ -826,3 +826,33 @@ def test_core_woodcutters_axe_buffs_random_friendly_minion_on_deathrattle():
     assert minion.atk == 3
     assert minion.health == 2
     assert not minion.rush
+
+
+def test_dreadlich_tamsin_damages_all_minions_and_draws_fel_rifts():
+    game = prepare_empty_game(CardClass.WARLOCK, CardClass.WARLOCK)
+    player = game.player1
+    opponent = game.player2
+    friendly = player.summon(WISP)
+    enemy = opponent.summon("CS2_120")
+
+    player.give("AV_316").play()
+
+    assert friendly.dead
+    assert enemy.dead
+    assert player.hero.id == "AV_316"
+    assert player.hero.armor == 5
+    assert player.hero_power.id == "AV_316hp"
+    dread_imps = player.field.filter(id="AV_316t")
+    assert len(dread_imps) == 3
+    assert all(imp.atk == 3 and imp.health == 3 for imp in dread_imps)
+
+
+def test_core_rotten_applebaum_restores_six_health_on_deathrattle():
+    game = prepare_empty_game(CardClass.DRUID, CardClass.DRUID)
+    player = game.player1
+    game.cheat_action(player.hero, [Hit(player.hero, 10)])
+
+    applebaum = player.give("CORE_GIL_667").play()
+    applebaum.destroy()
+
+    assert player.hero.health == 26
