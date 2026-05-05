@@ -146,6 +146,26 @@ def test_amitus_caps_damage_to_friendly_minions_at_two():
     assert target.damage == 2
 
 
+def test_argus_grants_positional_rush_and_lifesteal_as_aura():
+    game = prepare_empty_game()
+    player = game.player1
+    left = player.summon("CS2_231")
+    argus = player.summon("TTN_862")
+    right = player.summon("CS2_231")
+    game.refresh_auras()
+
+    assert left.rush is True
+    assert right.lifesteal is True
+
+    player.field.remove(left)
+    player.field.append(left)
+    game.refresh_auras()
+
+    assert right.rush is False
+    assert left.rush is False
+    assert left.lifesteal is True
+
+
 def test_aggramar_maintain_order_draws_after_hero_attacks():
     game = prepare_empty_game()
     player = game.player1
