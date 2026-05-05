@@ -1159,6 +1159,16 @@ class Battlecry(TargetedAction):
 
     def do(self, source, card, target=None):
         player = source.controller
+        shudderblock_repeats = 0
+        if (
+            card.type == CardType.MINION
+            and card.has_battlecry
+            and card.id not in ("TOY_501", "TOY_501t")
+        ):
+            shudderblock_repeats = getattr(
+                player, "_shudderblock_next_battlecry_repeats", 0
+            )
+            player._shudderblock_next_battlecry_repeats = 0
 
         if card.has_combo and player.combo:
             log.info("Activating %r combo targeting %r", card, target)
@@ -1173,7 +1183,17 @@ class Battlecry(TargetedAction):
 
         source.game.manager.targeted_action(self, source, card, target)
         source.target = target
+        if shudderblock_repeats:
+            player._shudderblock_no_enemy_hero_damage = (
+                getattr(player, "_shudderblock_no_enemy_hero_damage", 0) + 1
+            )
         source.game.main_power(source, actions, target)
+
+        for _ in range(shudderblock_repeats):
+            source.game.main_power(source, actions, target)
+
+        if shudderblock_repeats:
+            player._shudderblock_no_enemy_hero_damage -= 1
 
         if self.has_extra_battlecries(player, card):
             source.game.main_power(source, actions, target)
@@ -1515,6 +1535,14 @@ class Hit(TargetedAction):
     AMOUNT = IntArg()
 
     def do(self, source, target, amount):
+        source_controller = getattr(source, "controller", None)
+        if (
+            source_controller is not None
+            and target.type == CardType.HERO
+            and target.controller == source_controller.opponent
+            and getattr(source_controller, "_shudderblock_no_enemy_hero_damage", 0)
+        ):
+            return 0
         amount = source.get_damage(amount, target)
         if amount:
             source.game.manager.targeted_action(self, source, target, amount)

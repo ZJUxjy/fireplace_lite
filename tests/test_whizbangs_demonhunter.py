@@ -195,11 +195,11 @@ def test_blind_box_outcast_discovers_two_demons():
 
     assert player.choice is not None
     first = player.choice.cards[0]
-    assert Race.DEMON in first.races
+    assert Race.DEMON in first.data.races
     player.choice.choose(first)
     assert player.choice is not None
     second = player.choice.cards[0]
-    assert Race.DEMON in second.races
+    assert Race.DEMON in second.data.races
     player.choice.choose(second)
 
     assert first in player.hand
