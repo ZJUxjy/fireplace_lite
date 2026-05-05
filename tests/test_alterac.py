@@ -881,3 +881,29 @@ def test_core_explosive_sheep_deathrattle_damages_all_minions():
 
     assert friendly.health == 1
     assert enemy.health == 1
+
+
+def test_ram_tamer_gains_stats_and_stealth_with_secret():
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.player1
+    player.give("EX1_554").play()
+
+    ram_tamer = player.give("AV_335").play()
+
+    assert ram_tamer.atk == 5
+    assert ram_tamer.health == 4
+    assert ram_tamer.stealthed
+
+
+def test_core_skelemancer_summons_skeleton_on_opponent_turn_deathrattle():
+    game = prepare_empty_game(CardClass.MAGE, CardClass.MAGE)
+    player = game.player1
+    skelemancer = player.give("CORE_ICC_019").play()
+
+    game.end_turn()
+    skelemancer.destroy()
+
+    skeletons = player.field.filter(id="ICC_019t")
+    assert len(skeletons) == 1
+    assert skeletons[0].atk == 8
+    assert skeletons[0].health == 8

@@ -150,7 +150,7 @@ def _cata_529_cost(entity, cost):
 # CATA_529: 贪婪的邪能钓鱼者 (6费 5/5)
 # 在本局对战中，你每施放一个邪能法术，本牌的法力值消耗便减少(1)点
 class CATA_529:
-    """Greedy Felfisher"""
+    """Ravenous Felfisher"""
 
     class Hand:
         update = Refresh(SELF, {GameTag.COST: _cata_529_cost})

@@ -753,6 +753,21 @@ class CORE_GVG_076:
     deathrattle = Hit(ALL_MINIONS, 2)
 
 
+class AV_335:
+    """Ram Tamer"""
+
+    play = Find(FRIENDLY_SECRETS) & (Buff(SELF, "AV_335e"), Stealth(SELF))
+
+
+AV_335e = buff(+1, +1)
+
+
+class CORE_ICC_019:
+    """Skelemancer"""
+
+    deathrattle = CurrentPlayer(OPPONENT) & Summon(CONTROLLER, "ICC_019t")
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
