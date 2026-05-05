@@ -135,7 +135,7 @@ class CATA_474e:
 # 6费 3/6
 # 在你的回合结束时，对所有敌人造成2点伤害
 class CATA_475:
-    """Scales of Justice"""
+    """Scalebreaker Bulwark"""
 
     events = OWN_TURN_END.on(Hit(ENEMY_MINIONS | ENEMY_HERO, 2))
 

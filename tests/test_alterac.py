@@ -164,3 +164,27 @@ def test_tuskpiercer_deathrattle_draws_deathrattle_minion():
 
     assert deathrattle_minion.zone == Zone.HAND
     assert non_deathrattle_minion.zone == Zone.DECK
+
+
+def test_wildheart_guff_sets_max_mana_to_twenty_gains_mana_and_draws():
+    game = prepare_empty_game(CardClass.DRUID, CardClass.DRUID)
+    player = game.player1
+    drawn = player.give("CS2_231")
+    drawn.shuffle_into_deck()
+
+    player.give("AV_205").play()
+
+    assert player.max_resources == 20
+    assert player.max_mana == 11
+    assert drawn.zone == Zone.HAND
+
+
+def test_thickhide_kodo_deathrattle_gains_armor():
+    game = prepare_empty_game(CardClass.DRUID, CardClass.DRUID)
+    player = game.player1
+
+    kodo = player.give("BAR_535").play()
+    kodo.destroy()
+
+    assert player.hero.armor == 5
+    assert player.armor_gained_this_game == 5

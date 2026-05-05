@@ -315,6 +315,22 @@ class AV_204:
     play = AV_204_Play(CONTROLLER)
 
 
+class AV_205_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        player.max_resources = 20
+        return source.game.queue_actions(
+            source, [GainEmptyMana(player, 1), Draw(player)]
+        )
+
+
+class AV_205:
+    """Wildheart Guff"""
+
+    play = AV_205_Play(CONTROLLER)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
@@ -486,6 +502,12 @@ class BAR_330:
     """Tuskpiercer"""
 
     deathrattle = ForceDraw(RANDOM(FRIENDLY_DECK + MINION + DEATHRATTLE))
+
+
+class BAR_535:
+    """Thickhide Kodo"""
+
+    deathrattle = GainArmor(FRIENDLY_HERO, 5)
 
 
 class BAR_310:
