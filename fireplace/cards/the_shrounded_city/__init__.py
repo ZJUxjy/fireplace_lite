@@ -6,4 +6,5 @@ from .mage import *
 from .paladin import *
 from .priest import *
 from .rogue import *
+from .shaman import *
 from .warrior import *

@@ -108,7 +108,10 @@ def test_odd_map_offers_followup_when_discovered_beast_is_played_this_turn():
     first = player.choice.cards[0]
     player.choice.choose(first)
     _set_mana(player)
-    first.play()
+    if first.requires_target():
+        first.play(target=first.play_targets[0])
+    else:
+        first.play()
 
     assert player.choice is not None
     assert first not in player.choice.cards

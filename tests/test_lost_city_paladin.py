@@ -168,12 +168,19 @@ def test_submerged_map_followup_choice_if_discovered_murloc_is_played():
     player.give("TLC_442").play()
     first = player.choice.cards[0]
     remaining = [card for card in player.choice.cards if card is not first]
+    expected = {card.id for card in remaining}
     player.choice.choose(first)
     _set_mana(player)
-    first.play()
+    if first.requires_target():
+        first.play(target=first.play_targets[0])
+    else:
+        first.play()
+    for _ in range(3):
+        if player.choice and {card.id for card in player.choice.cards} != expected:
+            player.choice.choose(player.choice.cards[0])
 
     assert player.choice
-    assert {card.id for card in player.choice.cards} == {card.id for card in remaining}
+    assert {card.id for card in player.choice.cards} == expected
     player.choice.choose(player.choice.cards[0])
     assert not player.choice
 
