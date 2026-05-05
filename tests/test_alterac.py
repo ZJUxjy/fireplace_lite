@@ -1010,3 +1010,50 @@ def test_core_bone_drake_adds_random_dragon_on_deathrattle():
 
     assert player.hand
     assert Race.DRAGON in player.hand[0].races
+
+
+def test_double_agent_summons_copy_when_holding_card_from_another_class():
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    player = game.player1
+    player.give(FIREBALL)
+
+    double_agent = player.give("AV_711").play()
+
+    agents = player.field.filter(id="AV_711")
+    assert len(agents) == 2
+    assert double_agent in agents
+    assert all(agent.atk == 3 and agent.health == 3 for agent in agents)
+
+
+def test_double_agent_ignores_neutral_cards_in_hand():
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    player = game.player1
+    player.give(WISP)
+
+    player.give("AV_711").play()
+
+    assert len(player.field.filter(id="AV_711")) == 1
+
+
+def test_core_arrogant_crusader_summons_ghoul_on_opponent_turn_deathrattle():
+    game = prepare_empty_game(CardClass.PALADIN, CardClass.PALADIN)
+    player = game.player1
+    crusader = player.give("CORE_ICC_034").play()
+
+    game.end_turn()
+    crusader.destroy()
+
+    ghouls = player.field.filter(id="ICC_900t")
+    assert len(ghouls) == 1
+    assert ghouls[0].atk == 2
+    assert ghouls[0].health == 2
+
+
+def test_core_arrogant_crusader_does_not_summon_ghoul_on_own_turn():
+    game = prepare_empty_game(CardClass.PALADIN, CardClass.PALADIN)
+    player = game.player1
+    crusader = player.give("CORE_ICC_034").play()
+
+    crusader.destroy()
+
+    assert not player.field.filter(id="ICC_900t")

@@ -201,7 +201,7 @@ class CATA_610:
 
 
 class CATA_610e:
-    """Lo'Gosh's Last Stand buff"""
+    """Holding On"""
 
     # 亡语：随机从你的手牌中召唤一个随从
     deathrattle = Summon(CONTROLLER, RANDOM(FRIENDLY_HAND + MINION))

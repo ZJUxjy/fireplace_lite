@@ -872,6 +872,19 @@ class CORE_ICC_027:
     deathrattle = Give(CONTROLLER, RandomDragon())
 
 
+class AV_711:
+    """Double Agent"""
+
+    powered_up = Find(FRIENDLY_HAND + OTHER_CLASS_CHARACTER)
+    play = powered_up & Summon(CONTROLLER, ExactCopy(SELF))
+
+
+class CORE_ICC_034:
+    """Arrogant Crusader"""
+
+    deathrattle = CurrentPlayer(OPPONENT) & Summon(CONTROLLER, "ICC_900t")
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 
