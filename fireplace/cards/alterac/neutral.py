@@ -885,6 +885,45 @@ class CORE_ICC_034:
     deathrattle = CurrentPlayer(OPPONENT) & Summon(CONTROLLER, "ICC_900t")
 
 
+class BAR_030_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def _pool(self, source):
+        cards.db.initialize()
+        discover_classes = {source.controller.hero.card_class, CardClass.NEUTRAL}
+        return [
+            card_id
+            for card_id, data in cards.db.items()
+            if data.collectible
+            and (not source.game.is_standard or data.is_standard)
+            and any(card_class in discover_classes for card_class in data.classes)
+            and (
+                data.type == CardType.WEAPON
+                or data.tags.get(GameTag.SECRET)
+                or (data.type == CardType.MINION and Race.BEAST in data.races)
+            )
+        ]
+
+    def do(self, source, player):
+        pool = self._pool(source)
+        source.game.random.shuffle(pool)
+        choices = [player.card(card_id, source=source) for card_id in pool[:3]]
+        if choices:
+            return source.game.queue_actions(source, [GenericChoice(player, choices)])
+
+
+class BAR_030:
+    """Pack Kodo"""
+
+    play = BAR_030_Play(CONTROLLER)
+
+
+class CORE_ICC_062:
+    """Mountainfire Armor"""
+
+    deathrattle = CurrentPlayer(OPPONENT) & GainArmor(FRIENDLY_HERO, 6)
+
+
 class AV_100_Play(TargetedAction):
     TARGET = ActionArg()
 

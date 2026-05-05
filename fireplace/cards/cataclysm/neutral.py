@@ -277,7 +277,7 @@ class CATA_556:
 # CATA_612: 霜冻小鬼 (2费 5/3)
 # 战吼：冻结本随从。
 class CATA_612:
-    """Frostfire"""
+    """Frostbitten Imp"""
 
     # 战吼：冻结自己
     play = Freeze(SELF)

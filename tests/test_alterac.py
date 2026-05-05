@@ -1057,3 +1057,45 @@ def test_core_arrogant_crusader_does_not_summon_ghoul_on_own_turn():
     crusader.destroy()
 
     assert not player.field.filter(id="ICC_900t")
+
+
+def test_pack_kodo_discovers_beast_secret_or_weapon():
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.player1
+
+    player.give("BAR_030").play()
+
+    assert player.choice is not None
+    assert len(player.choice.cards) == 3
+    assert all(
+        (card.type == CardType.MINION and Race.BEAST in card.races)
+        or card.tags.get(GameTag.SECRET)
+        or card.type == CardType.WEAPON
+        for card in player.choice.cards
+    )
+
+    picked = player.choice.cards[0]
+    player.choice.choose(picked)
+
+    assert picked.zone == Zone.HAND
+
+
+def test_core_mountainfire_armor_gains_armor_on_opponent_turn_deathrattle():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.player1
+    armor = player.give("CORE_ICC_062").play()
+
+    game.end_turn()
+    armor.destroy()
+
+    assert player.hero.armor == 6
+
+
+def test_core_mountainfire_armor_does_not_gain_armor_on_own_turn():
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.player1
+    armor = player.give("CORE_ICC_062").play()
+
+    armor.destroy()
+
+    assert player.hero.armor == 0
