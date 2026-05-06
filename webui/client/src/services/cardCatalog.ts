@@ -4,6 +4,11 @@ let _catalog: Card[] | null = null;
 let _byId: Map<string, Card> | null = null;
 let _loadPromise: Promise<Card[]> | null = null;
 
+/** True once the catalog has been fetched and cached in this tab. */
+export function isCatalogLoaded(): boolean {
+  return _catalog !== null;
+}
+
 export async function loadCatalog(): Promise<Card[]> {
   if (_catalog) return _catalog;
   if (_loadPromise) return _loadPromise;

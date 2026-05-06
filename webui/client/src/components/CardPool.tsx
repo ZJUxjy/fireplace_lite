@@ -6,6 +6,8 @@ import './CardPool.css';
 
 type Props = {
   catalog: Card[];
+  /** True until /api/cards/all has resolved (distinct from empty filter results). */
+  catalogLoading?: boolean;
   defaultClass?: string;
   forceIncludeNeutral?: boolean;
   onCardClick?: (card: Card) => void;
@@ -19,6 +21,7 @@ const ALL_CLASSES = ['MAGE','HUNTER','PRIEST','SHAMAN','PALADIN','WARLOCK','WARR
 const TYPES: CardType[] = ['MINION', 'SPELL', 'WEAPON'];
 
 export default function CardPool(props: Props) {
+  const catalogLoading = props.catalogLoading ?? false;
   const [classFilter, setClassFilter] = useState<string | undefined>(props.defaultClass);
   const [costs, setCosts] = useState<Set<number>>(new Set());
   const [types, setTypes] = useState<Set<CardType>>(new Set());
@@ -72,7 +75,7 @@ export default function CardPool(props: Props) {
         />
       </div>
       <div className="card-pool__list">
-        {filtered.map(c => (
+        {!catalogLoading && filtered.map(c => (
           <CardRow
             key={c.id}
             card={c}
@@ -83,7 +86,10 @@ export default function CardPool(props: Props) {
             onHoverEnd={props.onCardHoverEnd}
           />
         ))}
-        {filtered.length === 0 && (
+        {catalogLoading && (
+          <div className="card-pool__loading">正在加载卡库…</div>
+        )}
+        {!catalogLoading && filtered.length === 0 && (
           <div className="card-pool__empty">没有匹配的卡牌</div>
         )}
       </div>

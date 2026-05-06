@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Deck } from '../types/deck';
 import {
   listDecks, deleteDeck, importDeckFromDeckstring, saveDeck, deckCardCount,
 } from '../services/deckStore';
+import { loadCatalog } from '../services/cardCatalog';
 import { HERO_CLASSES } from '../types/deck';
 import './DeckList.css';
 
@@ -28,6 +29,10 @@ const HERO_LABEL: Record<string, { name: string; icon: string }> = {
 
 export default function DeckList(props: Props) {
   const [decks, setDecks] = useState<Deck[]>(listDecks());
+  /** Warm catalog in background so「浏览全卡库」opens with data sooner. */
+  useEffect(() => {
+    loadCatalog().catch(() => {});
+  }, []);
   const [showNewClass, setShowNewClass] = useState(false);
   const [showImport, setShowImport] = useState(false);
   const [importText, setImportText] = useState('');

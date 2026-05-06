@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Card, Deck } from '../types/deck';
-import { loadCatalog, getCatalogSync } from '../services/cardCatalog';
+import { loadCatalog, getCatalogSync, isCatalogLoaded } from '../services/cardCatalog';
 import {
   getDeck, saveDeck, addCardToDeck, removeCardFromDeck,
   exportDeckToDeckstring, deckCardCount, findCardInDeck,
@@ -19,6 +19,7 @@ type Props = {
 
 export default function DeckEditor({ deckId, initialDeck, onBack }: Props) {
   const [catalog, setCatalog] = useState<Card[]>(getCatalogSync());
+  const [catalogLoading, setCatalogLoading] = useState(() => !isCatalogLoaded());
   const [deck, setDeck] = useState<Deck | null>(() => {
     if (deckId === null) return null;
     if (deckId === 'new' && initialDeck) return initialDeck;
@@ -33,9 +34,24 @@ export default function DeckEditor({ deckId, initialDeck, onBack }: Props) {
   useEffect(() => {
     if (getCatalogSync().length > 0) return;
     let cancelled = false;
+    if (isCatalogLoaded()) {
+      setCatalog(getCatalogSync());
+      setCatalogLoading(false);
+      return;
+    }
     loadCatalog()
-      .then(c => { if (!cancelled) setCatalog(c); })
-      .catch(e => { if (!cancelled) setToast(`加载卡库失败: ${e.message}`); });
+      .then((c) => {
+        if (!cancelled) {
+          setCatalog(c);
+          setCatalogLoading(false);
+        }
+      })
+      .catch((e) => {
+        if (!cancelled) {
+          setCatalogLoading(false);
+          setToast(`加载卡库失败: ${(e as Error).message}`);
+        }
+      });
     return () => { cancelled = true; };
   }, []);
 
@@ -99,6 +115,7 @@ export default function DeckEditor({ deckId, initialDeck, onBack }: Props) {
       <div className="deck-editor__pool">
         <CardPool
           catalog={catalog}
+          catalogLoading={catalogLoading}
           defaultClass={deck?.hero_class}
           forceIncludeNeutral={!isBrowse}
           onCardClick={onCardClick}
