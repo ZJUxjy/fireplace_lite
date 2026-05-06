@@ -37,6 +37,7 @@ class Player(Entity, TargetableByAuras):
     minion_extra_combos = slot_property("minion_extra_combos")
     extra_deathrattles = slot_property("extra_deathrattles")
     extra_end_turn_effect = slot_property("extra_end_turn_effect")
+    minion_extra_end_turn_effect = slot_property("minion_extra_end_turn_effect")
     healing_double = slot_property("healing_double", sum)
     hero_power_double = slot_property("hero_power_double", sum)
     healing_as_damage = slot_property("healing_as_damage")
@@ -47,6 +48,58 @@ class Player(Entity, TargetableByAuras):
     spells_cost_health = slot_property("spells_cost_health")
     murlocs_cost_health = slot_property("murlocs_cost_health")
     type = CardType.PLAYER
+
+    @property
+    def murlocs_cost_health_max(self):
+        limits = [
+            slot.murlocs_cost_health_max
+            for slot in self.slots
+            if getattr(slot, "murlocs_cost_health_max", 0)
+        ]
+        return min(limits) if limits else 0
+
+    def _murloc_costs_health(self, card):
+        if not self.murlocs_cost_health:
+            return False
+        if card.type != CardType.MINION or Race.MURLOC not in card.races:
+            return False
+        max_cost = self.murlocs_cost_health_max
+        return not max_cost or card.cost <= max_cost
+
+    def _card_costs_health_this_turn(self, card):
+        if getattr(card, "_costs_health", False):
+            return True
+        return getattr(card, "costs_health_turn", None) == self.game.turn
+
+    def _has_next_card_opponent_health_cost(self):
+        return getattr(self, "_next_card_costs_opponent_health", False)
+
+    def _opponent_health_cost_amount(self, amount):
+        return min(amount, getattr(self, "_next_card_costs_opponent_health_max", 0) or amount)
+
+    @property
+    def healing_bonus(self):
+        return sum(
+            getattr(buff.data.scripts, "healing_bonus", 0)
+            for buff in self.buffs
+            if buff.data
+        )
+
+    @property
+    def healing_as_damage(self):
+        return any(
+            getattr(slot, "healing_as_damage", False) for slot in self.slots
+        ) or any(
+            getattr(buff.data.scripts, "healing_as_damage", False)
+            for buff in self.buffs
+            if buff.data
+        )
+
+    def consume_healing_as_damage(self):
+        for buff in self.buffs[:]:
+            if buff.data and getattr(buff.data.scripts, "healing_as_damage", False):
+                buff.remove()
+                return
 
     def __init__(self, name, deck: List[str], hero: str, is_standard=True):
         self.game: Game = None
@@ -71,6 +124,7 @@ class Player(Entity, TargetableByAuras):
         self.max_resources = 10
         self.max_deck_size = 60
         self.cant_draw = False
+        self.skip_next_turn_draw = False
         self.cant_fatigue = False
         self.combo = False
         self.fatigue_counter = 0
@@ -96,9 +150,17 @@ class Player(Entity, TargetableByAuras):
         self.elemental_played_this_turn = 0
         self.elemental_played_last_turn = 0
         self.cards_drawn_this_turn = 0
+        self.cards_drawn_this_game = 0
         self.cards_played_this_turn = 0
+        self.cards_played_this_turn_list = CardList()
+        self.cards_played_last_turn = CardList()
         self.cards_played_this_game = CardList()
         self.hero_power_damage_this_game = 0
+        self.spell_damage_this_turn = 0
+        self.armor_gained_this_game = 0
+        self.hero_attacks_this_game = 0
+        self.friendly_attacks_this_game = 0
+        self.discarded_cards_this_game = 0
         self.spent_mana_on_spells_this_game = 0
         self.healed_this_game = 0
         self.cthun = None
@@ -213,7 +275,8 @@ class Player(Entity, TargetableByAuras):
     def spellpower(self):
         aura_power = self.controller.spellpower_adjustment
         minion_power = sum(
-            minion.spellpower for minion in self.field.filter(dormant=False)
+            getattr(minion, "spellpower", 0)
+            for minion in self.field.filter(dormant=False)
         )
         return aura_power + minion_power
 
@@ -369,11 +432,15 @@ class Player(Entity, TargetableByAuras):
         """
         Returns whether the player can pay the resource cost of a card.
         """
+        if self._has_next_card_opponent_health_cost():
+            health_cost = self._opponent_health_cost_amount(card.cost)
+            return self.mana >= card.cost - health_cost
+        if self._card_costs_health_this_turn(card):
+            return self.hero.health > card.cost
         if self.spells_cost_health and card.type == CardType.SPELL:
             return self.hero.health > card.cost
-        if self.murlocs_cost_health:
-            if card.type == CardType.MINION and Race.MURLOC in card.races:
-                return self.hero.health > card.cost
+        if self._murloc_costs_health(card):
+            return self.hero.health > card.cost
         return self.mana >= card.cost
 
     def pay_cost(self, source: Entity, amount: int) -> int:
@@ -381,15 +448,30 @@ class Player(Entity, TargetableByAuras):
         Make player pay \a amount mana.
         Returns how much mana is spent, after temporary mana adjustments.
         """
+        if self._has_next_card_opponent_health_cost():
+            health_cost = self._opponent_health_cost_amount(amount)
+            self._next_card_costs_opponent_health = False
+            self._next_card_costs_opponent_health_max = 0
+            self.log("%s pays %i opponent health for %r", self, health_cost, source)
+            self.opponent.hero.damage += health_cost
+            if self.opponent.hero.health <= 0:
+                self.opponent.playstate = PlayState.LOSING
+            mana_cost = amount - health_cost
+            if mana_cost:
+                self.game.queue_actions(source, [SpendMana(self, mana_cost)])
+            return amount
+        if self._card_costs_health_this_turn(source):
+            self.log("%s pays %i health for %r", self, amount, source)
+            self.game.queue_actions(self, [Hit(self.hero, amount)])
+            return amount
         if self.spells_cost_health and source.type == CardType.SPELL:
             self.log("%s spells cost %i health", self, amount)
             self.game.queue_actions(self, [Hit(self.hero, amount)])
             return amount
-        if self.murlocs_cost_health:
-            if source.type == CardType.MINION and Race.MURLOC in source.races:
-                self.log("%s murlocs cost %i health", self, amount)
-                self.game.queue_actions(self, [Hit(self.hero, amount)])
-                return amount
+        if self._murloc_costs_health(source):
+            self.log("%s murlocs cost %i health", self, amount)
+            self.game.queue_actions(self, [Hit(self.hero, amount)])
+            return amount
         if source.type == CardType.SPELL:
             self.spent_mana_on_spells_this_game += amount
         self.game.queue_actions(source, [SpendMana(self, amount)])
@@ -400,6 +482,10 @@ class Player(Entity, TargetableByAuras):
         self.game.random.shuffle(self.deck)
 
     def draw(self, count=1):
+        if self.skip_next_turn_draw:
+            self.skip_next_turn_draw = False
+            self.log("%s skips their normal turn draw", self)
+            return None
         if self.cant_draw:
             self.log("%s tries to draw %i cards, but can't draw", self, count)
             return None

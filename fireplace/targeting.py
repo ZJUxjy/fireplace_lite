@@ -2,7 +2,7 @@
 Targeting logic
 """
 
-from hearthstone.enums import CardType, Rarity
+from hearthstone.enums import CardType, GameTag, Rarity
 
 from .enums import PlayReq
 
@@ -22,6 +22,8 @@ TARGETING_PREREQUISITES = (
     PlayReq.REQ_TARGET_IF_AVAILABLE_AND_HAS_OVERLOADED_MANA,
     PlayReq.REQ_TARGET_IF_AVAILABLE_AND_DRAWN_THIS_TURN,
     PlayReq.REQ_TARGET_IF_AVAILABLE_AND_NOT_DRAWN_THIS_TURN,
+    PlayReq.REQ_LOCATION_TARGET,
+    PlayReq.REQ_LOCATION_OR_MINION_TARGET,
     PlayReq.REQ_TARGET_IF_AVAILABLE_AND_ONLY_EVEN_COST_CARD_IN_DECK,
     PlayReq.REQ_TARGET_IF_AVAILABLE_AND_ONLY_ODD_COST_CARD_IN_DECK,
     PlayReq.REQ_TARGET_IF_AVAILABLE_AND_COST_5_OR_MORE_SPELL_IN_HAND,
@@ -41,6 +43,8 @@ def is_valid_target(self, target, requirements=None):
         return False
 
     if target.type == CardType.MINION:
+        if target.tags.get(GameTag.UNTOUCHABLE) or target.data.tags.get(GameTag.UNTOUCHABLE):
+            return False
         if target.dormant:
             return False
         if target.dead:
@@ -60,7 +64,10 @@ def is_valid_target(self, target, requirements=None):
         ):
             return False
 
-    if target.cant_be_targeted_by_opponents and self.controller != target.controller:
+    if (
+        getattr(target, "cant_be_targeted_by_opponents", False)
+        and self.controller != target.controller
+    ):
         return False
 
     if requirements is None:
@@ -79,6 +86,18 @@ def is_valid_target(self, target, requirements=None):
     for req, param in requirements.items():
         if req == PlayReq.REQ_MINION_TARGET:
             if target.type != CardType.MINION:
+                return False
+        elif req == PlayReq.REQ_LOCATION_TARGET:
+            if target.type != CardType.LOCATION:
+                return False
+        elif req == PlayReq.REQ_LOCATION_OR_MINION_TARGET:
+            if target.type not in (CardType.LOCATION, CardType.MINION):
+                return False
+        elif req == PlayReq.REQ_NOT_EXHAUSTED_LOCATION:
+            if (
+                target.type == CardType.LOCATION
+                and getattr(target, "location_exhausted", False)
+            ):
                 return False
         elif req == PlayReq.REQ_FRIENDLY_TARGET:
             if target.controller != self.controller:

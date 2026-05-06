@@ -75,7 +75,7 @@ class CATA_153e1:
 
 
 # CATA_561: 能量仪式 (2费 法术)
-# 兆示，召唤2个1/1具有突袭的元素
+# 兆示，获取2个1/1具有突袭的元素
 class CATA_561:
     """Ritual of Power"""
 
@@ -87,9 +87,7 @@ class CATA_561:
         GameTag.RARITY: 3,
     }
 
-    # Herald (Soldier of Al'Akir). Get two 1/1 Elementals with Rush.
-    herald_soldier_id = "CATA_565t"
-    play = Herald(CONTROLLER), Summon(CONTROLLER, "CATA_561t") * 2
+    play = Give(CONTROLLER, "CATA_561t") * 2
 
 
 # CATA_561t: 微风精灵 (1费 1/1 元素)
@@ -108,6 +106,24 @@ class CATA_561t:
 # CATA_563: 雷鸣流云 (3费 4/3)
 # 战吼：选择手牌中一张费用(4)或更低的法术来吸收
 # 亡语：释放它
+class CATA_563_Absorb(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        source._absorbed_spell = target
+        target.zone = Zone.SETASIDE
+        source.game.manager.targeted_action(self, source, target)
+
+
+class CATA_563_CastAbsorbed(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        spell = getattr(target, "_absorbed_spell", None)
+        if spell:
+            source.game.queue_actions(spell, [CastSpell(spell)])
+
+
 class CATA_563:
     """Crackling Cloudstrider"""
 
@@ -119,9 +135,10 @@ class CATA_563:
         GameTag.RARITY: 4,
     }
 
-    # 简化实现：战吼，随机获得一张手牌中的法术
-    # 亡语：造成2点伤害
-    deathrattle = Hit(RANDOM(ENEMY_CHARACTERS), 2)
+    play = Choice(CONTROLLER, FRIENDLY_HAND + SPELL + (COST <= 4)).then(
+        CATA_563_Absorb(Choice.CARD)
+    )
+    deathrattle = CATA_563_CastAbsorbed(SELF)
 
 
 # CATA_563e2: 阴云 (buff)
@@ -131,6 +148,15 @@ class CATA_563e2:
     tags = {
         GameTag.DEATHRATTLE: True,
     }
+
+
+class CATA_AlakirHerald(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        heralds = getattr(target, "_cataclysm_heralds", {}).copy()
+        heralds["alakir"] = heralds.get("alakir", 0) + 1
+        target._cataclysm_heralds = heralds
 
 
 # CATA_564: 飞行助翼 (5费 5/5)
@@ -152,8 +178,11 @@ class CATA_564:
         PlayReq.REQ_MINION_TARGET: 0,
     }
 
-    # 战吼：给目标随从超级风怒
-    play = SetTags(TARGET, {GameTag.MEGA_WINDFURY: True})
+    # 战吼：给目标随从超级风怒，且无法攻击英雄。
+    play = SetTags(TARGET, {
+        GameTag.MEGA_WINDFURY: True,
+        GameTag.CANNOT_ATTACK_HEROES: True,
+    })
 
 
 # CATA_565: 天空之墙哨兵 (2费 0/3)
@@ -161,7 +190,6 @@ class CATA_564:
 class CATA_565:
     """Skywall Sentinel"""
 
-    # Taunt. Battlecry: Herald (Soldier of Al'Akir).
     tags = {
         GameTag.CARD_SET: 1980,
         GameTag.COST: 2,
@@ -170,10 +198,12 @@ class CATA_565:
         GameTag.TAUNT: True,
         GameTag.RARITY: 3,
     }
-    herald_soldier_id = "CATA_565t"
-    play = Herald(CONTROLLER)
+
+    # 战吼：兆示
+    play = CATA_AlakirHerald(CONTROLLER)
 
 
+# CATA_565t: 奥拉基尔的士兵 (1费 1/2)
 class CATA_565t:
     """Soldier of Al'Akir"""
 
@@ -183,14 +213,28 @@ class CATA_565t:
         GameTag.ATK: 1,
         GameTag.HEALTH: 2,
     }
-    # Adjacent minions have +1 Attack (aura). Real Hearthstone scales by
-    # herald_count; we simplify to flat +1 since dynamic-count auras require
-    # per-tick recomputation that fireplace's Refresh doesn't expose.
-    update = Refresh(SELF_ADJACENT, {GameTag.ATK: 1})
+    update = Refresh(SELF_ADJACENT, {GameTag.ATK: +1})
 
 
 # CATA_567: 升腾 (4费 法术)
 # 将所有友方随从变形成费用增加(1)的随从，它们死亡时召唤原始随从
+class CATA_567_Ascend(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        cards = RandomMinion(cost=target.cost + 1).evaluate(source)
+        if not cards:
+            return []
+        return source.game.queue_actions(
+            source,
+            [
+                Morph(target, cards[0]).then(
+                    StoringBuff(Morph.CARD, "CATA_567e", ExactCopy(Morph.TARGET))
+                )
+            ],
+        )
+
+
 class CATA_567:
     """Ascendance"""
 
@@ -202,15 +246,22 @@ class CATA_567:
         GameTag.RARITY: 4,
     }
 
-    # 简化实现：使所有友方随从获得+1/+1
-    play = Buff(FRIENDLY_MINIONS, "CATA_567e")
+    play = CATA_567_Ascend(FRIENDLY_MINIONS)
 
 
-CATA_567e = buff(+1, +1)
+class CATA_567e:
+    """Ascended"""
+
+    tags = {GameTag.DEATHRATTLE: True}
+    deathrattle = Summon(CONTROLLER, STORE_CARD)
 
 
 # CATA_568: 穆拉丁的奋战 (9费 法术)
 # 抽2张牌，每有一个友方角色攻击过，费用就减少(1)
+def _muradins_last_stand_cost(entity, amount):
+    return amount - entity.controller.friendly_attacks_this_game
+
+
 class CATA_568:
     """Muradin's Last Stand"""
 
@@ -222,8 +273,10 @@ class CATA_568:
         GameTag.RARITY: 3,
     }
 
-    # 简化实现：抽2张牌
     play = Draw(CONTROLLER) * 2
+
+    class Hand:
+        update = Refresh(SELF, {GameTag.COST: _muradins_last_stand_cost})
 
 
 # CATA_569: 演武仪式 (4费 法术)
@@ -244,6 +297,25 @@ class CATA_569:
     play = Summon(CONTROLLER, RandomMinion(cost=3)), Summon(CONTROLLER, RandomMinion(cost=2)), Summon(CONTROLLER, RandomMinion(cost=1))
 
 
+class CATA_570_DrawOverflow(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        remaining = 10
+        results = []
+        while remaining > 0 and target.deck:
+            card = target.deck[-1]
+            spent = max(0, card.cost)
+            drawn = source.game.queue_actions(source, [Draw(target)])
+            results.extend(drawn)
+            if card.zone == Zone.HAND:
+                source.game.queue_actions(source, [
+                    Buff(card, "CATA_570e", cost=-remaining)
+                ])
+            remaining -= spent
+        return results
+
+
 # CATA_570: 莫卓克 (10费 10/10)
 # 战吼：抽1张牌并减少其费用(10)
 class CATA_570:
@@ -257,8 +329,7 @@ class CATA_570:
         GameTag.RARITY: 5,
     }
 
-    # 战吼：抽1张牌并减少其费用(10)
-    play = Draw(CONTROLLER).then(Buff(Draw.CARD, "CATA_570e"))
+    play = CATA_570_DrawOverflow(CONTROLLER)
 
 
 CATA_570e = buff(cost=-10)
@@ -281,5 +352,3 @@ class CATA_724:
 
     # 亡语：解锁你被过载的水晶
     deathrattle = UnlockOverload(CONTROLLER)
-
-

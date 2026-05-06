@@ -26,6 +26,56 @@ class GAME_005:
     play = ManaThisTurn(CONTROLLER, 1)
 
 
+class BG31_BOB_Play(MultipleChoice):
+    choose_times = 1
+    action_ids = ("BG31_BOBt", "BG31_BOBt2", "BG31_BOBt3", "BG31_BOBt4")
+
+    def do_step1(self):
+        self.cards = [self.player.card(card_id, source=self.source) for card_id in self.action_ids]
+
+    def done(self):
+        chosen = self.choosed_cards[0].id
+        if chosen == "BG31_BOBt":
+            actions = [Freeze(ENEMY_MINIONS)]
+        elif chosen == "BG31_BOBt2":
+            actions = [
+                Find(ENEMY_MINIONS)
+                & Give(CONTROLLER, ExactCopy(RANDOM(ENEMY_MINIONS))),
+                Give(OPPONENT, "GAME_005") * 3,
+            ]
+        elif chosen == "BG31_BOBt3":
+            actions = [Discover(CONTROLLER, RandomMinion(cost=3)), FillMana(CONTROLLER, 3)]
+        else:
+            actions = [
+                ForceDraw(RANDOM(FRIENDLY_DECK + MINION)).then(
+                    Give(CONTROLLER, ExactCopy(ForceDraw.TARGET)) * 2
+                )
+            ]
+        return self.source.game.queue_actions(self.source, actions)
+
+
+class BG31_BOB:
+    """Bob the Bartender"""
+
+    play = BG31_BOB_Play(CONTROLLER)
+
+
+class BG31_BOBt:
+    """Freeze the Shop"""
+
+
+class BG31_BOBt2:
+    """Recruit a Minion"""
+
+
+class BG31_BOBt3:
+    """Refresh the Tavern"""
+
+
+class BG31_BOBt4:
+    """Find a Triple"""
+
+
 class GBL_001e:
     cost = SET(1)
     events = REMOVED_IN_PLAY

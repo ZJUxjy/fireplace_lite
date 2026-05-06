@@ -41,6 +41,65 @@ GiveRush = lambda target: SetTag(target, GameTag.RUSH)
 GiveReborn = lambda target: SetTag(target, GameTag.REBORN)
 
 
+class EDR_DarkGift(TargetedAction):
+    TARGET = ActionArg()
+    BUFF = ActionArg()
+
+    bonuses = (
+        "EDR_DG_ATTACK_LIFESTEAL",
+        "EDR_DG_HEALTH_TAUNT",
+        "EDR_DG_CHARGE",
+        "EDR_DG_REBORN",
+        "EDR_DG_BATTLECRY",
+        "EDR_DG_DEATHRATTLE",
+    )
+
+    def get_target_args(self, source, target):
+        ret = super().get_target_args(source, target)
+        if len(self._args) > 1:
+            return ret
+        return ret + [source.game.random.choice(self.bonuses)]
+
+    def do(self, source, target, buff):
+        target._dark_gift = True
+        if buff == "EDR_DG_BATTLECRY":
+            target._extra_battlecry_repeats = (
+                getattr(target, "_extra_battlecry_repeats", 0) + 1
+            )
+            actions = []
+        elif buff == "EDR_DG_DEATHRATTLE":
+            target._extra_deathrattle_repeats = (
+                getattr(target, "_extra_deathrattle_repeats", 0) + 1
+            )
+            target.tags[GameTag.DEATHRATTLE] = 1
+            actions = []
+        else:
+            if buff == "EDR_DG_REBORN":
+                target.reborn = True
+            actions = [Buff(target, buff)]
+
+        if target.type == CardType.MINION:
+            for wallow in list(target.controller.hand) + list(target.controller.deck):
+                if wallow is target or wallow.id != "EDR_487":
+                    continue
+                wallow._dark_gift = True
+                wallow._edr_487_gifts = getattr(wallow, "_edr_487_gifts", 0) + 1
+                if buff == "EDR_DG_BATTLECRY":
+                    wallow._extra_battlecry_repeats = (
+                        getattr(wallow, "_extra_battlecry_repeats", 0) + 1
+                    )
+                elif buff == "EDR_DG_DEATHRATTLE":
+                    wallow._extra_deathrattle_repeats = (
+                        getattr(wallow, "_extra_deathrattle_repeats", 0) + 1
+                    )
+                    wallow.tags[GameTag.DEATHRATTLE] = 1
+                else:
+                    if buff == "EDR_DG_REBORN":
+                        wallow.reborn = True
+                    actions.append(Buff(wallow, buff))
+        return source.game.queue_actions(source, actions)
+
+
 CLEAVE = Hit(TARGET_ADJACENT, ATK(SELF))
 COINFLIP = RandomNumber(0, 1) == 1
 EMPTY_BOARD = Count(FRIENDLY_MINIONS) == 0
@@ -247,7 +306,8 @@ def decode_deckstring(deckstring: str):
     cards = []
     for card_id, num in deck.cards:
         card_id: str = db.dbf[card_id]
-        card_id = card_id.removeprefix("CORE_")
+        if card_id.startswith("CORE_"):
+            card_id = card_id[len("CORE_") :]
         cards += [card_id] * num
     return hero_id, cards
 

@@ -291,9 +291,12 @@ def test_doppelgangster():
     assert doppel.atk == 3
     doppel.play()
     assert len(game.player1.field) == 3
-    assert game.player1.field[0].id == "CFM_668"
-    assert game.player1.field[1].id == "CFM_668"
-    assert game.player1.field[2].id == "CFM_668"
+    assert sorted(card.id for card in game.player1.field) == [
+        "CFM_668",
+        "CFM_668t",
+        "CFM_668t2",
+    ]
+    assert [card.atk for card in game.player1.field] == [3, 3, 3]
 
 
 def test_seadevil_stinger():

@@ -1,4 +1,24 @@
+from hearthstone.enums import Zone
+
 from ..utils import *
+
+
+class TIME_442_Imprison(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        source._timeway_warden_prisoner = target
+        return source.game.queue_actions(source, [Dormant(target, 10000)])
+
+
+class TIME_442_AwakenPrisoner(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        prisoner = getattr(source, "_timeway_warden_prisoner", None)
+        if prisoner and prisoner.zone == Zone.PLAY and prisoner.dormant:
+            prisoner.dormant_turns = 0
+            return source.game.queue_actions(source, [Awaken(prisoner)])
 
 
 ##
@@ -70,24 +90,15 @@ class TIME_441:
 class TIME_442:
     """Timeway Warden"""
 
-    # 战吼：使一个敌人随从休眠（简化实现：将其移回拥有者手牌）
+    # 战吼：囚禁一个敌方随从，使其休眠10000回合。亡语：唤醒该随从
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
         PlayReq.REQ_ENEMY_TARGET: 0,
         PlayReq.REQ_MINION_TARGET: 0,
     }
 
-    # Simplified: Return to owner's hand
-    play = Bounce(TARGET)
-
-    # Deathrattle: Summon a copy (simplified awakening)
-    deathrattle = Summon(CONTROLLER, "TIME_442t")
-
-
-# TIME_442t: Imprisoned Minion
-class TIME_442t:
-    """Awakened Minion"""
-    pass
+    play = TIME_442_Imprison(TARGET)
+    deathrattle = TIME_442_AwakenPrisoner(SELF)
 
 
 # TIME_443: Hounds of Fury (4费 法术)

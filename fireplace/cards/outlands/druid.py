@@ -23,8 +23,18 @@ class BT_127e:
 class BT_131:
     """Ysiel Windsinger"""
 
-    # Your spells cost (1).
+    # <b>Battlecry:</b> Your spells cost (1) this turn.
+    play = Buff(CONTROLLER, "BT_131e")
+
+
+class BT_131e:
+    tags = {
+        GameTag.CARDNAME: "Windsinger",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.TAG_ONE_TURN_EFFECT: True,
+    }
     update = Refresh(FRIENDLY_HAND + SPELL, {GameTag.COST: SET(1)})
+    events = OWN_TURN_END.on(Destroy(SELF))
 
 
 class BT_133:

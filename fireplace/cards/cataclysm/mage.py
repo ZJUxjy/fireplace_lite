@@ -29,11 +29,7 @@ class CATA_483:
 
     # 战吼：如果你在本回合中用法术造成过伤害，召唤一个复制
     def play(self):
-        spells_this_turn = [
-            c for c in self.controller.cards_played_this_game
-            if c.type == CardType.SPELL and c.turn_played == self.game.turn
-        ]
-        if spells_this_turn:
+        if self.controller.spell_damage_this_turn:
             yield Summon(CONTROLLER, Copy(SELF))
 
 
@@ -51,8 +47,8 @@ class CATA_484:
 class CATA_487:
     """Raincaller"""
 
-    # 每回合第一次施放法术时获得+2攻击力（方法回调，保证每回合只触发一次）
-    def _on_spell(self, *args):
+    # 每回合第一次用法术造成伤害时获得+2攻击力。
+    def _on_spell_damage(self, *args):
         # trigger_event calls callable actions twice if result is iterable,
         # so return a single Action (not a list) to avoid double-execution
         if not getattr(self, "_rain_triggered", False):
@@ -65,7 +61,7 @@ class CATA_487:
         return None
 
     events = [
-        Play(CONTROLLER, SPELL).after(_on_spell),
+        Damage(source=FRIENDLY + SPELL).on(_on_spell_damage),
         OWN_TURN_BEGIN.on(_reset_rain),
     ]
 
@@ -107,23 +103,35 @@ class CATA_488te:
 
 # CATA_979: 咒术专家 (3费 3/4)
 # 战吼：选择你手牌中的一张法术牌，将其拆分为两张法力值消耗与其相同的随机法术牌
+class CATA_979_SplitSpell(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, spell):
+        cost = spell.cost
+        source.game.queue_actions(
+            source,
+            [
+                Discard(spell),
+                Give(CONTROLLER, RandomSpell(cost=cost)),
+                Give(CONTROLLER, RandomSpell(cost=cost)),
+            ],
+        )
+
+
 class CATA_979:
     """Conjuration Specialist"""
 
-    def play(self):
-        spells = [c for c in self.controller.hand if c.type == CardType.SPELL]
-        if not spells:
-            return
-        chosen = _random.choice(spells)
-        cost = chosen.cost
-        chosen_sel = FuncSelector(lambda entities, source, c=chosen: [c])
-        yield Discard(chosen_sel)
-        yield Give(CONTROLLER, RandomSpell(cost=cost))
-        yield Give(CONTROLLER, RandomSpell(cost=cost))
+    play = Choice(CONTROLLER, FRIENDLY_HAND + SPELL).then(
+        CATA_979_SplitSpell(Choice.CARD)
+    )
 
 
 ##
 # Spells
+
+
+def _spellweavers_brilliance_cost(entity, amount):
+    return amount - entity.controller.spell_damage_this_turn
 
 
 # CATA_452: 织法者的光辉 (10费 法术)
@@ -132,15 +140,17 @@ class CATA_452:
     """Spellweaver's Brilliance"""
 
     # 召唤一条6/6的龙
-    # 简化实现：直接召唤6/6龙，忽略费用减免
     play = Summon(CONTROLLER, "CATA_452t")
+
+    class Hand:
+        update = Refresh(SELF, {GameTag.COST: _spellweavers_brilliance_cost})
 
 
 # CATA_452t: 碧蓝守卫 (6费 6/6 龙)
 class CATA_452t:
     """Azure Warden"""
 
-    # 简单的6/6龙
+    # 6/6龙白板衍生物，无额外脚本
     pass
 
 
@@ -164,25 +174,27 @@ class CATA_485:
 class CATA_489:
     """Arcane Flow"""
 
-    # Shatter. Deal 4 damage. Deal 2 damage to all enemies.
-    requirements = {PlayReq.REQ_TARGET_TO_PLAY: 0}
-    shatter_halves = ("CATA_489t", "CATA_489t2")
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+    }
 
     def play(self):
-        yield Hit(self.target, 4)
+        yield Hit(TARGET, 4)
         yield Hit(ENEMY_CHARACTERS, 2)
-        yield Shatter(CONTROLLER)
 
 
 class CATA_489t:
-    """Arcane Flow (Shattered half 1)"""
+    """Arcane Flow"""
 
-    requirements = {PlayReq.REQ_TARGET_TO_PLAY: 0}
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+    }
+
     play = Hit(TARGET, 4)
 
 
 class CATA_489t2:
-    """Arcane Flow (Shattered half 2)"""
+    """Arcane Flow"""
 
     play = Hit(ENEMY_CHARACTERS, 2)
 

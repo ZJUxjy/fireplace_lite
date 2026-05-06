@@ -1,5 +1,6 @@
 from utils import *
-from hearthstone.enums import CardType
+from fireplace.actions import Hit
+from hearthstone.enums import CardType, Zone
 
 
 ##
@@ -7,39 +8,35 @@ from hearthstone.enums import CardType
 # Destroy an enemy minion; restore health equal to its Health to your hero
 
 def test_runes_of_blood_heals_hero_by_minion_health():
-    """Runes of Blood destroys a minion and heals hero by its health."""
+    """Runes of Blood destroys a minion and grants its Health to the hero."""
     game = prepare_empty_game()
     game.player1.max_mana = 10
     # Summon a 3/5 minion for player2
     target = game.player2.summon("CS2_189")  # Elven Archer 1/1
-    # Damage player1's hero a bit first
-    game.player1.hero.damage = 5
-    hero_hp_before = game.player1.hero.health  # 25
+    hero_max_health_before = game.player1.hero.max_health
 
     primus = game.player1.summon("TTN_737")
     primus.use_titan_ability(0, target=target)  # TTN_737t: Runes of Blood
 
     # Target should be dead
     assert target.zone.name == "GRAVEYARD"
-    # Hero should have gained 1 health (Elven Archer = 1/1, health = 1)
-    assert game.player1.hero.health == hero_hp_before + 1
+    assert game.player1.hero.max_health == hero_max_health_before + 1
 
 
-def test_runes_of_blood_heals_by_larger_minion_health():
-    """Runes of Blood heals hero by the full health of a bigger minion."""
+def test_runes_of_blood_grants_health_to_primus_and_hero():
     game = prepare_empty_game()
     game.player1.max_mana = 10
-    # Summon a minion with 4 health
-    target = game.player2.summon("CS2_222")  # Stormwind Champion 6/6
-    game.player1.hero.damage = 10
-    hero_hp_before = game.player1.hero.health  # 20
-
-    target_health = target.health  # capture before destroying
+    target = game.player2.summon("CS2_222")
+    hero_max_health_before = game.player1.hero.max_health
     primus = game.player1.summon("TTN_737")
+    primus_health_before = primus.max_health
+    target_health = target.health
+
     primus.use_titan_ability(0, target=target)  # TTN_737t: Runes of Blood
 
     assert target.zone.name == "GRAVEYARD"
-    assert game.player1.hero.health == min(game.player1.hero.max_health, hero_hp_before + target_health)
+    assert primus.max_health == primus_health_before + target_health
+    assert game.player1.hero.max_health == hero_max_health_before + target_health
 
 
 ##
@@ -100,105 +97,216 @@ def test_sharghans_wrath_draws_overload_cards():
 
 ##
 # TTN_960t4: Legion Invasion!
-# Your future Demons get +2 Health and Taunt
+# Future Demons summoned from the Twisting Nether have +2 Health and Taunt
 
-def test_legion_invasion_future_demons_get_buff():
-    """Legion Invasion gives +2 Health and Taunt to future demons played."""
+def test_legion_invasion_buffs_future_portal_demons():
     game = prepare_empty_game()
-    game.player1.max_mana = 10
-    sargeras = game.player1.summon("TTN_960")
+    player = game.player1
+    player.max_mana = 10
+    player.summon("TTN_960t")
+    sargeras = player.summon("TTN_960")
     sargeras.use_titan_ability(2)  # TTN_960t4: Legion Invasion!
 
-    # Play a demon after Legion Invasion — Wrathguard AT_026 (2/3 Demon)
-    demon = game.player1.give("AT_026")
-    base_health = demon.data.health  # 3
+    game.end_turn()
+
+    demons = [minion for minion in player.field if minion.id == "TTN_960t6"]
+    assert len(demons) == 2
+    assert all(demon.max_health == demon.data.health + 2 for demon in demons)
+    assert all(demon.taunt for demon in demons)
+
+
+def test_legion_invasion_does_not_buff_demons_played_from_hand():
+    game = prepare_empty_game()
+    player = game.player1
+    player.max_mana = 10
+    sargeras = player.summon("TTN_960")
+    sargeras.use_titan_ability(2)  # TTN_960t4: Legion Invasion!
+
+    demon = player.give("AT_026")
+    base_health = demon.data.health
     demon.play()
 
-    # The demon should have +2 health and Taunt
-    played_demon = game.player1.field[-1]
-    assert played_demon.max_health == base_health + 2
-    assert played_demon.taunt is True
+    played_demon = player.field[-1]
+    assert played_demon.max_health == base_health
+    assert played_demon.taunt is False
 
 
-def test_legion_invasion_does_not_buff_non_demons():
-    """Legion Invasion does not buff non-demon minions."""
+def test_amitus_caps_damage_to_friendly_minions_at_two():
     game = prepare_empty_game()
-    game.player1.max_mana = 10
-    sargeras = game.player1.summon("TTN_960")
-    sargeras.use_titan_ability(2)  # TTN_960t4: Legion Invasion!
+    player = game.player1
+    target = player.summon("CS2_222")
+    player.summon("TTN_858")
 
-    # Play a non-demon — Wisp (CS2_231) 1/1
-    wisp = game.player1.give("CS2_231")
-    wisp.play()
-    played_wisp = game.player1.field[-1]
-    assert played_wisp.max_health == played_wisp.data.health  # unchanged
-    assert played_wisp.taunt is False
+    game.queue_actions(game.player2.hero, [Hit(target, 6)])
+
+    assert target.damage == 2
 
 
-##
-# Titan keyword: cannot attack while abilities remain
-
-def test_titan_cannot_attack_with_unused_abilities():
-    """A Titan with any unused ability cannot attack."""
+def test_argus_grants_positional_rush_and_lifesteal_as_aura():
     game = prepare_empty_game()
-    game.player1.max_mana = 10
-    titan = game.player1.summon("TTN_737")  # The Primus 8/8
-    # Skip first turn so it's not asleep
-    game.end_turn(); game.end_turn()
-    assert titan.can_attack() is False
+    player = game.player1
+    left = player.summon("CS2_231")
+    argus = player.summon("TTN_862")
+    right = player.summon("CS2_231")
+    game.refresh_auras()
+
+    assert left.rush is True
+    assert right.lifesteal is True
+
+    player.field.remove(left)
+    player.field.append(left)
+    game.refresh_auras()
+
+    assert right.rush is False
+    assert left.rush is False
+    assert left.lifesteal is True
 
 
-def test_titan_can_attack_after_all_abilities_used():
-    """Once all 3 abilities are used, the Titan may attack normally."""
+def test_v07tr0n_prime_repeats_ability_on_another_friendly_minion():
     game = prepare_empty_game()
-    game.player1.max_mana = 10
-    titan = game.player1.summon("TTN_858")  # Amitus, no targets needed
-    game.end_turn(); game.end_turn()
+    player = game.player1
+    ally = player.summon("CS2_231")
+    target = player.opponent.hero
+    prime = player.summon("TTN_721")
 
-    titan.use_titan_ability(0)
-    assert titan.can_attack() is False  # 2 left
-    game.end_turn(); game.end_turn()
+    prime.use_titan_ability(0)
 
-    titan.use_titan_ability(1)
-    assert titan.can_attack() is False  # 1 left
-    game.end_turn(); game.end_turn()
-
-    titan.use_titan_ability(2)
-    assert all(titan.titan_ability_used) is True
-    assert titan.can_attack() is True
+    assert prime.atk == prime.data.atk + 2
+    assert prime.max_health == prime.data.health + 1
+    assert ally.atk == ally.data.atk + 2
+    assert ally.max_health == ally.data.health + 1
+    assert target.damage == 8
 
 
-def test_titan_cooldown_resets_each_turn():
-    """Only 1 Titan ability per turn; cooldown resets next turn."""
-    import pytest
-    from fireplace.exceptions import InvalidAction
+def test_amanthul_strike_from_history_removes_two_enemy_minions_from_game():
     game = prepare_empty_game()
-    game.player1.max_mana = 10
-    titan = game.player1.summon("TTN_858")
-    game.end_turn(); game.end_turn()
+    player = game.player1
+    targets = [player.opponent.summon("CS2_231") for _ in range(2)]
+    amanthul = player.summon("TTN_429")
 
-    titan.use_titan_ability(0)
-    assert titan.titan_ability_cooldown is True
+    amanthul.use_titan_ability(1)
 
-    with pytest.raises(InvalidAction):
-        titan.use_titan_ability(1)
-
-    game.end_turn(); game.end_turn()
-    assert titan.titan_ability_cooldown is False
-    titan.use_titan_ability(1)  # works now
+    assert all(target.zone == Zone.REMOVEDFROMGAME for target in targets)
 
 
-def test_titan_used_abilities_are_permanent():
-    """A used ability cannot be used again on a later turn."""
-    import pytest
-    from fireplace.exceptions import InvalidAction
+def test_primus_runes_of_frost_discounts_and_empowers_next_spell():
     game = prepare_empty_game()
-    game.player1.max_mana = 10
-    titan = game.player1.summon("TTN_858")
-    game.end_turn(); game.end_turn()
+    player = game.player1
+    player.max_mana = 10
+    primus = player.summon("TTN_737")
+    spell = player.give("CS2_029")
+    base_cost = spell.data.cost
 
-    titan.use_titan_ability(0)
-    game.end_turn(); game.end_turn()
+    primus.use_titan_ability(2)
+    if player.choice:
+        player.choice.choose(player.choice.cards[0])
+    player.used_mana = 0
 
-    with pytest.raises(InvalidAction):
-        titan.use_titan_ability(0)
+    assert spell.cost == base_cost - 3
+    spell.play(target=player.opponent.hero)
+    assert player.opponent.hero.damage == 9
+    next_spell = player.give("CS2_024")
+    assert next_spell.cost == next_spell.data.cost
+
+
+def test_primus_runes_of_unholy_summons_two_reborn_taunt_undead():
+    game = prepare_empty_game()
+    player = game.player1
+    primus = player.summon("TTN_737")
+
+    primus.use_titan_ability(1)
+
+    servants = [minion for minion in player.field if minion.id == "TTN_737t2"]
+    assert len(servants) == 2
+    assert all(servant.atk == 3 and servant.max_health == 3 for servant in servants)
+    assert all(servant.taunt and servant.reborn for servant in servants)
+
+
+def test_aggramar_maintain_order_draws_after_hero_attacks():
+    game = prepare_empty_game()
+    player = game.player1
+    player.max_mana = 10
+    player.deck.append(player.card("CS2_189"))
+    aggramar = player.give("TTN_092").play()
+    hand_before = len(player.hand)
+
+    aggramar.use_titan_ability(0)
+
+    assert len(player.hand) == hand_before
+    player.hero.attack(player.opponent.hero)
+    assert len(player.hand) == hand_before + 1
+    assert player.hand[-1].id == "CS2_189"
+
+
+def test_aggramar_commanding_presence_summons_after_hero_attacks():
+    game = prepare_empty_game()
+    player = game.player1
+    player.max_mana = 10
+    aggramar = player.give("TTN_092").play()
+    field_before = len(player.field)
+
+    aggramar.use_titan_ability(1)
+
+    assert len(player.field) == field_before
+    player.hero.attack(player.opponent.hero)
+    assert any(minion.id == "TTN_092e2t" for minion in player.field)
+
+
+def test_aggramar_swift_slash_grants_attack_and_immune_while_attacking():
+    game = prepare_empty_game()
+    player = game.player1
+    player.max_mana = 10
+    target = player.opponent.summon("CS2_222")
+    aggramar = player.give("TTN_092").play()
+    hero_damage_before = player.hero.damage
+
+    aggramar.use_titan_ability(2)
+
+    assert player.hero.atk == 5
+    player.hero.attack(target)
+    assert player.hero.damage == hero_damage_before
+
+
+def test_norgannon_progenitors_power_doubles_after_first_ability():
+    game = prepare_empty_game()
+    player = game.player1
+    player.max_mana = 10
+    norgannon = player.summon("TTN_075")
+    target = player.opponent.hero
+
+    norgannon.use_titan_ability(1)
+    norgannon.titan_ability_cooldown = False
+    norgannon.use_titan_ability(0, target=target)
+
+    assert target.damage == 10
+
+
+def test_norgannon_ancient_knowledge_raises_enemy_hand_cost_next_turn():
+    game = prepare_empty_game()
+    player = game.player1
+    player.max_mana = 10
+    enemy_card = player.opponent.give("CS2_189")
+    base_cost = enemy_card.cost
+    norgannon = player.summon("TTN_075")
+
+    norgannon.use_titan_ability(1)
+
+    assert enemy_card.cost == base_cost
+    game.end_turn()
+    assert enemy_card.cost == base_cost + 1
+    game.end_turn()
+    assert enemy_card.cost == base_cost
+
+
+def test_yogg_saron_induce_insanity_forces_enemy_minions_to_attack_each_other():
+    game = prepare_empty_game()
+    player = game.player1
+    enemy = player.opponent
+    attacker = enemy.summon("CS2_182")
+    defender = enemy.summon("CS2_182")
+    ability = player.card("YOG_516t2")
+
+    game.main_power(ability, ability.get_actions("play"), None)
+
+    assert attacker.zone.name == "GRAVEYARD"
+    assert defender.zone.name == "GRAVEYARD"

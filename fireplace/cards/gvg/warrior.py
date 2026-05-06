@@ -39,6 +39,7 @@ class GVG_056:
     """Iron Juggernaut"""
 
     play = Shuffle(OPPONENT, "GVG_056t")
+    deathrattle = Shuffle(OPPONENT, "GVG_056t")
 
 
 class GVG_056t:

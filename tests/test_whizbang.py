@@ -32,21 +32,25 @@ def test_toy_312_nostalgic_gnome_no_draw_on_non_lethal():
     assert len(game.player1.hand) == hand_before
 
 
-def test_toy_341_nostalgic_clown_buffs_when_hero_power_used():
-    """Nostalgic Clown gains Taunt + Divine Shield if hero power was used."""
+def test_toy_341_nostalgic_clown_deals_damage_after_higher_cost_card():
+    """Nostalgic Clown deals 4 if a higher Cost card was played while held."""
     game = prepare_empty_game()
-    # Simulate hero power usage by directly setting activations_this_turn
-    game.player1.hero_power.activations_this_turn = 1
+    game.player1.max_mana = 10
+    game.player1.used_mana = 0
     clown = game.player1.give("TOY_341")
-    clown.play()
-    assert clown.taunt
-    assert clown.divine_shield
+    target = game.player2.summon("CS2_200")
+    game.player1.give("CS2_200").play()
+    game.player1.used_mana = 0
+    clown.play(target=target)
+    assert target.damage == 4
 
 
-def test_toy_341_nostalgic_clown_no_buff_without_hero_power():
-    """Nostalgic Clown does NOT gain buffs if hero power was not used."""
+def test_toy_341_nostalgic_clown_no_damage_without_higher_cost_card():
+    """Nostalgic Clown does not deal damage without the while-held condition."""
     game = prepare_empty_game()
+    game.player1.max_mana = 10
+    game.player1.used_mana = 0
     clown = game.player1.give("TOY_341")
-    clown.play()
-    assert not clown.taunt
-    assert not clown.divine_shield
+    target = game.player2.summon("CS2_200")
+    clown.play(target=target)
+    assert target.damage == 0

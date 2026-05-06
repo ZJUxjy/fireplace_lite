@@ -11,7 +11,7 @@ class TTN_429:
     tags = {GameTag.ELITE: True}
 
     titan_abilities = ["TTN_429t", "TTN_429t2", "TTN_429t3"]
-    ability_used = Discover(RandomMinion(rarity=Rarity.LEGENDARY))
+    ability_used = Discover(CONTROLLER, RandomMinion(rarity=Rarity.LEGENDARY))
 
 
 # TTN_429t: Shape the Stars - Choose a non-Titan minion, summon a copy with +2/+2
@@ -37,8 +37,7 @@ class TTN_429t2:
         PlayReq.REQ_MINIMUM_ENEMY_MINIONS: 1,
     }
 
-    # 简化：消灭一个随机敌方随从（完整效果需要双目标选择）
-    play = Destroy(RANDOM(ENEMY_MINIONS) * 2)
+    play = Remove(RANDOM(ENEMY_MINIONS) * 2)
 
 
 # TTN_429t3: Vision of Heroes - Summon a random 6-cost minion with Taunt and Lifesteal

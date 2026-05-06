@@ -23,10 +23,11 @@ AT_047e = buff(+1, +1)
 class AT_049:
     """Thunder Bluff Valiant"""
 
+    play = Buff(FRIENDLY_MINIONS + TOTEM, "AT_049e")
     inspire = Buff(FRIENDLY_MINIONS + TOTEM, "AT_049e")
 
 
-AT_049e = buff(+1, +1)
+AT_049e = buff(atk=2)
 
 
 class AT_054:

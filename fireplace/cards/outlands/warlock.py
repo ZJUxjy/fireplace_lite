@@ -49,8 +49,8 @@ BT_305e = buff(+2, +1)
 class BT_307:
     """Darkglare"""
 
-    # After your hero takes damage, refresh 2 Mana_Crystals.
-    events = Damage(FRIENDLY_HERO).on(FillMana(CONTROLLER, 2))
+    # <b>Battlecry:</b> If your hero took damage this turn, refresh 3 Mana Crystals.
+    play = (DAMAGED_THIS_TURN(FRIENDLY_HERO) > 0) & FillMana(CONTROLLER, 3)
 
 
 class BT_309:

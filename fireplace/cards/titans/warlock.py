@@ -15,17 +15,30 @@ class TTN_960:
     titan_abilities = ["TTN_960t2", "TTN_960t3", "TTN_960t4"]
 
 
+class TTN_960_SummonPortalDemons(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, portal):
+        enhanced = any(buff.id == "TTN_960t4e2" for buff in portal.buffs)
+        actions = []
+        for _ in range(2):
+            summon = Summon(portal.controller, "TTN_960t6")
+            if enhanced:
+                summon = summon.then(Buff(Summon.CARD, "TTN_960t4e"))
+            actions.append(summon)
+        return source.game.queue_actions(source, actions)
+
+
 # TTN_960t: The Twisting Nether (portal location)
-# 简化：在你的回合结束时召唤两个3/2小鬼
 class TTN_960t:
     """The Twisting Nether"""
 
-    events = OWN_TURN_END.on(Summon(CONTROLLER, "TTN_960t1") * 2)
+    events = OWN_TURN_END.on(TTN_960_SummonPortalDemons(SELF))
 
 
-# TTN_960t1: Demon from the Nether (3/2 恶魔)
-class TTN_960t1:
-    """Nether Demon"""
+# TTN_960t6: Felblaze Imp (3/2 Demon)
+class TTN_960t6:
+    """Felblaze Imp"""
 
     tags = {GameTag.CARDRACE: Race.DEMON}
 
@@ -41,14 +54,14 @@ class TTN_960t2:
 class TTN_960t3:
     """Inferno!"""
 
-    play = Summon(CONTROLLER, "EX1_301") * 2  # 狱火恶魔 Infernal token
+    play = Summon(CONTROLLER, "TTN_960t5") * 2
 
 
 # TTN_960t4: Legion Invasion! - Your future Demons get +2 Health and Taunt
 @custom_card
-class TTN_960t4be:
+class TTN_960t4e:
     tags = {
-        GameTag.CARDNAME: "Legion Invasion (Demon Buff)",
+        GameTag.CARDNAME: "Fel Fueled",
         GameTag.CARDTYPE: CardType.ENCHANTMENT,
         GameTag.HEALTH: 2,
         GameTag.TAUNT: True,
@@ -56,17 +69,21 @@ class TTN_960t4be:
 
 
 @custom_card
-class TTN_960t4e:
+class TTN_960t4e2:
     tags = {
-        GameTag.CARDNAME: "Legion Invasion",
+        GameTag.CARDNAME: "Fel Fueled",
         GameTag.CARDTYPE: CardType.ENCHANTMENT,
     }
-    # Whenever the controller plays a demon, give it +2 health and Taunt
-    events = Play(CONTROLLER, DEMON).after(Buff(Play.CARD, "TTN_960t4be"))
 
 
 class TTN_960t4:
     """Legion Invasion!"""
 
-    # 将效果附加给英雄：之后打出的恶魔获得+2生命值和嘲讽
-    play = Buff(FRIENDLY_HERO, "TTN_960t4e")
+    play = Buff(FRIENDLY + ID("TTN_960t"), "TTN_960t4e2")
+
+
+# TTN_960t5: Felblaze Infernal (6/6 Demon)
+class TTN_960t5:
+    """Felblaze Infernal"""
+
+    tags = {GameTag.CARDRACE: Race.DEMON}

@@ -1,12 +1,12 @@
 import uuid
 import random
 from datetime import datetime
-from fireplace import cards
+from fireplace import cards, enums
 from fireplace.game import Game
 from fireplace.player import Player
 from fireplace.utils import random_class
 from fireplace.deck import Deck
-from hearthstone.enums import CardClass as CardClassEnum, CardType, GameTag
+from hearthstone.enums import CardClass as CardClassEnum, CardType
 
 # 游戏日志收集器
 class GameLogger:
@@ -47,7 +47,6 @@ CLASS_NAME_MAP = {
     'rogue': CardClassEnum.ROGUE,
     'druid': CardClassEnum.DRUID,
     'demonhunter': CardClassEnum.DEMONHUNTER,
-    'deathknight': CardClassEnum.DEATHKNIGHT,
 }
 
 def get_card_class(class_name: str):
@@ -107,108 +106,21 @@ IMPLEMENTED_CARD_PREFIXES = {
     'BT',
     # Descent of Dragons
     'DRG',
-    # Forged in the Barrens
-    'BAR',
-    # United in Stormwind
-    'SW',
-    # Onyxia mini-set
-    'WC',
-    # Fractured in Alterac Valley
-    'AV',
-    # Voyage to the Sunken City
-    'TSC',
-    # Murder at Castle Nathria
-    'REV',
-    # March of the Lich King (Death Knight)
-    'RLK',
-    # Festival of Legends
-    'ETC',
-    # TITANS
-    'TTN',
-    # Showdown in the Badlands
-    'WW',
-    # Whizbang's Workshop
-    'WORK',
-    # Year of the Pegasus / Whizbang's
-    'YOP',
-    # Perils in Paradise / Island Vacation
-    'VAC',
-    # The Great Dark Beyond
-    'SC',
-    # Heroes of Starcraft
-    'TID',
-    # Into the Emerald Dream
-    'EDR',
-    # The Shrouded City (Dinotamer)
-    'DINO', 'TLC',
-    # Cataclysm — Phase 6 implementation
-    'CATA',
-    # Wonders bonus pack — Phase 3A implementation
-    'WON',
-    # Darkmoon Faire
-    'DMF',
-    # Forged in the Barrens — Survival
-    'CORE',
+    # The Shrouded City - 暂时移除，因为没有 Python 实现
+    # 'DINO', 'TLC',
 }
 
 # 黑名单：即使在前缀列表中，这些卡牌也有问题，需要排除
 CARD_BLACKLIST = set()
 
 
-def _card_has_real_script(card) -> bool:
-    """卡的 scripts 类是否绑定了任何 action / event / quest / choose。"""
-    cls = card.scripts
-    action_slots = (
-        'play', 'combo', 'deathrattle', 'outcast', 'overkill', 'quickdraw',
-        'frenzy', 'spellburst', 'manathirst', 'start_of_game',
-        'summon_trigger', 'kindred', 'inspire', 'draw', 'enrage', 'awaken',
-        'reward', 'discard', 'magnetic', 'ability_used', 'location_action',
-        'update', 'activate', 'powered_up', 'add_progress',
-        'secret_deathrattles',
-    )
-    if any(getattr(cls, s, ()) for s in action_slots):
-        return True
-    if getattr(cls, 'events', []): return True
-    if getattr(cls, 'secret', []): return True
-    if getattr(cls, 'quest', []): return True
-    if getattr(cls, 'choose_cards', []): return True
-    return False
-
-
 def is_card_implemented(card_id: str) -> bool:
-    """检查卡牌能否安全加入随机牌库。
-
-    两个条件同时满足才算 implemented：
-    1) 套包前缀在白名单（否则连 vanilla minion 也算 unsupported）
-    2) 卡片有实际 script，OR 描述里没有非 keyword 效果（即 vanilla 随从只靠 tags 即可工作）
-    """
+    """检查卡牌是否来自已实现的系列"""
     if card_id in CARD_BLACKLIST:
         return False
+    # 提取卡牌前缀（如 EDR_889 -> EDR）
     prefix = card_id.split('_')[0] if '_' in card_id else card_id[:3]
-    if prefix not in IMPLEMENTED_CARD_PREFIXES:
-        return False
-    # If we recognize the prefix, additionally require either a real script
-    # or a description that's safe (vanilla / keyword-only).
-    if not cards.db.initialized:
-        cards.db.initialize()
-    card = cards.db.get(card_id)
-    if card is None:
-        return False
-    if _card_has_real_script(card):
-        return True
-    # Vanilla minions / weapons (description empty or tag-only) play fine via XML tags.
-    desc = (card.description or '').strip()
-    if not desc:
-        return True
-    # Trigger words signal the card needs custom logic.
-    triggers = (
-        'Battlecry', 'Deathrattle', 'At the start', 'At the end', 'Whenever',
-        'After you', 'After your', 'Combo:', 'Spellburst', 'Frenzy:',
-        'Discover', 'Choose One', 'Outcast', 'Overkill', 'Quickdraw',
-        'Manathirst', 'Spend', 'Forge:', 'Dredge', 'Excavate', 'Imbue',
-        'Tradeable', 'Magnetic',
-    )
-    return not any(t in desc for t in triggers)
+    return prefix in IMPLEMENTED_CARD_PREFIXES
 
 
 def filtered_random_draft(card_class):
@@ -261,20 +173,10 @@ TEST_DECK_CARDS = {
         'rush': ['AV_132', 'AV_215', 'SCH_311'],  # Troll Centurion, Frantic Hippogryph, Animated Broomstick
         # 战吼
         'battlecry': ['CS2_141', 'CS2_189'],  # 侏儒发明家、精灵龙
-        # Modern mechanics
-        'imbue_neutral': ['EDR_800'],  # Flutterwing Guardian
-        'kindred_neutral': ['TLC_102'],  # Torga
-        'starship': ['GDB_120', 'GDB_310', 'GDB_130'],  # The Exodar, Ethereal Oracle, Crystal Welder
-        'starship_piece': ['GDB_101'],  # Dimensional Core
-        'forge': ['WW_001'],  # Kobold Miner (forgeable)
-        'cataclysm': ['CATA_722'],  # Envoy of the End (multi-class incl. DK)
-        'wonders': ['WON_135', 'WON_357'],  # C'Thun, Acolyte of Pain (WONDERS reprints)
-        'fabled': ['TIME_020', 'TIME_005'],  # Broxigar, Timethief Rafaam
     },
     # 法师
     'MAGE': {
-        'hero_card': ['ICC_833'],  # 冰霜女巫吉安娜
-        'titan': ['TTN_075'],  # 诺加农
+        'hero_card': ['ICC_833'],
         'freeze': ['CS2_026', 'CS2_033'],  # 冰霜新星、水元素
         'spell_damage': ['CS2_155', 'EX1_584'],  # 大法师、食人魔法师
         'secrets': ['EX1_294', 'EX1_295', 'EX1_287', 'EX1_289', 'EX1_594', 'ICC_082'],  # 寒冰屏障、寒冰护体、法术反制、寒冰护体(受攻击时)、蒸发、寒冰克隆
@@ -282,97 +184,61 @@ TEST_DECK_CARDS = {
     },
     # 猎人
     'HUNTER': {
-        'hero_card': ['ICC_828'],  # 死亡猎手雷克萨
-        'titan': ['TTN_721'],  # V-07-TR-0N Prime
+        'hero_card': ['ICC_828'],
         'beast': ['CS2_172', 'EX1_534'],  # 血沼迅猛龙、长鬃草原狮
         'deathrattle': ['EX1_534', 'ICC_825'],  # 长鬃草原狮、熊鲨
         'secrets': ['EX1_533', 'EX1_609', 'EX1_610', 'EX1_611', 'EX1_554'],  # 误导、狙击、爆炸陷阱、冰冻陷阱、毒蛇陷阱
-        'imbue': ['EDR_227'],  # Umbraclaw (Hunter Imbue)
     },
     # 战士
     'WARRIOR': {
-        'hero_card': ['ICC_834'],  # 天灾领主加尔鲁什
-        'titan': ['TTN_092'],  # 复仇者阿格拉玛
+        'hero_card': ['ICC_834'],
         'armor': ['EX1_402', 'EX1_606'],  # 炽炎战斧、盾牌格挡
         'enrage': ['EX1_393', 'EX1_412'],  # 阿曼尼狂战士、暴怒的狼人
         'charge': ['CS2_103', 'EX1_084'],  # 冲锋、狼骑兵
-        'herald': ['CATA_580'],  # Cataclysmic War Axe (Warrior Herald)
-        'imbue': ['EDR_456'],  # Darkrider (Warrior Imbue)
     },
     # 圣骑士
     'PALADIN': {
-        'hero_card': ['ICC_829'],  # 黑锋骑士乌瑟尔
-        'titan': ['TTN_858'],  # 守序者阿米图斯
+        'hero_card': ['ICC_829'],
         'divine_shield': ['EX1_008', 'CS2_122'],  # 银色侍从
         'hand_buff': ['UNG_950', 'CFM_650'],  # 剑龙骑术、适者生存
         'secrets': ['EX1_130', 'EX1_136', 'EX1_132', 'EX1_379'],  # 崇高牺牲、救赎、以眼还眼、忏悔
         'immune': ['CS2_087'],  # 保护之手
-        'imbue': ['EDR_451'],  # Goldpetal Drake (Paladin Imbue)
-        'kindred': ['DINO_404'],  # Firegill (Paladin Kindred Murloc)
-        'excavate': ['DEEP_018'],  # Shroomscavate (Paladin/Shaman Excavate)
     },
     # 潜行者
     'ROGUE': {
-        'hero_card': ['ICC_827'],  # 虚空之影瓦莉拉
+        'hero_card': ['ICC_827'],
         'combo': ['EX1_131', 'CS2_073', 'CS2_072'],  # 军情七处特工、冷血、背刺
         'stealth': ['NEW1_014', 'EX1_522'],  # 猢狲战士、耐心的刺客
         'weapon': ['CS2_080', 'EX1_133'],  # 刺客之刃、毁灭之刃
         'damage_spell': ['EX1_124', 'EX1_145'],  # 剔骨、准备
-        'tourist': ['VAC_336'],  # Maestra (Mask Merchant)
-        'herald': ['CATA_158'],  # Maniacal Follower (Rogue Herald)
-        'time_travel': ['TIME_001'],  # Chrono Daggers (Rogue Time)
     },
     # 牧师
     'PRIEST': {
-        'hero_card': ['ICC_830'],  # 暗影收割者安度因
-        'titan': ['TTN_429'],  # 阿曼苏尔
+        'hero_card': ['ICC_830'],
         'heal': ['CS1_130', 'CS2_004'],  # 神圣惩击、真言术：盾
         'buff': ['CS2_236', 'EX1_339'],  # 神圣之灵、暗言术：痛
         'silence': ['EX1_332'],  # 沉默
-        'kindred': ['NX2_018'],  # Rotting Necromancer (Priest Undead Kindred)
     },
     # 德鲁伊
     'DRUID': {
-        'hero_card': ['ICC_832'],  # 污染者玛法里奥
-        'titan': ['TTN_903'],  # 生命缚誓者伊欧娜
+        'hero_card': ['ICC_832'],
         'choose_one': ['EX1_164', 'EX1_165'],  # 滋养、丛林守护者
         'ramp': ['CS2_013', 'EX1_169'],  # 野性成长、激活（可能为技能）
         'taunt': ['EX1_093', 'CS2_179'],  # 阿古斯之盾、森金持盾卫士
-        'herald': ['CATA_134'],  # Wildwood Circle (Druid Herald spell)
-        'kindred': ['NX2_010'],  # Death Beetle (Druid Beast Kindred)
     },
     # 萨满
     'SHAMAN': {
-        'hero_card': ['GIL_504'],  # 女巫哈加莎
-        'titan': ['TTN_800'],  # 雷霆之王戈加尔
+        'hero_card': ['GIL_504'],
         'overload': ['EX1_248', 'EX1_251'],  # 野性狼魂、闪电风暴
         'totem': ['CS2_050', 'UNG_201'],  # 石爪图腾、原始融合
         'windfury': ['EX1_259', 'UNG_938'],  # 风暴看守、雷霆万钧
-        'kindred': ['TLC_223'],  # Volcanic Thrasher (Shaman Kindred)
-        'excavate': ['DEEP_018'],  # Shroomscavate (Shaman/Pal Excavate)
     },
     # 术士
     'WARLOCK': {
-        'hero_card': ['ICC_831'],  # 血怒者古尔丹
-        'titan': ['TTN_960'],  # 毁灭者萨格拉斯
+        'hero_card': ['ICC_831'],
         'demon': ['CS2_064', 'EX1_306'],  # 恐惧地狱火、魅魔
         'discard': ['EX1_308', 'EX1_310'],  # 灵魂之火、末日守卫
         'spell_damage': ['EX1_597', 'NEW1_021'],  # 古拉巴什狂暴者、狂野炎术师
-        'tourist': ['VAC_336'],  # Maestra (Rogue 客串到 Warlock)
-        'imbue': ['EDR_488'],  # Avant-Gardening (Warlock Imbue)
-        'dark_gift': ['EDR_102', 'EDR_856'],  # Treacherous Tormentor / Nightmare Lord Xavius
-    },
-    # 死亡骑士 (Death Knight)
-    'DEATHKNIGHT': {
-        'titan': ['TTN_737'],  # The Primus
-        # Phase 2A Corpse 系统的关键卡
-        'corpse': ['RLK_503', 'CORE_RLK_118', 'CORE_RLK_506', 'RLK_707', 'RLK_060'],
-        'corpse_advanced': ['CORE_WW_374', 'CORE_RLK_745', 'CORE_RLK_712', 'RLK_061'],
-        # Phase 2A 基础 DK 卡
-        'rune_frost': ['RLK_024', 'RLK_048', 'CORE_RLK_087', 'RLK_709'],
-        'rune_blood': ['RLK_223', 'CORE_RLK_657', 'CORE_RLK_063'],
-        'rune_unholy': ['RLK_062', 'RLK_121', 'RLK_086'],
-        'undead': ['CORE_EDR_002', 'RLK_511'],  # Poison Breath, Harbinger of Winter
     },
 }
 
@@ -387,17 +253,16 @@ def create_test_deck(card_class):
 
     # 1. 添加本职业机制卡牌
     if class_name in TEST_DECK_CARDS:
-        for mechanic, mechanic_cards in TEST_DECK_CARDS[class_name].items():
-            # 英雄牌和泰坦传说只能带1张；其他机制最多2张
-            limit = 1 if mechanic in ('hero_card', 'titan') else 2
-            for card_id in mechanic_cards[:limit]:
-                if len(deck) < 30 and deck.count(card_id) < limit:
+        for mechanic, cards in TEST_DECK_CARDS[class_name].items():
+            # 每种机制最多2张
+            for card_id in cards[:2]:
+                if len(deck) < 30:
                     deck.append(card_id)
 
     # 2. 添加中立机制卡牌补足
     neutral_cards = []
-    for mechanic, mechanic_cards in TEST_DECK_CARDS['NEUTRAL'].items():
-        neutral_cards.extend(mechanic_cards)
+    for mechanic, cards in TEST_DECK_CARDS['NEUTRAL'].items():
+        neutral_cards.extend(cards)
 
     # 随机打乱，确保不同测试卡组有变化
     import random
@@ -490,34 +355,20 @@ class GameManager:
 
         return game_id
 
-    def get_card_data(self, card):
+    def get_card_data(self, card, player=None, opponent=None):
         """获取卡牌详细信息"""
         # 优先使用中文名
-        card_id = getattr(card, 'card_id', None)
+        card_id = getattr(card, 'card_id', None) or getattr(card, 'id', None)
         chinese_info = card_text_loader.get_card_info(card_id) if card_id else {}
 
         name = chinese_info.get('name') or str(card)
         text = chinese_info.get('text')
 
         data = {
-            "id": getattr(card, 'id', None),
+            "id": card_id,
             "name": name,
             "cost": card.cost,
             "is_playable": card.is_playable() if hasattr(card, 'is_playable') else False,
-            "is_tradeable": bool(getattr(card, 'is_tradeable', False)),
-            "is_miniaturize": bool(getattr(card, 'data', None) and card.data.tags.get(GameTag.MINIATURIZE)),
-            "has_quickdraw": bool(getattr(card, 'data', None) and card.data.tags.get(GameTag.QUICKDRAW)),
-            "quickdraw_active": bool(
-                getattr(card, 'data', None)
-                and card.data.tags.get(GameTag.QUICKDRAW)
-                and getattr(card, 'controller', None)
-                and card.controller.cards_played_this_turn == 0
-            ),
-            "has_outcast": bool(getattr(card, 'data', None) and card.data.tags.get(GameTag.OUTCAST)),
-            "has_corrupt": bool(getattr(card, 'data', None) and card.data.tags.get(GameTag.CORRUPT)),
-            "has_infuse": bool(getattr(card, 'data', None) and card.data.tags.get(GameTag.INFUSE)),
-            "infuse_progress": int(getattr(card, 'progress', 0)) if (getattr(card, 'data', None) and card.data.tags.get(GameTag.INFUSE)) else 0,
-            "infuse_threshold": int(getattr(card, 'progress_total', 0)) if (getattr(card, 'data', None) and card.data.tags.get(GameTag.INFUSE)) else 0,
         }
         # 随从才有攻击力和血量
         if hasattr(card, 'atk') and hasattr(card, 'health'):
@@ -552,7 +403,10 @@ class GameManager:
             data["requires_target"] = True
             # 获取有效目标列表
             if hasattr(card, 'targets'):
-                data["valid_targets"] = [self._get_target_id(t) for t in card.targets]
+                if player is not None and opponent is not None:
+                    data["valid_targets"] = [self._get_target_id_for_players(t, player, opponent) for t in card.targets]
+                else:
+                    data["valid_targets"] = [self._get_target_id(t) for t in card.targets]
         else:
             data["requires_target"] = False
 
@@ -560,18 +414,13 @@ class GameManager:
         if hasattr(card, 'must_choose_one') and card.must_choose_one:
             data["must_choose_one"] = True
             if hasattr(card, 'choose_cards') and card.choose_cards:
-                data["choose_cards"] = [self.get_card_data(c) for c in card.choose_cards]
+                data["choose_cards"] = [self.get_card_data(c, player, opponent) for c in card.choose_cards]
         else:
             data["must_choose_one"] = False
 
         # 卡牌类型（法术、随从等）
         if hasattr(card, 'type'):
             data["type"] = str(card.type).replace("Type.", "").lower()
-
-        # 英雄牌标记
-        if hasattr(card, 'type') and card.type == CardType.HERO:
-            data["is_hero_card"] = True
-            data["summon_as_minion"] = getattr(card.data.scripts, 'summon_as_minion', False) if hasattr(card, 'data') else False
 
         # 法术伤害加成（用于显示）
         if hasattr(card, 'type') and card.type == CardType.SPELL:
@@ -592,6 +441,10 @@ class GameManager:
         player = g["players"][0]
         opponent = g["players"][1]
 
+        return self._get_target_id_for_players(target, player, opponent)
+
+    def _get_target_id_for_players(self, target, player, opponent):
+        """获取目标在指定玩家视角下的标识符。"""
         # 英雄 - 直接比较（最高优先级）
         if target == player.hero:
             return "hero"
@@ -733,6 +586,53 @@ class GameManager:
             data["text"] = text
         return data
 
+    def get_hero_data(self, hero):
+        """Serialize hero metadata for WebUI rendering."""
+        card_id = getattr(hero, "card_id", None) or getattr(hero, "id", None)
+        hero_class = getattr(getattr(hero, "data", None), "card_class", None)
+        hero_type = getattr(hero, "type", None)
+        hero_armor = getattr(getattr(hero, "data", None), "armor", 0) or 0
+        return {
+            "id": card_id,
+            "name": str(hero),
+            "hero_class": hero_class.name if hero_class else "NEUTRAL",
+            "is_hero_card": hero_type == CardType.HERO and hero_armor > 0,
+        }
+
+    def get_hero_power_data(self, hero_power, player=None, opponent=None):
+        """Serialize hero power metadata for WebUI rendering and targeting."""
+        requires_target = hero_power.requires_target() if hasattr(hero_power, "requires_target") else False
+        description = str(hero_power.description) if hasattr(hero_power, "description") and hero_power.description else ""
+        is_passive = bool(getattr(hero_power, "data", None) and hero_power.data.tags.get(enums.PASSIVE_HERO_POWER))
+
+        data = {
+            "id": getattr(hero_power, "card_id", None) or getattr(hero_power, "id", None),
+            "name": str(hero_power),
+            "cost": hero_power.cost,
+            "is_usable": False if is_passive else (hero_power.is_usable() if hasattr(hero_power, "is_usable") else False),
+            "requires_target": requires_target,
+            "description": description,
+            "is_passive": is_passive,
+            "must_choose_one": bool(getattr(hero_power, "must_choose_one", False)),
+            "is_summon": str(hero_power) == "Reinforce" or "summon" in description.lower(),
+            "is_life_tap": str(hero_power) == "Life Tap" or "life tap" in description.lower(),
+            "health_cost": 2 if str(hero_power) == "Life Tap" else 0,
+            "is_totemic_call": str(hero_power) == "Totemic Call" or "totem" in description.lower(),
+        }
+        if requires_target and hasattr(hero_power, "targets"):
+            if player is not None and opponent is not None:
+                data["valid_targets"] = [self._get_target_id_for_players(t, player, opponent) for t in hero_power.targets]
+            else:
+                data["valid_targets"] = [self._get_target_id(t) for t in hero_power.targets]
+        if data["must_choose_one"] and getattr(hero_power, "choose_cards", None):
+            choose_cards = []
+            for choose_card in hero_power.choose_cards:
+                choose_data = self.get_card_data(choose_card, player, opponent)
+                choose_data["name"] = data["name"]
+                choose_cards.append(choose_data)
+            data["choose_cards"] = choose_cards
+        return data
+
     def get_game_state(self, game_id):
         """获取游戏状态"""
         if game_id not in self.games:
@@ -743,39 +643,10 @@ class GameManager:
         player = g["players"][0]
         opponent = g["players"][1]
 
-        # 获取英雄技能信息
-        hero_power = player.hero.power
-        requires_target = hero_power.requires_target() if hasattr(hero_power, 'requires_target') else False
-        print(f"[HeroPower] {hero_power} - requires_target: {requires_target}")
-
-        # 获取英雄技能描述
-        hero_power_description = ""
-        if hasattr(hero_power, 'description') and hero_power.description:
-            hero_power_description = str(hero_power.description)
-
-        is_passive_power = bool(getattr(hero_power, 'passive_hero_power', False))
-        hero_power_data = {
-            "id": getattr(hero_power, 'id', ''),
-            "name": str(hero_power),
-            "cost": hero_power.cost,
-            "is_usable": (hero_power.is_usable() if hasattr(hero_power, 'is_usable') else False) and not is_passive_power,
-            "requires_target": requires_target,
-            "description": hero_power_description,
-            "is_passive": is_passive_power,
-            "must_choose_one": bool(getattr(hero_power, 'must_choose_one', False)),
-            "choose_cards": (
-                [self.get_card_data(c) for c in hero_power.choose_cards]
-                if getattr(hero_power, 'must_choose_one', False) and hasattr(hero_power, 'choose_cards')
-                else []
-            ),
-            "is_summon": str(hero_power) == "Reinforce" or "summon" in hero_power_description.lower(),
-            "is_life_tap": str(hero_power) == "Life Tap" or "life tap" in hero_power_description.lower(),
-            "health_cost": 2 if str(hero_power) == "Life Tap" else 0,
-            "is_totemic_call": str(hero_power) == "Totemic Call" or "totem" in hero_power_description.lower(),
-        }
-        if requires_target and hasattr(hero_power, 'targets'):
-            valid_targets = [self._get_target_id(t) for t in hero_power.targets]
-            hero_power_data["valid_targets"] = valid_targets
+        hero_data = self.get_hero_data(player.hero)
+        opponent_hero_data = self.get_hero_data(opponent.hero)
+        hero_power_data = self.get_hero_power_data(player.hero.power, player, opponent)
+        opponent_hero_power_data = self.get_hero_power_data(opponent.hero.power, player, opponent)
 
         # 获取日志
         logger = g.get("logger")
@@ -792,24 +663,6 @@ class GameManager:
                     "max_durability": getattr(weapon, 'max_durability', getattr(weapon, 'durability', 0)),
                 }
             return None
-
-        def get_locations_data(p):
-            result = []
-            for loc in getattr(p, 'location_zone', []):
-                cid = loc.id
-                ch = card_text_loader.get_card_info(cid) if cid else {}
-                result.append({
-                    "id": cid,
-                    "name": ch.get('name') or str(loc),
-                    "text": ch.get('text') or (str(loc.description) if hasattr(loc, 'description') and loc.description else ""),
-                    "durability": getattr(loc, 'durability', 0),
-                    "max_durability": getattr(loc, 'max_durability', 0),
-                    "cooldown": getattr(loc, 'cooldown', False),
-                    "is_usable": loc.is_usable() if hasattr(loc, 'is_usable') else False,
-                    "requires_target": loc.location_requires_target() if hasattr(loc, 'location_requires_target') else False,
-                    "valid_targets": [self._get_target_id(t) for t in loc.targets] if hasattr(loc, 'location_requires_target') and loc.location_requires_target() and hasattr(loc, 'targets') else [],
-                })
-            return result
 
         # 计算回合剩余时间
         turn_start = g.get("turn_start_time")
@@ -852,8 +705,10 @@ class GameManager:
             "turn_remaining": int(turn_remaining),
             "turn_timeout": timeout,
             "player": {
-                "hero": str(player.hero),
-                "hero_id": player.hero.id,
+                "hero": hero_data["name"],
+                "hero_id": hero_data["id"],
+                "hero_class": hero_data["hero_class"],
+                "is_hero_card": hero_data["is_hero_card"],
                 "health": player.hero.health,
                 "max_health": player.hero.max_health,
                 "armor": getattr(player.hero, 'armor', 0),
@@ -870,7 +725,6 @@ class GameManager:
                 "can_end_turn": game.current_player == player,
                 "hero_power": hero_power_data,
                 "weapon": get_weapon_data(player.hero),
-                "locations": get_locations_data(player),
                 "fatigue_counter": getattr(player, 'fatigue_counter', 0),
                 "hand_size": len(player.hand),
                 "max_hand_size": getattr(player, 'max_hand_size', 10),
@@ -882,21 +736,12 @@ class GameManager:
                 "combo_active": getattr(player, 'cards_played_this_turn', 0) > 0,
                 "cards_played_this_turn": getattr(player, 'cards_played_this_turn', 0),
                 "choice": choice_data,
-                # Resource counters for modern mechanics. All read via
-                # getattr+default so an older engine without these fields
-                # still serializes without error.
-                "corpses": getattr(player, 'corpses', 0),
-                "herald_count": getattr(player, 'herald_count', 0),
-                "imbue_count": getattr(player, 'imbue_count', 0),
-                "excavate_count": getattr(player, 'excavate_count', 0),
-                "starship_pieces": len(getattr(player, 'starship_pieces', []) or []),
-                "is_building_starship": getattr(player, 'is_building_starship', False),
-                "dark_gifts_given": len(getattr(player, 'dark_gifts_given', []) or []),
-                "jade_golem": getattr(player, 'jade_golem', 1) - 1,  # display "0" before first golem
             },
             "opponent": {
-                "hero": str(opponent.hero),
-                "hero_id": opponent.hero.id,
+                "hero": opponent_hero_data["name"],
+                "hero_id": opponent_hero_data["id"],
+                "hero_class": opponent_hero_data["hero_class"],
+                "is_hero_card": opponent_hero_data["is_hero_card"],
                 "health": opponent.hero.health,
                 "max_health": opponent.hero.max_health,
                 "armor": getattr(opponent.hero, 'armor', 0),
@@ -910,25 +755,9 @@ class GameManager:
                 "fatigue_counter": getattr(opponent, 'fatigue_counter', 0),
                 "field": [self.get_minion_data(m) for m in opponent.field],
                 "has_taunt": any(m.taunt for m in opponent.field),
-                "hero_power": {
-                    "name": str(opponent.hero.power),
-                    "cost": opponent.hero.power.cost,
-                    "is_usable": opponent.hero.power.is_usable() if hasattr(opponent.hero.power, 'is_usable') else False,
-                    "requires_target": opponent.hero.power.requires_target() if hasattr(opponent.hero.power, 'requires_target') else False,
-                    "description": str(opponent.hero.power.description) if hasattr(opponent.hero.power, 'description') else "",
-                },
+                "hero_power": opponent_hero_power_data,
                 "weapon": get_weapon_data(opponent.hero),
-                "locations": get_locations_data(opponent),
                 "secret_count": len(opponent.secrets),
-                # Same resource counters as for `player`, mirrored for opponent.
-                "corpses": getattr(opponent, 'corpses', 0),
-                "herald_count": getattr(opponent, 'herald_count', 0),
-                "imbue_count": getattr(opponent, 'imbue_count', 0),
-                "excavate_count": getattr(opponent, 'excavate_count', 0),
-                "starship_pieces": len(getattr(opponent, 'starship_pieces', []) or []),
-                "is_building_starship": getattr(opponent, 'is_building_starship', False),
-                "dark_gifts_given": len(getattr(opponent, 'dark_gifts_given', []) or []),
-                "jade_golem": getattr(opponent, 'jade_golem', 1) - 1,
             },
             "logs": logs
         }

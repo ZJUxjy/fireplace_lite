@@ -85,7 +85,7 @@ class TIME_876:
 # TIME_001: Chrono Daggers (3费 武器)
 # 在你的回合结束时，你的武器获得+1攻击力
 class TIME_001:
-    """Chono Daggers"""
+    """Chrono Daggers"""
 
     # 在你的回合结束时，你的武器获得+1攻击力
     events = OWN_TURN_END.on(Buff(FRIENDLY_WEAPON, "TIME_001e"))

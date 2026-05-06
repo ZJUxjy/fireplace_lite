@@ -341,6 +341,11 @@ class PlayableCard(BaseCard, Entity, TargetableByAuras):
                 if r:
                     ret += r
         ret = self._getattr("cost", ret)
+        if (
+            getattr(self.controller, "_edr_895_cards_cost_one", False)
+            and self.type not in (CardType.HERO, CardType.HERO_POWER)
+        ):
+            ret = 1
         return max(0, ret)
 
     @cost.setter
@@ -555,6 +560,9 @@ class PlayableCard(BaseCard, Entity, TargetableByAuras):
             return False
 
         if not self.controller.current_player:
+            return False
+
+        if getattr(self, "unplayable_until_turn", None) == self.game.turn:
             return False
 
         if self.parent_card:
@@ -856,7 +864,20 @@ class PlayableCard(BaseCard, Entity, TargetableByAuras):
 
     @property
     def play_targets(self):
-        return [card for card in self.game.characters if is_valid_target(self, card)]
+        candidates = list(self.game.characters)
+        if self.data.tags.get(GameTag.CAN_TARGET_CARDS_IN_HAND):
+            candidates.extend(self.controller.hand)
+        if (
+            PlayReq.REQ_LOCATION_TARGET in self.requirements
+            or PlayReq.REQ_LOCATION_OR_MINION_TARGET in self.requirements
+        ):
+            candidates.extend(
+                card
+                for player in self.game.players
+                for card in player.field
+                if card.type == CardType.LOCATION
+            )
+        return [card for card in candidates if is_valid_target(self, card)]
 
     @property
     def targets(self):
@@ -868,7 +889,7 @@ class LiveEntity(PlayableCard, Entity):
     secret_deathrattle = int_property("secret_deathrattle")
     atk = int_property("atk")
     cant_be_damaged = boolean_property("cant_be_damaged")
-    immune_while_attacking = slot_property("immune_while_attacking")
+    immune_while_attacking = boolean_property("immune_while_attacking")
     incoming_damage_multiplier = int_property("incoming_damage_multiplier")
     max_health = int_property("max_health")
     poisonous = boolean_property("poisonous")
@@ -1007,6 +1028,8 @@ class Character(LiveEntity):
 
     @property
     def attackable(self):
+        if self.tags.get(GameTag.UNTOUCHABLE) or self.data.tags.get(GameTag.UNTOUCHABLE):
+            return False
         return not self.immune
 
     @property
@@ -1081,7 +1104,7 @@ class Character(LiveEntity):
     @property
     def races(self):
         if self.race == Race.ALL:
-            return [
+            races = [
                 Race.ELEMENTAL,
                 Race.MECHANICAL,
                 Race.DEMON,
@@ -1091,7 +1114,12 @@ class Character(LiveEntity):
                 Race.PIRATE,
                 Race.TOTEM,
             ]
-        return [self.race]
+        else:
+            races = [self.race]
+        for race in getattr(self.data.scripts, "extra_races", ()):
+            if race not in races:
+                races.append(race)
+        return races
 
     @property
     def should_exit_combat(self):
@@ -1488,6 +1516,39 @@ class Minion(Character):
         if body_actions:
             self.game.trigger(self, body_actions, event_args=None)
 
+    def is_usable(self):
+        interactable_object = getattr(GameTag, "INTERACTABLE_OBJECT", 4089)
+        if not (
+            self.tags.get(interactable_object)
+            or self.tags.get(4089)
+            or self.data.tags.get(interactable_object)
+            or self.data.tags.get(4089)
+        ):
+            return False
+        if self.controller.choice:
+            return False
+        if self.zone != Zone.PLAY:
+            return False
+        if not self.controller.current_player:
+            return False
+        if getattr(self, "_interactable_used_turn", None) == self.game.turn:
+            return False
+        if self.dead:
+            return False
+        return bool(self.get_actions("activate"))
+
+    def use(self, target=None, choose=None):
+        if choose:
+            raise InvalidAction("%r cannot be used with choice %r" % (self, choose))
+        if not self.is_usable():
+            raise InvalidAction("%r can't be used." % (self))
+
+        self.target = target
+        ret = self.game.cheat_action(self, [actions.PlayHeroPower(self, target)])
+        self.target = None
+        self._interactable_used_turn = self.game.turn
+        return ret
+
     def silence(self):
         return self.game.cheat_action(self, [actions.Silence(self)])
 
@@ -1501,6 +1562,93 @@ class Minion(Character):
         return super().can_attack(target)
 
 
+class Location(LiveEntity):
+    health_attribute = "durability"
+
+    def __init__(self, data):
+        self._summon_index = None
+        self.location_exhausted = False
+        super().__init__(data)
+        self._max_durability = getattr(self, "_max_health", 0)
+        self._max_health = 0
+
+    def dump(self):
+        data = super().dump()
+        data["max_durability"] = self.max_durability
+        data["durability"] = self.durability
+        data["exhausted"] = self.location_exhausted
+        return data
+
+    @property
+    def max_durability(self):
+        ret = self._max_durability
+        ret += self._getattr("max_health", 0)
+        return max(0, ret)
+
+    @max_durability.setter
+    def max_durability(self, value):
+        self._max_durability = value
+
+    @property
+    def durability(self):
+        return self.max_durability - self.damage
+
+    @property
+    def attackable(self):
+        return False
+
+    @property
+    def zone_position(self):
+        if self.zone == Zone.PLAY:
+            return self.controller.field.index(self) + 1
+        return super().zone_position
+
+    def _set_zone(self, value):
+        if value == Zone.PLAY:
+            if self._summon_index is not None:
+                self.controller.field.insert(self._summon_index, self)
+            else:
+                self.controller.field.append(self)
+            self.location_exhausted = False
+        elif self.zone == Zone.PLAY:
+            self.log("%r is removed from the field", self)
+            self.controller.field.remove(self)
+            if self.damage:
+                self.damage = 0
+
+        super()._set_zone(value)
+
+    def is_summonable(self):
+        return super().is_summonable() and self.controller.minion_slots > 0
+
+    def is_usable(self):
+        if self.controller.choice:
+            return False
+        if not self.zone == Zone.PLAY:
+            return False
+        if not self.controller.current_player:
+            return False
+        if self.location_exhausted:
+            return False
+        if self.dead:
+            return False
+        return bool(self.get_actions("activate"))
+
+    def use(self, target=None, choose=None):
+        if choose:
+            raise InvalidAction("%r cannot be used with choice %r" % (self, choose))
+        if not self.is_usable():
+            raise InvalidAction("%r can't be used." % (self))
+
+        self.target = target
+        ret = self.game.cheat_action(self, [actions.PlayHeroPower(self, target)])
+        self.target = None
+        self.location_exhausted = True
+        self.damage += 1
+        self.game.process_deaths()
+        return ret
+
+
 class Spell(PlayableCard):
     spelltype = enums.SpellType.INVALID
     twinspell = boolean_property("twinspell")
@@ -1512,8 +1660,13 @@ class Spell(PlayableCard):
 
     @property
     def twinspell_copy(self):
-        if self._twinspell_copy:
-            return cards.db.dbf[self._twinspell_copy]
+        twinspell_copy = getattr(self, "_twinspell_copy", None)
+        if twinspell_copy:
+            return cards.db.dbf[twinspell_copy]
+        if not self.id.endswith("ts"):
+            fallback_id = "%sts" % (self.id)
+            if fallback_id in cards.db:
+                return fallback_id
         return None
 
     @twinspell_copy.setter
@@ -1757,8 +1910,10 @@ class Weapon(rules.WeaponRules, LiveEntity):
 
     def __init__(self, *args):
         super().__init__(*args)
+        if not hasattr(self, "_max_durability"):
+            self._max_durability = getattr(self, "_max_health", 0)
+            self._max_health = 0
         self.damage = 0
-        self._max_durability = 0
 
     def dump(self):
         data = super().dump()

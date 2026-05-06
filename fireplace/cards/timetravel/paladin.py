@@ -1,6 +1,20 @@
 from ..utils import *
 
 
+class TIME_EVENT_998_SendMinions(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        delayed = getattr(player, "_future_hand_minions", [])
+        for card in list(player.hand):
+            if card.type != CardType.MINION:
+                continue
+            card.zone = Zone.SETASIDE
+            delayed.append((card, 2))
+        player._future_hand_minions = delayed
+        source.game.manager.targeted_action(self, source, player)
+
+
 ##
 # Minions
 
@@ -51,12 +65,11 @@ class TIME_015:
 
 
 # TIME_017: Tankgineer (4费 2/1)
-# 战吼：召唤一个4/4的构造体
+# 圣盾。亡语：召唤一个7/7并具有圣盾的坦克
 class TIME_017:
     """Tankgineer"""
 
-    # 战吼：召唤一个4/4的构造体
-    play = Summon(CONTROLLER, RandomMinion(cost=4))
+    deathrattle = Summon(CONTROLLER, "GVG_079")
 
 
 # TIME_019: Manifested Timeways (4费 3/3)
@@ -166,10 +179,16 @@ class TIME_018:
 class TIME_EVENT_998:
     """Runi, Temporal Guardian"""
 
-    # 战吼：将手牌中的所有随从移回手牌并获得+5/+5
-    # Simplified: return all hand minions to hand with buff
-    play = Buff(FRIENDLY_HAND + MINION, "TIME_EVENT_998e")
+    # 战吼：将手牌中的所有随从送入未来2个回合。它们返回时获得+5/+5
+    play = TIME_EVENT_998_SendMinions(CONTROLLER)
 
 
-TIME_EVENT_998e = buff(+5, +5)
+@custom_card
+class TIME_EVENT_998e:
+    tags = {
+        GameTag.CARDNAME: "Lost in Time",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
 
+    atk = lambda self, i: i + 5
+    max_health = lambda self, i: i + 5

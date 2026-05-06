@@ -7,33 +7,94 @@ from ..utils import *
 # CATA_154: Sinestra (6费 5/5 龙)
 # 巨型+2: 召唤2个肢体
 # 你的其他职业的法术会施放两次
+class CATA_154_DoubleOtherClassSpell(TargetedAction):
+    CARD = ActionArg()
+    TARGET = ActionArg()
+
+    def do(self, source, card, target):
+        if card.card_class == source.card_class:
+            return
+        copied = source.controller.card(card.id, source=source, zone=Zone.SETASIDE)
+        return source.game.queue_actions(source, [CastSpell(copied, target)])
+
+
 class CATA_154:
     """Sinestra"""
 
     # 巨型+2: 召唤2个Sinestra的翅膀
     play = Summon(CONTROLLER, "CATA_154t") * 2
 
-    # 简化实现: 你的其他职业的法术会施放两次
-    # 通过使所有法术获得减费来简化
-    pass
+    # 你的其他职业的法术会施放两次
+    events = Play(CONTROLLER, SPELL).after(
+        CATA_154_DoubleOtherClassSpell(Play.CARD, Play.TARGET)
+    )
+
+
+def _cataclysm_herald_count(player, herald):
+    return getattr(player, "_cataclysm_heralds", {}).get(herald, 0)
+
+
+class CATA_SinestraHerald(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        heralds = getattr(target, "_cataclysm_heralds", {}).copy()
+        heralds["sinestra"] = heralds.get("sinestra", 0) + 1
+        target._cataclysm_heralds = heralds
+
+
+class CATA_154_GiveDiscountedOtherClassSpell(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        spells = RandomSpell(card_class=ANOTHER_CLASS).evaluate(source)
+        if not spells:
+            return
+        buff = (
+            "CATA_154te2"
+            if _cataclysm_herald_count(target, "sinestra") >= 2
+            else "CATA_154te"
+        )
+        return source.game.queue_actions(
+            source,
+            [Give(target, spells).then(Buff(Give.CARD, buff))],
+        )
+
+
+@custom_card
+class CATA_154te:
+    tags = {
+        GameTag.CARDNAME: "Sinestra Spell Discount",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.COST: -1,
+    }
+
+
+@custom_card
+class CATA_154te2:
+    tags = {
+        GameTag.CARDNAME: "Sinestra Spell Discount",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.COST: -2,
+    }
+
+
+SINESTRA_TOKEN_SPELL = CATA_154_GiveDiscountedOtherClassSpell(CONTROLLER)
 
 
 # CATA_154t: Sinestra's Wing (1费 1/1 龙)
 # 召唤时获取一张其他职业的随机法术，使其费用减少(0)
-# 简化实现: 战吼：获取一张随机法术
 class CATA_154t:
     """Sinestra's Wing"""
 
-    # 简化实现: 战吼，获取一张随机法术
-    play = Discover(CONTROLLER, RandomSpell())
+    play = SINESTRA_TOKEN_SPELL
 
 
 # CATA_154t1: Sinestra's Wing (升级版)
 class CATA_154t1:
     """Sinestra's Wing (upgraded)"""
 
-    # 简化实现: 战吼，获取一张随机法术
-    play = Discover(CONTROLLER, RandomSpell())
+    play = SINESTRA_TOKEN_SPELL
 
 
 # CATA_158: Maniacal Follower (3费 3/1)
@@ -42,50 +103,38 @@ class CATA_154t1:
 class CATA_158:
     """Maniacal Follower"""
 
-    # Stealth. Deathrattle: Herald (summon Soldier of Sinestra).
     tags = {GameTag.STEALTH: True}
-    herald_soldier_id = "CATA_158t"
-    deathrattle = Herald(CONTROLLER)
+
+    # 亡语：兆示
+    deathrattle = CATA_SinestraHerald(CONTROLLER)
 
 
 # CATA_158t: Soldier of Sinestra (1费 1/1 龙)
-# 简化实现: 战吼，获取一张随机法术
 class CATA_158t:
     """Soldier of Sinestra"""
 
-    # When summoned, get a random spell from another class. It costs
-    # ({herald_count}) less. Uses summon_trigger so the effect fires on any
-    # summon path, not just Herald.
-    @staticmethod
-    def summon_trigger(self):
-        amount = max(1, self.controller.herald_count)
-        return [
-            Give(CONTROLLER, RandomSpell()).then(
-                Buff(Give.CARD, "CATA_158te") * amount
-            )
-        ]
-
-
-@custom_card
-class CATA_158te:
-    tags = {
-        GameTag.CARDNAME: "Sinestra's Discount",
-        GameTag.CARDTYPE: CardType.ENCHANTMENT,
-        GameTag.COST: -1,
-    }
+    play = SINESTRA_TOKEN_SPELL
 
 
 
 # CATA_200: Agent of the Old Ones (1费 2/1 埃索达)
 # 战吼: 将你手牌中的一张随机卡牌变成一个幸运币
+class CATA_200_TransformHandCardToCoin(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        if not target.hand:
+            return []
+        transformed = source.game.random.choice(list(target.hand))
+        transformed.zone = Zone.REMOVEDFROMGAME
+        source.game.manager.targeted_action(self, source, transformed)
+        return source.game.queue_actions(source, [Give(target, THE_COIN)])
+
+
 class CATA_200:
     """Agent of the Old Ones"""
 
-    # 将手牌中一张随机卡弃掉，然后给一枚幸运币
-    def play(self):
-        if not self.controller.hand:
-            return []
-        return [Discard(RANDOM(FRIENDLY_HAND)), Give(CONTROLLER, THE_COIN)]
+    play = CATA_200_TransformHandCardToCoin(CONTROLLER)
 
 
 # CATA_201: Twilight Mistress (9费 4/12 龙)
@@ -100,6 +149,34 @@ class CATA_201:
 # CATA_481: Iso'rath (5费 5/3)
 # 战吼: 吞噬对手2张卡，然后休眠2回合
 # 亡语: 将这些卡归还
+class CATA_481_DevourOpponentHand(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        opponent_hand = list(source.controller.opponent.hand)
+        devoured = source.game.random.sample(
+            opponent_hand, min(2, len(opponent_hand))
+        )
+        source.devoured_cards = devoured
+        for card in devoured:
+            card.zone = Zone.REMOVEDFROMGAME
+            source.game.manager.targeted_action(self, source, card)
+        return devoured
+
+
+class CATA_481_ReturnDevoured(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        devoured = getattr(target, "devoured_cards", [])
+        for card in list(devoured):
+            if len(card.controller.hand) < card.controller.max_hand_size:
+                card.zone = Zone.HAND
+                source.game.manager.targeted_action(self, source, card)
+        devoured.clear()
+        return devoured
+
+
 class CATA_481:
     """Iso'rath"""
 
@@ -107,25 +184,33 @@ class CATA_481:
     dormant_turns = 2
 
     # 战吼: 随机吞噬对手2张卡
-    # 简化实现: 随机造成2点伤害给对手
-    play = Hit(RANDOM_ENEMY_MINION, 2) * 2
+    play = CATA_481_DevourOpponentHand(SELF)
 
-    # 亡语: 简化实现
-    deathrattle = Hit(RANDOM_ENEMY_MINION, 2)
+    # 亡语: 将吞噬的牌吐回对手手牌
+    deathrattle = CATA_481_ReturnDevoured(SELF)
 
 
 
 # CATA_786: Chaos Supplicant (4费 3/5)
 # 在你施放法术后，随机施放一张其他职业的同费用法术
+class CATA_786_CastSameCostOtherClassSpell(TargetedAction):
+    CARD = ActionArg()
+
+    def do(self, source, card):
+        spells = RandomSpell(
+            cost=card.cost,
+            card_class=ANOTHER_CLASS,
+        ).evaluate(source)
+        if not spells:
+            return
+        return source.game.queue_actions(source, [CastSpell(spells[0])])
+
+
 class CATA_786:
     """Chaos Supplicant"""
 
-    # 在你施放法术后，随机施放一张其他职业的同费用法术
-    # 简化实现: 在你施放法术后，触发一个随机效果
     events = Play(CONTROLLER, SPELL).after(
-        Discover(CONTROLLER, RandomSpell()).then(
-            CastSpell(Discover.CARD)
-        )
+        CATA_786_CastSameCostOtherClassSpell(Play.CARD)
     )
 
 
@@ -134,12 +219,23 @@ class CATA_786:
 
 # CATA_202: Stolen Power (3费 法术)
 # 获取一张随机粉碎卡（来自另一个职业）
-# 简化实现: 发现一张随机法术
+STOLEN_POWER_SHATTER_CARDS = ("CATA_134", "CATA_306", "CATA_479", "CATA_489", "CATA_820")
+
+
+class CATA_202_GiveCompleteShatter(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        card_id = source.game.random.choice(STOLEN_POWER_SHATTER_CARDS)
+        card = target.card(card_id, source=source, zone=Zone.SETASIDE)
+        card._shatter_locked = True
+        return source.game.queue_actions(source, [Give(target, card)])
+
+
 class CATA_202:
     """Stolen Power"""
 
-    # 简化实现: 发现一张随机法术
-    play = Discover(CONTROLLER, RandomSpell())
+    play = CATA_202_GiveCompleteShatter(CONTROLLER)
 
 
 # CATA_203: Garona's Last Stand (2费 法术)
@@ -160,6 +256,15 @@ class CATA_203:
 
 # CATA_215: Daze (3费 法术)
 # 将一个敌方随从移回其拥有者的手牌，该随从在下回合无法使用
+class CATA_215_Daze(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        source.game.queue_actions(source, [Bounce(target)])
+        target.unplayable_until_turn = source.game.turn + 1
+        return target
+
+
 class CATA_215:
     """Daze"""
 
@@ -170,7 +275,7 @@ class CATA_215:
     }
 
     # 将目标移回拥有者的手牌
-    play = Bounce(TARGET)
+    play = CATA_215_Daze(TARGET)
 
 
 # CATA_785: Rite of Twilight (2费 法术)
@@ -183,7 +288,6 @@ class CATA_785:
         PlayReq.REQ_TARGET_TO_PLAY: 0,
     }
 
-    # Herald. Combo: Deal 3 damage. (Soldier of Sinestra)
-    herald_soldier_id = "CATA_158t"
-    play = Herald(CONTROLLER)
-    combo = Herald(CONTROLLER), Hit(TARGET, 3)
+    # 兆示。连击：造成3点伤害
+    play = CATA_SinestraHerald(CONTROLLER)
+    combo = Hit(TARGET, 3)

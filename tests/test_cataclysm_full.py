@@ -36,6 +36,21 @@ def test_ragnaros_does_not_kill_minions():
     assert leper_gnome in game.player1.field
 
 
+def test_cataclysmic_war_axe_battlecry_heralds_without_damage():
+    """Cataclysmic War Axe Battlecry Heralds Ragnaros without dealing damage."""
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    enemy_hero = player.opponent.hero
+    player.max_mana = 10
+    player.used_mana = 0
+    base_health = enemy_hero.health
+
+    player.give("CATA_580").play()
+
+    assert enemy_hero.health == base_health
+    assert getattr(player, "_cataclysm_heralds", {}).get("ragnaros") == 1
+
+
 ##
 # CATA_130: 炫晶小熊
 # 每当你消耗掉最后一个法力水晶，获得+1/+1
@@ -64,6 +79,40 @@ def test_crystalspine_cub_no_buff_when_mana_remains():
     # Play a 1-cost card (4 mana remaining)
     game.player1.give("CS2_025").play()  # Arcane Explosion (1-cost)
     assert cub.atk == base_atk  # No buff, mana not empty
+
+
+##
+# CATA_498: 拉法姆的奋战
+# 随机对两个敌方随从造成$@点伤害。（每回合都会升级！）
+
+def test_rafaams_strider_deals_two_damage_to_two_enemy_minions():
+    """Rafaam's Strider deals 2 total damage hits to enemy minions when played."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    enemies = [player.opponent.summon("CS2_182"), player.opponent.summon("CS2_182")]
+
+    player.give("CATA_498").play()
+
+    assert sum(minion.max_health - minion.health for minion in enemies) == 4
+
+
+def test_rafaams_strider_upgrades_in_hand_each_turn():
+    """Rafaam's Strider damage increases while it waits in hand."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    strider = player.give("CATA_498")
+    enemies = [player.opponent.summon("CS2_182"), player.opponent.summon("CS2_182")]
+
+    game.end_turn()
+    game.end_turn()
+    player.used_mana = 0
+    strider.play()
+
+    assert sum(minion.max_health - minion.health for minion in enemies) == 6
 
 
 ##
@@ -133,31 +182,566 @@ def test_merithra_fills_remaining_slots():
     assert len(game.player1.hand) == 10
 
 
+def test_merithra_discounts_dragons_after_spending_25_mana_while_in_hand():
+    """Merithra's generated Dragons cost 1 after witnessing 25 mana spent in hand."""
+    from fireplace.actions import SpendMana
+
+    game = prepare_empty_game()
+    player = game.player1
+    player.max_mana = 10
+    player.used_mana = 0
+    merithra = player.give("CATA_140")
+
+    game.queue_actions(player.hero, [SpendMana(player, 25)])
+    player.used_mana = 0
+
+    merithra.play()
+
+    assert len(player.hand) == 10
+    assert all(card.cost == 1 for card in player.hand)
+
+
+##
+# CATA_155: 复活的奥妮克希亚
+# 当你的英雄在你的回合即将失去生命值时，改为获得等量的生命值上限。
+
+def test_arisen_onyxia_replaces_own_turn_hero_damage_with_max_health():
+    """Arisen Onyxia converts own-turn hero damage into max Health instead."""
+    from fireplace.actions import Hit
+
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    hero = player.hero
+    base_health = hero.health
+    base_max_health = hero.max_health
+    player.give("CATA_155").play()
+
+    game.cheat_action(hero, [Hit(hero, 3)])
+
+    assert hero.health == base_health
+    assert hero.max_health == base_max_health + 3
+
+
+def test_arisen_onyxia_does_not_replace_opponent_turn_hero_damage():
+    """Arisen Onyxia only replaces hero damage during its controller's turn."""
+    from fireplace.actions import Hit
+
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    hero = player.hero
+    base_max_health = hero.max_health
+    player.give("CATA_155").play()
+
+    game.end_turn()
+    game.cheat_action(player.opponent.hero, [Hit(hero, 3)])
+
+    assert hero.health == base_max_health - 3
+    assert hero.max_health == base_max_health
+
+
+def test_onyxias_wing_generated_minion_costs_health_this_turn():
+    """Onyxia's Wing gives a 1-Cost minion that costs Health this turn."""
+    game = prepare_empty_game()
+    game.random.seed(0)
+    player = game.current_player
+    player.max_mana = 1
+    player.used_mana = 0
+    hero = player.hero
+    wing = player.give("CATA_155t")
+
+    wing.play()
+    generated = player.hand[-1]
+    player.used_mana = player.max_mana
+    base_health = hero.health
+
+    assert generated.cost == 1
+    assert generated.is_playable()
+
+    target = generated.targets[0] if generated.requires_target() else None
+    generated.play(target=target)
+
+    assert hero.health == base_health - 1
+    assert player.used_mana == player.max_mana
+
+
+def test_onyxias_wing_health_cost_expires_after_this_turn():
+    """Onyxia's Wing generated minion uses mana again after the current turn."""
+    game = prepare_empty_game()
+    game.random.seed(0)
+    player = game.current_player
+    player.max_mana = 1
+    player.used_mana = 0
+    hero = player.hero
+    wing = player.give("CATA_155t")
+
+    wing.play()
+    generated = player.hand[-1]
+    game.end_turn()
+    game.end_turn()
+    player.used_mana = 0
+    base_health = hero.health
+
+    target = generated.targets[0] if generated.requires_target() else None
+    generated.play(target=target)
+
+    assert hero.health == base_health
+    assert player.used_mana == generated.cost
+
+
+def test_soldier_of_onyxia_generated_minion_costs_health_this_turn():
+    """Soldier of Onyxia uses the same temporary Health-cost generation."""
+    game = prepare_empty_game()
+    game.random.seed(0)
+    player = game.current_player
+    player.max_mana = 1
+    player.used_mana = 0
+    hero = player.hero
+    soldier = player.give("CATA_780t")
+
+    soldier.play()
+    generated = player.hand[-1]
+    player.used_mana = player.max_mana
+    base_health = hero.health
+
+    assert generated.cost == 1
+    assert generated.is_playable()
+
+    target = generated.targets[0] if generated.requires_target() else None
+    generated.play(target=target)
+
+    assert hero.health == base_health - 1
+    assert player.used_mana == player.max_mana
+
+
+def test_onyxia_heralds_upgrade_health_cost_generation_to_two_cost_minions():
+    """Two Onyxia Heralds upgrade Onyxia tokens to generate 2-Cost minions."""
+    game = prepare_empty_game()
+    game.random.seed(0)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    player.give("CATA_780").play()
+    player.give("CATA_780").play()
+    player.give("CATA_155t").play()
+
+    generated = player.hand[-1]
+    assert generated.cost == 2
+    assert getattr(generated, "costs_health_turn", None) == game.turn
+
+
+def test_experimental_animation_heralds_while_damaging_enemy_minions():
+    """Experimental Animation deals 4 to enemy minions and Heralds Onyxia."""
+    game = prepare_empty_game()
+    game.random.seed(0)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    enemy = player.opponent.summon("CS2_182")
+
+    player.give("CATA_156").play()
+    assert enemy.health == enemy.max_health - 4
+
+    player.used_mana = 0
+    player.give("CATA_156").play()
+    player.used_mana = 0
+    player.give("CATA_155t").play()
+
+    generated = player.hand[-1]
+    assert generated.cost == 2
+    assert getattr(generated, "costs_health_turn", None) == game.turn
+
+
+def test_chow_down_spends_corpses_to_give_hungry_drakes_rush():
+    """Chow Down spends 8 Corpses to give the summoned Hungry Drakes Rush."""
+    game = prepare_empty_game(CardClass.DEATHKNIGHT, CardClass.DEATHKNIGHT)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    player.corpses = 8
+
+    player.give("CATA_465").play()
+
+    drakes = [minion for minion in player.field if minion.id == "CATA_465t"]
+    assert len(drakes) == 5
+    assert all(drake.rush for drake in drakes)
+    assert player.corpses == 0
+
+
+def test_sanctified_priest_increases_hero_power_healing_this_game():
+    """Sanctified Priest increases the controller's healing effects by 2."""
+    from fireplace.actions import Hit
+
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    hero = player.hero
+    game.cheat_action(hero, [Hit(hero, 5)])
+    damaged_health = hero.health
+
+    player.give("CATA_216").play()
+    player.hero.power.use(hero)
+
+    assert hero.health == damaged_health + 4
+
+
+def test_black_blood_limb_heals_damaged_friendly_character_at_turn_end():
+    """Black Blood's limbs restore 3 Health to a damaged friendly character."""
+    from fireplace.actions import Hit
+
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    limb = player.summon("CATA_300t1")
+    target = player.summon("CS2_182")
+    game.cheat_action(player.opponent.hero, [Hit(target, 3)])
+    damaged_health = target.health
+
+    game.end_turn()
+
+    assert limb in player.field
+    assert target.health == damaged_health + 3
+
+
+def test_black_blood_random_attack_takes_defender_damage_after_heal():
+    """Black Blood randomly attacks an enemy minion after you restore Health."""
+    from fireplace.actions import Heal, Hit
+
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    black_blood = player.summon("CATA_300")
+    defender = player.opponent.summon("EX1_572")
+    game.cheat_action(player.opponent.hero, [Hit(player.hero, 3)])
+    damaged_hero_health = player.hero.health
+
+    game.cheat_action(player.hero.power, [Heal(player.hero, 1)])
+
+    assert player.hero.health == damaged_hero_health + 1
+    assert defender.health == defender.max_health - black_blood.atk
+    assert black_blood.health == black_blood.max_health - defender.atk
+
+
+def test_alexstrasza_life_guardian_damages_enemy_after_restoring_to_full():
+    """Alexstrasza sets your hero to 15 Health and fires after a heal reaches full."""
+    from fireplace.actions import Heal
+
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    hero = player.hero
+    enemy_hero = player.opponent.hero
+
+    player.give("CATA_307").play()
+
+    assert hero.health == 15
+
+    enemy_health = enemy_hero.health
+    game.cheat_action(player.hero.power, [Heal(hero, 10)])
+
+    assert hero.health == 25
+    assert enemy_hero.health == enemy_health
+
+    game.cheat_action(player.hero.power, [Heal(hero, 5)])
+
+    assert hero.health == hero.max_health
+    assert enemy_hero.health == enemy_health - 15
+
+
+def test_ruby_sanctum_turns_next_heal_into_damage_once():
+    """Ruby Sanctum converts only the next healing effect this turn into damage."""
+    from fireplace.actions import Heal, Hit
+
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    hero = player.hero
+    game.cheat_action(hero, [Hit(hero, 4)])
+    damaged_health = hero.health
+
+    sanctum = player.give("CATA_301")
+    sanctum.play()
+
+    assert sanctum in player.field
+
+    sanctum.use()
+    game.cheat_action(player.hero.power, [Heal(hero, 2)])
+
+    assert hero.health == damaged_health - 2
+
+    game.cheat_action(player.hero.power, [Heal(hero, 2)])
+
+    assert hero.health == damaged_health
+
+
+def test_ruby_sanctum_healing_conversion_expires_at_turn_end():
+    """Ruby Sanctum does not convert healing after the current turn ends."""
+    from fireplace.actions import Heal, Hit
+
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    hero = player.hero
+    game.cheat_action(hero, [Hit(hero, 4)])
+    damaged_health = hero.health
+
+    sanctum = player.give("CATA_301")
+    sanctum.play()
+    sanctum.use()
+    game.end_turn()
+    game.end_turn()
+    game.cheat_action(player.hero.power, [Heal(hero, 2)])
+
+    assert hero.health == damaged_health + 2
+
+
+def test_purifying_breath_heals_enemy_hero_when_target_dies():
+    """Purifying Breath heals the enemy hero if its minion target dies."""
+    from fireplace.actions import Hit
+
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    enemy_hero = player.opponent.hero
+    target = player.opponent.summon("CS2_231")
+    game.cheat_action(player.hero, [Hit(enemy_hero, 5)])
+    damaged_health = enemy_hero.health
+
+    player.give("CATA_303").play(target=target)
+
+    assert target.dead
+    assert enemy_hero.health == damaged_health + 5
+
+
+def test_purifying_breath_does_not_heal_enemy_hero_when_target_survives():
+    """Purifying Breath does not heal the enemy hero if the target survives."""
+    from fireplace.actions import Hit
+
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    enemy_hero = player.opponent.hero
+    target = player.opponent.summon("CS2_200")
+    game.cheat_action(player.hero, [Hit(enemy_hero, 5)])
+    damaged_health = enemy_hero.health
+
+    player.give("CATA_303").play(target=target)
+
+    assert not target.dead
+    assert target.health == target.max_health - 5
+    assert enemy_hero.health == damaged_health
+
+
 ##
 # CATA_491: 怪异触手
 # 对所有随从造成$3点伤害。重复（打出后回到手牌）
 
-def test_tentacle_repeats_returns_to_hand():
-    """Tentacle (CATA_491) returns to hand after being played (Repeat mechanic)."""
+def test_ocular_occultist_chooses_hand_card_to_discard():
+    """Ocular Occultist chooses a hand card and discards it."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    discarded = player.give(FIREBALL)
+
+    player.give("CATA_490").play()
+
+    assert player.choice is not None
+    assert player.choice.cards == [discarded]
+    player.choice.choose(discarded)
+    assert discarded.zone == Zone.REMOVEDFROMGAME
+
+
+def test_cursed_chain_returns_minion_after_enemy_turn_end():
+    """Cursed Chain controls the target until the enemy turn ends."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    target = player.opponent.summon("CS2_231")
+
+    player.give("CATA_496").play(target=target)
+
+    assert target.controller is player
+    assert target in player.field
+    assert target.cant_attack
+
+    game.end_turn()
+
+    assert target.controller is player
+    assert target in player.field
+
+    game.end_turn()
+
+    assert target.controller is player.opponent
+    assert target in player.opponent.field
+    assert not target.cant_attack
+
+
+def test_twilight_altar_heralds_and_draws_a_card():
+    """Twilight Altar Heralds Gul'dan and draws a card."""
+    game = prepare_empty_game(CardClass.WARLOCK, CardClass.WARLOCK)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    for card in list(player.hand):
+        card.zone = Zone.REMOVEDFROMGAME
+    deck_card = player.give("CS2_231")
+    deck_card.shuffle_into_deck()
+
+    altar = player.give("CATA_492")
+    altar.play()
+
+    assert altar in player.field
+    assert deck_card not in player.hand
+    assert getattr(player, "_cataclysm_heralds", {}).get("guldan", 0) == 0
+
+    altar.use()
+
+    assert deck_card in player.hand
+    assert getattr(player, "_cataclysm_heralds", {}).get("guldan") == 1
+
+
+def test_dark_inquisitor_heralds_and_deathrattle_heals_hero():
+    """Dark Inquisitor Battlecry Heralds Gul'dan and Deathrattle heals."""
+    from fireplace.actions import Hit
+
+    game = prepare_empty_game(CardClass.WARLOCK, CardClass.WARLOCK)
+    player = game.current_player
+    hero = player.hero
+    player.max_mana = 10
+    player.used_mana = 0
+    game.cheat_action(hero, [Hit(hero, 5)])
+    damaged_health = hero.health
+
+    inquisitor = player.give("CATA_725")
+    inquisitor.play()
+
+    assert getattr(player, "_cataclysm_heralds", {}).get("guldan") == 1
+
+    inquisitor.destroy()
+
+    assert hero.health == damaged_health + 3
+
+
+def test_fiendish_servant_has_stats_from_prior_discards():
+    """Fiendish Servant has +2/+2 for each card discarded this game."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    discarded = player.give(FIREBALL)
+
+    player.give("CATA_490").play()
+    player.choice.choose(discarded)
+    servant = player.give("CATA_493")
+
+    assert servant.atk == servant.data.atk + 2
+    assert servant.health == servant.data.health + 2
+
+
+def test_fiendish_servant_in_play_updates_after_discard():
+    """Fiendish Servant in play gains +2/+2 when another card is discarded."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    servant = player.summon("CATA_493")
+    discarded = player.give(FIREBALL)
+
+    player.give("CATA_490").play()
+    player.choice.choose(discarded)
+
+    assert servant.atk == servant.data.atk + 2
+    assert servant.health == servant.data.health + 2
+
+
+def test_tentacle_repeats_effect_with_decrementing_damage():
+    """Tentacle resolves 3, then 2, then 1 damage in one play."""
     game = prepare_empty_game()
     game.player1.max_mana = 10
     game.player1.used_mana = 0
+    dummy = game.player2.summon("EX1_572")
     tentacle = game.player1.give("CATA_491")
+
     tentacle.play()
-    # Should be back in hand
-    assert any(c.id == "CATA_491" for c in game.player1.hand)
+
+    assert dummy.health == dummy.max_health - 6
+    assert not any(c.id == "CATA_491" for c in game.player1.hand)
 
 
 def test_tentacle_deals_damage_to_all_minions():
-    """Tentacle deals 3 damage to all minions."""
+    """Tentacle repeats its damage against all minions."""
     game = prepare_empty_game()
     game.player1.max_mana = 10
     game.player1.used_mana = 0
-    # Use a minion with enough health to survive 3 damage: Chillwind Yeti (CS2_182) 4/5
-    dummy = game.player2.summon("CS2_182")  # 4/5 Chillwind Yeti
+    dummy = game.player2.summon("EX1_572")
     tentacle = game.player1.give("CATA_491")
     tentacle.play()
-    assert dummy.health == dummy.max_health - 3
+    assert dummy.health == dummy.max_health - 6
+
+
+def test_tentacle_does_not_hit_minions_killed_by_earlier_repeat():
+    """Tentacle processes deaths between each repeated damage amount."""
+    from hearthstone.enums import Zone as ZoneEnum
+
+    game = prepare_empty_game(CardClass.WARLOCK, CardClass.WARLOCK)
+    player = game.current_player
+    opponent = player.opponent
+    player.max_mana = 10
+    player.used_mana = 0
+    opponent.card("CS2_231", zone=ZoneEnum.DECK)
+    opponent.card("CS2_231", zone=ZoneEnum.DECK)
+    opponent.card("CS2_231", zone=ZoneEnum.DECK)
+    acolyte = opponent.summon("EX1_007")  # Acolyte of Pain
+    acolyte.damage = acolyte.max_health - 3
+    hand_count = len(opponent.hand)
+
+    player.give("CATA_491").play()
+
+    assert len(opponent.hand) == hand_count + 1
+
+
+##
+# CATA_586: 毁灭之焰
+# 在本随从受到伤害并存活下来后，召唤一个毁灭之焰。亡语：随机对一个敌人造成2点伤害。
+
+def test_destructive_blaze_has_no_battlecry_damage():
+    """Destructive Blaze should not deal damage when played."""
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    game.player1.used_mana = 0
+    enemy_hero = game.player2.hero
+    health_before = enemy_hero.health
+
+    game.player1.give("CATA_586").play()
+
+    assert enemy_hero.health == health_before
+
+
+def test_destructive_blaze_summons_copy_after_surviving_damage():
+    """Destructive Blaze summons a copy after it takes non-lethal damage."""
+    from fireplace.actions import Hit
+
+    game = prepare_empty_game()
+    blaze = game.player1.summon("CATA_586")
+
+    game.cheat_action(game.player2.hero, [Hit(blaze, 1)])
+
+    assert [minion.id for minion in game.player1.field].count("CATA_586") == 2
+    assert blaze in game.player1.field
 
 
 ##
@@ -165,10 +749,36 @@ def test_tentacle_deals_damage_to_all_minions():
 # 造成4点伤害。重复（打出后回到手牌）
 
 def test_shadowflame_repeats_returns_to_hand():
-    """Shadowflame (CATA_791) is not in DB; CATA_491 Tentacle repeat is tested instead."""
-    # CATA_791 is not in the hearthstone DB and cannot be instantiated
-    # This test verifies CATA_491 repeat returns to hand (covered in separate test)
-    assert True  # placeholder - CATA_791 ID does not exist in DB
+    """Shadowflame deals 4 damage to a minion and repeats back into hand."""
+    game = prepare_empty_game()
+    player = game.current_player
+    opponent = player.opponent
+    player.max_mana = 10
+    player.used_mana = 0
+    target = opponent.summon("CATA_201")
+
+    player.give("CATA_791").play(target=target)
+
+    assert target.damage == 4
+    repeated = [card for card in player.hand if card.id == "CATA_791"]
+    assert len(repeated) == 1
+
+
+def test_shadow_shock_damages_target_and_summons_two_shades():
+    """Shadow Shock performs both fissure halves: 8 damage and two 3/3 summons."""
+    game = prepare_empty_game()
+    player = game.current_player
+    opponent = player.opponent
+    player.max_mana = 10
+    player.used_mana = 0
+    target = opponent.summon("CATA_201")
+
+    player.give("CATA_792").play(target=target)
+
+    assert target.damage == 8
+    shades = [minion for minion in player.field if minion.id == "CATA_792t3"]
+    assert len(shades) == 2
+    assert all(shade.atk == 3 and shade.health == 3 for shade in shades)
 
 
 ##
@@ -191,26 +801,767 @@ def test_agent_transforms_hand_card_to_coin():
     assert len(coins) == 1
 
 
-##
-# CATA_591: 指挥官迦顿
-# 战吼：从你的牌库中发现一张卡牌，它的费用为(0)
+def test_agent_transforms_hand_card_without_discarding_it():
+    """Agent of the Old Ones transforms a hand card without discard triggers."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    for card in list(player.hand):
+        card.zone = Zone.REMOVEDFROMGAME
+    transformed = player.give(FIREBALL)
 
-def test_commander_geddon_discover_choice_and_zero_cost():
-    """Commander Geddon gives a discover choice; chosen card costs (0)."""
-    game = prepare_game()
+    player.give("CATA_200").play()
+
+    assert transformed.zone == Zone.REMOVEDFROMGAME
+    assert player.discarded_cards_this_game == 0
+    assert [card.id for card in player.hand] == ["GAME_005"]
+
+
+def test_isorath_devours_two_opponent_hand_cards_and_deathrattle_returns_them():
+    """Iso'rath removes two opponent hand cards until its Deathrattle."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    opponent = player.opponent
+    for card in list(opponent.hand):
+        card.zone = Zone.REMOVEDFROMGAME
+    hand_cards = [
+        opponent.give("CS2_231"),
+        opponent.give(FIREBALL),
+        opponent.give("CS2_025"),
+    ]
+    isorath = player.give("CATA_481")
+
+    isorath.play()
+
+    devoured = [card for card in hand_cards if card.zone == Zone.REMOVEDFROMGAME]
+    assert len(devoured) == 2
+    assert all(card.controller is opponent for card in devoured)
+    assert len([card for card in hand_cards if card.zone == Zone.HAND]) == 1
+
+    game.skip_turn()
+    game.skip_turn()
+    isorath.destroy()
+
+    assert all(card in opponent.hand for card in devoured)
+    assert all(card in opponent.hand for card in hand_cards)
+
+
+def test_sinestra_tokens_give_discounted_other_class_spell():
+    """Sinestra tokens give a discounted spell from another class."""
+    for card_id in ("CATA_154t", "CATA_154t1", "CATA_158t"):
+        game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+        player = game.current_player
+        player.max_mana = 10
+        player.used_mana = 0
+        for card in list(player.hand):
+            card.zone = Zone.REMOVEDFROMGAME
+        token = player.give(card_id)
+
+        token.play()
+
+        generated = next(card for card in player.hand if card is not token)
+        assert player.choice is None
+        assert generated.type == CardType.SPELL
+        assert generated.card_class != CardClass.ROGUE
+        assert any(buff.id == "CATA_154te" for buff in generated.buffs)
+
+
+def test_maniacal_followers_herald_sinestra_spell_discount_upgrade():
+    """Maniacal Follower Deathrattles Herald Sinestra instead of summoning tokens."""
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    game.random.seed(0)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    for card in list(player.hand):
+        card.zone = Zone.REMOVEDFROMGAME
+
+    first = player.summon("CATA_158")
+    second = player.summon("CATA_158")
+    first.destroy()
+    second.destroy()
+    for card in list(player.hand):
+        card.zone = Zone.REMOVEDFROMGAME
+
+    player.give("CATA_154t").play()
+
+    generated = player.hand[-1]
+    assert "CATA_158t" not in [card.id for card in player.field]
+    assert generated.type == CardType.SPELL
+    assert generated.card_class != CardClass.ROGUE
+    assert any(buff.id == "CATA_154te2" for buff in generated.buffs)
+
+
+def test_rite_of_twilight_heralds_sinestra_without_combo_damage():
+    """Rite of Twilight Heralds Sinestra even when it is not Comboed."""
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    game.random.seed(0)
+    player = game.current_player
+    enemy_hero = player.opponent.hero
+    player.max_mana = 10
+    player.used_mana = 0
+    base_health = enemy_hero.health
+    for card in list(player.hand):
+        card.zone = Zone.REMOVEDFROMGAME
+
+    player.give("CATA_785").play(target=enemy_hero)
+    assert enemy_hero.health == base_health
+
+    game.end_turn()
+    game.end_turn()
+    player.used_mana = 0
+    player.give("CATA_785").play(target=enemy_hero)
+    assert enemy_hero.health == base_health
+
+    player.used_mana = 0
+    player.give("CATA_154t").play()
+
+    generated = player.hand[-1]
+    assert generated.type == CardType.SPELL
+    assert generated.card_class != CardClass.ROGUE
+    assert any(buff.id == "CATA_154te2" for buff in generated.buffs)
+
+
+def test_sinestra_casts_other_class_spell_twice():
+    """Sinestra makes the controller's other-class spells cast twice."""
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    player = game.current_player
+    enemy_hero = player.opponent.hero
+    player.max_mana = 10
+    player.used_mana = 0
+    player.summon("CATA_154")
+
+    player.give(FIREBALL).play(target=enemy_hero)
+
+    assert enemy_hero.health == enemy_hero.max_health - 12
+
+
+def test_sinestra_does_not_double_rogue_spell():
+    """Sinestra does not double the controller's Rogue spells."""
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    player = game.current_player
+    target = player.opponent.summon("CS2_182")
+    player.max_mana = 10
+    player.used_mana = 0
+    player.summon("CATA_154")
+
+    player.give("CS2_072").play(target=target)
+
+    assert target.health == target.max_health - 2
+
+
+def test_stolen_power_gives_complete_other_class_shatter_card():
+    """Stolen Power gives a complete Shatter card instead of split halves."""
+    shatter_cards = {"CATA_134", "CATA_306", "CATA_479", "CATA_489", "CATA_820"}
+    shatter_halves = {
+        "CATA_134t", "CATA_134t2",
+        "CATA_306t1", "CATA_306t2",
+        "CATA_479t", "CATA_479t2",
+        "CATA_489t", "CATA_489t2",
+        "CATA_820t", "CATA_820t2",
+    }
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    for card in list(player.hand):
+        card.zone = Zone.REMOVEDFROMGAME
+
+    player.give("CATA_202").play()
+
+    assert player.choice is None
+    assert len(player.hand) == 1
+    generated = player.hand[0]
+    assert generated.id in shatter_cards
+    assert generated.id not in shatter_halves
+    assert generated.card_class != CardClass.ROGUE
+
+
+def test_chaos_supplicant_casts_same_cost_other_class_spell_without_discover():
+    """Chaos Supplicant casts a random same-Cost other-class spell after your spell."""
+    game = prepare_empty_game(CardClass.ROGUE, CardClass.ROGUE)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    player.summon("CATA_786")
+    target = player.opponent.summon("CS2_182")
+    trigger_spell = player.give("CS2_072")
+
+    trigger_spell.play(target=target)
+
+    chaos_spells = [
+        entity for entity in game
+        if entity.type == CardType.SPELL
+        and entity.controller is player
+        and entity is not trigger_spell
+        and entity.zone == Zone.GRAVEYARD
+        and entity.card_class != CardClass.ROGUE
+    ]
+    assert player.choice is None
+    assert len(chaos_spells) == 1
+    assert chaos_spells[0].cost == trigger_spell.cost
+
+
+##
+# CATA_180: 速逝鱼人
+# 战吼：你的下一张法力值消耗小于或等于（3）点的鱼人牌会消耗生命值，而非法力值。
+
+def test_fished_murloc_makes_next_low_cost_murloc_cost_health():
+    """Fished Murloc makes your next <=3-Cost Murloc cost Health instead of Mana."""
+    game = prepare_empty_game()
     game.player1.max_mana = 10
     game.player1.used_mana = 0
-    geddon = game.player1.give("CATA_591")
+
+    game.player1.give("CATA_180").play()
+    mana_before = game.player1.mana
+    health_before = game.player1.hero.health
+    murloc = game.player1.give("EX1_506")  # Murloc Tidehunter, 2 mana.
+
+    murloc.play()
+
+    assert game.player1.mana == mana_before
+    assert game.player1.hero.health == health_before - 2
+    assert not game.player1.murlocs_cost_health
+
+
+def test_fished_murloc_ignores_high_cost_murloc_until_low_cost_murloc_played():
+    """Fished Murloc is not consumed by Murlocs that cost more than 3."""
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    game.player1.used_mana = 0
+
+    game.player1.give("CATA_180").play()
+    mana_before = game.player1.mana
+    health_before = game.player1.hero.health
+    expensive_murloc = game.player1.give("EX1_062")  # Old Murk-Eye, 4 mana.
+
+    expensive_murloc.play()
+
+    assert game.player1.mana == mana_before - 4
+    assert game.player1.hero.health == health_before
+    assert game.player1.murlocs_cost_health
+
+    low_cost_murloc = game.player1.give("EX1_506")
+    mana_before_low_cost = game.player1.mana
+    low_cost_murloc.play()
+
+    assert game.player1.mana == mana_before_low_cost
+    assert game.player1.hero.health == health_before - 2
+    assert not game.player1.murlocs_cost_health
+
+
+##
+# CATA_185: 无面复制者
+# 扰魔。亡语：将消灭本随从的随从变形成为无面复制者。
+
+def test_facelessifier_transforms_minion_that_kills_it_in_combat():
+    """Facelessifier transforms the enemy minion that kills it in combat."""
+    game = prepare_empty_game()
+    attacker_controller = game.current_player
+    attacker = attacker_controller.summon("CS2_182")  # Chillwind Yeti: 4/5.
+    defender = attacker_controller.opponent.summon("CATA_185")
+    attacker.turns_in_play = 1
+
+    attacker.attack(defender)
+
+    assert [minion.id for minion in attacker_controller.field] == ["CATA_185"]
+    assert not attacker_controller.opponent.field
+
+
+##
+# CATA_186: 黏弹爆破手
+# 战吼：使你的对手获得一张法力值消耗为（2）的黏弹。黏弹相邻的卡牌法力值消耗增加（1）点。
+
+def test_goo_increases_adjacent_hand_card_costs_only():
+    """Goo increases the cost of adjacent hand cards only."""
+    game = prepare_empty_game()
+    player = game.player1
+    left = player.give("CS2_182")
+    goo = player.give("CATA_186t")
+    right = player.give("CS2_179")
+    far = player.give("CS2_172")
+
+    game.refresh_auras()
+
+    assert left.cost == left.data.cost + 1
+    assert right.cost == right.data.cost + 1
+    assert far.cost == far.data.cost
+    assert goo.cost == 2
+
+
+##
+# CATA_615: 吉恩，咒厄国王
+# 当本牌在你手牌中时，如果你其他手牌的法力值消耗均为偶数或奇数，变形成为狼人国王。
+
+def test_genn_greymane_transforms_in_hand_when_other_hand_costs_share_parity():
+    """Genn Greymane transforms in hand when all other hand cards share parity."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.give("CS2_182")  # Chillwind Yeti: 4 mana.
+    player.give("CS2_179")  # Sen'jin Shieldmasta: 4 mana.
+
+    player.give("CATA_615")
+    game.refresh_auras()
+
+    assert any(card.id == "CATA_615t" for card in player.hand)
+    assert not any(card.id == "CATA_615" for card in player.hand)
+
+
+def test_worgen_king_battlecry_sets_hero_power_cost_to_one():
+    """Genn Greymane (Worgen) makes your starting Hero Power cost 1."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    genn = player.give("CATA_615t")
+
+    assert player.hero_power.cost == 2
+
+    genn.play()
+
+    assert player.hero_power.cost == 1
+
+
+##
+# CATA_206: 扭曲畸怪
+# 扰魔。嘲讽。本牌在你的手牌中时，每回合随机具有两项额外效果。
+
+def test_twisted_monstrosity_has_current_bonus_effects_without_colossal_limb_tag():
+    """Twisted Monstrosity has its current bonus effects and is not a Colossal limb."""
+    game = prepare_empty_game()
+    player = game.current_player
+    monstrosity = player.summon("CATA_206")
+    enemy_spell = player.opponent.give("CS2_008")  # Moonfire.
+
+    assert monstrosity.taunt
+    assert monstrosity.cant_be_targeted_by_abilities
+    assert monstrosity.cant_be_targeted_by_hero_powers
+    assert monstrosity not in enemy_spell.play_targets
+    assert not monstrosity.data.scripts.tags.get(GameTag.COLOSSAL_LIMB)
+
+
+##
+# CATA_208: 无私的保卫者
+# 嘲讽。受到的所有伤害提高一点。
+
+def test_selfless_defender_takes_one_extra_spell_damage():
+    """Selfless Defender takes 1 extra damage from spell damage."""
+    game = prepare_empty_game()
+    attacker = game.current_player
+    defender = attacker.opponent.summon("CATA_208")
+
+    attacker.give("CS2_008").play(target=defender)  # Moonfire: 1 damage.
+
+    assert defender.health == defender.max_health - 2
+
+
+def test_selfless_defender_takes_one_extra_combat_damage():
+    """Selfless Defender takes 1 extra damage from combat damage."""
+    game = prepare_empty_game()
+    player = game.current_player
+    defender = player.opponent.summon("CATA_208")
+    attacker = player.summon("CS2_182")  # Chillwind Yeti: 4 attack.
+    attacker.turns_in_play = 1
+
+    attacker.attack(defender)
+
+    assert defender.health == defender.max_health - 5
+
+
+##
+# CATA_213: 威拉诺兹
+# 战吼：如果你的套牌中随从牌的法力值消耗之和为100，使你牌库中的随从获得总计100点的属性值。
+
+def _total_deck_minion_bonus(player):
+    return sum(
+        card.atk
+        - card.data.atk
+        + card.max_health
+        - card.data.health
+        for card in player.deck
+        if card.type == CardType.MINION
+    )
+
+
+def test_veranus_buffs_deck_minions_by_total_100_stats_when_deck_cost_is_100():
+    """Veranus gives deck minions a total of 100 stats when deck minion costs sum to 100."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    for _ in range(25):
+        player.give("CS2_182").shuffle_into_deck()  # Chillwind Yeti: 4 mana.
+
+    player.give("CATA_213").play()
+
+    assert _total_deck_minion_bonus(player) == 100
+
+
+def test_veranus_does_not_buff_deck_when_minion_cost_sum_is_not_100():
+    """Veranus does nothing when deck minion costs do not sum to 100."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    for _ in range(24):
+        player.give("CS2_182").shuffle_into_deck()
+
+    player.give("CATA_213").play()
+
+    assert _total_deck_minion_bonus(player) == 0
+
+
+def test_daze_bounced_minion_cannot_be_played_next_turn_then_expires():
+    """Daze prevents the returned minion from being played on its owner's next turn."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    target = player.opponent.summon("CS2_231")
+
+    player.give("CATA_215").play(target=target)
+
+    assert target in player.opponent.hand
+
+    game.end_turn()
+    player.opponent.max_mana = 10
+    player.opponent.used_mana = 0
+
+    assert not target.is_playable()
+
+    game.end_turn()
+    game.end_turn()
+    player.opponent.used_mana = 0
+
+    assert target.is_playable()
+
+
+##
+# CATA_556: 载蛋雏龙
+# 战吼：随机获取一张法力值消耗小于或等于（3）点的龙牌。
+
+def test_carrier_whelp_can_give_dragon_that_costs_less_than_three():
+    """Carrier Whelp's random dragon pool includes dragons below 3 cost."""
+    game = prepare_empty_game()
+    game.random.seed(3)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    player.give("CATA_556").play()
+
+    generated = player.hand[-1]
+    assert generated.id == "NEW1_023"
+    assert generated.cost == 2
+
+
+def test_hunter_secret_dragons_transform_after_playing_dragon():
+    """Stonetalon, Ebonscale, and Ebyssian transform in hand after you play a Dragon."""
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    stonetalon = player.give("CATA_551")
+    ebonscale = player.give("CATA_552")
+    ebyssian = player.give("CATA_553")
+
+    player.give("CATA_465t").play()
+
+    transformed_ids = [card.id for card in player.hand]
+    assert "CATA_551t" in transformed_ids
+    assert "CATA_552t" in transformed_ids
+    assert "CATA_553t" in transformed_ids
+    assert stonetalon not in player.hand
+    assert ebonscale not in player.hand
+    assert ebyssian not in player.hand
+    transformed_stonetalon = next(card for card in player.hand if card.id == "CATA_551t")
+    assert Race.DRAGON in transformed_stonetalon.races
+    assert transformed_stonetalon.taunt
+    assert (transformed_stonetalon.atk, transformed_stonetalon.health) == (6, 6)
+
+
+def test_ebonscale_scout_deals_attack_damage_before_and_after_transform():
+    """Ebonscale Scout deals damage equal to its Attack, including the Dragon form."""
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    opponent = player.opponent
+    player.max_mana = 10
+    player.used_mana = 0
+    target = opponent.summon("CATA_201")
+
+    player.give("CATA_552").play(target=target)
+
+    assert target.damage == 4
+
+    player.used_mana = 0
+    transformed = player.give("CATA_552")
+    player.give("CATA_465t").play()
+    target2 = opponent.summon("CATA_201")
+    player.used_mana = 0
+    next(card for card in player.hand if card.id == "CATA_552t").play(target=target2)
+
+    assert transformed not in player.hand
+    assert target2.damage == 8
+
+
+def test_ebyssian_gives_dragons_rush_this_game():
+    """Ebyssian and its Dragon form give your Dragons Rush this game."""
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    player.give("CATA_553").play()
+    dragon = player.summon("CATA_465t")
+
+    assert dragon.rush
+
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    original = player.give("CATA_553")
+    player.give("CATA_465t").play()
+    player.used_mana = 0
+    transformed = next(card for card in player.hand if card.id == "CATA_553t")
+
+    transformed.play()
+    dragon = player.summon("CATA_465t")
+
+    assert original not in player.hand
+    assert dragon.rush
+
+
+def test_reinforcement_rallier_is_elusive_without_summoning_token():
+    """Reinforcement Rallier is an Elusive 2/2 and has no summon battlecry."""
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    player.give("CATA_558")
+
+    rallier = player.give("CATA_558")
+    rallier.play()
+
+    assert [minion.id for minion in player.field] == ["CATA_558"]
+    assert rallier.cant_be_targeted_by_abilities
+    assert rallier.cant_be_targeted_by_hero_powers
+
+
+def test_sylvanas_triumph_upgrades_after_another_copy_was_played():
+    """Sylvanas's Triumph deals 3, then later copies damage all enemies."""
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    opponent = player.opponent
+    player.max_mana = 10
+    player.used_mana = 0
+    enemy_hero = opponent.hero
+    enemy_minion = opponent.summon("CATA_201")
+
+    player.give("CATA_557").play(target=enemy_hero)
+
+    assert enemy_hero.damage == 3
+    assert enemy_minion.damage == 0
+
+    player.used_mana = 0
+    player.give("CATA_557").play(target=enemy_minion)
+
+    assert enemy_hero.damage == 6
+    assert enemy_minion.damage == 3
+    assert player.hero.damage == 0
+
+
+def test_earthen_roar_sets_enemy_minion_health_to_one():
+    """Earthen Roar sets one enemy minion's Health to 1."""
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    target = player.opponent.summon("CATA_201")
+
+    player.give("CATA_554").play(target=target)
+
+    assert target.health == 1
+    assert target.atk == target.data.atk
+    assert player.choice is None
+
+
+def test_earthen_roar_holding_dragon_chooses_second_enemy_minion():
+    """Earthen Roar chooses another enemy minion when you are holding a Dragon."""
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    first = player.opponent.summon("CATA_201")
+    second = player.opponent.summon("CATA_201")
+    player.give("CATA_465t")
+
+    player.give("CATA_554").play(target=first)
+
+    assert first.health == 1
+    assert player.choice
+    assert second in player.choice.cards
+    player.choice.choose(second)
+
+    assert second.health == 1
+
+
+def test_tolvir_carver_chosen_hand_card_discounts_each_turn_start():
+    """Tol'vir Carver chooses a hand card that discounts by 1 at each turn start."""
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    chosen = player.give("CATA_552")
+    unchosen = player.give("CATA_553")
+
+    player.give("CATA_566").play()
+
+    assert player.choice
+    assert chosen in player.choice.cards
+    player.choice.choose(chosen)
+    assert chosen.cost == chosen.data.cost
+
+    game.end_turn()
+    game.end_turn()
+
+    assert chosen.cost == chosen.data.cost - 1
+    assert unchosen.cost == unchosen.data.cost
+
+    game.end_turn()
+    game.end_turn()
+
+    assert chosen.cost == chosen.data.cost - 2
+
+
+def test_confront_the_tolvir_replays_one_cost_cards_targeting_enemies():
+    """Confront the Tol'vir replays every 1-Cost card and targets enemies if possible."""
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    enemy_hero = player.opponent.hero
+    player.max_mana = 10
+    player.used_mana = 0
+    enemy_health = enemy_hero.health
+
+    player.give("DS1_185").play(target=enemy_hero)
+    player.give("CATA_558").play()
+    player.used_mana = 0
+
+    player.give("CATA_560").play()
+
+    assert enemy_hero.health == enemy_health - 4
+    assert [minion.id for minion in player.field].count("CATA_558") == 2
+
+
+def test_magmaw_fills_board_with_replenishing_attack_buff_limbs():
+    """Magmaw fills open spaces with limbs whose Deathrattle gives +2 Attack."""
+    game = prepare_empty_game(CardClass.HUNTER, CardClass.HUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    magmaw = player.give("CATA_550").play()
+
+    assert len(player.field) == game.MAX_MINIONS_ON_FIELD
+    assert magmaw in player.field
+    assert [minion.id for minion in player.field].count("CATA_550t") == 6
+    initial_attack = sum(minion.atk for minion in player.field)
+
+    player.field[-1].destroy()
+
+    assert len(player.field) == game.MAX_MINIONS_ON_FIELD
+    assert [minion.id for minion in player.field].count("CATA_550t") == 6
+    assert sum(minion.atk for minion in player.field) == initial_attack + 2
+
+
+##
+# CATA_721: 避难的幸存者
+# 战吼：选择一张你的手牌洗入你的牌库。抽一张牌。
+
+def test_escape_artist_chooses_hand_card_to_shuffle_then_draws():
+    """Escape Artist chooses a hand card, shuffles it into deck, then draws."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    deck_card = player.give(FIREBALL)
+    deck_card.shuffle_into_deck()
+    selected = player.give("CS2_182")
+
+    player.give("CATA_721").play()
+    choice = player.choice
+
+    assert choice is not None
+    assert choice.cards == [selected]
+
+    game.random.seed(1)
+    choice.choose(selected)
+
+    assert selected.zone == Zone.DECK
+    assert deck_card.zone == Zone.HAND
+
+
+##
+# CATA_897: 宝石囤积者
+# 战吼：选择你手牌中的一张牌并弃掉。亡语：重新获取弃掉的牌，其法力值消耗减少（1）点。
+
+def test_jewel_collector_returns_discarded_card_discounted_on_death():
+    """Jewel Collector remembers the chosen discarded hand card for its Deathrattle."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    discarded = player.give(FIREBALL)
+
+    collector = player.give("CATA_897")
+    collector.play()
+    choice = player.choice
+
+    assert choice is not None
+    assert choice.cards == [discarded]
+
+    choice.choose(discarded)
+    assert discarded.zone == Zone.REMOVEDFROMGAME
+
+    collector.destroy()
+    returned = next(card for card in player.hand if card.id == FIREBALL)
+    assert returned.cost == 3
+
+
+##
+# CATA_591: 指挥官迦顿
+# 战吼：你在每回合开始时的抽牌改为从你的牌库中发现一张牌，其法力值消耗减少（3）点，并摧毁未选的牌。
+
+def test_commander_geddon_replaces_turn_draw_with_discounted_deck_discover():
+    """Commander Geddon replaces the start-of-turn draw with deck Discover."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    for card_id in (FIREBALL, "CS2_182", WISP):
+        player.give(card_id).shuffle_into_deck()
+
+    geddon = player.give("CATA_591")
     geddon.play()
-    # Should have a discover choice
-    assert game.player1.choice is not None
-    # Choose the first card
-    chosen = game.player1.choice.cards[0]
-    game.player1.choice.choose(chosen)
-    # The chosen card should be in hand with cost 0
-    card_in_hand = next((c for c in game.player1.hand if c.id == chosen.id), None)
-    assert card_in_hand is not None
-    assert card_in_hand.cost == 0
+    assert player.choice is None
+    hand_before_turn = len(player.hand)
+
+    game.end_turn()
+    game.end_turn()
+
+    assert player.choice is not None
+    assert len(player.hand) == hand_before_turn
+    assert {card.id for card in player.choice.cards} == {FIREBALL, "CS2_182", WISP}
+    chosen = player.choice.cards[0]
+    unchosen = [card for card in player.choice.cards if card is not chosen]
+    player.choice.choose(chosen)
+
+    assert chosen in player.hand
+    assert chosen.cost == max(0, chosen.data.cost - 3)
+    assert all(card.zone == Zone.GRAVEYARD for card in unchosen)
 
 
 ##
@@ -232,11 +1583,83 @@ def test_alakir_gives_minions_matching_atk_cost():
 
 
 ##
+# CATA_561: 能量仪式
+# 兆示。获取两张1/1并具有突袭的元素牌。
+
+def test_ritual_of_power_adds_breezlings_to_hand():
+    """Ritual of Power adds two Breezlings to hand instead of summoning them."""
+    game = prepare_empty_game()
+    player = game.player1
+    player.max_mana = 10
+    player.used_mana = 0
+
+    player.give("CATA_561").play()
+
+    breezlings = [card for card in player.hand if card.id == "CATA_561t"]
+    assert len(breezlings) == 2
+    assert not any(minion.id == "CATA_561t" for minion in player.field)
+    assert all(card.rush for card in breezlings)
+
+
+def test_soldier_of_alakir_buffs_adjacent_minion_attack():
+    """Soldier of Al'Akir gives adjacent minions +1 Attack."""
+    game = prepare_empty_game()
+    player = game.player1
+    left = player.summon("CS2_182")
+    soldier = player.summon("CATA_565t")
+    right = player.summon("CS2_179")
+    far = player.summon("CS2_172")
+
+    game.refresh_auras()
+
+    assert left.atk == left.data.atk + 1
+    assert right.atk == right.data.atk + 1
+    assert far.atk == far.data.atk
+    assert soldier.atk == soldier.data.atk
+
+
+def test_skywall_sentinel_heralds_without_summoning_soldier():
+    """Skywall Sentinel Battlecry Heralds Al'Akir without summoning a Soldier."""
+    game = prepare_empty_game(CardClass.SHAMAN, CardClass.SHAMAN)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    sentinel = player.give("CATA_565")
+    sentinel.play()
+
+    assert sentinel.taunt
+    assert not any(minion.id == "CATA_565t" for minion in player.field)
+    assert getattr(player, "_cataclysm_heralds", {}).get("alakir") == 1
+
+
+def test_ascendance_transforms_minions_and_resummons_originals():
+    """Ascendance transforms friendly minions and gives them original-summoning deathrattles."""
+    game = prepare_empty_game()
+    player = game.player1
+    player.max_mana = 10
+    player.used_mana = 0
+    original = player.summon("CS2_182")
+
+    player.give("CATA_567").play()
+
+    transformed = player.field[0]
+    assert transformed is not original
+    assert transformed.id != "CS2_182"
+    assert transformed.data.cost == original.data.cost + 1
+    assert transformed.has_deathrattle
+
+    transformed.destroy()
+
+    assert any(minion.id == "CS2_182" for minion in player.field)
+
+
+##
 # CATA_564: 飞行助翼
 # 战吼：使一个友方随从获得Mega-Windfury
 
 def test_air_support_gives_mega_windfury():
-    """Air Support gives target friendly minion Mega-Windfury."""
+    """Air Support gives target friendly minion Mega-Windfury and prevents hero attacks."""
     game = prepare_empty_game()
     game.player1.max_mana = 10
     game.player1.used_mana = 0
@@ -244,6 +1667,54 @@ def test_air_support_gives_mega_windfury():
     air_support = game.player1.give("CATA_564")
     air_support.play(target=target)
     assert target.mega_windfury
+    assert target.cannot_attack_heroes
+
+
+##
+# CATA_563: 雷鸣流云
+# 战吼：选择并吸收你手牌中一张法力值消耗小于或等于（4）点的法术牌。亡语：施放该法术。
+
+def test_cloudstrider_absorbs_hand_spell_and_casts_it_on_death():
+    """Crackling Cloudstrider stores a chosen cheap hand spell and casts it on death."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    spell = player.give("CS2_025")  # Arcane Explosion, 2-Cost spell.
+    enemy = player.opponent.summon("CS2_182")
+
+    cloudstrider = player.give("CATA_563")
+    cloudstrider.play()
+
+    assert player.choice is not None
+    assert player.choice.cards == [spell]
+    player.choice.choose(spell)
+    assert spell not in player.hand
+
+    cloudstrider.destroy()
+
+    assert enemy.health == enemy.max_health - 1
+
+
+##
+# CATA_568: 穆拉丁的奋战
+# 抽两张牌。在本局对战中，友方角色每攻击过一次，本牌的法力值消耗便减少（1）点。
+
+def test_muradins_last_stand_cost_reduced_by_friendly_attacks_this_game():
+    """Muradin's Last Stand costs 1 less for each friendly character attack this game."""
+    from fireplace.actions import Attack
+
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    spell = player.give("CATA_568")
+    attacker1 = player.summon(WISP)
+    attacker2 = player.summon(WISP)
+
+    game.cheat_action(attacker1, [Attack(attacker1, player.opponent.hero)])
+    game.cheat_action(attacker2, [Attack(attacker2, player.opponent.hero)])
+
+    assert spell.cost == 7
 
 
 ##
@@ -258,7 +1729,7 @@ def test_raincaller_buffs_on_first_spell_damage():
     raincaller = game.player1.summon("CATA_487")
     base_atk = raincaller.atk
     # Play a damage spell
-    game.player1.give("CS2_023").play()  # Arcane Missiles (1 mana, deals 3 random damage)
+    game.player1.give(FIREBALL).play(target=game.player2.hero)
     assert raincaller.atk == base_atk + 2
 
 
@@ -270,10 +1741,23 @@ def test_raincaller_only_triggers_once_per_turn():
     raincaller = game.player1.summon("CATA_487")
     base_atk = raincaller.atk
     # Play two damage spells in same turn
-    game.player1.give("CS2_023").play()  # Arcane Missiles
-    game.player1.give("CS2_023").play()  # Arcane Missiles again
+    game.player1.give(FIREBALL).play(target=game.player2.hero)
+    game.player1.give(FIREBALL).play(target=game.player2.hero)
     # Should only have triggered once (+2, not +4)
     assert raincaller.atk == base_atk + 2
+
+
+def test_raincaller_ignores_non_damage_spell():
+    """Raincaller should not gain Attack from a spell that dealt no damage."""
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    game.player1.used_mana = 0
+    raincaller = game.player1.summon("CATA_487")
+    base_atk = raincaller.atk
+
+    game.player1.give(THE_COIN).play()
+
+    assert raincaller.atk == base_atk
 
 
 ##
@@ -394,26 +1878,99 @@ def test_azshara_hero_windfury_aura():
 
 def test_azshara_tentacle_buffs_hero_atk():
     """Azshara's Tentacle gives hero +1 ATK when played."""
-    game = prepare_empty_game()
-    game.player1.max_mana = 10
-    base_atk = game.player1.hero.atk
-    tentacle = game.player1.give("CATA_151t")
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    base_atk = player.hero.atk
+    tentacle = player.give("CATA_151t")
     tentacle.play()
-    assert game.player1.hero.atk == base_atk + 1
+    assert player.hero.atk == base_atk + 1
+    assert player.hero.windfury is False
+    game.end_turn()
+    assert player.hero.atk == base_atk
+
+
+def test_azshara_tentacle_attack_buff_upgrades_after_two_heralds():
+    """Azshara's Tentacle grants +2 ATK after Azshara has been Heralded twice."""
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    base_atk = player.hero.atk
+
+    player.give("CATA_525").play()
+    player.give("CATA_530").play()
+    player.give("CATA_151t").play()
+
+    assert getattr(player, "_cataclysm_heralds", {}).get("azshara") == 2
+    assert player.hero.atk == base_atk + 2
+
+
+def test_azshara_mariner_attack_buff_upgrades_and_expires():
+    """Azshara's Mariner uses the Herald upgrade and expires at turn end."""
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    base_atk = player.hero.atk
+
+    player.give("CATA_525").play()
+    player.give("CATA_530").play()
+    player.give("CATA_525t").play()
+
+    assert player.hero.atk == base_atk + 2
+    game.end_turn()
+    assert player.hero.atk == base_atk
+
+
+def test_armored_bloodsail_naga_heralds_without_damage():
+    """Armored Bloodsail Naga Battlecry Heralds Azshara without damage."""
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    enemy = player.opponent.summon("CS2_182")
+    player.max_mana = 10
+    player.used_mana = 0
+    base_health = enemy.health
+
+    player.give("CATA_525").play()
+
+    assert enemy.health == base_health
+    assert getattr(player, "_cataclysm_heralds", {}).get("azshara") == 1
+
+
+def test_terrace_dredger_steals_enemy_minion_health_three_times():
+    """Terrace Dredger steals 3 Health from an enemy minion three times."""
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    enemy = player.opponent.summon("EX1_572")  # Ysera, 12 Health.
+    player.max_mana = 10
+    player.used_mana = 0
+    player.hero.set_current_health(20)
+
+    dredger = player.give("CATA_699")
+    dredger.play(target=enemy)
+
+    assert dredger in player.field
+    assert dredger.max_health == 15
+    assert dredger.health == 15
+    assert enemy.max_health == 3
+    assert enemy.health == 3
+    assert player.hero.health == 20
 
 
 ##
 # CATA_533: 涣漫洪流
-# 对最左边和最右边的敌方随从造成5点伤害; 无随从时对敌方英雄造成5点伤害
+# 对最左边和最右边的敌方随从造成5点伤害。流放：重复一次
 
-def test_surging_tide_hits_hero_when_no_enemy_minions():
-    """Surging Tide hits enemy hero for 5 when there are no enemy minions."""
+def test_surging_tide_does_nothing_without_enemy_minions():
+    """Surging Tide has no targets when the opponent controls no minions."""
     game = prepare_empty_game()
     game.player1.max_mana = 10
     hero_hp = game.player2.hero.health
     spell = game.player1.give("CATA_533")
     spell.play()
-    assert game.player2.hero.health == hero_hp - 5
+    assert game.player2.hero.health == hero_hp
 
 
 def test_surging_tide_hits_leftmost_and_rightmost_minions():
@@ -428,6 +1985,43 @@ def test_surging_tide_hits_leftmost_and_rightmost_minions():
     assert left not in game.player2.field   # killed by 5 dmg
     assert mid in game.player2.field        # untouched middle
     assert right not in game.player2.field  # killed by 5 dmg
+
+
+def test_surging_tide_non_outcast_hits_leftmost_and_rightmost_once():
+    """Surging Tide only deals one wave when it is not played as Outcast."""
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    left = player.opponent.summon("EX1_572")
+    mid = player.opponent.summon("EX1_572")
+    right = player.opponent.summon("EX1_572")
+    player.max_mana = 10
+    player.used_mana = 0
+    player.give("CS2_029")
+    spell = player.give("CATA_533")
+    player.give("CS2_029")
+
+    spell.play()
+
+    assert left.health == 7
+    assert mid.health == 12
+    assert right.health == 7
+
+
+def test_surging_tide_outcast_repeats_leftmost_and_rightmost_damage():
+    """Surging Tide repeats the leftmost/rightmost damage when played as Outcast."""
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    left = player.opponent.summon("EX1_572")
+    mid = player.opponent.summon("EX1_572")
+    right = player.opponent.summon("EX1_572")
+    player.max_mana = 10
+    player.used_mana = 0
+
+    player.give("CATA_533").play()
+
+    assert left.health == 2
+    assert mid.health == 12
+    assert right.health == 2
 
 
 ##
@@ -516,6 +2110,314 @@ def test_stormbinder_deathrattle_unlocks_overload():
 
 
 ##
+# CATA_473: 诺兹多姆，青铜守护巨龙
+# 在你的回合结束时，使你的随从获得圣盾，已有圣盾的随从改为获得+3/+3。
+
+def test_nozdormu_buffs_only_minions_that_already_had_divine_shield():
+    """Nozdormu grants Divine Shield to unshielded minions and buffs only initially shielded ones."""
+    game = prepare_empty_game()
+    player = game.current_player
+    nozdormu = player.summon("CATA_473")
+    plain = player.summon(WISP)
+    shielded = player.summon(GOLDSHIRE_FOOTMAN)
+    shielded.divine_shield = True
+
+    plain_stats = (plain.atk, plain.health)
+    nozdormu_stats = (nozdormu.atk, nozdormu.health)
+    shielded_stats = (shielded.atk, shielded.health)
+
+    game.end_turn()
+
+    assert plain.divine_shield
+    assert (plain.atk, plain.health) == plain_stats
+    assert nozdormu.divine_shield
+    assert (nozdormu.atk, nozdormu.health) == nozdormu_stats
+    assert shielded.divine_shield
+    assert (shielded.atk, shielded.health) == (
+        shielded_stats[0] + 3,
+        shielded_stats[1] + 3,
+    )
+
+
+##
+# CATA_474: 矛心哨卫
+# 在你的回合结束时，随机获取一张神圣法术牌，其法力值消耗减少（3）点。
+
+def test_spearhead_paladin_gives_discounted_holy_spell_at_turn_end():
+    """Spearhead Paladin gives a Holy spell and discounts that generated card by 3."""
+    from hearthstone.enums import SpellSchool
+
+    game = prepare_empty_game()
+    player = game.current_player
+    player.summon("CATA_474")
+
+    game.end_turn()
+
+    assert len(player.hand) == 1
+    generated = player.hand[0]
+    assert getattr(generated.data, "spell_school", None) == SpellSchool.HOLY
+    assert generated.cost == max(0, generated.data.cost - 3)
+
+
+def test_sandwind_aura_triggers_friendly_minion_end_turn_effects_twice():
+    """Sandwind Aura doubles friendly minion end-turn effects while active."""
+    from hearthstone.enums import SpellSchool
+
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    player.summon("CATA_474")
+
+    player.give("CATA_480").play()
+    game.end_turn()
+
+    assert len(player.hand) == 2
+    for generated in player.hand:
+        assert getattr(generated.data, "spell_school", None) == SpellSchool.HOLY
+        assert generated.cost == max(0, generated.data.cost - 3)
+
+
+def test_sandwind_aura_expires_after_three_friendly_turns():
+    """Sandwind Aura doubles three friendly end turns, then expires."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    player.summon("CATA_474")
+
+    player.give("CATA_480").play()
+
+    game.end_turn()
+    assert len(player.hand) == 2
+    game.end_turn()
+
+    game.end_turn()
+    assert len(player.hand) == 4
+    game.end_turn()
+
+    game.end_turn()
+    assert len(player.hand) == 6
+    game.end_turn()
+
+    game.end_turn()
+    assert len(player.hand) == 7
+
+
+def test_gelbins_triumph_gives_paladin_aura_with_extra_duration():
+    """Gelbin's Triumph gives a Paladin Aura with one extra turn of duration."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    player.summon("CATA_474")
+
+    player.give("CATA_621").play()
+    assert len(player.hand) == 1
+    aura = player.hand[0]
+    assert aura.id == "CATA_480"
+    assert getattr(aura, "_aura_duration_bonus", 0) == 1
+
+    aura.play()
+
+    game.end_turn()
+    assert len(player.hand) == 2
+    game.end_turn()
+
+    game.end_turn()
+    assert len(player.hand) == 4
+    game.end_turn()
+
+    game.end_turn()
+    assert len(player.hand) == 6
+    game.end_turn()
+
+    game.end_turn()
+    assert len(player.hand) == 8
+    game.end_turn()
+
+    game.end_turn()
+    assert len(player.hand) == 9
+
+
+##
+# CATA_477: 守护巨龙之厅
+# 选择你手牌中的一张随从牌，使其获得+2/+2。
+
+def test_hall_of_the_dragonflight_buffs_chosen_hand_minion():
+    """Hall of the Dragonflight chooses a minion in hand and gives it +2/+2."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    hand_minion = player.give("CS2_182")
+    base_stats = (hand_minion.atk, hand_minion.health)
+
+    hall = player.give("CATA_477")
+    hall.play()
+
+    assert hall in player.field
+    assert player.choice is None
+
+    hall.use()
+    choice = player.choice
+
+    assert choice is not None
+    assert choice.cards == [hand_minion]
+
+    choice.choose(hand_minion)
+
+    assert hand_minion.zone == Zone.HAND
+    assert (hand_minion.atk, hand_minion.health) == (
+        base_stats[0] + 2,
+        base_stats[1] + 2,
+    )
+
+
+def test_bronze_redemption_summons_dragon_with_current_stats():
+    """Bronze Redemption's end-turn Dragon copies its current attack and health."""
+    from fireplace.actions import Buff
+
+    game = prepare_empty_game(CardClass.PALADIN, CardClass.PALADIN)
+    player = game.current_player
+    bronze = player.summon("CATA_478")
+    game.cheat_action(bronze, [Buff(bronze, "CATA_473e")])
+
+    game.end_turn()
+
+    token = next(minion for minion in player.field if minion.id == "CATA_478t")
+    assert (token.atk, token.health) == (bronze.atk, bronze.health)
+
+
+##
+# CATA_134: 荒林怪圈
+# 裂变：召唤两个2/2树人。使你的随从获得“亡语：召唤一个2/2树人。”
+
+def test_wildwood_circle_shatters_and_left_half_only_summons_treants():
+    """Wildwood Circle splits in hand; the left shattered half only summons Treants."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    player.give("CS2_013")
+
+    player.give("CATA_134")
+
+    assert [card.id for card in player.hand] == ["CATA_134t", "CS2_013", "CATA_134t2"]
+
+    player.hand[0].play()
+
+    assert [minion.id for minion in player.field] == ["CATA_134t3", "CATA_134t3"]
+
+
+def test_wildwood_circle_halves_recombine_when_adjacent():
+    """Shattered Wildwood Circle halves recombine into the full card when the card between them leaves hand."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    player.give("GAME_005")
+    player.give("CATA_134")
+
+    player.hand[1].play()
+
+    assert [card.id for card in player.hand] == ["CATA_134"]
+
+
+def test_forests_gift_scales_with_friendly_minion_count():
+    """Forest's Gift gives +1/+1 for each friendly minion controlled."""
+    game = prepare_empty_game(CardClass.DRUID, CardClass.DRUID)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    target = player.summon(WISP)
+    player.summon(WISP)
+    player.summon(WISP)
+
+    player.give("CATA_138").play(target=target)
+
+    assert (target.atk, target.health) == (target.data.atk + 3, target.data.health + 3)
+
+
+def test_forests_gift_cannot_target_enemy_minion():
+    """Forest's Gift can only target friendly minions."""
+    game = prepare_empty_game(CardClass.DRUID, CardClass.DRUID)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    friendly = player.summon(WISP)
+    enemy = player.opponent.summon(WISP)
+    gift = player.give("CATA_138")
+
+    assert friendly in gift.play_targets
+    assert enemy not in gift.play_targets
+
+
+##
+# CATA_479: 飞龙机动
+# 裂变：召唤两条4/2的幼龙。使你的随从获得+1/+1和圣盾。
+
+def test_dragonriding_summons_buffed_divine_shield_whelps():
+    """Dragonriding summons two whelps, then gives friendly minions +1/+1 and Divine Shield."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    player.give("CATA_479").play()
+
+    whelps = [minion for minion in player.field if minion.id == "CATA_479t3"]
+    assert len(whelps) == 2
+    for whelp in whelps:
+        assert (whelp.atk, whelp.health) == (5, 3)
+        assert whelp.divine_shield
+
+
+def test_dragonriding_left_half_only_summons_unbuffed_whelps():
+    """The left shattered Dragonriding half summons whelps without the right-half buff."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    player.give("GAME_005")
+    player.give("CATA_479")
+
+    player.hand[0].play()
+
+    whelps = [minion for minion in player.field if minion.id == "CATA_479t3"]
+    assert len(whelps) == 2
+    assert [(whelp.atk, whelp.health, whelp.divine_shield) for whelp in whelps] == [
+        (4, 2, False),
+        (4, 2, False),
+    ]
+
+
+##
+# CATA_464: 黑翼实验品
+# 亡语：获取一张消耗为（2）的法术牌，该法术能造成等同于本随从攻击力的伤害。
+
+def test_blackwing_experiment_gives_dragon_breath_with_current_attack_damage():
+    """Blackwing Experiment gives Dragon Breath that deals damage equal to its attack at death."""
+    from fireplace.actions import Buff
+
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    experiment = player.summon("CATA_464")
+    game.cheat_action(experiment, [Buff(experiment, "CATA_473e")])
+
+    experiment.destroy()
+
+    breath = next(card for card in player.hand if card.id == "CATA_464t")
+    enemy_hero = player.opponent.hero
+    health_before = enemy_hero.health
+    breath.play(target=enemy_hero)
+
+    assert enemy_hero.health == health_before - experiment.atk
+
+
+##
 # CATA_570: 莫卓克
 # 战吼：抽1张牌并减少其费用(10)
 
@@ -533,6 +2435,24 @@ def test_morchok_draw_reduces_cost_by_10():
     # The yeti should now be in hand with cost reduced by 10 (min 0)
     assert yeti.zone == ZoneEnum.HAND
     assert yeti.cost == 0  # 4 - 10 = 0 (min 0)
+
+
+def test_morchok_repeats_draw_with_overflow_discount():
+    """Morchok spends leftover discount amount to keep drawing cards."""
+    from hearthstone.enums import Zone as ZoneEnum
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    game.player1.used_mana = 0
+    cheap = game.player1.card("CS2_231", zone=ZoneEnum.DECK)  # 1-Cost
+    expensive = game.player1.card("CS2_182", zone=ZoneEnum.DECK)  # 4-Cost
+    morchok = game.player1.give("CATA_570")
+
+    morchok.play()
+
+    assert cheap.zone == ZoneEnum.HAND
+    assert expensive.zone == ZoneEnum.HAND
+    assert cheap.cost == 0
+    assert expensive.cost == 0
 
 
 ##
@@ -560,6 +2480,101 @@ def test_mossbinding_buffs_elementals_by_mana_spent():
 
 
 ##
+# CATA_489: 奥术涌流
+# 裂变：造成4点伤害。对所有敌人造成2点伤害。
+
+def test_arcane_flow_left_half_only_damages_target():
+    """The left shattered Arcane Flow half deals 4 to its target without the right-half AOE."""
+    game = prepare_empty_game()
+    player = game.current_player
+    enemy_hero = player.opponent.hero
+    enemy_minion = player.opponent.summon("CS2_182")
+    player.max_mana = 10
+    player.used_mana = 0
+    player.give("GAME_005")
+    player.give("CATA_489")
+
+    player.hand[0].play(target=enemy_hero)
+
+    assert enemy_hero.health == enemy_hero.max_health - 4
+    assert enemy_minion.health == enemy_minion.max_health
+
+
+##
+# CATA_820: 运输补给
+# 裂变：抽三张随从牌。使你手牌中的随从牌获得+2/+2。
+
+def test_supply_run_draws_three_minions_and_buffs_hand_minions():
+    """Supply Run draws three minions, then gives minions in hand +2/+2."""
+    from hearthstone.enums import Zone as ZoneEnum
+
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    deck_minions = [
+        player.card("CS2_231", zone=ZoneEnum.DECK),
+        player.card("CS2_182", zone=ZoneEnum.DECK),
+        player.card("CS2_171", zone=ZoneEnum.DECK),
+    ]
+    supply_run = player.give("CATA_820")
+    hand_minion = player.give("CS2_231")
+    supply_run.play()
+
+    for minion in deck_minions:
+        assert minion.zone == ZoneEnum.HAND
+        assert (minion.atk, minion.health) == (
+            minion.data.atk + 2,
+            minion.data.health + 2,
+        )
+    assert (hand_minion.atk, hand_minion.health) == (
+        hand_minion.data.atk + 2,
+        hand_minion.data.health + 2,
+    )
+
+
+##
+# CATA_139: 柳牙
+# 巨型+4。在柳牙的腿获得属性值后，本随从也会获得。
+
+def test_wickerfang_gains_stats_when_legs_gain_stats():
+    """Wickerfang gains the same stats when each leg grows at end of turn."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    wickerfang = player.give("CATA_139").play()
+
+    game.end_turn()
+
+    legs = [minion for minion in player.field if minion.id.startswith("CATA_139t")]
+    assert len(legs) == 4
+    assert all((leg.atk, leg.health) == (1, 3) for leg in legs)
+    assert (wickerfang.atk, wickerfang.health) == (4, 9)
+
+
+##
+# CATA_306: 教派分歧
+# 裂变：使一个友方随从获得+2/+3和扰魔。召唤一个它的复制。
+
+def test_schism_left_half_buffs_without_summoning_copy():
+    """The left shattered Schism half buffs its target without the right-half copy summon."""
+    game = prepare_empty_game()
+    player = game.current_player
+    target = player.summon("CS2_231")
+    player.max_mana = 10
+    player.used_mana = 0
+    player.give("GAME_005")
+    player.give("CATA_306")
+
+    player.hand[0].play(target=target)
+
+    assert (target.atk, target.health) == (3, 4)
+    assert list(player.field) == [target]
+
+
+##
 # CATA_470: 维克多·奈法里奥斯
 # 战吼：制造一条自定义的亡灵龙。如果你的手牌中有龙牌，制造的这条龙的法力值消耗减少(3)点
 
@@ -577,6 +2592,37 @@ def test_victor_nefarius_dragon_in_hand_reduces_cost():
     assert created is not None
     # With dragon in hand, cost reduced by 3 (buff applied)
     assert created._cost == -3 or created.cost < 1  # base cost 1 - 3 = 0 (min 0)
+
+
+def test_fearsome_doomkin_heralds_deathwing():
+    """Fearsome Doomkin keeps Taunt and Battlecry Heralds Deathwing."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+
+    doomkin = player.give("CATA_722")
+    doomkin.play()
+
+    assert doomkin.taunt
+    assert getattr(player, "_cataclysm_heralds", {}).get("deathwing") == 1
+
+
+def test_ultraxion_heralds_and_discounts_deathwing_cards():
+    """Ultraxion Heralds Deathwing and discounts Deathwing cards in hand and deck."""
+    game = prepare_empty_game()
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    hand_deathwing = player.give("CATA_190h")
+    deck_deathwing = player.give("CATA_190h")
+    deck_deathwing.shuffle_into_deck()
+
+    player.give("CATA_497").play()
+
+    assert getattr(player, "_cataclysm_heralds", {}).get("deathwing") == 1
+    assert hand_deathwing.cost == hand_deathwing.data.cost - 1
+    assert deck_deathwing.cost == deck_deathwing.data.cost - 1
 
 
 ##
@@ -622,56 +2668,158 @@ def test_gruesome_nightmare_buffs_target_by_own_atk():
     game.player1.max_mana = 10
     yeti = game.player1.summon("CS2_182")  # 4/5 Chillwind Yeti
     nightmare = game.player1.give("CATA_161")  # 3/3
-    nightmare.play(target=yeti)
+    nightmare.play()
+    game.player1.choice.choose(yeti)
     assert yeti.atk == 4 + 3  # +3 ATK from nightmare's ATK
+
+
+def test_gruesome_nightmare_can_choose_a_hand_minion():
+    """Gruesome Nightmare can choose and buff a minion in hand."""
+    game = prepare_empty_game(CardClass.DEATHKNIGHT, CardClass.DEATHKNIGHT)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    hand_minion = player.give("CATA_465t")
+
+    player.give("CATA_161").play()
+
+    assert player.choice
+    assert hand_minion in player.choice.cards
+    player.choice.choose(hand_minion)
+    assert hand_minion.atk == hand_minion.data.atk + 3
 
 
 ##
 # CATA_585: 烈火炙烤 (warrior Torch)
-# 对一个受伤的随从造成6点伤害，溢出伤害给英雄+X攻击力，将牌放回手牌
+# 对一个受伤的随从造成8点伤害，超出目标生命值的剩余伤害以本牌复制回手
 
-def test_torch_deals_6_damage_and_returns_to_hand():
-    """Torch deals 6 damage to an injured minion, then goes back to hand."""
+def test_torch_deals_8_damage_and_returns_leftover_damage_to_hand():
+    """Torch deals 8 damage and returns a copy carrying leftover damage."""
     game = prepare_empty_game()
     game.player1.max_mana = 10
     yeti = game.player2.summon("CS2_182")  # 4/5 Yeti
     yeti.damage = 1  # injure it (now 4 HP, REQ_DAMAGED_TARGET satisfied)
     torch = game.player1.give("CATA_585")
+
     torch.play(target=yeti)
-    # Yeti (4 HP remaining) should be dead (took 6 damage)
+
     assert yeti not in game.player2.field
-    # Torch should be back in hand
-    assert any(c.id == "CATA_585" for c in game.player1.hand)
+    repeated = next(c for c in game.player1.hand if c.id == "CATA_585")
+    assert getattr(repeated, "cata_585_damage", None) == 4
 
 
-def test_torch_overflow_gives_hero_attack():
-    """Torch overflow damage (6 - target HP) gives hero that much attack."""
+def test_torch_does_not_return_without_leftover_damage():
+    """Torch does not return if all damage is spent on the target."""
     game = prepare_empty_game()
     game.player1.max_mana = 10
-    yeti = game.player2.summon("CS2_182")  # 4/5 Yeti
-    yeti.damage = 1  # now 4 HP
-    # Overflow = 6 - 4 = 2
+    target = game.player2.summon("EX1_572")  # 4/12
+    target.damage = 1  # 11 Health, target is damaged
     torch = game.player1.give("CATA_585")
-    torch.play(target=yeti)
-    assert game.player1.hero.atk == 2
+
+    torch.play(target=target)
+
+    assert target.health == 3
+    assert not any(c.id == "CATA_585" for c in game.player1.hand)
+
+
+def test_decimation_damage_equals_minions_on_battlefield():
+    """Decimation's damage increases by 1 for each minion on the battlefield."""
+    game = prepare_empty_game(CardClass.WARRIOR, CardClass.WARRIOR)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    minions = [
+        player.summon("EX1_572"),
+        player.opponent.summon("EX1_572"),
+        player.opponent.summon("EX1_572"),
+    ]
+
+    player.give("CATA_581").play()
+
+    assert [minion.health for minion in minions] == [
+        minion.max_health - len(minions) for minion in minions
+    ]
 
 
 ##
 # CATA_527: 奈瑟匹拉，蒙难古灵
-# 造成1点伤害
+# 地标：造成1点伤害。在你施放一个邪能法术后，重新开启。亡语：召唤奈瑟匹拉，脱困古灵。
 
-def test_naga_dissenter_play_deals_1_damage():
-    """Nespirah, Enthralled (Location) — using it deals 1 damage."""
-    game = prepare_empty_game()
-    game.player1.max_mana = 10
-    enemy_minion = game.player2.summon("CS2_182")  # Chillwind Yeti 4/5
-    naga = game.player1.give("CATA_527")
-    naga.play()  # placement (no immediate effect for a location)
-    game.end_turn(); game.end_turn()
-    total_hp_before = enemy_minion.health + game.player2.hero.health
+def test_naga_dissenter_location_reopens_after_fel_spell():
+    """Naga the Dissenter is a Location that reopens after you cast a Fel spell."""
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    naga = player.give("CATA_527")
+    enemy_hero = player.opponent.hero
+    enemy_health = enemy_hero.health
+
+    naga.play()
+
+    assert naga in player.field
+    assert enemy_hero.health == enemy_health
+
     naga.use()
-    total_hp_after = enemy_minion.health + game.player2.hero.health
-    assert total_hp_after == total_hp_before - 1
+
+    assert enemy_hero.health == enemy_health - 1
+    assert not naga.is_usable()
+
+    player.used_mana = 0
+    player.give("CATA_528").play()
+
+    assert naga.is_usable()
+
+
+def test_location_is_not_playable_on_full_board():
+    """Locations use a board slot and cannot be played on a full board."""
+    game = prepare_empty_game(CardClass.PRIEST, CardClass.PRIEST)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    for _ in range(game.MAX_MINIONS_ON_FIELD):
+        player.summon("CS2_231")
+    sanctum = player.give("CATA_301")
+
+    assert not sanctum.is_playable()
+
+
+def test_naga_dissenter_location_reopens_on_next_turn():
+    """Naga the Dissenter reopens naturally on its controller's next turn."""
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    naga = player.give("CATA_527")
+
+    naga.play()
+    naga.use()
+
+    assert not naga.is_usable()
+
+    game.end_turn()
+    game.end_turn()
+
+    assert naga.is_usable()
+
+
+def test_naga_dissenter_deathrattle_summons_liberated_after_durability_spent():
+    """Naga the Dissenter summons Naga the Liberated after its Location durability is spent."""
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    player.max_mana = 10
+    player.used_mana = 0
+    naga = player.give("CATA_527")
+
+    naga.play()
+    for _ in range(naga.max_durability):
+        naga.use()
+        player.used_mana = 0
+        if naga in player.field:
+            player.give("CATA_528").play()
+
+    assert naga.zone == Zone.GRAVEYARD
+    assert any(card.id == "CATA_527t2" for card in player.field)
 
 
 ##
@@ -679,19 +2827,28 @@ def test_naga_dissenter_play_deals_1_damage():
 # 每次你施放邪能法术，费用-1
 
 def test_greedy_fel_fisher_reduces_cost_on_fel_spell():
-    """Greedy Fel Fisher gets -1 cost each time a Fel spell is cast."""
+    """Greedy Fel Fisher costs less in hand for each Fel spell cast this game."""
     game = prepare_empty_game()
     game.player1.max_mana = 10
-    fisher = game.player1.summon("CATA_529")
-    base_cost = fisher.cost
+    fisher = game.player1.give("CATA_529")
+    base_cost = fisher.data.cost
+
     # Play a non-Fel spell: should NOT reduce cost
     fireball = game.player1.give("CS2_029")  # Fireball (fire)
     fireball.play(target=game.player2.hero)
     assert fisher.cost == base_cost
+
     # Play a Fel spell: should reduce cost
     fel_spell = game.player1.give("BAR_306")  # Sigil of Flame (fel)
     fel_spell.play()
     assert fisher.cost == base_cost - 1
+
+    other_fel_spell = game.player1.give("CATA_528")
+    other_fel_spell.play()
+    assert fisher.cost == base_cost - 2
+
+    late_fisher = game.player1.give("CATA_529")
+    assert late_fisher.cost == base_cost - 2
 
 
 ##
@@ -700,19 +2857,21 @@ def test_greedy_fel_fisher_reduces_cost_on_fel_spell():
 
 def test_fel_void_mutant_copies_fel_spell_from_hand():
     """Fel Void Mutant copies a Fel spell from hand."""
-    from hearthstone.enums import SpellSchool
     game = prepare_empty_game()
     game.player1.max_mana = 10
-    # Add a Fel spell to hand (BAR_306 = Sigil of Flame, Fel school)
     fel_spell = game.player1.give("BAR_306")
+    other_fel_spell = game.player1.give("CATA_528")
     mutant = game.player1.give("CATA_697")
-    hand_before = len(game.player1.hand)  # 2
+    hand_before = len(game.player1.hand)
+
     mutant.play()
-    # mutant removed (-1) + copy of Fel spell added (+1) = same count
+
+    assert game.player1.choice
+    assert fel_spell in game.player1.choice.cards
+    assert other_fel_spell in game.player1.choice.cards
+    game.player1.choice.choose(fel_spell)
     assert len(game.player1.hand) == hand_before
-    # The new card should be a Fel spell
-    new_cards = [c for c in game.player1.hand if c is not fel_spell]
-    assert any(getattr(getattr(c, "data", None), "spell_school", None) == SpellSchool.FEL for c in new_cards)
+    assert [card.id for card in game.player1.hand].count(fel_spell.id) == 2
 
 
 def test_fel_void_mutant_does_nothing_without_fel_spell():
@@ -764,6 +2923,36 @@ def test_brokesaga_draws_for_each_death():
 # CATA_488t: 沃坎诺斯的喷发柱
 # 每当本随从受到伤害，获取一张随机火焰法术牌，费用减少3
 
+def test_vulcanos_summons_linked_colossal_plumes():
+    """Vulcanos summons two linked Colossal limb plumes."""
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    vulcanos = game.player1.give("CATA_488")
+
+    vulcanos.play()
+
+    plumes = [minion for minion in game.player1.field if minion.id == "CATA_488t"]
+    assert len(plumes) == 2
+    assert len(vulcanos.colossal_limbs) == 2
+    assert all(plume.data.tags.get(GameTag.COLOSSAL_LIMB) for plume in plumes)
+    assert all(plume.colossal_body is vulcanos for plume in plumes)
+
+
+def test_colossal_limbs_survive_when_body_dies():
+    """Colossal limbs remain in play when the body dies."""
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    vulcanos = game.player1.give("CATA_488")
+
+    vulcanos.play()
+    plumes = [minion for minion in game.player1.field if minion.id == "CATA_488t"]
+
+    vulcanos.destroy()
+
+    assert vulcanos not in game.player1.field
+    assert all(plume in game.player1.field for plume in plumes)
+
+
 def test_plume_of_vulcanos_gives_fire_spell_on_damage():
     """Plume of Vulcanos gives a fire spell with -3 cost when damaged."""
     from hearthstone.enums import SpellSchool
@@ -787,26 +2976,31 @@ def test_plume_of_vulcanos_gives_fire_spell_on_damage():
 # 战吼：选择你手牌中的一张法术牌，将其拆分为两张法力值消耗与其相同的随机法术牌
 
 def test_conjuration_specialist_splits_hand_spell():
-    """Conjuration Specialist discards a hand spell and gives 2 same-cost random spells."""
+    """Conjuration Specialist splits the chosen hand spell into same-cost spells."""
     game = prepare_empty_game()
     game.player1.max_mana = 10
-    # Give player a spell with known cost
     fireball = game.player1.give("CS2_029")  # Fireball, cost 4
-    original_cost = fireball.cost
+    cheap_spell = game.player1.give("CATA_528")  # Oceanic Sigil, cost 1
     specialist = game.player1.give("CATA_979")
-    # Before play: hand has [fireball, specialist]
-    hand_before = len(game.player1.hand)  # 2
+    hand_before = len(game.player1.hand)
+
     specialist.play()
-    # After: specialist leaves hand (-1), fireball discarded (-1), 2 new spells added (+2)
-    # Net change: -1 - 1 + 2 = 0, so hand stays at hand_before
+
+    assert game.player1.choice
+    assert fireball in game.player1.choice.cards
+    assert cheap_spell in game.player1.choice.cards
+    game.player1.choice.choose(cheap_spell)
+
     assert len(game.player1.hand) == hand_before
-    # No fireball in hand anymore
-    assert fireball not in game.player1.hand
-    # 2 new spells should have same cost as fireball
-    new_spells = [c for c in game.player1.hand if c.type == CardType.SPELL]
+    assert fireball in game.player1.hand
+    assert cheap_spell not in game.player1.hand
+    new_spells = [
+        c for c in game.player1.hand
+        if c.type == CardType.SPELL and c is not fireball
+    ]
     assert len(new_spells) == 2
     for spell in new_spells:
-        assert spell.cost == original_cost
+        assert spell.cost == cheap_spell.cost
 
 
 def test_conjuration_specialist_no_effect_without_hand_spell():
@@ -848,6 +3042,32 @@ def test_unstable_spellcaster_no_copy_without_spell_damage():
     # Should only have 1 spellcaster on field (no copy)
     assert len(game.player1.field) == 1
     assert game.player1.field[0].id == "CATA_483"
+
+
+def test_unstable_spellcaster_ignores_non_damage_spell():
+    """Unstable Spellcaster does not count spells that dealt no damage."""
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    game.player1.give(THE_COIN).play()
+
+    game.player1.give("CATA_483").play()
+
+    assert [minion.id for minion in game.player1.field].count("CATA_483") == 1
+
+
+##
+# CATA_452: 织法者的光辉
+# 召唤一条6/6的龙。在本回合中，你每用法术造成一点伤害，本牌的法力值消耗便减少（1）点。
+
+def test_spellweavers_brilliance_cost_reduced_by_spell_damage_this_turn():
+    """Spellweaver's Brilliance costs 1 less per spell damage dealt this turn."""
+    game = prepare_empty_game()
+    game.player1.max_mana = 10
+    brilliance = game.player1.give("CATA_452")
+
+    game.player1.give(FIREBALL).play(target=game.player2.hero)
+
+    assert brilliance.cost == 4
 
 
 ##
@@ -893,28 +3113,56 @@ def test_medivh_triumph_normal_cost_without_legendary():
 # 随机对敌人造成3点伤害，如果在本回合使用过火焰法术，再造成3点伤害
 
 def test_erupting_volcano_deals_3_damage():
-    """Erupting Volcano (Location) — using it deals 3 damage to enemies."""
+    """Erupting Volcano splits 3 damage among all enemies."""
     game = prepare_empty_game()
+    game.random.seed(6)
     game.player1.max_mana = 10
-    volcano = game.player1.give("CATA_584")
-    volcano.play()
-    game.end_turn(); game.end_turn()
+    game.player2.summon("EX1_572")
+    game.player2.summon("EX1_572")
     total_hp_before = game.player2.hero.health + sum(
         m.health for m in game.player2.field
     )
+    volcano = game.player1.give("CATA_584")
+    volcano.play()
+    assert volcano in game.player1.field
+    assert game.player2.hero.health + sum(
+        m.health for m in game.player2.field
+    ) == total_hp_before
     volcano.use()
     total_hp_after = game.player2.hero.health + sum(
         m.health for m in game.player2.field
     )
     assert total_hp_after == total_hp_before - 3
+    damage_taken = [game.player2.hero.max_health - game.player2.hero.health]
+    damage_taken += [m.max_health - m.health for m in game.player2.field]
+    assert sorted(damage_taken) == [1, 1, 1]
 
 
 def test_erupting_volcano_bonus_damage_with_fire_spell():
-    """Erupting Volcano (Location) is now a use-action and the
-    'fire spell bonus' is no longer modeled — accept 3 damage as the use.
-    """
-    import pytest
-    pytest.skip("CATA_584 is now a Location; fire-spell bonus mechanic is no longer implemented.")
+    """Erupting Volcano splits 3 extra damage after a Fire spell was cast this turn."""
+    game = prepare_empty_game()
+    game.random.seed(6)
+    game.player1.max_mana = 10
+    game.player2.summon("EX1_572")
+    game.player2.summon("EX1_572")
+    # Cast a fire spell first (Fireball is fire school)
+    game.player1.give("CS2_029").play(target=game.player2.hero)  # Fireball (fire)
+    total_hp_before = game.player2.hero.health + sum(
+        m.health for m in game.player2.field
+    )
+    volcano = game.player1.give("CATA_584")
+    volcano.play()
+    assert game.player2.hero.health + sum(
+        m.health for m in game.player2.field
+    ) == total_hp_before
+    volcano.use()
+    total_hp_after = game.player2.hero.health + sum(
+        m.health for m in game.player2.field
+    )
+    assert total_hp_after == total_hp_before - 6
+    damage_taken = [game.player2.hero.max_health - game.player2.hero.health - 6]
+    damage_taken += [m.max_health - m.health for m in game.player2.field]
+    assert sorted(damage_taken) == [1, 2, 3]
 
 
 ##
@@ -929,6 +3177,19 @@ def test_fel_infusion_lifesteal_this_turn_only():
     assert game.player1.hero.lifesteal is True
     game.end_turn()  # OWN_TURN_END fires for player1 → enchantment destroyed
     assert game.player1.hero.lifesteal is False
+
+
+def test_fel_infusion_heralds_azshara_while_granting_lifesteal():
+    """Fel Infusion Heralds Azshara and grants lifesteal for the turn."""
+    game = prepare_empty_game(CardClass.DEMONHUNTER, CardClass.DEMONHUNTER)
+    player = game.current_player
+    player.max_mana = 2
+    player.used_mana = 0
+
+    player.give("CATA_530").play()
+
+    assert player.hero.lifesteal is True
+    assert getattr(player, "_cataclysm_heralds", {}).get("azshara") == 1
 
 
 ##

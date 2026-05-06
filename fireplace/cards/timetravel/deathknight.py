@@ -147,7 +147,7 @@ class END_003p:
     """Blessing of the Infinite"""
 
     # +2/+2
-    play = Buff(TARGET, "END_003pe")
+    activate = Buff(TARGET, "END_003pe")
 
 
 END_003pe = buff(+2, +2)
@@ -191,5 +191,9 @@ class END_001:
 class END_002:
     """Wicked Blightspawn"""
 
-    # 战吼：获得一个空的法力水晶
-    play = GainEmptyMana(CONTROLLER, 1)
+    deathrattle = Find(FRIENDLY_WEAPON) & Buff(FRIENDLY_WEAPON, "END_002e") | Summon(
+        CONTROLLER, "CS2_082"
+    )
+
+
+END_002e = buff(atk=2)

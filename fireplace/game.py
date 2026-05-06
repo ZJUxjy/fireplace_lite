@@ -10,11 +10,15 @@ from .actions import (
     Attack,
     Awaken,
     BeginTurn,
+    Buff,
     Death,
+    Discard,
     EndTurn,
     EventListener,
+    Give,
     GameStart,
     Play,
+    Summon,
 )
 from .card import THE_COIN
 from .cards import standard_board_skins
@@ -384,11 +388,14 @@ class BaseGame(Entity):
 
         for p in self.players:
             p.cards_drawn_this_turn = 0
+            p.spell_damage_this_turn = 0
 
         player.turn_start = timegm(time.gmtime())
         player.last_turn = player.turn
         player.turn = self.turn
+        player.cards_played_last_turn = CardList(player.cards_played_this_turn_list)
         player.cards_played_this_turn = 0
+        player.cards_played_this_turn_list = CardList()
         player.minions_played_this_turn = 0
         player.minions_killed_this_turn = 0
         player.combo = False
@@ -398,6 +405,36 @@ class BaseGame(Entity):
         player.overloaded = 0
         player.elemental_played_last_turn = player.elemental_played_this_turn
         player.elemental_played_this_turn = 0
+        delayed = getattr(player, "_future_hand_minions", [])
+        remaining = []
+        for card, turns in delayed:
+            turns -= 1
+            if turns <= 0:
+                self.queue_actions(
+                    player,
+                    [
+                        Buff(card, "TIME_EVENT_998e"),
+                        Give(player, card),
+                    ],
+                )
+            else:
+                remaining.append((card, turns))
+        player._future_hand_minions = remaining
+        burning = getattr(player, "_cata_event_001_burning_cards", [])
+        remaining_burning = []
+        for card, turns, phoenix_id in burning:
+            turns -= 1
+            if turns <= 0:
+                self.queue_actions(
+                    player,
+                    [
+                        Discard(card),
+                        Summon(player, phoenix_id),
+                    ],
+                )
+            else:
+                remaining_burning.append((card, turns, phoenix_id))
+        player._cata_event_001_burning_cards = remaining_burning
 
         for entity in self.live_entities:
             if entity.type != CardType.PLAYER:

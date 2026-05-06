@@ -7,6 +7,25 @@ from hearthstone.enums import Race
 
 # CATA_155: 复活的奥妮克希亚 (9费 3/6)
 # 巨型+2。当你的英雄在你的回合即将失去生命值时，改为获得等量的生命值上限。
+class CATA_155_ReplaceHeroDamage(TargetedAction):
+    TARGET = ActionArg()
+    AMOUNT = IntArg()
+
+    def do(self, source, target, amount):
+        if not source.controller.current_player:
+            return
+
+        current_health = target.health
+        return source.game.queue_actions(
+            source,
+            [
+                Predamage(target, 0),
+                Buff(target, "CATA_155e", max_health=amount),
+                SetCurrentHealth(target, current_health),
+            ],
+        )
+
+
 class CATA_155:
     """Arisen Onyxia"""
 
@@ -18,19 +37,48 @@ class CATA_155:
     play = Summon(CONTROLLER, "CATA_155t") * 2
 
     # 当你的英雄在你的回合即将失去生命值时，改为获得等量的生命值上限
-    # 简化实现：在你的回合开始时，给英雄+2最大生命值（模拟）
-    events = OWN_TURN_BEGIN.on(Buff(FRIENDLY_HERO, "CATA_155e"))
+    events = Predamage(FRIENDLY_HERO).on(
+        CATA_155_ReplaceHeroDamage(Predamage.TARGET, Predamage.AMOUNT)
+    )
 
 
 # CATA_155e: 奥妮克希亚的鳞片
+@custom_card
 class CATA_155e:
     tags = {
-        GameTag.HEALTH: 2,
+        GameTag.CARDNAME: "Black Scales",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
     }
 
 
 # CATA_155t: 奥妮克希亚之翼 (1费 1/1 龙)
 # 被召唤时，获取一张消耗为(1)的随从牌，它在本回合中会消耗生命值。兆示两次后升级。
+def _cataclysm_herald_count(player, herald):
+    return getattr(player, "_cataclysm_heralds", {}).get(herald, 0)
+
+
+class CATA_OnyxiaHerald(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        heralds = getattr(target, "_cataclysm_heralds", {}).copy()
+        heralds["onyxia"] = heralds.get("onyxia", 0) + 1
+        target._cataclysm_heralds = heralds
+
+
+class CATA_155t_GiveHealthCostMinion(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        cost = 2 if _cataclysm_herald_count(target, "onyxia") >= 2 else 1
+        cards = RandomMinion(cost=cost).evaluate(source)
+        if not hasattr(cards, "__iter__"):
+            cards = [cards]
+        for card in cards:
+            card.costs_health_turn = source.game.turn
+        return source.game.queue_actions(source, [Give(target, cards)])
+
+
 class CATA_155t:
     """Onyxia's Wing"""
 
@@ -39,8 +87,7 @@ class CATA_155t:
     }
 
     # 被召唤时，获取一张消耗为(1)的随从牌，它在本回合中会消耗生命值
-    # 简化实现：直接获取一张1费随从
-    play = Give(CONTROLLER, RandomMinion(cost=1))
+    play = CATA_155t_GiveHealthCostMinion(CONTROLLER)
 
 
 # CATA_155t1: 奥妮克希亚之翼（升级版）
@@ -52,7 +99,7 @@ class CATA_155t1:
     }
 
     # 被召唤时，获取一张消耗为(1)的随从牌，它在本回合中会消耗生命值
-    play = Give(CONTROLLER, RandomMinion(cost=1))
+    play = CATA_155t_GiveHealthCostMinion(CONTROLLER)
 
 
 # CATA_161: 残恶梦魇 (3费 3/3)
@@ -60,23 +107,26 @@ class CATA_155t1:
 class CATA_161:
     """Gruesome Nightmare"""
 
-    requirements = {
-        PlayReq.REQ_TARGET_TO_PLAY: 0,
-        PlayReq.REQ_MINION_TARGET: 0,
-    }
-
-    # 战吼：使目标随从获得等同于本随从攻击力的攻击力
-    def play(self):
-        yield Buff(TARGET, "CATA_161e", atk=ATK(SELF))
+    play = Choice(CONTROLLER, (FRIENDLY_HAND + MINION) | FRIENDLY_MINIONS).then(
+        Buff(Choice.CARD, "CATA_161e", atk=ATK(SELF))
+    )
 
 
 # CATA_464: 黑翼实验品 (2费 3/1 龙)
 # 亡语：获取一张消耗为(2)的法术牌，该法术能造成等同于本随从攻击力的伤害。
+class CATA_464_GiveDragonBreath(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        card = target.card("CATA_464t", source=source)
+        card._dragon_breath_damage = source.atk
+        source.game.queue_actions(source, [Give(target, card)])
+
+
 class CATA_464:
     """Blackwing Experiment"""
 
-    # 亡语：获取一张2费法术
-    deathrattle = Give(CONTROLLER, RandomSpell(cost=2))
+    deathrattle = CATA_464_GiveDragonBreath(CONTROLLER)
 
 
 # CATA_464t: 龙息 (2费 法术)
@@ -84,16 +134,37 @@ class CATA_464:
 class CATA_464t:
     """Dragon Breath"""
 
-    play = Hit(TARGET, 3)
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+    }
+
+    def play(self):
+        yield Hit(TARGET, getattr(self, "_dragon_breath_damage", 3))
 
 
 # CATA_465: 投喂加餐 (8费 法术)
 # 召唤五条5/4的亡灵幼龙。消耗8份残骸，使其获得突袭。
+class CATA_465_SummonDrakes(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        spend_corpses = getattr(player, "corpses", 0) >= 8
+        if spend_corpses:
+            player.corpses -= 8
+
+        actions = []
+        for _ in range(5):
+            summon = Summon(player, "CATA_465t")
+            if spend_corpses:
+                summon = summon.then(GiveRush(Summon.CARD))
+            actions.append(summon)
+        source.game.queue_actions(source, actions)
+
+
 class CATA_465:
     """Chow Down"""
 
-    # 召唤五条5/4亡灵幼龙
-    play = Summon(CONTROLLER, "CATA_465t") * 5
+    play = CATA_465_SummonDrakes(CONTROLLER)
 
 
 # CATA_465t: 饥饿的幼龙 (5费 5/4 龙)
@@ -171,23 +242,25 @@ class CATA_470t1:
 class CATA_780:
     """Obsessive Technician"""
 
-    # Lifesteal. Battlecry: Herald (Soldier of Onyxia).
-    tags = {GameTag.LIFESTEAL: True}
-    herald_soldier_id = "CATA_780t"
-    play = Herald(CONTROLLER)
+    tags = {
+        GameTag.LIFESTEAL: True,
+    }
+
+    # 战吼：兆示
+    play = CATA_OnyxiaHerald(CONTROLLER)
 
 
+# CATA_780t: 奥妮克希亚的士兵 (1费 1/1 龙)
+# 被召唤时，获取一张消耗为(1)的随从牌，它在本回合中会消耗生命值。兆示两次后升级。
 class CATA_780t:
     """Soldier of Onyxia"""
 
-    tags = {GameTag.CARDRACE: Race.DRAGON}
+    tags = {
+        GameTag.CARDRACE: Race.DRAGON,
+    }
 
-    # When summoned, get a random {herald_count}-Cost minion. Uses
-    # summon_trigger so effects fire on any summon path, not just Herald.
-    @staticmethod
-    def summon_trigger(self):
-        cost = max(1, self.controller.herald_count)
-        return [Give(CONTROLLER, RandomMinion(cost=cost))]
+    # 被召唤时，获取一张消耗为(1)的随从牌
+    play = CATA_155t_GiveHealthCostMinion(CONTROLLER)
 
 
 ##
@@ -199,9 +272,8 @@ class CATA_780t:
 class CATA_156:
     """Experimental Animation"""
 
-    # Herald (Soldier of Onyxia). Deal 4 damage to all enemy minions.
-    herald_soldier_id = "CATA_780t"
-    play = Herald(CONTROLLER), Hit(ENEMY_MINIONS, 4)
+    # 兆示。对所有敌方随从造成4点伤害
+    play = CATA_OnyxiaHerald(CONTROLLER), Hit(ENEMY_MINIONS, 4)
 
 
 # CATA_471: 塔兰吉的奋战 (5费 法术)

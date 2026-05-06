@@ -20,26 +20,6 @@ export type CardData = {
   type?: string;
   base_damage?: number;
   is_damage_spell?: boolean;
-  is_hero_card?: boolean;
-  summon_as_minion?: boolean;
-  is_tradeable?: boolean;
-  is_miniaturize?: boolean;
-  has_quickdraw?: boolean;
-  quickdraw_active?: boolean;
-  has_outcast?: boolean;
-  has_corrupt?: boolean;
-  has_infuse?: boolean;
-  infuse_progress?: number;
-  infuse_threshold?: number;
-};
-
-export type TitanAbilityData = {
-  index: number;
-  name: string;
-  text?: string;
-  is_used: boolean;
-  requires_target: boolean;
-  valid_targets?: string[];
 };
 
 export type MinionData = {
@@ -66,9 +46,6 @@ export type MinionData = {
   text?: string;
   race?: string;
   mechanics?: string[];
-  is_titan?: boolean;
-  titan_abilities?: TitanAbilityData[];
-  titan_ability_cooldown?: boolean;
 };
 
 export type WeaponData = {
@@ -76,18 +53,6 @@ export type WeaponData = {
   atk: number;
   durability: number;
   max_durability: number;
-};
-
-export type LocationData = {
-  id?: string;
-  name: string;
-  text?: string;
-  durability: number;
-  max_durability: number;
-  cooldown: boolean;
-  is_usable: boolean;
-  requires_target: boolean;
-  valid_targets?: string[];
 };
 
 export type HeroPowerData = {
@@ -105,6 +70,18 @@ export type HeroPowerData = {
   is_life_tap?: boolean;
   health_cost?: number;
   is_totemic_call?: boolean;
+};
+
+export type HeroTransformData = {
+  player: string;
+  old_hero?: string;
+  old_hero_id?: string;
+  new_hero: string;
+  new_hero_id?: string;
+  card_id?: string;
+  hero_power: string;
+  hero_power_id?: string;
+  armor: number;
 };
 
 export type LogEntry = {
@@ -136,6 +113,8 @@ export type GameState = {
   player: {
     hero: string;
     hero_id?: string;
+    hero_class?: string;
+    is_hero_card?: boolean;
     health: number;
     max_health: number;
     armor: number;
@@ -148,7 +127,6 @@ export type GameState = {
     can_end_turn: boolean;
     hero_power: HeroPowerData;
     weapon: WeaponData | null;
-    locations?: LocationData[];
     fatigue_counter?: number;
     hand_size?: number;
     max_hand_size?: number;
@@ -164,19 +142,12 @@ export type GameState = {
     temp_mana?: number;
     used_mana?: number;
     choice?: ChoiceData | null;
-    // Modern mechanic resource counters (default 0 — only render when > 0)
-    corpses?: number;
-    herald_count?: number;
-    imbue_count?: number;
-    excavate_count?: number;
-    starship_pieces?: number;
-    is_building_starship?: boolean;
-    dark_gifts_given?: number;
-    jade_golem?: number;
   };
   opponent: {
     hero: string;
     hero_id?: string;
+    hero_class?: string;
+    is_hero_card?: boolean;
     health: number;
     max_health: number;
     armor: number;
@@ -189,20 +160,10 @@ export type GameState = {
     has_taunt?: boolean;
     hero_power: HeroPowerData;
     weapon: WeaponData | null;
-    locations?: LocationData[];
     fatigue_counter?: number;
     secret_count: number;
     overload_locked?: number;
     overloaded?: number;
-    // Mirror modern resource counters for opponent
-    corpses?: number;
-    herald_count?: number;
-    imbue_count?: number;
-    excavate_count?: number;
-    starship_pieces?: number;
-    is_building_starship?: boolean;
-    dark_gifts_given?: number;
-    jade_golem?: number;
   };
   logs: LogEntry[];
 };
@@ -250,7 +211,7 @@ class GameService {
       socketService.emit('use_hero_power', {
         game_id: this.gameId,
         target_id: targetId,
-        choose_card_id: chooseCardId,
+        choose_card_id: chooseCardId
       });
     }
   }
@@ -272,40 +233,6 @@ class GameService {
         target_id: targetId
       });
     }
-  }
-
-  useTitanAbility(minionIndex: number, abilityIndex: number, targetId?: string) {
-    if (this.gameId) {
-      socketService.emit('use_titan_ability', {
-        game_id: this.gameId,
-        minion_index: minionIndex,
-        ability_index: abilityIndex,
-        target_id: targetId,
-      });
-    }
-  }
-
-  tradeCard(cardIndex: number) {
-    if (this.gameId) {
-      socketService.emit('trade_card', {
-        game_id: this.gameId,
-        card_index: cardIndex,
-      });
-    }
-  }
-
-  useLocation(locationIndex: number, targetId?: string) {
-    if (this.gameId) {
-      socketService.emit('use_location', {
-        game_id: this.gameId,
-        location_index: locationIndex,
-        target_id: targetId,
-      });
-    }
-  }
-
-  onCardTraded(callback: (data: { game_id: string; player: string; card_name: string; card_id: string }) => void) {
-    socketService.on('card_traded', (data) => callback(data as { game_id: string; player: string; card_name: string; card_id: string }));
   }
 
   makeChoice(cardIndex: number) {
@@ -350,11 +277,11 @@ class GameService {
   }
 
   onFatigueDamage(callback: (data: { game_id: string; fatigue: { player: string; damage: number; counter: number; message: string } }) => void) {
-    socketService.on('fatigue_damage', callback);
+    socketService.on('fatigue_damage', (data) => callback(data as { game_id: string; fatigue: { player: string; damage: number; counter: number; message: string } }));
   }
 
-  onHeroTransformed(callback: (data: { game_id: string; player: string; hero_id: string; hero_name: string }) => void) {
-    socketService.on('hero_transformed', (data) => callback(data as { game_id: string; player: string; hero_id: string; hero_name: string }));
+  onHeroTransformed(callback: (data: { game_id: string; hero: HeroTransformData }) => void) {
+    socketService.on('hero_transformed', (data) => callback(data as { game_id: string; hero: HeroTransformData }));
   }
 
   cleanup() {

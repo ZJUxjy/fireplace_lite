@@ -9,6 +9,14 @@ from ..utils import *
 _SELF_IF_MANA_EMPTY = FuncSelector(
     lambda entities, source: [source] if source.controller.mana == 0 else []
 )
+_WICKERFANG_LEGS = FuncSelector(
+    lambda entities, source: [
+        entity
+        for entity in entities
+        if getattr(entity, "id", "").startswith("CATA_139t")
+        and entity.controller is source.controller
+    ]
+)
 
 
 class CATA_130:
@@ -96,6 +104,16 @@ class CATA_135t:
 CATA_135e = buff(atk=1, health=1)
 
 
+class CATA_138_ForestsGift(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        amount = Count(FRIENDLY_MINIONS).evaluate(source)
+        return source.game.queue_actions(source, [
+            Buff(target, "CATA_138e", atk=amount, max_health=amount)
+        ])
+
+
 # CATA_138: 森林赠礼 (2费 法术)
 # 给一个随从 +1/+1，数值等于你控制的随从数量
 class CATA_138:
@@ -104,10 +122,10 @@ class CATA_138:
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
         PlayReq.REQ_MINION_TARGET: 0,
+        PlayReq.REQ_FRIENDLY_TARGET: 0,
     }
 
-    # 获得等同于随从数量的+1/+1
-    play = Buff(TARGET, "CATA_138e")
+    play = CATA_138_ForestsGift(TARGET)
 
 
 CATA_138e = buff(+1, +1)
@@ -116,15 +134,28 @@ CATA_138e = buff(+1, +1)
 # CATA_139: 柳牙 (6费 0/5)
 # 巨型+4
 # 在柳牙的一条腿获得属性后，柳牙也获得相同属性
+class CATA_139_CopyLegStats(TargetedAction):
+    TARGET = ActionArg()
+    BUFF = CardArg()
+
+    def do(self, source, target, buff):
+        atk = getattr(buff, "atk", 0)
+        health = getattr(buff, "max_health", 0)
+        if atk or health:
+            return source.game.queue_actions(
+                source, [Buff(target, "CATA_139e", atk=atk, max_health=health)]
+            )
+
+
 class CATA_139:
     """Wickerfang"""
 
     # 巨型+4：召唤4条腿
     play = Summon(CONTROLLER, "CATA_139t"), Summon(CONTROLLER, "CATA_139t2"), Summon(CONTROLLER, "CATA_139t3"), Summon(CONTROLLER, "CATA_139t4")
 
-    # 简化实现：每回合结束时获得+1/+1 (腿也会获得)
-    # 柳牙的效果是在腿获得buff时同步获得，这里简化为每回合结束时获得buff
-    pass
+    events = Buff(_WICKERFANG_LEGS, None).after(
+        CATA_139_CopyLegStats(SELF, Buff.BUFF)
+    )
 
 
 # CATA_139t, CATA_139t2, CATA_139t3, CATA_139t4: 柳牙之腿 (1费 0/2)
@@ -148,10 +179,34 @@ CATA_139te = buff(+1, +1)
 class CATA_140:
     """Merithra of the Dream"""
 
+    progress_total = 25
+
     # 战吼：将随机龙牌填入你的手牌直到满（10张上限）
     def play(self):
         count = 10 - len(self.controller.hand)
-        return [Give(CONTROLLER, RandomDragon()) for _ in range(max(0, count))]
+        actions = []
+        for _ in range(max(0, count)):
+            action = Give(CONTROLLER, RandomDragon())
+            if self.progress >= self.progress_total:
+                action = action.then(Buff(Give.CARD, "CATA_140e"))
+            actions.append(action)
+        return actions
+
+    class Hand:
+        events = SpendMana(CONTROLLER).after(
+            AddProgress(SELF, CONTROLLER, SpendMana.AMOUNT)
+        )
+
+
+@custom_card
+class CATA_140e:
+    """Merithra of the Dream Discount"""
+
+    tags = {
+        GameTag.CARDNAME: "Merithra of the Dream Discount",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
+    cost = SET(1)
 
 
 ##
@@ -163,27 +218,19 @@ class CATA_140:
 class CATA_134:
     """Wildwood Circle"""
 
-    # Shatter. Summon two 2/2 Treants. Give your minions "Deathrattle:
-    # Summon a 2/2 Treant." After playing, also add the two halves to hand.
-    shatter_halves = ("CATA_134t", "CATA_134t2")
-    play = (
-        Summon(CONTROLLER, "CATA_134t3") * 2,
-        Buff(FRIENDLY_MINIONS, "CATA_134e"),
-        Shatter(CONTROLLER),
-    )
+    # 合成后的裂变牌执行两个半张效果。
+    play = Summon(CONTROLLER, "CATA_134t3") * 2, Buff(FRIENDLY_MINIONS, "CATA_134e")
 
 
 class CATA_134t:
-    """Wildwood Circle (Shattered half 1)"""
+    """Wildwood Circle"""
 
-    # Summon two 2/2 Treants.
     play = Summon(CONTROLLER, "CATA_134t3") * 2
 
 
 class CATA_134t2:
-    """Wildwood Circle (Shattered half 2)"""
+    """Wildwood Circle"""
 
-    # Give your minions "Deathrattle: Summon a 2/2 Treant."
     play = Buff(FRIENDLY_MINIONS, "CATA_134e")
 
 

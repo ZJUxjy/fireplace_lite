@@ -4,6 +4,16 @@ from ..utils import *
 ##
 # Minions
 
+
+class CATA_GuldanHerald(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        heralds = getattr(target, "_cataclysm_heralds", {}).copy()
+        heralds["guldan"] = heralds.get("guldan", 0) + 1
+        target._cataclysm_heralds = heralds
+
+
 # CATA_490: 魔眼秘术师 (3费 3/6 嘲讽)
 # 战吼：选择你手牌中的一张牌并弃掉
 class CATA_490:
@@ -13,52 +23,58 @@ class CATA_490:
     tags = {GameTag.TAUNT: True}
 
     # 战吼：选择一张手牌并弃掉
-    play = Discard(TARGET)
-
-    requirements = {
-        PlayReq.REQ_TARGET_TO_PLAY: 0,
-        PlayReq.REQ_MINION_TARGET: 0,
-    }
+    play = Choice(CONTROLLER, FRIENDLY_HAND - SELF).then(Discard(Choice.CARD))
 
 
-# CATA_491: 怪异触手 (5费 5/4)
-# 对所有随从造成$3点伤害。重复（打出后回到手牌）
+# CATA_491: 怪异触手 (6费 法术)
+# 对所有随从造成$3点伤害。重复此效果，每次伤害减少1点。
 class CATA_491:
-    """Tentacle"""
+    """Eldritch Tentacles"""
 
-    # 对所有随从造成3点伤害，然后回到手牌（重复）
-    play = Hit(ALL_MINIONS, 3), Give(CONTROLLER, "CATA_491")
+    def play(self):
+        yield Hit(ALL_MINIONS, 3)
+        yield Deaths()
+        yield Hit(ALL_MINIONS, 2)
+        yield Deaths()
+        yield Hit(ALL_MINIONS, 1)
 
 
 # CATA_492: 暮光神坛 (3费 2/5)
 # 兆示{0}。抽一张牌
 class CATA_492:
-    """Twilight Altar (Location)"""
+    """Shrine of Twilight"""
 
-    # Use: Herald (Soldier of Cho'gall). Draw a card.
-    herald_soldier_id = "CATA_725t"
-    location_action = Herald(CONTROLLER), Draw(CONTROLLER)
+    # 兆示。抽一张牌
+    activate = CATA_GuldanHerald(CONTROLLER), Draw(CONTROLLER)
 
 
-# CATA_493: 地狱公爵 (4费 4/4 突袭)
+def _fiendish_servant_stats(entity, amount):
+    return amount + (2 * entity.controller.discarded_cards_this_game)
+
+
+# CATA_493: 地狱公爵 (4费 2/2 突袭)
 # 在本局对战中，你每弃掉一张牌，便拥有+2/+2
 class CATA_493:
-    """Fiendish Servant"""
+    """Duke of Below"""
 
     tags = {GameTag.RUSH: True}
 
-    # 在本局对战中，你每弃掉一张牌，便拥有+2/+2
-    # 简化实现：弃掉卡牌时触发
-    events = Discard(FRIENDLY_HAND).on(Buff(SELF, "CATA_493e"))
+    update = Refresh(SELF, {
+        GameTag.ATK: _fiendish_servant_stats,
+        GameTag.HEALTH: _fiendish_servant_stats,
+    })
 
-
-CATA_493e = buff(+2, +2)
+    class Hand:
+        update = Refresh(SELF, {
+            GameTag.ATK: _fiendish_servant_stats,
+            GameTag.HEALTH: _fiendish_servant_stats,
+        })
 
 
 # CATA_494: 马洛拉克 (5费 4/6)
 # 在你弃掉一张随从牌后，召唤一个该随从的复制
 class CATA_494:
-    """Malorne"""
+    """Maloriak"""
 
     # 在你弃掉一张随从牌后，召唤一个该随从的复制
     events = Discard(FRIENDLY_HAND + MINION).after(Summon(CONTROLLER, Copy(Discard.TARGET)))
@@ -66,8 +82,20 @@ class CATA_494:
 
 # CATA_496: 诅咒之链 (5费 4/4)
 # 直到敌方回合结束，夺取一个敌方随从的控制权。在本回合中，该随从无法攻击
+class CATA_496_ReturnAtEnemyTurnEnd(TargetedAction):
+    TARGET = ActionArg()
+    PLAYER = ActionArg()
+
+    def do(self, source, target, player):
+        if player is not source.controller.opponent:
+            return
+        ret = source.game.queue_actions(source, [Steal(target, player)])
+        source.remove()
+        return ret
+
+
 class CATA_496:
-    """Cursed Chain"""
+    """Cursed Chains"""
 
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
@@ -76,26 +104,44 @@ class CATA_496:
     }
 
     # 夺取控制权，并使其无法攻击
-    play = Steal(TARGET), SetTags(TARGET, {GameTag.CANT_ATTACK: True})
-
-    # 敌方回合结束时移除无法攻击的标记
-    events = OWN_TURN_END.on(UnsetTags(TARGET, {GameTag.CANT_ATTACK: True}))
+    play = Steal(TARGET), Buff(TARGET, "CATA_496e")
 
 
-# CATA_498: 拉法姆的奋战 (1费 2/2)
+class CATA_496e:
+    tags = {
+        GameTag.CANT_ATTACK: True,
+    }
+
+    events = EndTurn().on(
+        CATA_496_ReturnAtEnemyTurnEnd(OWNER, EndTurn.PLAYER)
+    )
+
+
+# CATA_498: 拉法姆的奋战 (3费 法术)
 # 随机对两个敌方随从造成$@点伤害。（每回合都会升级！）
 class CATA_498:
-    """Rafaam's Strider"""
+    """Rafaams' Last Stand"""
 
-    # 简化实现：每回合开始时升级伤害
-    # 初始造成2点伤害，每回合+1
-    events = OWN_TURN_BEGIN.on(Hit(RANDOM(ENEMY_MINIONS) * 2, 1))
+    def play(self):
+        amount = 2 + sum(1 for buff in self.buffs if buff.id == "CATA_498e")
+        yield Hit(RANDOM(ENEMY_MINIONS) * 2, amount)
+
+    class Hand:
+        events = OWN_TURN_BEGIN.on(Buff(SELF, "CATA_498e"))
+
+
+@custom_card
+class CATA_498e:
+    tags = {
+        GameTag.CARDNAME: "Rafaams' Last Stand Upgrade",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+    }
 
 
 # CATA_499: 助祭耗材 (3费 2/3)
 # 当你使用或弃掉本牌时，随机召唤两个法力值消耗为（1）的随从
 class CATA_499:
-    """Sacrificial Summoner"""
+    """Disposable Acolytes"""
 
     # 战吼（使用时）：召唤两个1费随从
     play = Summon(CONTROLLER, RandomMinion(cost=1)) * 2
@@ -108,9 +154,10 @@ class CATA_499:
 class CATA_725:
     """Shadowsworn Disciple"""
 
-    # Battlecry: Herald (Soldier of Cho'gall). Deathrattle: Restore 3 Health.
-    herald_soldier_id = "CATA_725t"
-    play = Herald(CONTROLLER)
+    # 战吼：兆示
+    play = CATA_GuldanHerald(CONTROLLER)
+
+    # 亡语：恢复3点生命值
     deathrattle = Heal(FRIENDLY_HERO, 3)
 
 
@@ -118,7 +165,7 @@ class CATA_725:
 # 巨型+2
 # 你的手臂和士兵改为消灭敌方牌库中的随从
 class CATA_726:
-    """Gul'dan, Aspect of the Void"""
+    """Cho'gall, Mastermind"""
 
     tags = {GameTag.ELITE: True}
 
@@ -130,7 +177,7 @@ class CATA_726:
 # CATA_726t: 古加尔的手臂 (1费 1/1)
 # 在你的回合结束时，消灭本随从右边的随从以获得+2/+2
 class CATA_726t:
-    """Gul'dan's Arm"""
+    """Cho's Arm"""
 
     tags = {
         GameTag.COLOSSAL_LIMB: True,
@@ -148,7 +195,7 @@ CATA_726te = buff(+2, +2)
 
 # CATA_726t1: 加尔的手臂 (1费 1/1)
 class CATA_726t1:
-    """Gahz'rilla's Arm"""
+    """Gall's Arm"""
 
     tags = {
         GameTag.COLOSSAL_LIMB: True,
@@ -163,7 +210,7 @@ class CATA_726t1:
 # CATA_725t: 古加尔的士兵 (1费 1/1)
 # 在你的回合结束时，消灭本随从右边的随从以获得+2/+2
 class CATA_725t:
-    """Gul'dan's Soldier"""
+    """Soldier of Cho'gall"""
 
     events = OWN_TURN_END.on(
         Destroy(RIGHT_OF(SELF)),
@@ -190,9 +237,16 @@ class CATA_725te:
 
 # CATA_791: 残影 (2费 法术)
 # 造成4点伤害。重复
+@custom_card
 class CATA_791:
     """Shadowflame"""
 
+    tags = {
+        GameTag.CARDNAME: "Shadowflame",
+        GameTag.CARDTYPE: CardType.SPELL,
+        GameTag.CLASS: CardClass.WARLOCK,
+        GameTag.COST: 2,
+    }
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
         PlayReq.REQ_MINION_TARGET: 0,
@@ -204,13 +258,64 @@ class CATA_791:
 
 # CATA_792: 暗影之怒 (6费 法术)
 # 造成8点伤害。分裂：召唤两个3/3
+@custom_card
 class CATA_792:
     """Shadow Shock"""
 
-    # 造成8点伤害
-    # 简化实现：直接造成8点伤害
+    tags = {
+        GameTag.CARDNAME: "Shadow Shock",
+        GameTag.CARDTYPE: CardType.SPELL,
+        GameTag.CLASS: CardClass.WARLOCK,
+        GameTag.COST: 6,
+    }
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+    }
+
+    # 合成后的裂变牌执行两个半张效果。
+    play = Hit(TARGET, 8), Summon(CONTROLLER, "CATA_792t3") * 2
+
+
+@custom_card
+class CATA_792t:
+    """Shadow Shock"""
+
+    tags = {
+        GameTag.CARDNAME: "Shadow Shock",
+        GameTag.CARDTYPE: CardType.SPELL,
+        GameTag.CLASS: CardClass.WARLOCK,
+        GameTag.COST: 6,
+    }
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
     }
 
     play = Hit(TARGET, 8)
+
+
+@custom_card
+class CATA_792t2:
+    """Shadow Shock"""
+
+    tags = {
+        GameTag.CARDNAME: "Shadow Shock",
+        GameTag.CARDTYPE: CardType.SPELL,
+        GameTag.CLASS: CardClass.WARLOCK,
+        GameTag.COST: 6,
+    }
+
+    play = Summon(CONTROLLER, "CATA_792t3") * 2
+
+
+@custom_card
+class CATA_792t3:
+    """Shadow Shock"""
+
+    tags = {
+        GameTag.CARDNAME: "Shadow Shock",
+        GameTag.CARDTYPE: CardType.MINION,
+        GameTag.CLASS: CardClass.WARLOCK,
+        GameTag.COST: 3,
+        GameTag.ATK: 3,
+        GameTag.HEALTH: 3,
+    }

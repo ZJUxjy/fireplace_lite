@@ -1,4 +1,5 @@
 from ..utils import *
+from fireplace.cards import db
 
 
 class _DoubleHandAction(TargetedAction):
@@ -11,6 +12,38 @@ class _DoubleHandAction(TargetedAction):
 
 
 DOUBLE_HAND = _DoubleHandAction(CONTROLLER)
+
+
+class TIME_EVENT_997_ReopenLocation(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, location):
+        location.location_exhausted = False
+        location.tags[GameTag.DEATHRATTLE] = True
+        location.additional_deathrattles.append(
+            (Summon(CONTROLLER, RandomMinion(cost=3)),)
+        )
+        source.game.manager.targeted_action(self, source, location)
+
+
+class TIME_EVENT_301_DestroyOtherMinions(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        dragon_count = sum(
+            1
+            for card in source.controller.hand
+            if Race.DRAGON in getattr(card, "races", [])
+        )
+        candidates = [
+            card
+            for card in source.game.board
+            if card.type == CardType.MINION and card is not source and not card.dead
+        ]
+        count = min(1 + dragon_count, len(candidates))
+        if count:
+            targets = source.game.random.sample(candidates, count)
+            return source.game.queue_actions(source, [Destroy(target) for target in targets])
 
 
 ##
@@ -108,12 +141,34 @@ class TIME_024:
 
 
 # TIME_035: Time Machine (6费 6/6)
-# 在你的回合结束时，召唤一个4/4的构造体
+# 嘲讽。亡语：获取一张随机回溯牌
+class TIME_035_Deathrattle(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        pool = [
+            card_id
+            for card_id, data in db.items()
+            if data.collectible
+            and data.tags.get(GameTag.REWIND)
+            and (not source.game.is_standard or data.is_standard)
+        ]
+        if not pool and source.game.is_standard:
+            pool = [
+                card_id
+                for card_id, data in db.items()
+                if data.collectible and data.tags.get(GameTag.REWIND)
+            ]
+        if pool:
+            return source.game.queue_actions(
+                source, [Give(player, source.game.random.choice(pool))]
+            )
+
+
 class TIME_035:
     """Time Machine"""
 
-    # 在你的回合结束时，召唤一个4/4的构造体
-    events = OWN_TURN_END.on(Summon(CONTROLLER, RandomMinion(cost=4)))
+    deathrattle = TIME_035_Deathrattle(CONTROLLER)
 
 
 # TIME_038: Mister Clocksworth (8费 3/3)
@@ -126,16 +181,11 @@ class TIME_038:
 
 
 # TIME_040: Fading Memory (4费 6/3)
-# 战吼：将一个随机随从的费用变为0
+# 亡语：获取一张随机来自过去的5费随从牌
 class TIME_040:
     """Fading Memory"""
 
-    # 战吼：将一个随机随从的费用变为0
-    play = Buff(RANDOM(FRIENDLY_HAND + MINION), "TIME_040e")
-
-
-class TIME_040e:
-    cost = SET(0)
+    deathrattle = Give(CONTROLLER, RandomMinion(cost=5, is_standard=False))
 
 
 # TIME_041: Futuristic Forefather (4费 4/4)
@@ -219,12 +269,11 @@ TIME_051e = buff(+2, +2)
 
 
 # TIME_052: Amber Warden (8费 4/12)
-# 战吼：获得一个空的法力水晶
+# 嘲讽。亡语：召唤一个随机来自过去的随从
 class TIME_052:
     """Amber Warden"""
 
-    # 战吼：获得一个空的法力水晶
-    play = GainEmptyMana(CONTROLLER, 1)
+    deathrattle = Summon(CONTROLLER, RandomMinion(is_standard=False))
 
 
 # TIME_053: Sandmaw (3费 7/2)
@@ -373,13 +422,21 @@ class TIME_102:
     events = OWN_TURN_BEGIN.on(GainEmptyMana(CONTROLLER, 1))
 
 
+class TIME_103_Deathrattle(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        played_ids = {card.id for card in player.cards_played_this_game}
+        targets = [card for card in list(player.deck) if card.id in played_ids]
+        return source.game.queue_actions(source, [ForceDraw(card) for card in targets])
+
+
 # TIME_103: Chromie (6费 4/6)
-# 在你的回合结束时，将你的手牌翻倍
+# 亡语：抽取你在本局对战中使用过的牌的另一张复制
 class TIME_103:
     """Chromie"""
 
-    # 在你的回合结束时，将你的手牌翻倍
-    events = OWN_TURN_END.on(DOUBLE_HAND)
+    deathrattle = TIME_103_Deathrattle(CONTROLLER)
 
 
 # TIME_428: Yesterloc (2费 3/1)
@@ -439,13 +496,7 @@ class TIME_EVENT_301:
     """Disciple of Demise"""
 
     # 战吼：随机消灭另一个随从；每持有一张龙牌，重复一次
-    def play(self):
-        dragon_count = sum(
-            1 for c in self.controller.hand
-            if Race.DRAGON in getattr(c, "races", [])
-        )
-        for _ in range(1 + dragon_count):
-            yield Destroy(RANDOM(ENEMY_MINIONS))
+    play = TIME_EVENT_301_DestroyOtherMinions(SELF)
 
 
 # TIME_EVENT_997: Welcome Home! (3费 法术)
@@ -453,8 +504,14 @@ class TIME_EVENT_301:
 class TIME_EVENT_997:
     """Welcome Home!"""
 
-    # 重新打开一个位置（简化实现：抽一张牌）
-    play = Draw(CONTROLLER)
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_FRIENDLY_TARGET: 0,
+        PlayReq.REQ_LOCATION_TARGET: 0,
+    }
+
+    # 重新打开一个位置。使其获得“亡语：随机召唤一个法力值消耗为（3）的随从”
+    play = TIME_EVENT_997_ReopenLocation(TARGET)
 
 
 # TIME_EVENT_999: Sands of Time (1费 法术)

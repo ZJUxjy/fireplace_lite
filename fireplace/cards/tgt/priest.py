@@ -17,6 +17,7 @@ AT_011e = buff(atk=2)
 class AT_012:
     """Spawn of Shadows"""
 
+    play = Hit(ALL_HEROES, 4)
     inspire = Hit(ALL_HEROES, 4)
 
 
@@ -34,6 +35,7 @@ class AT_014e:
 class AT_018:
     """Confessor Paletress"""
 
+    play = Summon(CONTROLLER, RandomMinion(rarity=Rarity.LEGENDARY))
     inspire = Summon(CONTROLLER, RandomMinion(rarity=Rarity.LEGENDARY))
 
 

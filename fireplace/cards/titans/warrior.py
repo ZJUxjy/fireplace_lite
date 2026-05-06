@@ -22,20 +22,31 @@ class TTN_092t:
     pass
 
 
+class TTN_092_AddWeaponEvent(TargetedAction):
+    TARGET = ActionArg()
+    EVENT = ActionArg()
+
+    def do(self, source, player, event):
+        weapon = player.weapon
+        if weapon:
+            weapon._events.append(event)
+
+
 # TTN_092t1: Maintain Order - Give weapon "After hero attacks, draw a card"
 class TTN_092t1:
     """Maintain Order"""
 
-    # 简化：立即抽一张牌
-    play = Draw(CONTROLLER)
+    play = TTN_092_AddWeaponEvent(CONTROLLER, Attack(FRIENDLY_HERO).after(Draw(CONTROLLER)))
 
 
 # TTN_092t2: Commanding Presence - Give weapon "After hero attacks, summon 3/3 Enforcer"
 class TTN_092t2:
     """Commanding Presence"""
 
-    # 简化：立即召唤一个3/3强制执行者
-    play = Summon(CONTROLLER, "TTN_092e2t")
+    play = TTN_092_AddWeaponEvent(
+        CONTROLLER,
+        Attack(FRIENDLY_HERO).after(Summon(CONTROLLER, "TTN_092e2t")),
+    )
 
 
 # TTN_092e2t: Vry'kul Enforcer (3/3 随从)
@@ -49,8 +60,22 @@ class TTN_092e2t:
 class TTN_092t3:
     """Swift Slash"""
 
-    # 简化：给武器+2攻击力
-    play = Buff(FRIENDLY_WEAPON, "TTN_092t3e")
+    play = Buff(FRIENDLY_WEAPON, "TTN_092t3e"), Buff(FRIENDLY_HERO, "TTN_092t3e2")
 
 
-TTN_092t3e = buff(+2, 0)
+@custom_card
+class TTN_092t3e:
+    tags = {
+        GameTag.CARDNAME: "Swift Slash",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.ATK: 2,
+    }
+
+
+@custom_card
+class TTN_092t3e2:
+    tags = {
+        GameTag.CARDNAME: "Swift Slash",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.IMMUNE_WHILE_ATTACKING: True,
+    }

@@ -23,6 +23,108 @@ from .logging import log
 from .utils import random_class
 
 
+SHATTER_SPLITS = {
+    "CATA_134": ("CATA_134t", "CATA_134t2"),
+    "CATA_306": ("CATA_306t1", "CATA_306t2"),
+    "CATA_479": ("CATA_479t", "CATA_479t2"),
+    "CATA_489": ("CATA_489t", "CATA_489t2"),
+    "CATA_820": ("CATA_820t", "CATA_820t2"),
+}
+SHATTER_HALVES = {
+    half: (original, other)
+    for original, halves in SHATTER_SPLITS.items()
+    for half, other in ((halves[0], halves[1]), (halves[1], halves[0]))
+}
+
+
+def _move_to_hand(card, index=None):
+    if index is not None:
+        card._summon_index = index
+    card.zone = Zone.HAND
+    card._summon_index = None
+
+
+def _split_shatter_card(card):
+    if card.zone != Zone.HAND or getattr(card, "_shatter_locked", False):
+        return None
+    halves = SHATTER_SPLITS.get(card.id)
+    if not halves:
+        return None
+
+    player = card.controller
+    available_slots = player.max_hand_size - (len(player.hand) - 1)
+    card.zone = Zone.SETASIDE
+
+    left = player.card(halves[0], source=card, zone=Zone.SETASIDE)
+    left._shatter_original = card.id
+    _move_to_hand(left, 0)
+    cards = [left]
+
+    if available_slots >= 2:
+        right = player.card(halves[1], source=card, zone=Zone.SETASIDE)
+        right._shatter_original = card.id
+        _move_to_hand(right)
+        cards.append(right)
+    return cards
+
+
+def _recombine_shattered_cards(player):
+    for index in range(len(player.hand) - 1):
+        left = player.hand[index]
+        right = player.hand[index + 1]
+        original, other_half = SHATTER_HALVES.get(left.id, (None, None))
+        if not original or right.id != other_half:
+            continue
+
+        left.zone = Zone.SETASIDE
+        right.zone = Zone.SETASIDE
+        combined = player.card(original, source=left, zone=Zone.SETASIDE)
+        combined._shatter_locked = True
+        _move_to_hand(combined, index)
+        return combined
+    return None
+
+
+def _after_discover_choice(choice, card, other_options=None):
+    player = choice.player
+    source = choice.source
+    player._tlc_discovered_turn = source.game.turn
+
+    actions = []
+    for quest in list(player.secrets.filter(id="TLC_460")):
+        actions.append(AddProgress(quest, card))
+    for vault_breaker in list(player.field.filter(id="TLC_483")):
+        actions.append(Buff(card, "TLC_483e"))
+    if actions:
+        source.game.queue_actions(source, actions)
+
+    weapon = player.weapon
+    if not weapon or weapon.id != "TLC_460t":
+        return
+    for other in [other for other in choice.cards if other is not card]:
+        if other_options:
+            source.game.queue_actions(source, other_options(other))
+            continue
+        for action in getattr(choice, "_callback", []):
+            source.game.trigger(source, [action], [choice.target, choice.cards, other])
+    weapon.damage += 1
+    if weapon.durability <= 0:
+        source.game.queue_actions(source, [Destroy(weapon)])
+
+
+def _update_shatter_hand(player, card=None):
+    split_cards = _split_shatter_card(card) if card is not None else None
+    recombined = []
+    while True:
+        combined = _recombine_shattered_cards(player)
+        if not combined:
+            break
+        recombined.append(combined)
+    if recombined and split_cards:
+        return recombined
+    return split_cards
+
+
 def _eval_card(source, card):
     """
     Return a Card instance from \a card
@@ -272,6 +374,9 @@ class Attack(GameAction):
 
         attacker.attack_target = None
         defender.defending = False
+        attacker.controller.friendly_attacks_this_game += 1
+        if attacker.type == CardType.HERO:
+            attacker.controller.hero_attacks_this_game += 1
         if source == attacker:
             attacker.num_attacks += 1
 
@@ -288,6 +393,9 @@ class BeginTurn(GameAction):
         source.turn += 1
         source.log("%s begins turn %i", player, source.turn)
         source.current_player = player
+        for entity in player.field:
+            if entity.type == CardType.LOCATION:
+                entity.location_exhausted = False
         source.manager.step(source.next_step, Step.MAIN_START_TRIGGERS)
         source.manager.step(source.next_step, source.next_step)
         source.game.manager.game_action(self, source, player)
@@ -386,6 +494,17 @@ class EndTurn(GameAction):
 
     PLAYER = ActionArg()
 
+    def broadcast_minion_effects(self, source, at, player):
+        source.game.action_start(BlockType.TRIGGER, source, 0, None)
+        for entity in source.game.entities:
+            if (
+                entity.type == CardType.MINION
+                and entity.controller is player
+                and entity.zone == Zone.PLAY
+            ):
+                self._broadcast(entity, source, at, player)
+        source.game.action_end(BlockType.TRIGGER, source)
+
     def do(self, source, player):
         if player.choice:
             raise InvalidAction(
@@ -395,6 +514,8 @@ class EndTurn(GameAction):
         self.broadcast(source, EventListener.ON, player)
         if player.extra_end_turn_effect:
             self.broadcast(source, EventListener.ON, player)
+        elif player.minion_extra_end_turn_effect:
+            self.broadcast_minion_effects(source, EventListener.ON, player)
         source.game._end_turn()
 
 
@@ -483,6 +604,11 @@ class Play(GameAction):
         card.target = target
         card._summon_index = index
 
+        if choose and card.type == CardType.SPELL and card.must_choose_one:
+            other_choices = [choice for choice in card.choose_cards if choice is not choose]
+            if other_choices:
+                player._last_other_choose_one_spell = other_choices[0].id
+
         battlecry_card = choose or card
         # We check whether the battlecry will trigger, before the card.zone changes
         if battlecry_card.battlecry_requires_target() and not target:
@@ -493,8 +619,10 @@ class Play(GameAction):
 
         card.play_left_most = card is card.controller.hand[0]
         card.play_right_most = card is card.controller.hand[-1]
+        card.played_from_hand_index = card.controller.hand.index(card)
 
         card.zone = Zone.PLAY
+        _update_shatter_hand(player)
 
         # Remember cast on friendly characters
         if card.type == CardType.SPELL and target and target.controller == source:
@@ -508,7 +636,14 @@ class Play(GameAction):
         summon_action = Summon(player, card)
 
         if card.type == CardType.SPELL and card.twinspell:
-            source.game.queue_actions(card, [Give(player, card.twinspell_copy)])
+            twinspell_copy = card.twinspell_copy
+            if twinspell_copy:
+                source.game.queue_actions(card, [Give(player, twinspell_copy)])
+
+        if card.type == CardType.MINION and card.data.tags.get(GameTag.MINIATURIZE):
+            mini_id = card.miniaturize_mini_id
+            if mini_id:
+                source.game.queue_actions(card, [Give(player, mini_id)])
 
         # STARSHIP_PIECE: attach the played piece to the controller's starship
         # so "if you're building a Starship" predicates work and Launch can
@@ -604,6 +739,7 @@ class Play(GameAction):
             if Race.ELEMENTAL in card.races:
                 player.elemental_played_this_turn += 1
         player.cards_played_this_turn += 1
+        player.cards_played_this_turn_list.append(card)
         player.cards_played_this_game.append(card)
         card.turn_played = source.game.turn
         card.choose = None
@@ -803,6 +939,7 @@ class Buff(TargetedAction):
             setattr(buff, k, v)
         buff.apply(target)
         source.game.manager.targeted_action(self, source, target, buff)
+        self.broadcast(source, EventListener.AFTER, target, buff)
         return target
 
 
@@ -860,6 +997,14 @@ class Bounce(TargetedAction):
             log.info("%r is bounced back to %s's hand", target, target.controller)
             target.zone = Zone.HAND
             source.game.manager.targeted_action(self, source, target)
+            if target.id == "EDR_781":
+                return source.game.queue_actions(
+                    source,
+                    [
+                        Summon(target.controller, RandomMinion(cost=2)),
+                        Summon(target.controller, RandomMinion(cost=2)),
+                    ],
+                )
 
 
 class Choice(TargetedAction):
@@ -1086,6 +1231,8 @@ class Damage(TargetedAction):
                 else:
                     # Mark used even if no script so we don't repeatedly check.
                     target.frenzy_used = True
+            if source.type == CardType.SPELL:
+                source.controller.spell_damage_this_turn += amount
         return amount
 
 
@@ -1106,6 +1253,10 @@ class Deathrattle(TargetedAction):
                 else:
                     actions = deathrattle
                 source.game.queue_actions(entity, actions)
+
+                for _ in range(getattr(target, "_extra_deathrattle_repeats", 0)):
+                    log.info("Triggering extra deathrattle for %r", target)
+                    source.game.queue_actions(entity, actions)
 
                 if target.controller.extra_deathrattles:
                     log.info("Triggering deathrattles for %r again", target)
@@ -1150,6 +1301,16 @@ class Battlecry(TargetedAction):
 
     def do(self, source, card, target=None):
         player = source.controller
+        shudderblock_repeats = 0
+        if (
+            card.type == CardType.MINION
+            and card.has_battlecry
+            and card.id not in ("TOY_501", "TOY_501t")
+        ):
+            shudderblock_repeats = getattr(
+                player, "_shudderblock_next_battlecry_repeats", 0
+            )
+            player._shudderblock_next_battlecry_repeats = 0
 
         if card.has_combo and player.combo:
             log.info("Activating %r combo targeting %r", card, target)
@@ -1164,7 +1325,21 @@ class Battlecry(TargetedAction):
 
         source.game.manager.targeted_action(self, source, card, target)
         source.target = target
+        if shudderblock_repeats:
+            player._shudderblock_no_enemy_hero_damage = (
+                getattr(player, "_shudderblock_no_enemy_hero_damage", 0) + 1
+            )
         source.game.main_power(source, actions, target)
+
+        for _ in range(shudderblock_repeats):
+            source.game.main_power(source, actions, target)
+
+        for _ in range(getattr(card, "_extra_battlecry_repeats", 0)):
+            log.info("Triggering extra battlecry for %r", card)
+            source.game.main_power(source, actions, target)
+
+        if shudderblock_repeats:
+            player._shudderblock_no_enemy_hero_damage -= 1
 
         if self.has_extra_battlecries(player, card):
             source.game.main_power(source, actions, target)
@@ -1238,6 +1413,7 @@ class Discard(TargetedAction):
         target.zone = Zone.REMOVEDFROMGAME
         source.game.manager.targeted_action(self, source, target)
         if old_zone == Zone.HAND:
+            target.controller.discarded_cards_this_game += 1
             target.tags[DISCARDED] = True
             actions = target.get_actions("discard")
             source.game.cheat_action(target, actions)
@@ -1295,6 +1471,7 @@ class Discover(TargetedAction):
             self.source.game.trigger(
                 self.source, [action], [self.target, self.cards, card]
             )
+        _after_discover_choice(self, card)
         self.callback = self._callback
         self.trigger_choice_callback()
 
@@ -1332,12 +1509,14 @@ class Draw(TargetedAction):
             card.zone = Zone.HAND
             card.turn_drawn = source.game.turn
             source.controller.cards_drawn_this_turn += 1
+            target.cards_drawn_this_game += 1
             source.game.manager.targeted_action(self, source, target, card)
             if source.game.step > Step.BEGIN_MULLIGAN:
                 # Proc the draw script, but only if we are past mulligan
                 actions = card.get_actions("draw")
                 source.game.cheat_action(card, actions)
             self.broadcast(source, EventListener.ON, target, card, source)
+            _update_shatter_hand(target, card)
 
         return [card]
 
@@ -1404,6 +1583,7 @@ class GainArmor(TargetedAction):
 
     def do(self, source, target, amount):
         target.armor += amount
+        target.controller.armor_gained_this_game += amount
         source.game.manager.targeted_action(self, source, target, amount)
         self.broadcast(source, EventListener.ON, target, amount)
 
@@ -1505,6 +1685,9 @@ class Give(TargetedAction):
             ret.append(card)
             source.game.manager.targeted_action(self, source, target, card)
             self.broadcast(source, EventListener.AFTER, target, card)
+            split_cards = _update_shatter_hand(target, card)
+            if split_cards is not None:
+                ret[-1:] = split_cards
         return ret
 
 
@@ -1517,6 +1700,14 @@ class Hit(TargetedAction):
     AMOUNT = IntArg()
 
     def do(self, source, target, amount):
+        source_controller = getattr(source, "controller", None)
+        if (
+            source_controller is not None
+            and target.type == CardType.HERO
+            and target.controller == source_controller.opponent
+            and getattr(source_controller, "_shudderblock_no_enemy_hero_damage", 0)
+        ):
+            return 0
         amount = source.get_damage(amount, target)
         if amount:
             source.game.manager.targeted_action(self, source, target, amount)
@@ -1572,10 +1763,18 @@ class Heal(TargetedAction):
     AMOUNT = IntArg()
 
     def do(self, source, target, amount):
+        if (
+            target.type == CardType.HERO
+            and getattr(target.controller, "_tlc_250_no_hero_heal", False)
+        ):
+            return
+        amount = source.get_heal(amount, target)
+        amount += source.controller.healing_bonus
         if source.controller.healing_as_damage:
+            source.controller.consume_healing_as_damage()
             return source.game.queue_actions(source.controller, [Hit(target, amount)])
 
-        requested = source.get_heal(amount, target)
+        requested = amount
         actual = min(requested, target.damage)
         overheal = requested - actual
         if actual:
@@ -1701,6 +1900,9 @@ class Reveal(TargetedAction):
     def do(self, source, target):
         log.info("Revealing %r", target)
         if target.zone == Zone.SECRET and target.data.secret:
+            triggered = getattr(target.controller, "triggered_secrets_this_game", [])
+            triggered.append(target.id)
+            target.controller.triggered_secrets_this_game = triggered
             self.broadcast(source, EventListener.ON, target)
             target.zone = Zone.GRAVEYARD
         source.game.manager.targeted_action(self, source, target)
@@ -2250,6 +2452,7 @@ class Shuffle(TargetedAction):
             if len(target.deck) >= target.max_deck_size:
                 log.info("Shuffle(%r) fails because %r's deck is full", card, target)
                 continue
+            target._tlc_shuffle_count = getattr(target, "_tlc_shuffle_count", 0) + 1
             card.zone = Zone.DECK
             target.shuffle_deck()
             source.game.manager.targeted_action(self, source, target, card)
@@ -2386,7 +2589,9 @@ class CastSpell(TargetedAction):
         player.choice = None
 
         if card.twinspell:
-            source.game.queue_actions(card, [Give(player, card.twinspell_copy)])
+            twinspell_copy = card.twinspell_copy
+            if twinspell_copy:
+                source.game.queue_actions(card, [Give(player, twinspell_copy)])
         if card.must_choose_one:
             card = source.game.random.choice(card.choose_cards)
         for target in targets:

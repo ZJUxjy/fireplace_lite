@@ -70,9 +70,10 @@ class DAL_059:
     }
 
     def play(self):
-        minion = self.game.random.choice(
-            self.controller.deck.filter(type=CardType.MINION)
-        )
+        minions = self.controller.deck.filter(type=CardType.MINION)
+        if not minions:
+            return
+        minion = self.game.random.choice(minions)
         if minion:
             yield Summon(CONTROLLER, minion.id) * 2
 
