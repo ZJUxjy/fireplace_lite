@@ -5,7 +5,13 @@ This module is the single source of truth for "which cards can actually be
 played in our simulator". Both the random-deck generator (game.py) and the
 deck builder UI (via /api/cards/all) read from here.
 """
-from typing import Set
+import hashlib
+import json
+from datetime import datetime, timezone
+from typing import Any, Dict, List, Optional, Set
+
+from fireplace.cards import db as _cards_db
+from hearthstone.enums import CardType
 
 
 # Implemented card expansion prefixes (corresponding to fireplace/cards/ subdirectories)
@@ -68,29 +74,12 @@ def is_card_implemented(card_id: str) -> bool:
 # build_catalog() -- full metadata for all implemented + collectible cards
 # ---------------------------------------------------------------------------
 
-import hashlib
-import json
-from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
-
-from fireplace.cards import db as _cards_db
-from hearthstone.enums import CardType
-
 _catalog_cache: Optional[Dict[str, Any]] = None
 
 
 def _ensure_db_initialized() -> None:
     if not _cards_db.initialized:
         _cards_db.initialize()
-
-
-def _safe_text_for(card_id: str, lang: str) -> str:
-    """Get localized text from card_text_loader, return empty string if missing"""
-    from .card_text import card_text_loader
-    info = card_text_loader.card_data.get(card_id, {})
-    if lang == "zhCN":
-        return info.get("name") or ""
-    return ""  # card_text.py currently only caches zhCN+fallback
 
 
 def _english_name(card) -> str:
