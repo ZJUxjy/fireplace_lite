@@ -62,65 +62,11 @@ def get_card_class(class_name: str):
     except KeyError:
         return random_class()
 from .card_text import card_text_loader
-
-# 已实现的卡牌系列前缀（对应 fireplace/cards/ 目录下的文件夹）
-# 只有这些系列的卡牌会被加入随机牌库
-IMPLEMENTED_CARD_PREFIXES = {
-    # Classic
-    'CS2', 'CS3', 'EX1', 'NEW1',
-    # Naxxramas
-    'FP1', 'NX2',
-    # Goblins vs Gnomes
-    'GVG',
-    # Blackrock Mountain
-    'BRM',
-    # The Grand Tournament
-    'AT',
-    # League of Explorers
-    'LOE',
-    # Whispers of the Old Gods
-    'OG',
-    # One Night in Karazhan
-    'KAR',
-    # Mean Streets of Gadgetzan
-    'CFM',
-    # Journey to Un'Goro
-    'UNG',
-    # Knights of the Frozen Throne
-    'ICC',
-    # Kobolds & Catacombs
-    'LOOT',
-    # The Witchwood
-    'GIL',
-    # The Boomsday Project
-    'BOT',
-    # Rastakhan's Rumble
-    'TRL',
-    # Rise of Shadows
-    'DAL',
-    # Saviors of Uldum
-    'ULD',
-    # Scholomance Academy
-    'SCH',
-    # Ashes of Outland / Demon Hunter Initiate
-    'BT',
-    # Descent of Dragons
-    'DRG',
-    # The Shrouded City - 暂时移除，因为没有 Python 实现
-    # 'DINO', 'TLC',
-}
-
-# 黑名单：即使在前缀列表中，这些卡牌也有问题，需要排除
-CARD_BLACKLIST = set()
-
-
-def is_card_implemented(card_id: str) -> bool:
-    """检查卡牌是否来自已实现的系列"""
-    if card_id in CARD_BLACKLIST:
-        return False
-    # 提取卡牌前缀（如 EDR_889 -> EDR）
-    prefix = card_id.split('_')[0] if '_' in card_id else card_id[:3]
-    return prefix in IMPLEMENTED_CARD_PREFIXES
+from .card_catalog import (
+    is_card_implemented,
+    IMPLEMENTED_CARD_PREFIXES,
+    CARD_BLACKLIST,
+)
 
 
 def filtered_random_draft(card_class):
