@@ -142,3 +142,21 @@ export async function importDeckFromDeckstring(deckstring: string, name: string)
     updated_at: now,
   };
 }
+
+export async function exportDeckToDeckstring(deck: Deck): Promise<string> {
+  const resp = await fetch('/api/decks/encode', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      hero_class: deck.hero_class,
+      format: deck.format,
+      cards: deck.cards,
+    }),
+  });
+  if (!resp.ok) {
+    const err = await resp.json().catch(() => ({}));
+    throw new Error(err.error || `encode failed: ${resp.status}`);
+  }
+  const data = await resp.json();
+  return data.deckstring;
+}

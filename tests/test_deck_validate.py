@@ -68,3 +68,26 @@ def test_validate_marks_unimplemented_cards(client):
     assert data["valid"] is True
     assert data["unimplemented_count"] >= 1
     assert not data["cards"][0]["implemented"]
+
+
+def test_encode_deckstring_round_trip(client):
+    """POST /api/decks/encode -> /api/decks/validate round-trip consistency"""
+    body = {
+        'hero_class': 'MAGE',
+        'format': 'STANDARD',
+        'cards': [
+            {'card_id': 'CS2_029', 'count': 2},
+            {'card_id': 'CS2_023', 'count': 2},
+        ],
+    }
+    enc = client.post('/api/decks/encode', json=body)
+    assert enc.status_code == 200, enc.get_json()
+    deckstring = enc.get_json()['deckstring']
+
+    val = client.post('/api/decks/validate', json={'deckstring': deckstring})
+    data = val.get_json()
+    assert data['valid'] is True
+    assert data['hero_class'] == 'MAGE'
+    assert data['format'] == 'STANDARD'
+    ids = sorted([c['card_id'] for c in data['cards']])
+    assert ids == ['CS2_023', 'CS2_029']

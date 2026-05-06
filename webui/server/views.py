@@ -125,3 +125,27 @@ def validate_deck():
         'total_cards': result['total_cards'],
         'error': None,
     })
+
+
+@bp.route('/api/decks/encode', methods=['POST'])
+def encode_deck_endpoint():
+    """Generate a deckstring from deck components"""
+    from .deck_manager import export_deck_to_string, InvalidDeck
+    from fireplace.deckstring import Format
+
+    body = request.get_json(silent=True) or {}
+    hero_class = body.get('hero_class')
+    cards_in = body.get('cards', [])
+    fmt_name = body.get('format', 'STANDARD')
+
+    if not hero_class or not cards_in:
+        return jsonify({'error': 'missing hero_class or cards'}), 400
+
+    cards = [(c['card_id'], int(c['count'])) for c in cards_in]
+    try:
+        fmt = Format[fmt_name]
+        deckstring = export_deck_to_string(cards, hero_class, fmt)
+    except (InvalidDeck, KeyError, Exception) as e:
+        return jsonify({'error': str(e)}), 400
+
+    return jsonify({'deckstring': deckstring})
