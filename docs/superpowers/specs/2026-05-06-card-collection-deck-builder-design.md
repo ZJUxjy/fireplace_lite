@@ -14,7 +14,8 @@
 - 卡组持久化:`localStorage` 为主,deckstring 为可移植格式(导入/导出)
 - 对局开始流程改造:玩家槽 + 对手槽,各自可选已存卡组 / 粘贴 deckstring / 随机职业
 - 100% 复用已有 `fireplace.deckstring` 编码 + `webui/server/deck_manager.py`
-- 向后兼容:旧的 `start_game(mode, player_class)` 仍可工作
+- 复用已有 `webui/server/card_text.py` 的 `CARDNAME` / `CARDTEXT` 缓存,**不重复 XML 解析**
+- 清理现有断头代码:`gameService.ts` emit 的 `create_game_with_deck` 在 `socket.py` 没有 handler,本次合并到统一的 `create_game`
 
 ### 非目标(明确不做)
 - 不模拟"已拥有卡牌 / 开包 / 合成"等账号收藏概念
@@ -42,10 +43,11 @@
 
 ```
 webui/server/
-├── card_catalog.py        新增:已实现 collectible 卡的元数据组装 + XML 多语言读取 + 进程级缓存
+├── card_catalog.py        新增:已实现 collectible 卡的元数据组装 + 进程级缓存(name/text 复用 card_text_loader)
+├── card_text.py           已有:CARDNAME/CARDTEXT 启动时 parse + zhCN→enUS fallback;不动
 ├── deck_manager.py        已有:deckstring 编/解码,微调 export 接口
-├── views.py               新增 endpoints
-└── socket.py              修改 start_game:接受 DeckSpec
+├── views.py               改:_load_card_multilang 删除,改用 card_text_loader;新增 cards/all + decks/validate endpoints
+└── socket.py              改 create_game handler:接收双 DeckSpec;删除 create_game_with_deck 引用
 
 webui/client/src/
 ├── App.tsx                状态机扩展:menu / decks-list / deck-edit / play-setup / in-game
@@ -67,9 +69,15 @@ webui/client/src/
 
 ### 3.2 复用与重构
 
-`is_card_implemented` / `IMPLEMENTED_CARD_PREFIXES` / `CARD_BLACKLIST` 当前在 `webui/server/game.py`。**移到 `card_catalog.py`**,`game.py` 改为 import,使"造的卡组都能玩"这个口径只有一个出处。
+**`is_card_implemented` 单一出处**。`is_card_implemented` / `IMPLEMENTED_CARD_PREFIXES` / `CARD_BLACKLIST` 当前在 `webui/server/game.py`。**移到 `card_catalog.py`**,`game.py` 改为 import:`from .card_catalog import is_card_implemented`。导入方向:`card_catalog` → `fireplace.cards`(单向);`game` → `card_catalog`(单向);两者无循环。
 
-`views.py` 中 `_load_card_multilang` 当前每次调用都重新解析整棵 `CardDefs.xml`(对每张卡而言是 O(N×M))。`card_catalog.py` 启动时**一次性**遍历 XML 把 `CARDNAME` / `CARDTEXT_INHAND` 全部摘进 dict,后续 O(1) 查询。`views.py` 的 `_load_card_multilang` 改为薄 wrapper 调用新模块。
+**XML 解析复用 `card_text.py`**。`card_text_loader`(全局实例)启动时已经把 `CARDNAME` / `CARDTEXT` tag 的 `zhCN` + `enUS` fallback 摘进 `card_data` dict。`card_catalog.py` 直接调用 `card_text_loader.get_name(id)` / `get_text(id)`,**不重复 parse XML**。
+
+**`views.py` 清理**。当前 `_load_card_multilang` 每次都重新 parse 整棵 XML(O(N×M))。删除该函数,`/api/cards/<card_id>` endpoint 改为调用 `card_text_loader`。
+
+**断头代码清理**。`gameService.ts` 第 186 行 `socketService.emit('create_game_with_deck', ...)` 在 `socket.py` 没有 handler,目前永远走不通。本次重构将该分支合并到新版 `create_game` 统一处理。
+
+**XML tag 命名**。`CardDefs.xml` 实际 tag 是 `CARDTEXT`(不是 `CARDTEXT_INHAND`);保持与 `card_text.py` 现有约定一致。
 
 ---
 
@@ -83,7 +91,7 @@ type Card = {
   dbf_id: number;         // deckstring 用
   name_zh: string;        // CardDefs.xml CARDNAME zhCN(缺失 fallback enUS,再 fallback id)
   name_en: string;
-  text_zh: string;        // CardDefs.xml CARDTEXT_INHAND zhCN
+  text_zh: string;        // CardDefs.xml CARDTEXT zhCN(由 card_text_loader 提供)
   text_en: string;
   cost: number;
   attack?: number;        // MINION / WEAPON
@@ -95,7 +103,8 @@ type Card = {
   card_set: string;       // "EXPERT1" | "GVG" | ...(v1 不在 UI 暴露,只入 payload)
   race?: string;
   collectible: true;
-  max_count: number;      // 1 = 传说,2 = 其他
+  max_count: number;      // 推导规则:rarity == "LEGENDARY" → 1,否则 → 2。
+                          // TODO(v2):若出现"非传说但限 1 张"的特殊卡(目前未知)再加例外列表
 };
 ```
 
@@ -115,7 +124,15 @@ type Deck = {
 };
 
 // localStorage:
-//   "fireplace.decks.v1"  →  { [deckId]: Deck }
+const DECKS_STORAGE_KEY = "fireplace.decks.v1";
+const DECKS_SCHEMA_VERSION = 1;
+//   key DECKS_STORAGE_KEY  →  { schema_version: 1, decks: { [deckId]: Deck } }
+
+// 加载流程:
+//   1. 读 raw,解 JSON
+//   2. 看 schema_version → 选 migrate 函数;v1 的 migrate 是 identity
+//   3. 逐个 deck 跑 schema 校验,坏的跳过 + console.warn
+// 后续 v2 schema 变化时只需新增 migrate_v1_to_v2 + 升级 STORAGE_KEY 后缀
 ```
 
 **deckstring 不直接存** —— `cards + hero_class + format` 是 source of truth,deckstring 在导出/导入时通过 `deck_manager.py` 现场转换,避免双副本不一致。
@@ -136,8 +153,10 @@ type DeckSpec =
 
 - Query:`lang` 可选(默认返回 zhCN+enUS 两份)
 - 返回:`{ cards: Card[], total: number, generated_at: string }`
-- 服务端缓存:进程级 `_catalog_cache`(惰性初始化),内容基于 `fireplace.cards.db` + `CardDefs.xml`
-- ETag:基于内容哈希,浏览器二次访问命中 304
+- **缓存**:进程级 `_catalog_cache`(惰性初始化),内容基于 `fireplace.cards.db` + `card_text_loader`。`cards.db` 在运行时不变(无热更新机制),缓存永不过期
+- **初始化保护**:第一次访问时若 `cards.db.initialized == False` 则先 `cards.db.initialize()`,避免和 game flow 第一次 init 抢
+- **多进程注意**:若 server 用 gunicorn 多 worker 部署,每个进程各持一份 ≈ 600KB(可接受);未来若想跨进程共享需要 Redis 之类,v1 不做
+- **ETag**:基于内容哈希,浏览器二次访问命中 304
 - 大小估算:~2500 张 × ~250B ≈ 600KB JSON;gzip 后 ~150KB
 
 ### 5.2 `POST /api/decks/validate`
@@ -155,23 +174,36 @@ type DeckSpec =
     "error": null
   }
   ```
-- 失败时 `valid: false` + `error` 字段(deckstring 损坏 / 未知 hero / 等)
+- 失败时返回 `{ valid: false, error: "<具体原因>" }`(其它字段省略)
+- **异常捕获**:必须 try/except 包裹所有解码逻辑(`InvalidDeckstring`、`InvalidDeck`、`KeyError` 等);任何异常 → `valid: false`,`error` 字段写人类可读说明;**绝不让异常 500**
 
-### 5.3 `socket.start_game` 修改
+### 5.3 `socket.create_game` 修改(注意:事件名是 `create_game`,**不是** `start_game`)
+
+**当前 payload**(被替换):
+```ts
+{ mode, player_class, test_deck? }
+```
 
 **新 payload**:
 ```ts
-{ mode, player: DeckSpec, opponent: DeckSpec }
+{ mode, player: DeckSpec, opponent: DeckSpec, test_deck?: bool }
 ```
 
-**向后兼容**:旧 payload `{ mode, player_class }` 仍接受,等价于:
-```ts
-{ mode, player: { type: "random", card_class: <upper> }, opponent: { type: "random", card_class: "ANY" } }
-```
+**不保留向后兼容**。`gameService.ts` 是该事件唯一的发起方(包括目前断头的 `create_game_with_deck` 也只在它一处),客户端在本次重构里同步改造,无需保留旧 payload 兼容路径。
 
-**校验**:对每个 `DeckSpec`:
-- `deckstring`:调用 `import_deck_from_string`,任何未实现卡 → emit `start_game_error` 给前端,**不开局**
-- `random`:走原 `filtered_random_draft(card_class)`
+**`GameManager.create_game()` 签名同步改为**:
+```python
+def create_game(self, *, mode: str, p1_spec: DeckSpec, p2_spec: DeckSpec, test_deck: bool = False) -> str
+```
+移除原 `player1_class` / `player2_class` / `custom_deck` 位置参数(它们的功能由 `DeckSpec.type=random` 和 `DeckSpec.type=deckstring` 表达)。`test_deck=True` 仍然走 `create_test_deck`(开发便利)且无视 spec(测试时不关心卡组)。
+
+**Handler 逻辑**:
+- 解析 `p1_spec` / `p2_spec`:
+  - `type: "deckstring"` → `import_deck_from_string(value)` → 得到 `(cards, hero_class, format)` → 校验所有卡 `is_card_implemented`,任一失败 → `emit('create_game_error', {...})`,不开局
+  - `type: "random"` → `filtered_random_draft(parse_card_class(card_class))`(支持 `"ANY"` = `random_class()`)
+- 两边卡组都准备好后,调 `manager.create_game(mode=mode, p1_spec=..., p2_spec=...)`
+- PVE 模式:p2 通常默认 `{type: "random", card_class: "ANY"}`,但允许玩家在 PlaySetup 改;handler 不区分 PVE/PVP,取信于前端送上的 spec
+- PVP 模式:p1/p2 都由前端送 deckstring 或 random
 
 ---
 
@@ -182,8 +214,9 @@ type DeckSpec =
 ```
 "menu"
   ├─ click "卡组" → "decks-list"
-  │     ├─ click 已有卡组 / 新建 → "deck-edit"
-  │     │     └─ 保存/返回 → "decks-list"
+  │     ├─ click 已有卡组 → "deck-edit" (currentDeckId = id)
+  │     ├─ click "新建" → "deck-edit" (currentDeckId = 新建占位)
+  │     ├─ click "浏览全卡库" → "deck-edit" (currentDeckId = null) ← 浏览模式
   │     └─ "返回" → "menu"
   └─ click PVE/PVP/AI(mode 同步保存) → "play-setup"
         ├─ 双槽位选好 + "开始" → "in-game"
@@ -191,16 +224,26 @@ type DeckSpec =
         └─ "返回" → "menu"
 ```
 
+`deck-edit` 是**唯一**的卡组/卡库 view,通过 `currentDeckId: string | null | "new"` 区分三种子模式,组件复用最大化(见 §6.2)。
+
 ### 6.2 编辑器(DeckEditor)布局
+
+`DeckEditor` 接受 `deckId: string | null` 与 `mode: "edit" | "new" | "browse"` 派生属性。三种模式共用同一组件,差异仅在右侧面板:
+
+| 模式 | currentDeckId | DeckPanel | 卡库点击行为 |
+|---|---|---|---|
+| edit | 已有卡组 id | 显示 | 加卡 |
+| new | "new"(临时) | 显示 | 加卡 |
+| browse | null | **隐藏**(整个右栏不渲染) | **不加卡**;只触发 hover 预览 / 右键详情 |
 
 炉石客户端式分栏:
 
 - **左 2/3**:`CardPool`
-  - 顶部筛选条:职业(下拉,默认= 当前卡组职业 + 中立)| 费用(0-7+ 多选格)| 类型(下拉)| 搜索框
+  - 顶部筛选条:职业(下拉,默认= 当前卡组职业 + 中立;**browse 模式默认"全部"**)| 费用(0-7+ 多选格)| 类型(下拉)| 搜索框
   - 列表:每行一个 `CardRow`(费用 + 名 + 类型/攻防);hover → 右侧悬浮 `CardPreview`
-  - 单击 = 加入卡组(达到 `max_count` 时按钮 disabled);对非当前职业卡(也非中立)disabled
+  - 单击:edit/new 模式 = 加入卡组(达到 `max_count` 时按钮 disabled,非当前职业卡也 disabled);**browse 模式 = 打开详情面板**
   - 右键/长按 = 打开详情面板(显示 `text_zh`)
-- **右 1/3**:`DeckPanel`
+- **右 1/3**:`DeckPanel`(browse 模式时整个不渲染,左侧自动占满全宽)
   - 顶栏:卡组名(可点击重命名)| 职业图标 | "X/30" 计数 | Format 下拉
   - 主体:已加卡按费用排序;每行 `卡名 · ×N`,点击 = 移除一张
   - 底部按钮:**保存** | **导出 deckstring**(复制到剪贴板 + toast) | **返回**
@@ -221,7 +264,10 @@ type DeckSpec =
                   [开始游戏]      (两槽都已选才亮)
 ```
 
-PVP 模式下 UI 文案改为"玩家1 / 玩家2"。
+**默认值**(进入页面时):
+- PVE 模式:玩家槽 = 空(强制选择)、对手槽 = `{type: "random", card_class: "ANY"}`(开战不改也能立即玩)
+- PVP 模式:两槽都为空,文案改为"玩家 1 / 玩家 2";要求两边都选满才能开始
+- AI 模式:同 PVE
 
 ---
 
@@ -238,7 +284,9 @@ PVP 模式下 UI 文案改为"玩家1 / 玩家2"。
 | 删除卡组 | 二次确认 toast |
 | 多语言 fallback | `name_zh` 缺失 → `name_en` → `card.id` |
 | `CardDefs.xml` 解析慢 | `card_catalog.py` 启动时一次性 parse 进 dict |
-| 后端 socket 收到无效 DeckSpec | emit `start_game_error` 给前端,显示 toast,不开局 |
+| 后端 socket 收到无效 DeckSpec | emit `create_game_error` 给前端,显示 toast,不开局 |
+| `validate` 任何解码异常 | try/except 全包裹 → `{valid:false, error:"..."}`,不返回 500 |
+| 浏览模式下点击卡牌 | 打开详情面板,**不加卡**(DeckPanel 此时未挂载) |
 
 ---
 
@@ -260,10 +308,11 @@ PVP 模式下 UI 文案改为"玩家1 / 玩家2"。
   - round-trip:Deck → deckstring → Deck 完全一致
   - 未实现卡的 validate 输出正确
 
-- `tests/test_socket_start_game.py`
+- `tests/test_socket_create_game.py`
   - 三种 DeckSpec(deckstring / random:CLASS / random:ANY)各走一次
-  - 旧 payload 向后兼容
-  - 无效 deckstring 不开局,emit 错误事件
+  - 双槽位独立(PVE 玩家=deckstring + 对手=random;PVP 双方都 deckstring)
+  - 无效 deckstring → `create_game_error` 事件,不创建 game
+  - 含未实现卡的 deckstring → `create_game_error`,不创建 game
 
 ### 8.2 前端
 
@@ -279,9 +328,11 @@ v1 不引入测试框架。关键纯函数(`deckStore` 序列化、`cardCatalog`
 - [ ] 导出 deckstring → 复制到剪贴板 → 粘贴回导入框 → 卡组与原 cards/hero/format 完全相同
 - [ ] 用真实炉石客户端的 deckstring(WILD)导入,正确解析已实现部分,未实现部分标灰
 - [ ] 主菜单 PVE → 双槽位:玩家槽=已存卡组,对手槽=`random:ANY` → 开始,对局正常
+- [ ] PVE 模式对手槽改为某副已存卡组 → 对手 AI 用该卡组开局(不再走 filtered_random_draft)
 - [ ] PVP 双槽都用已存卡组 → 对局正常
 - [ ] localStorage 手动改坏 JSON → 重新加载页面,提示+跳过,其它卡组照常
-- [ ] 旧 `start_game(mode, player_class)` payload 仍可工作(测试用 dev tools 发旧消息)
+- [ ] 卡组列表 → "浏览全卡库" → 进入浏览模式,DeckPanel 不显示,左侧占满;点卡只弹详情,不加卡
+- [ ] 含未实现卡的 deckstring 导入,validate 标红;尝试开局 → 收到 `create_game_error`,游戏未创建
 
 ---
 
@@ -315,3 +366,6 @@ v1 不引入测试框架。关键纯函数(`deckStore` 序列化、`cardCatalog`
 | 保存允许 < 30 张 | 模拟器场景下需要测小/不完整卡组;UI 显示但不阻止 |
 | `card_catalog.py` 抽出 `is_card_implemented` | 让"实现口径"只有一个出处,避免 game/card-pool 两边漂移 |
 | Format 只作元数据,不过滤卡池 | 模拟器没有"轮换"概念,STANDARD/WILD 在我们这里没有真实区别 |
+| `card_catalog.py` 复用 `card_text_loader`,不自建 XML 解析 | 102MB 的 `CardDefs.xml` parse 一次就好,避免双份缓存 |
+| `create_game` 改签名,不保留旧 payload | 唯一调用方是自家 `gameService.ts`,本次同步改造;旧 `create_game_with_deck` 是断头死代码,顺便删 |
+| 浏览模式 = `DeckEditor` with `deckId=null` | 状态机不增加分支;`CardPool` 组件保持单一,`DeckPanel` 条件渲染足够 |
