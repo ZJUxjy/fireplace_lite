@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, make_response, request
 import os
 
 bp = Blueprint('views', __name__)
@@ -93,7 +93,10 @@ def cards_all():
     etag = f'"{catalog["etag"]}"'
 
     if request.headers.get('If-None-Match') == etag:
-        return ('', 304)
+        resp = make_response('', 304)
+        resp.headers['ETag'] = etag
+        resp.headers['Cache-Control'] = 'private, max-age=300'
+        return resp
 
     response = jsonify({
         'cards': catalog['cards'],
