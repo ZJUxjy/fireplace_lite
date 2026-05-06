@@ -315,7 +315,12 @@ def register_socket_events(socketio):
         mode = data.get('mode', 'pve')
         player_class = data.get('player_class', 'random')
         test_deck = data.get('test_deck', False)
-        game_id = manager.create_game(player_class, mode=mode, test_deck=test_deck)
+        game_id = manager.create_game(
+            mode=mode,
+            p1_spec={"type": "random", "card_class": player_class},
+            p2_spec={"type": "random", "card_class": "ANY"},
+            test_deck=test_deck,
+        )
         join_room(game_id)
 
         # 如果是 PVE 模式且AI先手，立即执行AI回合

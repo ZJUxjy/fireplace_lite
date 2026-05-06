@@ -240,36 +240,26 @@ class GameManager:
             cards.db.initialize()
             self._initialized = True
 
-    def create_game(self, player1_class, player2_class=None, mode="pve", test_deck=False, custom_deck=None):
-        """创建游戏返回 game_id
+    def create_game(self, *, mode, p1_spec, p2_spec, test_deck=False):
+        """Create a game, return game_id
 
         Args:
-            player1_class: 玩家1职业
-            player2_class: 玩家2职业 (PVE模式下对手职业)
-            mode: 游戏模式 (pve/pvp)
-            test_deck: 是否使用测试卡组（包含各种机制卡牌）
-            custom_deck: 可选，玩家1的自定义卡组（卡牌ID列表）
+            mode: "pve" / "pvp" / "ai"
+            p1_spec: DeckSpec dict for player 1
+            p2_spec: DeckSpec dict for player 2
+            test_deck: if True, ignore specs and use create_test_deck
         """
         self.initialize()
         game_id = str(uuid.uuid4())
 
-        p1_class = get_card_class(player1_class)
-        if mode == "pve":
-            p2_class = random_class() if player2_class is None else get_card_class(player2_class)
-        else:
-            p2_class = random_class()
-
-        # 选择卡组生成方式
-        if custom_deck:
-            # 使用自定义卡组
-            p1_deck = custom_deck
-            p2_deck = filtered_random_draft(p2_class)
-        elif test_deck:
+        if test_deck:
+            p1_class = self._spec_class(p1_spec)
+            p2_class = self._spec_class(p2_spec)
             p1_deck = create_test_deck(p1_class)
             p2_deck = create_test_deck(p2_class)
         else:
-            p1_deck = filtered_random_draft(p1_class)
-            p2_deck = filtered_random_draft(p2_class)
+            p1_class, p1_deck = self._build_deck_from_spec(p1_spec)
+            p2_class, p2_deck = self._build_deck_from_spec(p2_spec)
 
         player1 = Player("Player1", p1_deck, p1_class.default_hero)
         player2 = Player("Player2", p2_deck, p2_class.default_hero)
@@ -277,7 +267,7 @@ class GameManager:
         game = Game(players=(player1, player2))
         game.start()
 
-        # 跳过换牌
+        # Skip mulligan
         for p in game.players:
             if p.choice:
                 p.choice.choose()
@@ -300,6 +290,32 @@ class GameManager:
         }
 
         return game_id
+
+    @staticmethod
+    def _spec_class(spec):
+        """Derive CardClass from DeckSpec (deckstring checks hero, random reads card_class)"""
+        if spec["type"] == "deckstring":
+            from .deck_manager import import_deck_from_string
+            info = import_deck_from_string(spec["value"])
+            return CardClassEnum[info["hero_class"]]
+        elif spec["type"] == "random":
+            return get_card_class(spec["card_class"])
+        raise ValueError(f"unknown DeckSpec type: {spec.get('type')}")
+
+    def _build_deck_from_spec(self, spec):
+        """Return (CardClass enum, [card_id, ...])"""
+        if spec["type"] == "deckstring":
+            from .deck_manager import import_deck_from_string
+            info = import_deck_from_string(spec["value"])
+            cc = CardClassEnum[info["hero_class"]]
+            deck = []
+            for c in info["cards"]:
+                deck.extend([c["card_id"]] * c["count"])
+            return cc, deck
+        elif spec["type"] == "random":
+            cc = get_card_class(spec["card_class"]) if spec["card_class"] != "ANY" else random_class()
+            return cc, filtered_random_draft(cc)
+        raise ValueError(f"unknown DeckSpec type: {spec.get('type')}")
 
     def get_card_data(self, card, player=None, opponent=None):
         """获取卡牌详细信息"""
