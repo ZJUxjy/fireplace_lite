@@ -1,5 +1,4 @@
 from flask import Blueprint, jsonify, make_response, request
-import os
 
 bp = Blueprint('views', __name__)
 
@@ -24,47 +23,15 @@ LANGUAGE_NAMES = {
 # 支持的语言（简化版）
 SUPPORTED_LANGUAGES = ['zhCN', 'enUS']
 
-# CardDefs.xml 路径
-CARD_DEFS_PATH = os.path.join(os.path.dirname(__file__), '..', '..', 'fireplace', 'cards', 'CardDefs.xml')
-
-# 缓存卡牌多语言数据
-_card_cache = {}
-
-
 def _load_card_multilang(card_id):
-    """从 CardDefs.xml 加载卡牌多语言数据"""
-    if card_id in _card_cache:
-        return _card_cache[card_id]
-
-    try:
-        import xml.etree.ElementTree as ET
-        tree = ET.parse(CARD_DEFS_PATH)
-        root = tree.getroot()
-
-        for entity in root.findall('Entity'):
-            entity_id = entity.get('ID')
-            if str(entity_id) == str(card_id):
-                # 查找卡牌名称
-                name_tag = None
-                for tag in entity.findall('Tag'):
-                    if tag.get('name') == 'CARDNAME':
-                        name_tag = tag
-                        break
-
-                if name_tag is not None:
-                    names = {}
-                    for lang in ['zhCN', 'enUS', 'enGB', 'deDE', 'esES', 'frFR', 'itIT', 'jaJP', 'koKR', 'plPL', 'ptBR', 'ruRU', 'thTH', 'zhTW']:
-                        lang_elem = name_tag.find(lang)
-                        if lang_elem is not None and lang_elem.text:
-                            names[lang] = lang_elem.text
-                    _card_cache[card_id] = names
-                    return names
-
-        _card_cache[card_id] = {}
+    """Get multilang name from card_text_loader (zhCN + enUS fallback; other languages not supported in v1)"""
+    from .card_text import card_text_loader
+    info = card_text_loader.card_data.get(card_id, {})
+    name = info.get('name')
+    if not name:
         return {}
-    except Exception as e:
-        print(f"Error loading card {card_id}: {e}")
-        return {}
+    # card_text_loader currently only caches zhCN+fallback, so zhCN and enUS (via fallback) return the same value
+    return {'zhCN': name, 'enUS': name}
 
 
 @bp.route('/api/languages')
