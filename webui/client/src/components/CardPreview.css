@@ -2,6 +2,8 @@
   position: fixed;
   z-index: 1000;
   width: 280px;
+  max-height: min(85vh, 560px);
+  overflow-y: auto;
   background: #1a1a2e;
   border: 2px solid #4a4a8a;
   border-radius: 8px;
@@ -21,8 +23,17 @@
 .card-preview__meta { color: #aaa; font-size: 11px; margin-bottom: 4px; }
 .card-preview__stats { color: #fa6; font-weight: bold; margin-bottom: 8px; }
 .card-preview__text {
-  white-space: pre-wrap; line-height: 1.4;
-  border-top: 1px solid #2a2a4a; padding-top: 8px; color: #ddd;
+  line-height: 1.45;
+  border-top: 1px solid #2a2a4a;
+  padding-top: 8px;
+  color: #ddd;
+}
+.card-preview__text :is(b, strong) {
+  font-weight: 700;
+  color: #fafafa;
+}
+.card-preview__text :is(i, em) {
+  font-style: italic;
 }
 .card-preview__footer {
   margin-top: 8px; padding-top: 6px; border-top: 1px solid #2a2a4a;
