@@ -99,3 +99,29 @@ def get_card(card_id):
         })
 
     return jsonify({'error': 'Card not found'}), 404
+
+
+@bp.route('/api/decks/validate', methods=['POST'])
+def validate_deck():
+    """Validate a deckstring and mark unimplemented cards"""
+    from .deck_manager import import_deck_from_string, InvalidDeck
+
+    body = request.get_json(silent=True) or {}
+    deckstring = body.get('deckstring')
+    if not deckstring:
+        return jsonify({'valid': False, 'error': 'missing deckstring'}), 200
+
+    try:
+        result = import_deck_from_string(deckstring)
+    except (InvalidDeck, ValueError, TypeError, Exception) as e:
+        return jsonify({'valid': False, 'error': str(e)}), 200
+
+    return jsonify({
+        'valid': True,
+        'hero_class': result['hero_class'],
+        'format': result['format'],
+        'cards': result['cards'],
+        'unimplemented_count': result['unimplemented_count'],
+        'total_cards': result['total_cards'],
+        'error': None,
+    })

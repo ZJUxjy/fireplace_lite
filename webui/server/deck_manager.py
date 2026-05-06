@@ -116,29 +116,41 @@ def import_deck_from_string(deckstring: str) -> Dict:
     if not hero_id:
         raise InvalidDeck(f"No hero found for class ID: {hero_class_id}")
 
-    # Convert card DBF IDs to card IDs
-    cards = []
+    from .card_catalog import is_card_implemented
+
+    # Convert card DBF IDs to card IDs with implementation status
+    cards_with_status = []
     invalid_cards = []
+    unimplemented_count = 0
 
     for dbf_id, count in cards_dbf:
         card_id = get_card_by_dbf_id(dbf_id)
-        if card_id:
-            cards.append((card_id, count))
-        else:
+        if not card_id:
             invalid_cards.append(dbf_id)
+            continue
+        impl = is_card_implemented(card_id)
+        if not impl:
+            unimplemented_count += count
+        cards_with_status.append({
+            "card_id": card_id,
+            "count": count,
+            "implemented": impl,
+        })
+
+    total_cards = sum(c["count"] for c in cards_with_status)
 
     # Validate deck size
-    total_cards = sum(count for _, count in cards)
     if total_cards != 30:
         # Some modes allow different sizes, but standard is 30
         pass  # Don't enforce for now
 
     return {
-        "cards": cards,
+        "cards": cards_with_status,
         "hero_class": hero_class,
         "hero_id": hero_id,
         "format": format_type.name,
         "invalid_cards": invalid_cards,
+        "unimplemented_count": unimplemented_count,
         "total_cards": total_cards,
     }
 
