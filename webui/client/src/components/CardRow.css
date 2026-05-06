@@ -1,0 +1,39 @@
+.card-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 13px;
+  border-left: 3px solid #888;
+  background: linear-gradient(90deg, rgba(120, 120, 120, 0.15), transparent);
+  transition: background 0.1s;
+}
+.card-row--class {
+  border-left-color: #3b6cff;
+  background: linear-gradient(90deg, rgba(59, 108, 255, 0.18), transparent);
+}
+.card-row:hover:not(.card-row--disabled) {
+  background: linear-gradient(90deg, rgba(255, 200, 100, 0.25), transparent);
+}
+.card-row--disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.card-row__cost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #2a4a8a;
+  color: #fff;
+  font-weight: bold;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.card-row__name { flex: 1; color: #eee; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.card-row__right { color: #fa6; font-size: 12px; flex-shrink: 0; }
