@@ -171,22 +171,25 @@ export type GameState = {
 class GameService {
   private gameId: string | null = null;
 
-  createGame(mode: string, playerClass: string = 'random', testDeck: boolean = false, deckCode?: string) {
+  createGame(
+    mode: string,
+    p1Spec: import('../types/deck').DeckSpec,
+    p2Spec: import('../types/deck').DeckSpec,
+    testDeck = false,
+  ) {
     socketService.connect();
-    // 设置重连后重新加入房间的逻辑
     socketService.onReconnect(() => {
       if (this.gameId) {
         console.log('[GameService] Reconnected, rejoining game:', this.gameId);
         socketService.emit('rejoin_game', { game_id: this.gameId });
       }
     });
-
-    // 如果有卡组代码，使用create_game_with_deck事件
-    if (deckCode) {
-      socketService.emit('create_game_with_deck', { mode, deck_code: deckCode });
-    } else {
-      socketService.emit('create_game', { mode, player_class: playerClass, test_deck: testDeck });
-    }
+    socketService.emit('create_game', {
+      mode,
+      player: p1Spec,
+      opponent: p2Spec,
+      test_deck: testDeck,
+    });
   }
 
   endTurn() {
@@ -270,6 +273,10 @@ class GameService {
 
   onError(callback: (data: { message: string }) => void) {
     socketService.on('error', (data) => callback(data as { message: string }));
+  }
+
+  onCreateGameError(callback: (data: { error: string }) => void) {
+    socketService.on('create_game_error', (data) => callback(data as { error: string }));
   }
 
   onSecretTriggered(callback: (data: { game_id: string; secret: { player: string; secret_name: string; card_id?: string } }) => void) {

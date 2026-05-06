@@ -1,0 +1,35 @@
+.card-pool { display: flex; flex-direction: column; height: 100%; background: #1a1a2e; }
+.card-pool__filters {
+  padding: 10px;
+  background: #23234a;
+  border-bottom: 2px solid #2a2a4a;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.card-pool__filters select,
+.card-pool__filters input {
+  background: #1a1a2e; color: #eee;
+  border: 1px solid #3a3a6a; padding: 4px 8px; border-radius: 3px; font-size: 12px;
+}
+.card-pool__filters input { flex: 1; min-width: 120px; }
+.card-pool__cost-bar, .card-pool__type-bar { display: flex; gap: 2px; }
+.card-pool__cost-bar button, .card-pool__type-bar button {
+  background: #3a3a6a; color: #ccc; border: 1px solid #4a4a8a;
+  width: 24px; height: 24px; cursor: pointer; font-size: 11px;
+}
+.card-pool__type-bar button { width: 28px; }
+.card-pool__cost-bar button.on, .card-pool__type-bar button.on {
+  background: #fa6; color: #1a1a2e; border-color: #fa6; font-weight: bold;
+}
+.card-pool__list {
+  flex: 1; overflow-y: auto; padding: 8px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 4px;
+}
+.card-pool__empty,
+.card-pool__loading {
+  padding: 20px; text-align: center; grid-column: 1/-1;
+}
+.card-pool__loading { color: #fa6; }
+.card-pool__empty { color: #888; }

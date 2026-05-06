@@ -50,77 +50,37 @@ CLASS_NAME_MAP = {
 }
 
 def get_card_class(class_name: str):
-    """将字符串职业名转换为 CardClass 枚举"""
+    """将字符串职业名转换为 CardClass 枚举(未知名时静默回退到随机职业,保留原行为)"""
     if class_name == 'random':
         return random_class()
     class_lower = class_name.lower()
     if class_lower in CLASS_NAME_MAP:
         return CLASS_NAME_MAP[class_lower]
-    # 尝试直接查找
     try:
         return CardClassEnum[class_name.upper()]
     except KeyError:
         return random_class()
+
+
+def resolve_card_class_strict(class_name: str):
+    """严格解析:未知职业名抛 ValueError(用于 DeckSpec API 校验路径)"""
+    if not isinstance(class_name, str):
+        raise ValueError(f"card_class must be a string, got {type(class_name).__name__}")
+    cl = class_name.upper()
+    if cl == 'ANY':
+        return random_class()
+    if cl in CLASS_NAME_MAP:  # 注意 CLASS_NAME_MAP 的 key 是小写
+        return CLASS_NAME_MAP[cl.lower()]
+    try:
+        return CardClassEnum[cl]
+    except KeyError:
+        raise ValueError(f"unknown card_class: {class_name!r}")
 from .card_text import card_text_loader
-
-# 已实现的卡牌系列前缀（对应 fireplace/cards/ 目录下的文件夹）
-# 只有这些系列的卡牌会被加入随机牌库
-IMPLEMENTED_CARD_PREFIXES = {
-    # Classic
-    'CS2', 'CS3', 'EX1', 'NEW1',
-    # Naxxramas
-    'FP1', 'NX2',
-    # Goblins vs Gnomes
-    'GVG',
-    # Blackrock Mountain
-    'BRM',
-    # The Grand Tournament
-    'AT',
-    # League of Explorers
-    'LOE',
-    # Whispers of the Old Gods
-    'OG',
-    # One Night in Karazhan
-    'KAR',
-    # Mean Streets of Gadgetzan
-    'CFM',
-    # Journey to Un'Goro
-    'UNG',
-    # Knights of the Frozen Throne
-    'ICC',
-    # Kobolds & Catacombs
-    'LOOT',
-    # The Witchwood
-    'GIL',
-    # The Boomsday Project
-    'BOT',
-    # Rastakhan's Rumble
-    'TRL',
-    # Rise of Shadows
-    'DAL',
-    # Saviors of Uldum
-    'ULD',
-    # Scholomance Academy
-    'SCH',
-    # Ashes of Outland / Demon Hunter Initiate
-    'BT',
-    # Descent of Dragons
-    'DRG',
-    # The Shrouded City - 暂时移除，因为没有 Python 实现
-    # 'DINO', 'TLC',
-}
-
-# 黑名单：即使在前缀列表中，这些卡牌也有问题，需要排除
-CARD_BLACKLIST = set()
-
-
-def is_card_implemented(card_id: str) -> bool:
-    """检查卡牌是否来自已实现的系列"""
-    if card_id in CARD_BLACKLIST:
-        return False
-    # 提取卡牌前缀（如 EDR_889 -> EDR）
-    prefix = card_id.split('_')[0] if '_' in card_id else card_id[:3]
-    return prefix in IMPLEMENTED_CARD_PREFIXES
+from .card_catalog import (
+    is_card_implemented,
+    IMPLEMENTED_CARD_PREFIXES,
+    CARD_BLACKLIST,
+)
 
 
 def filtered_random_draft(card_class):
@@ -294,36 +254,26 @@ class GameManager:
             cards.db.initialize()
             self._initialized = True
 
-    def create_game(self, player1_class, player2_class=None, mode="pve", test_deck=False, custom_deck=None):
-        """创建游戏返回 game_id
+    def create_game(self, *, mode, p1_spec, p2_spec, test_deck=False):
+        """Create a game, return game_id
 
         Args:
-            player1_class: 玩家1职业
-            player2_class: 玩家2职业 (PVE模式下对手职业)
-            mode: 游戏模式 (pve/pvp)
-            test_deck: 是否使用测试卡组（包含各种机制卡牌）
-            custom_deck: 可选，玩家1的自定义卡组（卡牌ID列表）
+            mode: "pve" / "pvp" / "ai"
+            p1_spec: DeckSpec dict for player 1
+            p2_spec: DeckSpec dict for player 2
+            test_deck: if True, ignore specs and use create_test_deck
         """
         self.initialize()
         game_id = str(uuid.uuid4())
 
-        p1_class = get_card_class(player1_class)
-        if mode == "pve":
-            p2_class = random_class() if player2_class is None else get_card_class(player2_class)
-        else:
-            p2_class = random_class()
-
-        # 选择卡组生成方式
-        if custom_deck:
-            # 使用自定义卡组
-            p1_deck = custom_deck
-            p2_deck = filtered_random_draft(p2_class)
-        elif test_deck:
+        if test_deck:
+            p1_class = self._spec_class(p1_spec)
+            p2_class = self._spec_class(p2_spec)
             p1_deck = create_test_deck(p1_class)
             p2_deck = create_test_deck(p2_class)
         else:
-            p1_deck = filtered_random_draft(p1_class)
-            p2_deck = filtered_random_draft(p2_class)
+            p1_class, p1_deck = self._build_deck_from_spec(p1_spec)
+            p2_class, p2_deck = self._build_deck_from_spec(p2_spec)
 
         player1 = Player("Player1", p1_deck, p1_class.default_hero)
         player2 = Player("Player2", p2_deck, p2_class.default_hero)
@@ -331,7 +281,7 @@ class GameManager:
         game = Game(players=(player1, player2))
         game.start()
 
-        # 跳过换牌
+        # Skip mulligan
         for p in game.players:
             if p.choice:
                 p.choice.choose()
@@ -354,6 +304,32 @@ class GameManager:
         }
 
         return game_id
+
+    @staticmethod
+    def _spec_class(spec):
+        """Derive CardClass from DeckSpec (deckstring checks hero, random reads card_class)"""
+        if spec.get("type") == "deckstring":
+            from .deck_manager import import_deck_from_string
+            info = import_deck_from_string(spec["value"])
+            return CardClassEnum[info["hero_class"]]
+        elif spec.get("type") == "random":
+            return resolve_card_class_strict(spec.get("card_class", ""))
+        raise ValueError(f"unknown DeckSpec type: {spec.get('type')!r}")
+
+    def _build_deck_from_spec(self, spec):
+        """Return (CardClass enum, [card_id, ...])"""
+        if spec.get("type") == "deckstring":
+            from .deck_manager import import_deck_from_string
+            info = import_deck_from_string(spec["value"])
+            cc = CardClassEnum[info["hero_class"]]
+            deck = []
+            for c in info["cards"]:
+                deck.extend([c["card_id"]] * c["count"])
+            return cc, deck
+        elif spec.get("type") == "random":
+            cc = resolve_card_class_strict(spec.get("card_class", ""))
+            return cc, filtered_random_draft(cc)
+        raise ValueError(f"unknown DeckSpec type: {spec.get('type')!r}")
 
     def get_card_data(self, card, player=None, opponent=None):
         """获取卡牌详细信息"""

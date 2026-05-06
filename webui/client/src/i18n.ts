@@ -33,7 +33,20 @@ const resources = {
       "game.selectTargetHeroPower": "选择英雄技能目标",
       "game.cancel": "取消",
       "game.selectHero": "选择英雄",
-      "ui.back": "返回"
+      "ui.back": "返回",
+      "ui.decks": "卡组",
+      "deck.list.title": "我的卡组",
+      "deck.list.new": "新建",
+      "deck.list.import": "导入 deckstring",
+      "deck.list.browseAll": "浏览全卡库",
+      "deck.list.empty": "还没有卡组,点新建或导入开始",
+      "deck.editor.save": "保存",
+      "deck.editor.export": "导出",
+      "deck.play.start": "开始游戏",
+      "deck.play.player": "玩家",
+      "deck.play.opponent": "对手",
+      "deck.play.player1": "玩家 1",
+      "deck.play.player2": "玩家 2"
     }
   },
   enUS: {
@@ -67,7 +80,20 @@ const resources = {
       "game.selectTargetHeroPower": "Select hero power target",
       "game.cancel": "Cancel",
       "game.selectHero": "Select Hero",
-      "ui.back": "Back"
+      "ui.back": "Back",
+      "ui.decks": "Decks",
+      "deck.list.title": "My Decks",
+      "deck.list.new": "New",
+      "deck.list.import": "Import deckstring",
+      "deck.list.browseAll": "Browse All Cards",
+      "deck.list.empty": "No decks yet. Create or import one to start.",
+      "deck.editor.save": "Save",
+      "deck.editor.export": "Export",
+      "deck.play.start": "Start Game",
+      "deck.play.player": "Player",
+      "deck.play.opponent": "Opponent",
+      "deck.play.player1": "Player 1",
+      "deck.play.player2": "Player 2"
     }
   }
 };

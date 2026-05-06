@@ -1,0 +1,22 @@
+.play-setup { min-height: 100vh; padding: 40px; background: #1a1a2e; color: #eee; }
+.play-setup h2 { margin-bottom: 24px; }
+.play-setup__slots {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;
+}
+.play-setup__slot {
+  background: #23234a; padding: 16px; border-radius: 8px; border: 1px solid #2a2a4a;
+}
+.play-setup__slot-label { font-weight: bold; margin-bottom: 10px; color: #fa6; }
+.play-setup__slot select,
+.play-setup__slot textarea {
+  width: 100%; padding: 8px; background: #1a1a2e; color: #eee;
+  border: 1px solid #4a4a8a; border-radius: 3px; margin-top: 6px; box-sizing: border-box;
+  font-family: inherit; font-size: 13px;
+}
+.play-setup__slot textarea { font-family: monospace; font-size: 11px; }
+.play-setup__error { color: #f66; margin-bottom: 8px; }
+.play-setup__buttons button {
+  background: #3a3a6a; color: #eee; border: 1px solid #4a4a8a;
+  padding: 10px 20px; border-radius: 3px; cursor: pointer; margin-right: 8px;
+}
+.play-setup__buttons button:first-child { background: #fa6; color: #1a1a2e; font-weight: bold; }

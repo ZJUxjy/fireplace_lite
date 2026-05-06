@@ -13,6 +13,8 @@ from fireplace.deckstring import (
     InvalidDeckstring
 )
 
+from .card_catalog import is_card_implemented
+
 
 # Map hero class IDs to fireplace hero card IDs
 HERO_ID_MAP = {
@@ -92,11 +94,13 @@ def import_deck_from_string(deckstring: str) -> Dict:
 
     Returns:
         Dict with:
-        - cards: List of (card_id, count) tuples
+        - cards: List of dicts with {card_id, count, implemented}
         - hero_class: Hero class name (e.g., "WARRIOR")
         - hero_id: Hero card ID (e.g., "HERO_01")
         - format: Format name ("WILD", "STANDARD", "CLASSIC")
         - invalid_cards: List of DBF IDs that couldn't be found
+        - unimplemented_count: Number of cards from non-implemented expansions
+        - total_cards: Total card count (valid cards only)
     """
     if not db.initialized:
         db.initialize()
@@ -116,29 +120,39 @@ def import_deck_from_string(deckstring: str) -> Dict:
     if not hero_id:
         raise InvalidDeck(f"No hero found for class ID: {hero_class_id}")
 
-    # Convert card DBF IDs to card IDs
-    cards = []
+    # Convert card DBF IDs to card IDs with implementation status
+    cards_with_status = []
     invalid_cards = []
+    unimplemented_count = 0
 
     for dbf_id, count in cards_dbf:
         card_id = get_card_by_dbf_id(dbf_id)
-        if card_id:
-            cards.append((card_id, count))
-        else:
+        if not card_id:
             invalid_cards.append(dbf_id)
+            continue
+        impl = is_card_implemented(card_id)
+        if not impl:
+            unimplemented_count += count
+        cards_with_status.append({
+            "card_id": card_id,
+            "count": count,
+            "implemented": impl,
+        })
+
+    total_cards = sum(c["count"] for c in cards_with_status)
 
     # Validate deck size
-    total_cards = sum(count for _, count in cards)
     if total_cards != 30:
         # Some modes allow different sizes, but standard is 30
         pass  # Don't enforce for now
 
     return {
-        "cards": cards,
+        "cards": cards_with_status,
         "hero_class": hero_class,
         "hero_id": hero_id,
         "format": format_type.name,
         "invalid_cards": invalid_cards,
+        "unimplemented_count": unimplemented_count,
         "total_cards": total_cards,
     }
 
@@ -187,17 +201,17 @@ def export_deck_to_string(
         # Allow non-standard sizes for now
         pass
 
-    # Check max 2 copies per card
+    # Enforce per-card copy limit:legendary 1 张,其它 2 张。对每张卡都校验——
+    # 之前的 `if count > 2:` 外层守卫让 count == 2 的传说卡漏过。
     for dbf_id, count in cards_dbf:
-        if count > 2:
-            card_id = get_card_by_dbf_id(dbf_id)
-            # Check if it's a legendary (can only have 1)
-            card = db.get(card_id) if card_id else None
-            if card and card.rarity.name == "LEGENDARY":
-                if count > 1:
-                    raise InvalidDeck(f"Too many copies of legendary card: {card_id}")
-            else:
-                raise InvalidDeck(f"Too many copies of card: {card_id}")
+        if count <= 0:
+            raise InvalidDeck(f"Card count must be >= 1, got {count}")
+        card_id = get_card_by_dbf_id(dbf_id)
+        card = db.get(card_id) if card_id else None
+        max_count = 1 if (card and card.rarity.name == "LEGENDARY") else 2
+        if count > max_count:
+            kind = "legendary " if max_count == 1 else ""
+            raise InvalidDeck(f"Too many copies of {kind}card {card_id}: {count} > {max_count}")
 
     return encode_deck(cards_dbf, hero_class_id, format_type)
 
