@@ -313,17 +313,32 @@ def register_socket_events(socketio):
     @socketio.on('create_game')
     def handle_create_game(data):
         mode = data.get('mode', 'pve')
-        player_class = data.get('player_class', 'random')
         test_deck = data.get('test_deck', False)
-        game_id = manager.create_game(
-            mode=mode,
-            p1_spec={"type": "random", "card_class": player_class},
-            p2_spec={"type": "random", "card_class": "ANY"},
-            test_deck=test_deck,
-        )
+
+        # Accept new-format player/opponent DeckSpec or fall back to legacy player_class
+        if 'player' in data and 'opponent' in data:
+            p1_spec = data['player']
+            p2_spec = data['opponent']
+        else:
+            # Legacy payload (test fixtures may still use this)
+            player_class = data.get('player_class', 'random')
+            p1_spec = {'type': 'random', 'card_class': player_class.upper() if player_class != 'random' else 'ANY'}
+            p2_spec = {'type': 'random', 'card_class': 'ANY'}
+
+        try:
+            game_id = manager.create_game(
+                mode=mode,
+                p1_spec=p1_spec,
+                p2_spec=p2_spec,
+                test_deck=test_deck,
+            )
+        except Exception as e:
+            print(f"[create_game] failed: {e}")
+            emit('create_game_error', {'error': str(e)})
+            return
+
         join_room(game_id)
 
-        # 如果是 PVE 模式且AI先手，立即执行AI回合
         if mode == "pve":
             g = manager.games[game_id]
             game = g["game"]
@@ -333,7 +348,6 @@ def register_socket_events(socketio):
                 ai_thread.daemon = True
                 ai_thread.start()
 
-        # Schedule timeout check for human player's turn
         g = manager.games[game_id]
         game = g["game"]
         if game.current_player == g["players"][0]:

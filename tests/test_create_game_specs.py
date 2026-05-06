@@ -63,3 +63,36 @@ def test_create_game_test_deck_overrides_spec(manager):
         test_deck=True,
     )
     assert gid in manager.games
+
+
+def test_handle_create_game_emits_state_on_success():
+    """handle_create_game emits game_state when receiving valid dual DeckSpec"""
+    from webui.server import create_app, socketio
+    app = create_app()
+    client = socketio.test_client(app)
+
+    client.emit('create_game', {
+        'mode': 'pve',
+        'player': {'type': 'random', 'card_class': 'MAGE'},
+        'opponent': {'type': 'random', 'card_class': 'ANY'},
+    })
+    received = client.get_received()
+    types = [r['name'] for r in received]
+    assert 'game_state' in types, f"got {types}"
+
+
+def test_handle_create_game_invalid_deckstring_emits_error():
+    """Bad deckstring should not create game, emits create_game_error"""
+    from webui.server import create_app, socketio
+    app = create_app()
+    client = socketio.test_client(app)
+
+    client.emit('create_game', {
+        'mode': 'pve',
+        'player': {'type': 'deckstring', 'value': 'garbage'},
+        'opponent': {'type': 'random', 'card_class': 'ANY'},
+    })
+    received = client.get_received()
+    types = [r['name'] for r in received]
+    assert 'create_game_error' in types, f"got {types}"
+    assert 'game_state' not in types
