@@ -18,41 +18,47 @@ const MAX_MINIONS = 7; // 随从上限
 const MAX_HAND_SIZE = 10; // 手牌上限
 const DEFAULT_TURN_TIMEOUT = 75; // 默认回合超时时间（秒）
 
+/** 与 CSS `--card-width` / `--card-height` 中间值大致对齐，用于扇形几何计算 */
+const HAND_FAN_CARD_WIDTH = 82;
+const HAND_FAN_CARD_HEIGHT = 116;
+
 /**
- * 炉石风格手牌扇形展开算法
- * 根据卡牌数量动态计算：旋转角度、弧形偏移、缩放比例、层级
+ * 炉石风格手牌扇形：所有牌共用底部中心枢轴，仅用一组 translateX + rotate（不再叠加 flex 占位宽度）。
+ * offsetX：相对战场水平中心的像素偏移；angle：绕底部中心的旋转角（度）。
  */
 function computeFanTransform(index: number, totalCards: number): {
-  angle: number; tx: number; ty: number; scale: number; zIndex: number;
+  angle: number;
+  offsetX: number;
+  ty: number;
+  scale: number;
+  zIndex: number;
 } {
   if (totalCards <= 1) {
-    return { angle: 0, tx: 0, ty: 0, scale: 1, zIndex: 1 };
+    return { angle: 0, offsetX: 0, ty: 0, scale: 1, zIndex: 40 };
   }
 
-  // 动态总展开角度：少牌紧凑，多牌展开（参考真实炉石）
-  const totalSpread = totalCards <= 3
-    ? 30 + (totalCards - 2) * 10          // 2→30°, 3→40°
-    : Math.min(40 + 12 * Math.pow(totalCards - 3, 1.15), 140); // 4→52°, 8→104°, 10→129°
-
-  // 每张牌的归一化位置 (-0.5 左边缘 ~ +0.5 右边缘)
   const t = index / (totalCards - 1) - 0.5;
-  const angle = t * totalSpread;
+  const totalSpreadDeg = Math.min(66, 22 + totalCards * 4.2);
+  const angle = t * totalSpreadDeg;
 
-  // 弧形偏移：模拟从手牌区下方焦点辐射的扇形
-  const rad = angle * Math.PI / 180;
-  const tx = Math.sin(rad) * 420 * 0.55;   // 半径 ≈ 3倍卡高，系数调优重叠效果
-  const ty = Math.abs(angle) > 12
-    ? -(1 - Math.cos(rad)) * 140 * 0.06   // 外侧牌轻微上提，保持底部对齐
-    : 0;
+  const mid = (totalCards - 1) / 2;
+  const d = index - mid;
+  const vw = typeof window !== 'undefined' ? window.innerWidth : 960;
+  const maxFanWidth = Math.min(640, vw * 0.42);
+  const step = Math.min(HAND_FAN_CARD_WIDTH * 0.72, maxFanWidth / (totalCards - 1));
+  const offsetX = d * step;
 
-  // 缩放：牌多时边缘牌略小（>5张时生效）
+  const rad = (angle * Math.PI) / 180;
+  const ty = -(1 - Math.cos(rad)) * HAND_FAN_CARD_HEIGHT * 0.38;
+
   let scale = 1;
-  if (totalCards > 5) {
-    const maxReduction = Math.min(0.12, (totalCards - 5) * 0.024);
-    scale = 1 - Math.abs(t) * 2 * maxReduction;
+  if (totalCards >= 9) {
+    scale = 1 - Math.abs(t) * 0.12;
+  } else if (totalCards >= 7) {
+    scale = 1 - Math.abs(t) * 0.08;
   }
 
-  return { angle, tx, ty, scale, zIndex: index + 1 };
+  return { angle, offsetX, ty, scale, zIndex: 20 + index };
 }
 
 // 获取随从属性颜色类名
@@ -351,6 +357,14 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
   };
 
   const isMyTurn = gameState?.current_player === 'player1';
+
+  /** 窗口宽度变化时重算手牌扇形水平间距 */
+  const [, setHandFanLayoutTick] = useState(0);
+  useEffect(() => {
+    const onResize = () => setHandFanLayoutTick((n) => n + 1);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   useEffect(() => {
     const handleGameState = (data: { game_id: string; state: GameState }) => {
@@ -1437,58 +1451,65 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
             )}
           </div>
           <div className={`player-hand-area ${stagedCard ? 'has-staged-card' : ''}`}>
-            {gameState.player.hand.map((card, i) => {
-              const totalCards = gameState.player.hand.length;
-              const fan = computeFanTransform(i, totalCards);
-              const isStaged = stagedCard?.cardIndex === i;
-              return (
-                <div
-                  key={i}
-                  className={`card ${isMyTurn && card.is_playable ? 'playable' : ''} ${draggedCard === i ? 'dragging' : ''} ${isStaged ? 'staged' : ''} ${card.has_combo ? 'has-combo' : ''} ${card.has_combo && gameState.player.combo_active ? 'combo-active' : ''}`}
-                  style={{
-                    transform: `rotate(${fan.angle}deg) translateX(${fan.tx}px) translateY(${fan.ty}px) scale(${fan.scale})`,
-                    zIndex: fan.zIndex,
-                    opacity: isStaged ? 0.4 : 1,
-                  }}
-                  draggable={isMyTurn && !!card.is_playable && !stagedCard}
-                  onDragStart={(e) => handleDragStart(e, i)}
-                  onDragEnd={handleDragEnd}
-                  onClick={() => handleCardClick(card, i)}
-                  onMouseEnter={(e) => setHoveredCard({ card, x: e.clientX, y: e.clientY })}
-                  onMouseLeave={() => setHoveredCard(null)}
-                  onMouseMove={(e) => hoveredCard && setHoveredCard({ card, x: e.clientX, y: e.clientY })}
-                >
-                  <div className="card-cost">{card.cost}</div>
-                  {card.lifesteal && (
-                    <div className="card-lifesteal" title="吸血">🩸</div>
-                  )}
-                  {card.poisonous && (
-                    <div className="card-poisonous" title="剧毒">🐍</div>
-                  )}
-                  {card.has_combo && (
-                    <div className="card-combo" title="连击">连击</div>
-                  )}
-                  <div className="card-name">{card.name}</div>
-                  {/* 种族标签 */}
-                  {card.race && (
-                    <div className="card-race-tag">
-                      {raceEmoji(card.race)}
+            <div className="hand-fan-track">
+              {gameState.player.hand.map((card, i) => {
+                const totalCards = gameState.player.hand.length;
+                const fan = computeFanTransform(i, totalCards);
+                const isStaged = stagedCard?.cardIndex === i;
+                return (
+                  <div
+                    key={i}
+                    className="hand-card-shell"
+                    style={{
+                      transform: `translateX(${fan.offsetX}px) rotate(${fan.angle}deg) translateY(${fan.ty}px) scale(${fan.scale})`,
+                      zIndex: fan.zIndex,
+                      opacity: isStaged ? 0.4 : 1,
+                    }}
+                  >
+                    <div className="hand-card-lift">
+                      <div
+                        className={`card ${isMyTurn && card.is_playable ? 'playable' : ''} ${draggedCard === i ? 'dragging' : ''} ${isStaged ? 'staged' : ''} ${card.has_combo ? 'has-combo' : ''} ${card.has_combo && gameState.player.combo_active ? 'combo-active' : ''}`}
+                        draggable={isMyTurn && !!card.is_playable && !stagedCard}
+                        onDragStart={(e) => handleDragStart(e, i)}
+                        onDragEnd={handleDragEnd}
+                        onClick={() => handleCardClick(card, i)}
+                        onMouseEnter={(e) => setHoveredCard({ card, x: e.clientX, y: e.clientY })}
+                        onMouseLeave={() => setHoveredCard(null)}
+                        onMouseMove={(e) => hoveredCard && setHoveredCard({ card, x: e.clientX, y: e.clientY })}
+                      >
+                        <div className="card-cost">{card.cost}</div>
+                        {card.lifesteal && (
+                          <div className="card-lifesteal" title="吸血">🩸</div>
+                        )}
+                        {card.poisonous && (
+                          <div className="card-poisonous" title="剧毒">🐍</div>
+                        )}
+                        {card.has_combo && (
+                          <div className="card-combo" title="连击">连击</div>
+                        )}
+                        <div className="card-name">{card.name}</div>
+                        {card.race && (
+                          <div className="card-race-tag">
+                            {raceEmoji(card.race)}
+                          </div>
+                        )}
+                        {card.atk !== undefined && card.health !== undefined && (
+                          <div className="card-footer">
+                            <span className="card-atk">{card.atk}</span>
+                            <span className="card-health">{card.health}</span>
+                          </div>
+                        )}
+                        {isStaged && (
+                          <div className="card-staged-indicator">
+                            {stagedCard?.type === 'minion' ? '选择目标...' : '施法中...'}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  )}
-                  {card.atk !== undefined && card.health !== undefined && (
-                    <div className="card-footer">
-                      <span className="card-atk">{card.atk}</span>
-                      <span className="card-health">{card.health}</span>
-                    </div>
-                  )}
-                  {isStaged && (
-                    <div className="card-staged-indicator">
-                      {stagedCard?.type === 'minion' ? '选择目标...' : '施法中...'}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
 
