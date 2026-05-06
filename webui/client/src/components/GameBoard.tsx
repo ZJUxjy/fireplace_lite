@@ -1,12 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { gameService, type GameState, type CardData, type LogEntry, type MinionData as ServiceMinionData, type HeroTransformData } from '../services/gameService';
+import type { DeckSpec } from '../types/deck';
 import './GameBoard.css';
 
 interface GameBoardProps {
   mode: string;
-  playerClass?: string;
-  deckCode?: string;
+  p1Spec: DeckSpec;
+  p2Spec: DeckSpec;
   onBack: () => void;
 }
 
@@ -269,7 +270,7 @@ function AttackArrow({ start, end }: { start: { x: number; y: number }; end: { x
   );
 }
 
-export default function GameBoard({ mode, playerClass = 'random', deckCode, onBack }: GameBoardProps) {
+export default function GameBoard({ mode, p1Spec, p2Spec, onBack }: GameBoardProps) {
   const { t, i18n } = useTranslation();
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [connecting, setConnecting] = useState(true);
@@ -418,7 +419,7 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
       setActionLog(prev => [`🦸 ${data.hero.player} 变身为 ${data.hero.new_hero}`, ...prev.slice(0, 30)]);
     };
 
-    gameService.createGame(mode, playerClass, useTestDeck, deckCode);
+    gameService.createGame(mode, p1Spec, p2Spec);
     gameService.onGameState(handleGameState);
     gameService.onError(handleError);
     gameService.onSecretTriggered(handleSecretTriggered);
@@ -440,7 +441,7 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
       }
       gameService.cleanup();
     };
-  }, [mode]);
+  }, []);
 
   // 当随从被消灭时清除悬浮提示
   useEffect(() => {
@@ -487,7 +488,7 @@ export default function GameBoard({ mode, playerClass = 'random', deckCode, onBa
     setSelectedCard(null);
     prevTurnRef.current = 0;
     prevPlayerRef.current = '';
-    gameService.createGame(mode, playerClass, useTestDeck);
+    gameService.createGame(mode, p1Spec, p2Spec);
   };
 
   // 处理卡牌拖拽
