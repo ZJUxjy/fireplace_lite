@@ -1,0 +1,24 @@
+.deck-panel { display: flex; flex-direction: column; height: 100%; background: #1f1f3a; border-left: 2px solid #2a2a4a; }
+.deck-panel__header { padding: 10px; background: #23234a; }
+.deck-panel__title-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.deck-panel__hero { font-size: 22px; }
+.deck-panel__name { color: #eee; font-weight: bold; font-size: 14px; cursor: pointer; }
+.deck-panel__name:hover { color: #fa6; }
+.deck-panel__title-row input { background: #1a1a2e; color: #eee; border: 1px solid #4a4a8a; padding: 3px 6px; border-radius: 3px; flex: 1; }
+.deck-panel__meta { display: flex; gap: 10px; align-items: center; }
+.deck-panel__count { color: #fa6; font-size: 12px; font-weight: bold; }
+.deck-panel__count.full { color: #6f6; }
+.deck-panel__count.over { color: #f66; }
+.deck-panel__meta select { background: #1a1a2e; color: #eee; border: 1px solid #3a3a6a; padding: 2px 6px; border-radius: 3px; font-size: 11px; }
+.deck-panel__list { flex: 1; overflow-y: auto; padding: 6px; }
+.deck-panel__list .card-row { margin-bottom: 2px; }
+.deck-panel__empty { padding: 30px 10px; color: #888; text-align: center; font-size: 12px; }
+.deck-panel__footer { padding: 10px; background: #23234a; border-top: 2px solid #2a2a4a; }
+.deck-panel__warn { color: #f66; font-size: 11px; margin-bottom: 6px; }
+.deck-panel__buttons { display: flex; gap: 6px; }
+.deck-panel__buttons button {
+  flex: 1; background: #3a3a6a; color: #eee; border: 1px solid #4a4a8a;
+  padding: 6px; border-radius: 3px; font-size: 12px; cursor: pointer;
+}
+.deck-panel__buttons button:hover:not(:disabled) { background: #4a4a8a; }
+.deck-panel__buttons button:disabled { opacity: 0.4; cursor: not-allowed; }
