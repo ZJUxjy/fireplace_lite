@@ -12,3 +12,4 @@ venv
 .idea
 fireplace/cards/CardDefs.xml
 .worktrees/
+.superpowers/
