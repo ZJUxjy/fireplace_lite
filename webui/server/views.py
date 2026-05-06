@@ -104,7 +104,7 @@ def get_card(card_id):
 @bp.route('/api/decks/validate', methods=['POST'])
 def validate_deck():
     """Validate a deckstring and mark unimplemented cards"""
-    from .deck_manager import import_deck_from_string, InvalidDeck
+    from .deck_manager import import_deck_from_string
 
     body = request.get_json(silent=True) or {}
     deckstring = body.get('deckstring')
@@ -113,7 +113,7 @@ def validate_deck():
 
     try:
         result = import_deck_from_string(deckstring)
-    except (InvalidDeck, ValueError, TypeError, Exception) as e:
+    except Exception as e:
         return jsonify({'valid': False, 'error': str(e)}), 200
 
     return jsonify({

@@ -13,6 +13,8 @@ from fireplace.deckstring import (
     InvalidDeckstring
 )
 
+from .card_catalog import is_card_implemented
+
 
 # Map hero class IDs to fireplace hero card IDs
 HERO_ID_MAP = {
@@ -92,11 +94,13 @@ def import_deck_from_string(deckstring: str) -> Dict:
 
     Returns:
         Dict with:
-        - cards: List of (card_id, count) tuples
+        - cards: List of dicts with {card_id, count, implemented}
         - hero_class: Hero class name (e.g., "WARRIOR")
         - hero_id: Hero card ID (e.g., "HERO_01")
         - format: Format name ("WILD", "STANDARD", "CLASSIC")
         - invalid_cards: List of DBF IDs that couldn't be found
+        - unimplemented_count: Number of cards from non-implemented expansions
+        - total_cards: Total card count (valid cards only)
     """
     if not db.initialized:
         db.initialize()
@@ -115,8 +119,6 @@ def import_deck_from_string(deckstring: str) -> Dict:
     hero_id = HERO_ID_MAP.get(hero_class_id)
     if not hero_id:
         raise InvalidDeck(f"No hero found for class ID: {hero_class_id}")
-
-    from .card_catalog import is_card_implemented
 
     # Convert card DBF IDs to card IDs with implementation status
     cards_with_status = []
