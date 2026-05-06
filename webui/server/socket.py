@@ -314,16 +314,12 @@ def register_socket_events(socketio):
     def handle_create_game(data):
         mode = data.get('mode', 'pve')
         test_deck = data.get('test_deck', False)
+        p1_spec = data.get('player')
+        p2_spec = data.get('opponent')
 
-        # Accept new-format player/opponent DeckSpec or fall back to legacy player_class
-        if 'player' in data and 'opponent' in data:
-            p1_spec = data['player']
-            p2_spec = data['opponent']
-        else:
-            # Legacy payload (test fixtures may still use this)
-            player_class = data.get('player_class', 'random')
-            p1_spec = {'type': 'random', 'card_class': player_class.upper() if player_class != 'random' else 'ANY'}
-            p2_spec = {'type': 'random', 'card_class': 'ANY'}
+        if not p1_spec or not p2_spec:
+            emit('create_game_error', {'error': 'create_game requires player and opponent DeckSpecs'})
+            return
 
         try:
             game_id = manager.create_game(
@@ -333,7 +329,9 @@ def register_socket_events(socketio):
                 test_deck=test_deck,
             )
         except Exception as e:
+            import traceback
             print(f"[create_game] failed: {e}")
+            traceback.print_exc()
             emit('create_game_error', {'error': str(e)})
             return
 

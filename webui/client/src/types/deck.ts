@@ -22,7 +22,12 @@ export type Card = {
   max_count: number;
 };
 
-export type DeckCard = { card_id: string; count: number };
+export type DeckCard = {
+  card_id: string;
+  count: number;
+  /** True 表示后端在导入 deckstring 时把此卡标为未实现(spec §7:UI 灰显,开局拒绝) */
+  unimplemented?: boolean;
+};
 
 export type Deck = {
   id: string;

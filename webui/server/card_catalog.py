@@ -7,6 +7,7 @@ deck builder UI (via /api/cards/all) read from here.
 """
 import hashlib
 import json
+import threading
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Set
 
@@ -75,6 +76,7 @@ def is_card_implemented(card_id: str) -> bool:
 # ---------------------------------------------------------------------------
 
 _catalog_cache: Optional[Dict[str, Any]] = None
+_catalog_lock = threading.Lock()  # 防止 Flask 多线程下首次构建竞态
 
 
 def _ensure_db_initialized() -> None:
@@ -97,6 +99,9 @@ def _card_to_dict(card_id: str, card) -> Dict[str, Any]:
     info = card_text_loader.card_data.get(card_id, {})
     name_zh = info.get("name") or _english_name(card) or card_id
     text_zh = info.get("text") or ""
+    # card_text_loader 当前只缓存 zhCN+enUS fallback,所以中英文效果文本相同。
+    # 为了让英文用户至少能看到内容(spec §4.1 必填字段),fallback 到 text_zh。
+    text_en = text_zh
 
     out: Dict[str, Any] = {
         "id": card_id,
@@ -104,7 +109,7 @@ def _card_to_dict(card_id: str, card) -> Dict[str, Any]:
         "name_zh": name_zh,
         "name_en": _english_name(card) or card_id,
         "text_zh": text_zh,
-        "text_en": "",  # v1: card_text.py only stores zhCN+fallback; leave as empty placeholder
+        "text_en": text_en,
         "cost": getattr(card, "cost", 0),
         "type": card.type.name,
         "card_class": card.card_class.name if card.card_class else "NEUTRAL",
@@ -132,34 +137,40 @@ def build_catalog() -> Dict[str, Any]:
     if _catalog_cache is not None:
         return _catalog_cache
 
-    _ensure_db_initialized()
+    with _catalog_lock:
+        # 双重检查:获得锁后另一线程可能已经构建好
+        if _catalog_cache is not None:
+            return _catalog_cache
 
-    cards: List[Dict[str, Any]] = []
-    for card_id in sorted(_cards_db.keys()):
-        card = _cards_db[card_id]
-        if not getattr(card, "collectible", False):
-            continue
-        if card.type == CardType.HERO:
-            continue
-        if card.type not in {CardType.MINION, CardType.SPELL, CardType.WEAPON}:
-            continue
-        if not is_card_implemented(card_id):
-            continue
-        cards.append(_card_to_dict(card_id, card))
+        _ensure_db_initialized()
 
-    payload_json = json.dumps(cards, sort_keys=True, ensure_ascii=False)
-    etag = hashlib.sha256(payload_json.encode("utf-8")).hexdigest()[:16]
+        cards: List[Dict[str, Any]] = []
+        for card_id in sorted(_cards_db.keys()):
+            card = _cards_db[card_id]
+            if not getattr(card, "collectible", False):
+                continue
+            if card.type == CardType.HERO:
+                continue
+            if card.type not in {CardType.MINION, CardType.SPELL, CardType.WEAPON}:
+                continue
+            if not is_card_implemented(card_id):
+                continue
+            cards.append(_card_to_dict(card_id, card))
 
-    _catalog_cache = {
-        "cards": cards,
-        "total": len(cards),
-        "etag": etag,
-        "generated_at": datetime.now(timezone.utc).isoformat(),
-    }
-    return _catalog_cache
+        payload_json = json.dumps(cards, sort_keys=True, ensure_ascii=False)
+        etag = hashlib.sha256(payload_json.encode("utf-8")).hexdigest()[:16]
+
+        _catalog_cache = {
+            "cards": cards,
+            "total": len(cards),
+            "etag": etag,
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+        }
+        return _catalog_cache
 
 
 def reset_catalog_cache() -> None:
     """Test helper: clear cache so next build_catalog() recalculates"""
     global _catalog_cache
-    _catalog_cache = None
+    with _catalog_lock:
+        _catalog_cache = None

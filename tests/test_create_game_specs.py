@@ -81,6 +81,39 @@ def test_handle_create_game_emits_state_on_success():
     assert 'game_state' in types, f"got {types}"
 
 
+def test_create_game_unknown_class_raises(manager):
+    """unknown card_class string should raise ValueError, not silently random"""
+    with pytest.raises(ValueError, match="unknown card_class"):
+        manager.create_game(
+            mode="pve",
+            p1_spec={"type": "random", "card_class": "FOO_BAR_NOT_A_CLASS"},
+            p2_spec={"type": "random", "card_class": "ANY"},
+        )
+
+
+def test_create_game_lowercase_any_works(manager):
+    """case-insensitive ANY should be accepted (resolve_card_class_strict uses upper())"""
+    gid = manager.create_game(
+        mode="pve",
+        p1_spec={"type": "random", "card_class": "any"},
+        p2_spec={"type": "random", "card_class": "MAGE"},
+    )
+    assert gid in manager.games
+
+
+def test_handle_create_game_rejects_legacy_player_class():
+    """Legacy {mode, player_class} payload no longer accepted; must emit create_game_error"""
+    from webui.server import create_app, socketio
+    app = create_app()
+    client = socketio.test_client(app)
+
+    client.emit('create_game', {'mode': 'pve', 'player_class': 'mage'})
+    received = client.get_received()
+    types = [r['name'] for r in received]
+    assert 'create_game_error' in types, f"got {types}"
+    assert 'game_state' not in types
+
+
 def test_handle_create_game_invalid_deckstring_emits_error():
     """Bad deckstring should not create game, emits create_game_error"""
     from webui.server import create_app, socketio

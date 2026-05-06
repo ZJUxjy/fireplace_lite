@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { Deck, DeckSpec } from '../types/deck';
 import { listDecks, exportDeckToDeckstring } from '../services/deckStore';
 import { HERO_CLASSES } from '../types/deck';
@@ -47,21 +47,35 @@ async function slotToSpec(slot: SlotState, decks: Deck[]): Promise<DeckSpec> {
   return { type: 'deckstring', value: ds };
 }
 
+function isSlotReady(slot: SlotState): boolean {
+  if (slot.type === 'random') return Boolean(slot.randomClass);
+  if (slot.type === 'deckstring') return slot.deckstring.trim().length > 0;
+  return slot.deckId.length > 0;
+}
+
 export default function PlaySetup(props: Props) {
   const isPvp = props.mode === 'pvp';
-  const [decks, setDecks] = useState<Deck[]>(listDecks());
+  const [decks] = useState<Deck[]>(() => listDecks());
   const [p1, setP1] = useState<SlotState>(defaultSlot(false));
   const [p2, setP2] = useState<SlotState>(defaultSlot(!isPvp));
   const [error, setError] = useState('');
+  const [starting, setStarting] = useState(false);
 
-  useEffect(() => { setDecks(listDecks()); }, []);
+  const ready = isSlotReady(p1) && isSlotReady(p2);
 
   const start = async () => {
+    if (!ready || starting) return;
+    setStarting(true);
+    setError('');
     try {
       const p1Spec = await slotToSpec(p1, decks);
       const p2Spec = await slotToSpec(p2, decks);
       props.onStart(p1Spec, p2Spec);
-    } catch (e) { setError((e as Error).message); }
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setStarting(false);
+    }
   };
 
   const renderSlot = (label: string, slot: SlotState, set: (s: SlotState) => void) => (
@@ -104,7 +118,9 @@ export default function PlaySetup(props: Props) {
       </div>
       {error && <div className="play-setup__error">{error}</div>}
       <div className="play-setup__buttons">
-        <button onClick={start}>开始游戏</button>
+        <button onClick={start} disabled={!ready || starting}>
+          {starting ? '准备中…' : '开始游戏'}
+        </button>
         <button onClick={props.onBack}>返回</button>
       </div>
     </div>

@@ -28,9 +28,16 @@ export default function DeckEditor({ deckId, initialDeck, onBack }: Props) {
   const [previewLockedCard, setPreviewLockedCard] = useState<Card | null>(null);
   const [toast, setToast] = useState<string>('');
 
+  // Mount-once catalog load with cancellation. 之前的 [catalog.length] 依赖在
+  // 服务端返回空数组时会反复重触发,这里改成 [] 一次性。
   useEffect(() => {
-    if (catalog.length === 0) loadCatalog().then(setCatalog).catch(e => setToast(`加载卡库失败: ${e.message}`));
-  }, [catalog.length]);
+    if (getCatalogSync().length > 0) return;
+    let cancelled = false;
+    loadCatalog()
+      .then(c => { if (!cancelled) setCatalog(c); })
+      .catch(e => { if (!cancelled) setToast(`加载卡库失败: ${e.message}`); });
+    return () => { cancelled = true; };
+  }, []);
 
   const isBrowse = deck === null;
 

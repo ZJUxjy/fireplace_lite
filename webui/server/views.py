@@ -23,17 +23,6 @@ LANGUAGE_NAMES = {
 # 支持的语言（简化版）
 SUPPORTED_LANGUAGES = ['zhCN', 'enUS']
 
-def _load_card_multilang(card_id):
-    """Get multilang name from card_text_loader (zhCN + enUS fallback; other languages not supported in v1)"""
-    from .card_text import card_text_loader
-    info = card_text_loader.card_data.get(card_id, {})
-    name = info.get('name')
-    if not name:
-        return {}
-    # card_text_loader currently only caches zhCN+fallback, so zhCN and enUS (via fallback) return the same value
-    return {'zhCN': name, 'enUS': name}
-
-
 @bp.route('/api/languages')
 def languages():
     """获取支持的语言列表"""
@@ -87,9 +76,13 @@ def get_card(card_id):
 
     card = cards.db.get(card_id)
     if card:
-        # 从 XML 获取多语言名称
-        names = _load_card_multilang(card.id)
-        name = names.get(lang, str(card))
+        from .card_text import card_text_loader
+        zh_name = card_text_loader.get_name(card.id)
+        en_name = str(card)  # fireplace card __str__ returns enUS name
+        if lang == 'zhCN':
+            name = zh_name or en_name
+        else:
+            name = en_name or zh_name or card.id
 
         return jsonify({
             'id': card.id,
@@ -141,11 +134,22 @@ def encode_deck_endpoint():
     if not hero_class or not cards_in:
         return jsonify({'error': 'missing hero_class or cards'}), 400
 
-    cards = [(c['card_id'], int(c['count'])) for c in cards_in]
     try:
+        cards = []
+        for c in cards_in:
+            if not isinstance(c, dict) or 'card_id' not in c or 'count' not in c:
+                return jsonify({'error': f'each card needs card_id and count: {c}'}), 400
+            count = int(c['count'])
+            if count < 1:
+                return jsonify({'error': f'card count must be >= 1: {c}'}), 400
+            cards.append((c['card_id'], count))
         fmt = Format[fmt_name]
         deckstring = export_deck_to_string(cards, hero_class, fmt)
-    except (InvalidDeck, KeyError, Exception) as e:
+    except InvalidDeck as e:
+        return jsonify({'error': str(e)}), 400
+    except (KeyError, ValueError, TypeError) as e:
+        return jsonify({'error': f'invalid encode payload: {e}'}), 400
+    except Exception as e:
         return jsonify({'error': str(e)}), 400
 
     return jsonify({'deckstring': deckstring})

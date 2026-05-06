@@ -93,6 +93,38 @@ def test_api_cards_all_returns_catalog():
         assert data["total"] > 1000
 
 
+def test_build_catalog_text_en_not_empty():
+    """text_en 字段必须有内容(spec §4.1 要求,目前 fallback 到 text_zh)"""
+    from webui.server.card_catalog import build_catalog
+    cat = build_catalog()
+    # 不要求每张卡都有 text(法术有,基础随从可能没),但凡有 text_zh 的卡
+    # text_en 也应该非空(同源 fallback)
+    for card in cat["cards"]:
+        if card["text_zh"]:
+            assert card["text_en"], f"{card['id']} has text_zh but empty text_en"
+
+
+def test_build_catalog_thread_safe_first_build(monkeypatch):
+    """并发首次构建只产出一份 catalog(锁保护)"""
+    import threading
+    from webui.server.card_catalog import build_catalog, reset_catalog_cache
+    reset_catalog_cache()
+
+    barrier = threading.Barrier(2)
+    results = []
+
+    def worker():
+        barrier.wait()
+        results.append(build_catalog())
+
+    t1 = threading.Thread(target=worker)
+    t2 = threading.Thread(target=worker)
+    t1.start(); t2.start()
+    t1.join(); t2.join()
+    assert len(results) == 2
+    assert results[0] is results[1]  # 同一对象
+
+
 def test_api_cards_all_etag_304():
     """Sending If-None-Match matching ETag returns 304"""
     from webui.server import create_app

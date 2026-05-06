@@ -36,6 +36,10 @@ export default function DeckPanel(props: Props) {
     }).sort((a, b) => a.cost - b.cost || a.name.localeCompare(b.name));
   }, [deck.cards]);
 
+  const unimplementedCount = deck.cards
+    .filter(c => c.unimplemented === true)
+    .reduce((sum, c) => sum + c.count, 0);
+
   const commitName = () => {
     if (nameDraft.trim()) {
       props.onChange({ ...deck, name: nameDraft.trim() });
@@ -76,21 +80,46 @@ export default function DeckPanel(props: Props) {
       </div>
 
       <div className="deck-panel__list">
-        {sorted.map(({ dc, card }) => card && (
-          <CardRow
-            key={dc.card_id}
-            card={card}
-            count={dc.count}
-            showRightCount
-            onClick={() => props.onRemoveCard(dc.card_id)}
-          />
-        ))}
+        {sorted.map(({ dc, card }) => {
+          if (!card) {
+            // 卡片不在 catalog 中(未实现 / 未知 dbf_id),直接渲染占位灰条
+            return (
+              <div
+                key={dc.card_id}
+                className="deck-panel__row deck-panel__row--unimplemented"
+                onClick={() => props.onRemoveCard(dc.card_id)}
+                title="未实现的卡牌,本卡组无法开局"
+              >
+                <span className="deck-panel__row-name">⚠ {dc.card_id}</span>
+                <span className="deck-panel__row-count">×{dc.count}</span>
+              </div>
+            );
+          }
+          const dim = dc.unimplemented === true;
+          return (
+            <div
+              key={dc.card_id}
+              className={dim ? 'deck-panel__row-wrap deck-panel__row-wrap--dim' : ''}
+              title={dim ? '未实现的卡牌,本卡组无法开局' : undefined}
+            >
+              <CardRow
+                card={card}
+                count={dc.count}
+                showRightCount
+                onClick={() => props.onRemoveCard(dc.card_id)}
+              />
+            </div>
+          );
+        })}
         {sorted.length === 0 && (
           <div className="deck-panel__empty">点左侧卡牌加入卡组</div>
         )}
       </div>
 
       <div className="deck-panel__footer">
+        {unimplementedCount > 0 && (
+          <div className="deck-panel__warn">含 {unimplementedCount} 张未实现卡,开局会被拒绝</div>
+        )}
         {!savable.ok && <div className="deck-panel__warn">{savable.reason}</div>}
         <div className="deck-panel__buttons">
           <button onClick={props.onSave} disabled={!savable.ok}>保存</button>

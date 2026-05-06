@@ -134,13 +134,20 @@ export async function importDeckFromDeckstring(deckstring: string, name: string)
     name,
     hero_class: data.hero_class,
     format: data.format,
-    cards: data.cards.map((c: { card_id: string; count: number }) => ({
+    cards: data.cards.map((c: { card_id: string; count: number; implemented?: boolean }) => ({
       card_id: c.card_id,
       count: c.count,
+      // 后端把未实现卡标 implemented:false。这里保留为 unimplemented 字段供 UI 灰显。
+      ...(c.implemented === false ? { unimplemented: true } : {}),
     })),
     created_at: now,
     updated_at: now,
   };
+}
+
+/** 卡组中是否含未实现卡(开局会被后端拒绝) */
+export function deckHasUnimplemented(deck: Deck): boolean {
+  return deck.cards.some(c => c.unimplemented === true);
 }
 
 export async function exportDeckToDeckstring(deck: Deck): Promise<string> {

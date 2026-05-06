@@ -50,17 +50,31 @@ CLASS_NAME_MAP = {
 }
 
 def get_card_class(class_name: str):
-    """将字符串职业名转换为 CardClass 枚举"""
+    """将字符串职业名转换为 CardClass 枚举(未知名时静默回退到随机职业,保留原行为)"""
     if class_name == 'random':
         return random_class()
     class_lower = class_name.lower()
     if class_lower in CLASS_NAME_MAP:
         return CLASS_NAME_MAP[class_lower]
-    # 尝试直接查找
     try:
         return CardClassEnum[class_name.upper()]
     except KeyError:
         return random_class()
+
+
+def resolve_card_class_strict(class_name: str):
+    """严格解析:未知职业名抛 ValueError(用于 DeckSpec API 校验路径)"""
+    if not isinstance(class_name, str):
+        raise ValueError(f"card_class must be a string, got {type(class_name).__name__}")
+    cl = class_name.upper()
+    if cl == 'ANY':
+        return random_class()
+    if cl in CLASS_NAME_MAP:  # 注意 CLASS_NAME_MAP 的 key 是小写
+        return CLASS_NAME_MAP[cl.lower()]
+    try:
+        return CardClassEnum[cl]
+    except KeyError:
+        raise ValueError(f"unknown card_class: {class_name!r}")
 from .card_text import card_text_loader
 from .card_catalog import (
     is_card_implemented,
@@ -294,19 +308,17 @@ class GameManager:
     @staticmethod
     def _spec_class(spec):
         """Derive CardClass from DeckSpec (deckstring checks hero, random reads card_class)"""
-        if spec["type"] == "deckstring":
+        if spec.get("type") == "deckstring":
             from .deck_manager import import_deck_from_string
             info = import_deck_from_string(spec["value"])
             return CardClassEnum[info["hero_class"]]
-        elif spec["type"] == "random":
-            if spec["card_class"] == "ANY":
-                return random_class()
-            return get_card_class(spec["card_class"])
-        raise ValueError(f"unknown DeckSpec type: {spec.get('type')}")
+        elif spec.get("type") == "random":
+            return resolve_card_class_strict(spec.get("card_class", ""))
+        raise ValueError(f"unknown DeckSpec type: {spec.get('type')!r}")
 
     def _build_deck_from_spec(self, spec):
         """Return (CardClass enum, [card_id, ...])"""
-        if spec["type"] == "deckstring":
+        if spec.get("type") == "deckstring":
             from .deck_manager import import_deck_from_string
             info = import_deck_from_string(spec["value"])
             cc = CardClassEnum[info["hero_class"]]
@@ -314,10 +326,10 @@ class GameManager:
             for c in info["cards"]:
                 deck.extend([c["card_id"]] * c["count"])
             return cc, deck
-        elif spec["type"] == "random":
-            cc = get_card_class(spec["card_class"]) if spec["card_class"] != "ANY" else random_class()
+        elif spec.get("type") == "random":
+            cc = resolve_card_class_strict(spec.get("card_class", ""))
             return cc, filtered_random_draft(cc)
-        raise ValueError(f"unknown DeckSpec type: {spec.get('type')}")
+        raise ValueError(f"unknown DeckSpec type: {spec.get('type')!r}")
 
     def get_card_data(self, card, player=None, opponent=None):
         """获取卡牌详细信息"""

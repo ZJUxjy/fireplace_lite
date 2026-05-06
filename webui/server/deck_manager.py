@@ -201,17 +201,17 @@ def export_deck_to_string(
         # Allow non-standard sizes for now
         pass
 
-    # Check max 2 copies per card
+    # Enforce per-card copy limit:legendary 1 张,其它 2 张。对每张卡都校验——
+    # 之前的 `if count > 2:` 外层守卫让 count == 2 的传说卡漏过。
     for dbf_id, count in cards_dbf:
-        if count > 2:
-            card_id = get_card_by_dbf_id(dbf_id)
-            # Check if it's a legendary (can only have 1)
-            card = db.get(card_id) if card_id else None
-            if card and card.rarity.name == "LEGENDARY":
-                if count > 1:
-                    raise InvalidDeck(f"Too many copies of legendary card: {card_id}")
-            else:
-                raise InvalidDeck(f"Too many copies of card: {card_id}")
+        if count <= 0:
+            raise InvalidDeck(f"Card count must be >= 1, got {count}")
+        card_id = get_card_by_dbf_id(dbf_id)
+        card = db.get(card_id) if card_id else None
+        max_count = 1 if (card and card.rarity.name == "LEGENDARY") else 2
+        if count > max_count:
+            kind = "legendary " if max_count == 1 else ""
+            raise InvalidDeck(f"Too many copies of {kind}card {card_id}: {count} > {max_count}")
 
     return encode_deck(cards_dbf, hero_class_id, format_type)
 
