@@ -301,7 +301,7 @@ class TLC_482_TriggerAccretions(TargetedAction):
 
 
 class DINO_406:
-    """Erupting Fire"""
+    """Fire Breath"""
 
     requirements = {PlayReq.REQ_TARGET_TO_PLAY: 0}
     play = DINO_406_Play(TARGET)
@@ -311,26 +311,26 @@ DINO_406e = buff(1, 1)
 
 
 class DINO_412:
-    """Ancient Turtle Totem"""
+    """Tortotem"""
 
     events = OWN_TURN_END.on(DINO_412_End(CONTROLLER))
 
 
 class DINO_413:
-    """Icespine Sivara"""
+    """Chillspine Stegodon"""
 
     play = DINO_413_Play(CONTROLLER)
 
 
 class TLC_221:
-    """Blazing Inferno"""
+    """Sizzling Swarm"""
 
     requirements = {PlayReq.REQ_TARGET_TO_PLAY: 0}
     play = TLC_221_Play(TARGET)
 
 
 class TLC_222:
-    """Firebird Flight"""
+    """Flight of the Firehawk"""
 
     play = TLC_222_Draw(CONTROLLER)
 
@@ -348,7 +348,7 @@ TLC_223e = buff(spellpower=2)
 
 
 class TLC_224:
-    """Mechanical Molten"""
+    """Mechanized Magma"""
 
     events = Play(CONTROLLER, SPELL).after(TLC_224_GainStats(Play.CARD))
 
@@ -357,13 +357,13 @@ TLC_224e = buff()
 
 
 class TLC_225:
-    """Emberscarred Murloc"""
+    """Cinderfin"""
 
     deathrattle = Summon(CONTROLLER, "TLC_249")
 
 
 class TLC_227:
-    """Lava Surge"""
+    """Lava Flow"""
 
     play = TLC_227_HitLowest(CONTROLLER) * 3
 
@@ -381,7 +381,7 @@ class TLC_229:
 
 
 class TLC_229t14:
-    """Ashamane, Mountain Guardian"""
+    """Ashalon, Ridge Guardian"""
 
     play = TLC_229t14_Play(CONTROLLER)
 
@@ -391,13 +391,13 @@ class TLC_229t14e:
 
 
 class TLC_249:
-    """Blazing Accretion"""
+    """Sizzling Cinder"""
 
     deathrattle = TLC_249_Deathrattle(CONTROLLER)
 
 
 class TLC_464:
-    """Hiking Trail"""
+    """Mountain Map"""
 
     play = TLC_464_Discover(CONTROLLER)
 
@@ -407,6 +407,6 @@ class TLC_464e:
 
 
 class TLC_482:
-    """Moltenclaw"""
+    """Slagclaw"""
 
     play = TLC_482_Play(CONTROLLER)

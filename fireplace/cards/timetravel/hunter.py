@@ -4,13 +4,21 @@ from ..utils import *
 ##
 # Minions
 
-# END_015: Triennium Rex (5费 5/5)
-# 你的野兽获得+2/+2
+class END_015_GetDeathrattle(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        card_id = RandomMinion(deathrattle=True).evaluate(source)[0]
+        card = player.card(card_id, source=source)
+        card.cost = max(0, card.cost - 2)
+        return source.game.queue_actions(source, [Give(player, card)])
+
+
 class END_015:
     """Triennium Rex"""
 
-    # 你的野兽获得+2/+2
-    update = Refresh(FRIENDLY_MINIONS + BEAST, {GameTag.ATK: 2, GameTag.HEALTH: 2})
+    play = END_015_GetDeathrattle(CONTROLLER)
+    deathrattle = END_015_GetDeathrattle(CONTROLLER)
 
 
 # TIME_042: King Maluk (4费 5/6)

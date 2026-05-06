@@ -110,43 +110,43 @@ class TLC_NEUTRAL_SET_STATS:
 
 
 class DINO_410:
-    """Khelos' Egg"""
+    """The Egg of Khelos"""
 
     deathrattle = Summon(CONTROLLER, "DINO_410t2")
 
 
 class DINO_410t2:
-    """Khelos' Egg"""
+    """The Egg of Khelos"""
 
     deathrattle = Summon(CONTROLLER, "DINO_410t3")
 
 
 class DINO_410t3:
-    """Khelos' Egg"""
+    """The Egg of Khelos"""
 
     deathrattle = Summon(CONTROLLER, "DINO_410t4")
 
 
 class DINO_410t4:
-    """Khelos' Egg"""
+    """The Egg of Khelos"""
 
     deathrattle = Summon(CONTROLLER, "DINO_410t5")
 
 
 class DINO_410t5:
-    """Khelos' Egg"""
+    """The Egg of Khelos"""
 
     deathrattle = Summon(CONTROLLER, "DINO_410t")
 
 
 class DINO_411:
-    """Sacred Eggbearer"""
+    """Holy Eggbearer"""
 
     play = ForceDraw(RANDOM(FRIENDLY_DECK + MINION + (ATK == 0)))
 
 
 class DINO_419:
-    """Fodder Helper"""
+    """Herbivore Assistant"""
 
     requirements = {
         PlayReq.REQ_TARGET_IF_AVAILABLE: 0,
@@ -184,7 +184,7 @@ class TLC_244e:
 
 
 class TLC_249:
-    """Blazing Accretion"""
+    """Sizzling Cinder"""
 
     deathrattle = Hit(RANDOM_ENEMY_CHARACTER, 1) * 2
 
@@ -566,37 +566,37 @@ class TLC_100t3:
 
 
 class TLC_100t11:
-    """Gushing Geyser"""
+    """Bursting Geyser"""
 
     deathrattle = Hit(ENEMY_CHARACTERS, 3)
 
 
 class TLC_100t21:
-    """Gushing Geyser"""
+    """Bursting Geyser"""
 
     deathrattle = Hit(ENEMY_CHARACTERS, 5)
 
 
 class TLC_100t31:
-    """Gushing Geyser"""
+    """Bursting Geyser"""
 
     deathrattle = Hit(ENEMY_CHARACTERS, 10)
 
 
 class TLC_100t12:
-    """Clear Moonlight"""
+    """Shining Moonlight"""
 
     play = Buff(CONTROLLER, "TLC_100t12e")
 
 
 class TLC_100t22:
-    """Clear Moonlight"""
+    """Shining Moonlight"""
 
     play = Buff(CONTROLLER, "TLC_100t22e")
 
 
 class TLC_100t32:
-    """Clear Moonlight"""
+    """Shining Moonlight"""
 
     play = Buff(CONTROLLER, "TLC_100t32e")
 
@@ -610,37 +610,37 @@ class TLC_100_SPELL_DISCOUNT:
 
 
 class TLC_100t13:
-    """Runic Carving"""
+    """Runic Inscriptions"""
 
     play = TLC_100_DiscoverSpell(CONTROLLER, 1)
 
 
 class TLC_100t23:
-    """Runic Carving"""
+    """Runic Inscriptions"""
 
     play = TLC_100_DiscoverSpell(CONTROLLER, 4)
 
 
 class TLC_100t33:
-    """Runic Carving"""
+    """Runic Inscriptions"""
 
     play = TLC_100_DiscoverSpell(CONTROLLER, 7)
 
 
 class TLC_100t14:
-    """Carnivorous Plant"""
+    """Snapping Plants"""
 
     play = Buff(FRIENDLY_HERO, "TLC_100t14e")
 
 
 class TLC_100t24:
-    """Carnivorous Plant"""
+    """Snapping Plants"""
 
     play = Buff(FRIENDLY_HERO, "TLC_100t24e")
 
 
 class TLC_100t34:
-    """Carnivorous Plant"""
+    """Snapping Plants"""
 
     play = Buff(FRIENDLY_HERO, "TLC_100t34e")
 
@@ -664,39 +664,39 @@ class TLC_100t35:
 
 
 class TLC_100t16:
-    """Flowing Lava"""
+    """Lava Stream"""
 
     play = GainArmor(FRIENDLY_HERO, 3)
 
 
 class TLC_100t26:
-    """Flowing Lava"""
+    """Lava Stream"""
 
     play = GainArmor(FRIENDLY_HERO, 6)
 
 
 class TLC_100t36:
-    """Flowing Lava"""
+    """Lava Stream"""
 
     play = GainArmor(FRIENDLY_HERO, 12)
 
 
 class TLC_100t17:
-    """Reflecting Crystal"""
+    """Radiant Crystals"""
 
     requirements = {PlayReq.REQ_MINIMUM_TOTAL_MINIONS: 1}
     play = TLC_100_CopyFriendly(SELF, 1)
 
 
 class TLC_100t27:
-    """Reflecting Crystal"""
+    """Radiant Crystals"""
 
     requirements = {PlayReq.REQ_MINIMUM_TOTAL_MINIONS: 1}
     play = TLC_100_CopyFriendly(SELF, 5)
 
 
 class TLC_100t37:
-    """Reflecting Crystal"""
+    """Radiant Crystals"""
 
     requirements = {PlayReq.REQ_MINIMUM_TOTAL_MINIONS: 1}
     play = TLC_100_CopyFriendly(SELF, 10)
@@ -704,7 +704,7 @@ class TLC_100t37:
 
 class TLC_100t12e:
     tags = {
-        GameTag.CARDNAME: "Clear Moonlight",
+        GameTag.CARDNAME: "Shining Moonlight",
         GameTag.CARDTYPE: CardType.ENCHANTMENT,
     }
     update = Refresh(CONTROLLER, {GameTag.SPELLPOWER: 1})
@@ -713,7 +713,7 @@ class TLC_100t12e:
 
 class TLC_100t22e:
     tags = {
-        GameTag.CARDNAME: "Clear Moonlight",
+        GameTag.CARDNAME: "Shining Moonlight",
         GameTag.CARDTYPE: CardType.ENCHANTMENT,
     }
     update = Refresh(CONTROLLER, {GameTag.SPELLPOWER: 2})
@@ -722,7 +722,7 @@ class TLC_100t22e:
 
 class TLC_100t32e:
     tags = {
-        GameTag.CARDNAME: "Clear Moonlight",
+        GameTag.CARDNAME: "Shining Moonlight",
         GameTag.CARDTYPE: CardType.ENCHANTMENT,
     }
     update = Refresh(CONTROLLER, {GameTag.SPELLPOWER: 4})
@@ -902,7 +902,7 @@ class TLC_243_Play(TargetedAction):
 
 
 class TLC_243:
-    """Doommaiden"""
+    """Whirling Stormdrake"""
 
     play = TLC_243_Play(CONTROLLER)
 
@@ -1120,7 +1120,7 @@ TLC_253e2 = buff(2, 2)
 
 
 class TLC_251:
-    """Misty Mountain Hopster"""
+    """Primalfin Challenger"""
 
     play = Buff(CONTROLLER, "TLC_251e")
 
@@ -1153,7 +1153,7 @@ class TLC_254_EndTurn(TargetedAction):
 
 
 class TLC_254:
-    """Storyteller"""
+    """Tortollan Storyteller"""
 
     events = OWN_TURN_END.on(TLC_254_EndTurn(CONTROLLER))
 
@@ -1339,7 +1339,7 @@ class TLC_454_Play(TargetedAction):
 
 
 class TLC_454:
-    """Scalhide Kodo"""
+    """Scalehide Kodo"""
 
     play = TLC_454_Play(CONTROLLER)
 
@@ -1384,7 +1384,7 @@ class TLC_829t_Play(TargetedAction):
 
 
 class TLC_829t:
-    """Bone"""
+    """Bones"""
 
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
@@ -1425,7 +1425,7 @@ class TLC_605:
 
 
 class TLC_621:
-    """Stubborn Guardian"""
+    """Willful Watcher"""
 
     deathrattle = Mill(CONTROLLER) * 3
 

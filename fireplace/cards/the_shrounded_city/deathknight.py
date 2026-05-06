@@ -247,7 +247,7 @@ class DINO_416:
 
 
 class DINO_417:
-    """Rite of Rest"""
+    """Soulrest Ceremony"""
 
     play = Buff(FRIENDLY_MINIONS, "DINO_417e")
 
@@ -261,7 +261,7 @@ class DINO_417e:
 
 
 class TLC_401:
-    """Chillfallen Baronsaurus"""
+    """Bonechill Stegodon"""
 
     deathrattle = Hit(RANDOM(ENEMY_CHARACTERS), 6) * 3
 
@@ -288,13 +288,13 @@ class TLC_433:
 
 
 class TLC_433t:
-    """Terrax, the Bone Terror"""
+    """Tyrax, Bone Terror"""
 
     deathrattle = Summon(CONTROLLER, "TLC_433t2")
 
 
 class TLC_433t2:
-    """Tomb of Terror"""
+    """Terror's Grave"""
 
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
@@ -304,13 +304,13 @@ class TLC_433t2:
 
 
 class TLC_434:
-    """Necrotic Archaeology"""
+    """Paleomancy"""
 
     play = TLC_434_Play(CONTROLLER)
 
 
 class TLC_435:
-    """Burndown Map"""
+    """Crypt Map"""
 
     play = TLC_435_Play(CONTROLLER)
 
@@ -335,7 +335,7 @@ class TLC_436:
 
 
 class TLC_439:
-    """Tar Tide"""
+    """Wave of Tar"""
 
     play = Hit(ENEMY_MINIONS, 2), Buff(ENEMY_HAND + MINION, "TLC_439e2")
 
@@ -344,7 +344,7 @@ TLC_439e2 = buff(cost=2)
 
 
 class TLC_440:
-    """Cryo Sleep"""
+    """Cryosleep"""
 
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
@@ -361,7 +361,7 @@ class TLC_443:
 
 
 class TLC_443t:
-    """Reanimated Skeletal Dino"""
+    """Reanimated Ossodon"""
 
     tags = {GameTag.TAUNT: True}
     extra_races = (Race.BEAST,)

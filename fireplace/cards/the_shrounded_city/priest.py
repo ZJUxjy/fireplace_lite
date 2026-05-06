@@ -227,7 +227,7 @@ class TLC_835_Play(TargetedAction):
 
 
 class DINO_426:
-    """Life Ritual"""
+    """Ritual of Life"""
 
     play = DINO_426_Discover(CONTROLLER)
 
@@ -236,7 +236,7 @@ DINO_426e = buff()
 
 
 class DINO_428:
-    """Eel-Tusk Mask"""
+    """Behemoth Mask"""
 
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
@@ -249,7 +249,7 @@ DINO_428e = buff()
 
 
 class DINO_431:
-    """Thundering Abomination"""
+    """Atlasaurus"""
 
     deathrattle = DINO_431_Deathrattle(CONTROLLER)
 
@@ -288,32 +288,32 @@ class TLC_816:
 
 
 class TLC_817:
-    """Seek Guidance"""
+    """Reach Equilibrium"""
 
     events = Play(CONTROLLER, SPELL).after(TLC_817_Progress(SELF, Play.CARD))
 
 
 class TLC_817t3:
-    """Solitous, Lifebreath"""
+    """Sol'etos, Life's Breath"""
 
     play = Summon(CONTROLLER, ExactCopy(SELF))
 
 
 class TLC_817t4:
-    """Solitous, Death's Touch"""
+    """Sol'etos, Death's Touch"""
 
     deathrattle = Hit(RANDOM_ENEMY_CHARACTER, 5)
 
 
 class TLC_817t5:
-    """Solitous, Cycle Reborn"""
+    """Sol'etos, Cycle's Rebirth"""
 
     play = Summon(CONTROLLER, ExactCopy(SELF))
     deathrattle = Hit(RANDOM_ENEMY_CHARACTER, 5)
 
 
 class TLC_818:
-    """Reincarnation"""
+    """Resuscitate"""
 
     play = TLC_818_Resurrect(CONTROLLER)
 
@@ -330,13 +330,13 @@ class TLC_819:
 
 
 class TLC_820:
-    """Woodland Ecologist"""
+    """Glade Ecologist"""
 
     deathrattle = Give(CONTROLLER, "TLC_813")
 
 
 class TLC_813:
-    """Pure Vine"""
+    """Purifying Vines"""
 
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,

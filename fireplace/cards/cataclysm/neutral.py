@@ -1,3 +1,5 @@
+from hearthstone.enums import SpellSchool
+
 from ..utils import *
 
 _SELF_IF_ALONE = FuncSelector(
@@ -39,6 +41,15 @@ def _genn_ready(entities, source):
 _GENN_READY = FuncSelector(_genn_ready)
 
 
+class CATA_EVENT_001_Play(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        delayed = getattr(source.controller, "_cata_event_001_burning_cards", [])
+        delayed.append((target, 3, source.id))
+        source.controller._cata_event_001_burning_cards = delayed
+
+
 def _remember_facelessifier_killer(entity, target, amount, damage_source):
     if (
         damage_source.type == CardType.MINION
@@ -51,6 +62,44 @@ def _remember_facelessifier_killer(entity, target, amount, damage_source):
 
 ##
 # Minions
+
+
+class CATA_EVENT_001:
+    """Destructive Phoenix"""
+
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_FRIENDLY_TARGET: 0,
+    }
+    play = CATA_EVENT_001_Play(TARGET)
+
+
+def _fire_spell_played_this_turn(player):
+    return any(
+        card.type == CardType.SPELL
+        and card.turn_played == player.game.turn
+        and getattr(getattr(card, "data", None), "spell_school", None)
+        == SpellSchool.FIRE
+        for card in player.cards_played_this_game
+    )
+
+
+class CATA_EVENT_002_Destroy(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, target):
+        if _fire_spell_played_this_turn(source.controller):
+            return source.game.queue_actions(source, [Destroy(target)])
+
+
+class CATA_EVENT_002:
+    """Baleful Blazer"""
+
+    requirements = {
+        PlayReq.REQ_TARGET_TO_PLAY: 0,
+        PlayReq.REQ_MINION_TARGET: 0,
+    }
+    play = CATA_EVENT_002_Destroy(TARGET)
 
 # CATA_111: 晦鳞巢母 (3费 4/3 龙)
 # 战吼：如果你的手牌中有龙牌，复原两个法力水晶。

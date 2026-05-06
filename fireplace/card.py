@@ -738,6 +738,8 @@ class PlayableCard(BaseCard, Entity, TargetableByAuras):
     @property
     def play_targets(self):
         candidates = list(self.game.characters)
+        if self.data.tags.get(GameTag.CAN_TARGET_CARDS_IN_HAND):
+            candidates.extend(self.controller.hand)
         if (
             PlayReq.REQ_LOCATION_TARGET in self.requirements
             or PlayReq.REQ_LOCATION_OR_MINION_TARGET in self.requirements

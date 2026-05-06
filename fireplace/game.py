@@ -12,11 +12,13 @@ from .actions import (
     BeginTurn,
     Buff,
     Death,
+    Discard,
     EndTurn,
     EventListener,
     Give,
     GameStart,
     Play,
+    Summon,
 )
 from .card import THE_COIN
 from .cards import standard_board_skins
@@ -410,6 +412,21 @@ class BaseGame(Entity):
             else:
                 remaining.append((card, turns))
         player._future_hand_minions = remaining
+        burning = getattr(player, "_cata_event_001_burning_cards", [])
+        remaining_burning = []
+        for card, turns, phoenix_id in burning:
+            turns -= 1
+            if turns <= 0:
+                self.queue_actions(
+                    player,
+                    [
+                        Discard(card),
+                        Summon(player, phoenix_id),
+                    ],
+                )
+            else:
+                remaining_burning.append((card, turns, phoenix_id))
+        player._cata_event_001_burning_cards = remaining_burning
 
         for entity in self.live_entities:
             if entity.type != CardType.PLAYER:

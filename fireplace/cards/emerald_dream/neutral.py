@@ -1,5 +1,6 @@
 # Neutral cards from EMERALD_DREAM expansion
 from ..utils import *
+from hearthstone.enums import SpellSchool
 
 
 ##
@@ -19,6 +20,100 @@ class EDR_001:
 
     divine_shield = True
     play = Give(CONTROLLER, RandomCard())
+
+
+class CORE_EDR_001:
+    """Babbling Bookcase"""
+
+    play = Give(CONTROLLER, RandomSpell(card_class=CardClass.MAGE)) * 2
+
+
+class CORE_EDR_003_DrawCorpseSpender(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        spenders = [
+            card
+            for card in player.deck
+            if "Spend" in card.description and "Corpse" in card.description
+        ]
+        if spenders:
+            return source.game.queue_actions(
+                source, [ForceDraw(source.game.random.choice(spenders))]
+            )
+
+
+class CORE_EDR_003_GainCorpse(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, falric):
+        falric.controller.corpses = getattr(falric.controller, "corpses", 0) + 2
+
+
+class CORE_EDR_003:
+    """Falric"""
+
+    play = CORE_EDR_003_DrawCorpseSpender(CONTROLLER)
+    events = Death(FRIENDLY + MINION - SELF).on(CORE_EDR_003_GainCorpse(SELF))
+
+
+class CORE_EDR_004_Choice(Choice):
+    def choose(self, card):
+        if card not in self.cards:
+            raise InvalidAction(
+                "%r is not a valid choice (one of %r)" % (card, self.cards)
+            )
+        self.player.choice = None
+        if getattr(self.source, "_core_edr_004_discount", False):
+            self.source.game.queue_actions(self.source, [Buff(card, "CORE_EDR_004e")])
+        self.source.game.queue_actions(self.source, [EDR_DarkGift(card), Give(self.player, card)])
+        self.trigger_choice_callback()
+
+
+class CORE_EDR_004_Discover(TargetedAction):
+    TARGET = ActionArg()
+
+    def _card_races(self, card):
+        races = set(getattr(card, "races", []) or [])
+        races.update(getattr(getattr(card, "data", None), "races", []) or [])
+        return races
+
+    def _kindred(self, source):
+        source_races = self._card_races(source)
+        return any(
+            played.type == CardType.MINION
+            and source_races.intersection(self._card_races(played))
+            for played in getattr(source.controller, "cards_played_last_turn", [])
+        )
+
+    def do(self, source, player):
+        source._core_edr_004_discount = self._kindred(source)
+        cards = []
+        for card_id, data in db.items():
+            if (
+                data.collectible
+                and data.type == CardType.MINION
+                and Race.BEAST in data.races
+                and (not source.game.is_standard or data.is_standard)
+            ):
+                cards.append(player.card(card_id, source=source))
+        source.game.random.shuffle(cards)
+        return source.game.queue_actions(source, [CORE_EDR_004_Choice(player, cards[:3])])
+
+
+@custom_card
+class CORE_EDR_004e:
+    tags = {
+        GameTag.CARDNAME: "Raptor Herald",
+        GameTag.CARDTYPE: CardType.ENCHANTMENT,
+        GameTag.COST: -1,
+    }
+
+
+class CORE_EDR_004:
+    """Raptor Herald"""
+
+    play = CORE_EDR_004_Discover(CONTROLLER)
 
 
 class EDR_102:
@@ -92,7 +187,7 @@ class EDR_105:
 class EDR_110:
     """Sporegnasher"""
 
-    events = Death(FRIENDLY_MINIONS).on(Buff(SELF, "CS2_101e"))
+    deathrattle = Hit(RANDOM(ENEMY_MINIONS), 1)
 
 
 class EDR_254:
@@ -110,13 +205,13 @@ class EDR_254e1:
 class EDR_260:
     """Illusory Greenwing"""
 
-    play = Summon(CONTROLLER, "EDR_260t")
+    deathrattle = Shuffle(CONTROLLER, "EDR_260t") * 2
 
 
 class EDR_260t:
     """Illusion"""
 
-    taunt = True
+    draw = Summon(CONTROLLER, SELF)
 
 
 class EDR_260te:
@@ -195,13 +290,12 @@ class EDR_493e:
 class EDR_495:
     """Twisted Treant"""
 
-    events = Death(FRIENDLY_MINIONS).on(Destroy(ENEMY_MINIONS))
+    deathrattle = Buff(RANDOM(FRIENDLY_HAND + MINION), "EDR_495e"), Buff(
+        RANDOM(ENEMY_HAND + MINION), "EDR_495e"
+    )
 
 
-class EDR_495e:
-    """Twisted"""
-
-    pass
+EDR_495e = buff(atk=-2)
 
 
 class EDR_500:
@@ -457,17 +551,23 @@ class EDR_971:
     events = OWN_TURN_END.on(Heal(ALL_HEROES, 3))
 
 
+class EDR_978_BottomDeck(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        if len(player.deck) >= player.max_deck_size:
+            return
+        card = player.card("EDR_978", source=source)
+        card.cost = 1
+        card._summon_index = 0
+        card.zone = Zone.DECK
+        card._summon_index = None
+
+
 class EDR_978:
     """Meadowstrider"""
 
-    taunt = True
-    deathrattle = Summon(CONTROLLER, "EDR_978")
-
-
-class EDR_978:
-    """Meadowstrider"""
-
-    taunt = True
+    deathrattle = EDR_978_BottomDeck(CONTROLLER)
 
 
 class EDR_979:
@@ -547,9 +647,27 @@ class FIR_921e:
     pass
 
 
+class FIR_929_DrawFireSpell(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        fire_spells = [
+            card
+            for card in player.deck
+            if card.type == CardType.SPELL
+            and getattr(getattr(card, "data", None), "spell_school", None)
+            == SpellSchool.FIRE
+        ]
+        if fire_spells:
+            return source.game.queue_actions(
+                source, [ForceDraw(source.game.random.choice(fire_spells))]
+            )
+
+
 class FIR_929:
     """Living Flame"""
 
+    deathrattle = FIR_929_DrawFireSpell(CONTROLLER)
     events = Damage(SELF).on(Buff(SELF, "+2/+1"))
 
 
@@ -559,10 +677,18 @@ class FIR_940:
     events = Attack(SELF).on(Damage(ENEMY_MINIONS, 1))
 
 
+class FIR_958_Deathrattle(TargetedAction):
+    TARGET = ActionArg()
+
+    def do(self, source, player):
+        amount = 4 if source.game.current_player is player.opponent else 1
+        return source.game.queue_actions(source, [Hit(ENEMY_CHARACTERS, amount)])
+
+
 class FIR_958:
     """Tindral Sageswift"""
 
-    update = CurrentPlayer(OPPONENT) & Refresh(SELF, {GameTag.ATK: +2})
+    deathrattle = FIR_958_Deathrattle(CONTROLLER)
 
 
 class FIR_959:

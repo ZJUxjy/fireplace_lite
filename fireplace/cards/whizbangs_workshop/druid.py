@@ -150,13 +150,13 @@ class TOY_801:
 
 
 class TOY_801a:
-    """Mana Growth"""
+    """Cultivate"""
 
     play = Buff(SELF, "TOY_801e")
 
 
 class TOY_801b:
-    """Botanical Studies"""
+    """Seedling Growth"""
 
     play = ForceDraw(RANDOM(FRIENDLY_DECK + SPELL))
 

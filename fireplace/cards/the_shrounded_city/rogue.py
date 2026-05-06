@@ -250,7 +250,7 @@ class TLC_522_Fan(TargetedAction):
 
 
 class DINO_407:
-    """Milreles"""
+    """Mirrex, the Crystalline"""
 
     class Hand:
         events = Play(OPPONENT, MINION).after(DINO_407_Copy(SELF, Play.CARD))
@@ -260,7 +260,7 @@ DINO_407e2 = buff()
 
 
 class DINO_408:
-    """Prismatic Fang"""
+    """Crystal Tusk"""
 
     play = DINO_408_Play(CONTROLLER)
     deathrattle = Draw(CONTROLLER) * 2
@@ -277,26 +277,26 @@ DINO_407e = buff()
 
 
 class TLC_513:
-    """The Gravitational Displacer"""
+    """Lie in Wait"""
 
     events = Shuffle(CONTROLLER).after(TLC_513_Progress(SELF))
 
 
 class TLC_513t:
-    """Dusk Overseer"""
+    """Master Dusk"""
 
     play = Summon(CONTROLLER, "TLC_513t2") * 2
 
 
 class TLC_513t2:
-    """Ancient Ninja Turtle"""
+    """Tortollan Ninja"""
 
     draw = Summon(CONTROLLER, SELF)
     deathrattle = Shuffle(CONTROLLER, SELF)
 
 
 class TLC_514:
-    """Relic Vendor"""
+    """Merchant of Legend"""
 
     play = TLC_514_Discover(CONTROLLER)
 
@@ -322,7 +322,7 @@ TLC_516e = buff(atk=2)
 
 
 class TLC_517:
-    """Trapdoor Kicker"""
+    """Knockback"""
 
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
@@ -338,7 +338,7 @@ class TLC_518:
 
 
 class TLC_519:
-    """Stalk the Prey"""
+    """Ambush Predators"""
 
     play = TLC_519_Play(CONTROLLER)
 
@@ -348,13 +348,13 @@ class TLC_519t:
 
 
 class TLC_520:
-    """Canopy Stalker"""
+    """Underbrush Tracker"""
 
     cost = lambda self, cost: max(0, cost - getattr(self.controller, "_tlc_shuffle_count", 0))
 
 
 class TLC_521:
-    """Lookout"""
+    """Eyes in the Sky"""
 
     play = TLC_521_Play(CONTROLLER)
 

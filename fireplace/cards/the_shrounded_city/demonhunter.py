@@ -210,7 +210,7 @@ class DINO_137e:
 
 
 class DINO_138:
-    """Felscale Saur"""
+    """Diabolus Rex"""
 
     play = DINO_138_Play(CONTROLLER)
 
@@ -241,7 +241,7 @@ class TLC_631:
 
 
 class TLC_631t:
-    """Grish, the Colossus"""
+    """Gorishi Colossus"""
 
     play = Buff(CONTROLLER, "TLC_631e")
 
@@ -253,7 +253,7 @@ class TLC_631e:
 
 
 class TLC_633:
-    """Exterminator"""
+    """Bugsquasher"""
 
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
@@ -270,7 +270,7 @@ class TLC_833:
 
 
 class TLC_840:
-    """Gorishi Burrower"""
+    """Gorishi Tunneler"""
 
     events = Attack(SELF).after(Hit(ENEMY_HERO, 2))
 

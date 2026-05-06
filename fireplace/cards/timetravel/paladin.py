@@ -65,12 +65,11 @@ class TIME_015:
 
 
 # TIME_017: Tankgineer (4费 2/1)
-# 战吼：召唤一个4/4的构造体
+# 圣盾。亡语：召唤一个7/7并具有圣盾的坦克
 class TIME_017:
     """Tankgineer"""
 
-    # 战吼：召唤一个4/4的构造体
-    play = Summon(CONTROLLER, RandomMinion(cost=4))
+    deathrattle = Summon(CONTROLLER, "GVG_079")
 
 
 # TIME_019: Manifested Timeways (4费 3/3)

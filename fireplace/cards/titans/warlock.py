@@ -38,7 +38,7 @@ class TTN_960t:
 
 # TTN_960t6: Felblaze Imp (3/2 Demon)
 class TTN_960t6:
-    """Nether Demon"""
+    """Felblaze Imp"""
 
     tags = {GameTag.CARDRACE: Race.DEMON}
 

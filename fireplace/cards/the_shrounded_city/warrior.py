@@ -127,7 +127,7 @@ class TLC_632_Activate(TargetedAction):
 
 
 class DINO_400:
-    """Armorhide Ravasaur"""
+    """Barricade Basher"""
 
     events = GainArmor(FRIENDLY_HERO).on(
         Buff(SELF, "DINO_400e"), Attack(SELF, RANDOM_ENEMY_MINION)
@@ -138,7 +138,7 @@ DINO_400e = buff(+2, +2)
 
 
 class DINO_401:
-    """Dacawraptor"""
+    """The Great Dracorex"""
 
     events = Attack(SELF).after(Hit(ENEMY_MINIONS - Attack.DEFENDER, ATK(SELF)))
 
@@ -160,7 +160,7 @@ class TLC_478:
 
 
 class TLC_600:
-    """Pterrordax Windsweeper"""
+    """Windpeak Wyrm"""
 
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
@@ -175,7 +175,7 @@ class TLC_600:
 
 
 class TLC_601:
-    """Turtle Shellspin"""
+    """Shellnado"""
 
     play = TLC_601_Play(CONTROLLER)
 
@@ -194,7 +194,7 @@ class TLC_602t:
 
 
 class TLC_606:
-    """Tortollan Armorer"""
+    """Latorvian Armorer"""
 
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
@@ -225,7 +225,7 @@ TLC_622e = buff(atk=1)
 
 
 class TLC_622t:
-    """Stalwart Guard"""
+    """Steadfast Security"""
 
     events = Damage(SELF).on(Buff(SELF, "TLC_622e"))
 

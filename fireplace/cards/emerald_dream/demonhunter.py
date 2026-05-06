@@ -348,13 +348,13 @@ class EDR_820:
 
 
 class EDR_820a:
-    """Summon two Dreadseeds"""
+    """Encroaching Fear"""
 
     play = EDR_840_SummonDreadseed(CONTROLLER) * 2
 
 
 class EDR_820b:
-    """Deal 2 damage to all minions"""
+    """Awoken Darkness"""
 
     play = Hit(ALL_MINIONS, 2)
 

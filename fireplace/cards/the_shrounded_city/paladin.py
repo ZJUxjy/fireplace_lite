@@ -304,7 +304,7 @@ class DINO_404:
 
 
 class DINO_405:
-    """Hatch the Egg"""
+    """Hatching Ceremony"""
 
     play = Buff(CONTROLLER, "DINO_405e")
 
@@ -331,7 +331,7 @@ DINO_424e = buff()
 
 
 class TLC_240:
-    """Gillassic Jaws"""
+    """Tyrannogill"""
 
     deathrattle = TLC_240_Deathrattle(CONTROLLER)
 
@@ -349,13 +349,13 @@ class TLC_240t3:
 
 
 class TLC_241:
-    """Lynessa, Threshrider"""
+    """Ido of the Threshfleet"""
 
     play = Give(CONTROLLER, "TLC_241t")
 
 
 class TLC_241t:
-    """Call the Threshriders"""
+    """Call the Threshfleet!"""
 
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,
@@ -368,7 +368,7 @@ TLC_241e = buff(2, 2)
 
 
 class TLC_426:
-    """Questing Finley"""
+    """Dive the Golakka Depths"""
 
     progress_total = 6
     events = Summon(CONTROLLER, MURLOC).after(TLC_426_Progress(SELF, Summon.CARD))
@@ -391,19 +391,19 @@ TLC_428e = buff(cost=-1)
 
 
 class TLC_430:
-    """Holy Grotto"""
+    """Creature of the Sacred Cave"""
 
     events = OWN_TURN_END.on(TLC_430_Recast(SELF))
 
 
 class TLC_438:
-    """Purplefin Callow"""
+    """Violet Treasuregill"""
 
     play = TLC_438_Play(SELF)
 
 
 class TLC_441:
-    """Muster to Formation"""
+    """Ready the Fleet"""
 
     requirements = {
         PlayReq.REQ_TARGET_TO_PLAY: 0,

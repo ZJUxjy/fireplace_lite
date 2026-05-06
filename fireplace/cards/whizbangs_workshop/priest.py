@@ -300,7 +300,7 @@ class TOY_879:
 
 
 class TOY_879t:
-    """Cardboard Box"""
+    """Repackaged Box"""
 
     play = TOY_879t_OpenBox(CONTROLLER)
 
