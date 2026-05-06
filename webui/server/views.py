@@ -85,6 +85,26 @@ def all_languages():
     ])
 
 
+@bp.route('/api/cards/all')
+def cards_all():
+    """Return full metadata for all implemented collectible cards (with ETag caching)"""
+    from .card_catalog import build_catalog
+    catalog = build_catalog()
+    etag = f'"{catalog["etag"]}"'
+
+    if request.headers.get('If-None-Match') == etag:
+        return ('', 304)
+
+    response = jsonify({
+        'cards': catalog['cards'],
+        'total': catalog['total'],
+        'generated_at': catalog['generated_at'],
+    })
+    response.headers['ETag'] = etag
+    response.headers['Cache-Control'] = 'private, max-age=300'
+    return response
+
+
 @bp.route('/api/cards/<card_id>')
 def get_card(card_id):
     """获取卡牌信息（含多语言）"""

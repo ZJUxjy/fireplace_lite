@@ -77,3 +77,30 @@ def test_build_catalog_caches_in_process():
     cat1 = build_catalog()
     cat2 = build_catalog()
     assert cat1 is cat2
+
+
+def test_api_cards_all_returns_catalog():
+    """GET /api/cards/all returns catalog content"""
+    from webui.server import create_app
+    app = create_app()
+    with app.test_client() as client:
+        resp = client.get("/api/cards/all")
+        assert resp.status_code == 200
+        data = resp.get_json()
+        assert "cards" in data
+        assert "total" in data
+        assert data["total"] == len(data["cards"])
+        assert data["total"] > 1000
+
+
+def test_api_cards_all_etag_304():
+    """Sending If-None-Match matching ETag returns 304"""
+    from webui.server import create_app
+    app = create_app()
+    with app.test_client() as client:
+        first = client.get("/api/cards/all")
+        etag = first.headers.get("ETag")
+        assert etag
+
+        second = client.get("/api/cards/all", headers={"If-None-Match": etag})
+        assert second.status_code == 304
