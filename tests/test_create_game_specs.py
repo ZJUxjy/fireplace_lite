@@ -44,8 +44,9 @@ def test_create_game_deckstring_spec(manager):
 
 
 def test_create_game_invalid_deckstring_raises(manager):
-    """Bad deckstring should raise Exception to let handler deal with it"""
-    with pytest.raises(Exception):
+    """Bad deckstring should raise InvalidDeck to let handler deal with it"""
+    from webui.server.deck_manager import InvalidDeck
+    with pytest.raises(InvalidDeck):
         manager.create_game(
             mode="pve",
             p1_spec={"type": "deckstring", "value": "garbage"},

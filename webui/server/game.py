@@ -299,6 +299,8 @@ class GameManager:
             info = import_deck_from_string(spec["value"])
             return CardClassEnum[info["hero_class"]]
         elif spec["type"] == "random":
+            if spec["card_class"] == "ANY":
+                return random_class()
             return get_card_class(spec["card_class"])
         raise ValueError(f"unknown DeckSpec type: {spec.get('type')}")
 
