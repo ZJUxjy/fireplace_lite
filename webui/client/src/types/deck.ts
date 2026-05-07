@@ -2,6 +2,17 @@ export type CardType = 'MINION' | 'SPELL' | 'WEAPON';
 export type Format = 'STANDARD' | 'WILD' | 'CLASSIC';
 export type Rarity = 'FREE' | 'COMMON' | 'RARE' | 'EPIC' | 'LEGENDARY';
 
+/** Canonical mechanic-keyword identifiers. Order is the rendering order:
+ * a card with multiple keywords picks the earliest one for its row badge.
+ * Mirrors KEYWORD_TAGS in webui/server/card_catalog.py — keep the two in
+ * sync. See openspec/changes/card-keyword-detection/design.md §D3. */
+export const KEYWORDS = [
+  'TAUNT', 'BATTLECRY', 'DEATHRATTLE', 'CHARGE', 'RUSH',
+  'DIVINE_SHIELD', 'WINDFURY', 'STEALTH', 'POISONOUS',
+  'LIFESTEAL', 'SECRET', 'SPELLPOWER', 'COMBO',
+] as const;
+export type Keyword = typeof KEYWORDS[number];
+
 export type Card = {
   id: string;
   dbf_id: number;
@@ -20,6 +31,7 @@ export type Card = {
   race?: string;
   collectible: true;
   max_count: number;
+  keywords: Keyword[];
 };
 
 export type DeckCard = {

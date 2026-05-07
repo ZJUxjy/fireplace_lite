@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, make_response, request
+from flask import Blueprint, current_app, jsonify, make_response, request
 
 bp = Blueprint('views', __name__)
 
@@ -62,6 +62,18 @@ def cards_all():
     response.headers['ETag'] = etag
     response.headers['Cache-Control'] = 'private, max-age=300'
     return response
+
+
+# Dev-only: histogram of GameTags that are TRUE on collectible cards but
+# aren't in our canonical keyword list — used to spot keywords we should
+# add when new card XML lands. Gated behind FLASK_DEBUG / DEBUG_KEYWORDS;
+# returns 404 in production.
+@bp.route('/api/cards/keyword-candidates')
+def keyword_candidates():
+    if not (current_app.debug or current_app.config.get('DEBUG_KEYWORDS')):
+        return jsonify({'error': 'not found'}), 404
+    from .card_catalog import _compute_keyword_candidates
+    return jsonify({'candidates': _compute_keyword_candidates()})
 
 
 @bp.route('/api/cards/<card_id>')

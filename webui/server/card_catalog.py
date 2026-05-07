@@ -12,7 +12,95 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Set
 
 from fireplace.cards import db as _cards_db
-from hearthstone.enums import CardType
+from hearthstone.enums import CardType, GameTag
+
+
+# Canonical mechanic keywords surfaced in the deck-builder filter rail and
+# card-row badge. Order is the rendering order: a card with multiple
+# keywords picks the earliest one for its badge slot. See
+# openspec/changes/card-keyword-detection/design.md §D3 for rationale.
+KEYWORD_TAGS = {
+    "TAUNT":         GameTag.TAUNT,
+    "BATTLECRY":     GameTag.BATTLECRY,
+    "DEATHRATTLE":   GameTag.DEATHRATTLE,
+    "CHARGE":        GameTag.CHARGE,
+    "RUSH":          GameTag.RUSH,
+    "DIVINE_SHIELD": GameTag.DIVINE_SHIELD,
+    "WINDFURY":      GameTag.WINDFURY,
+    "STEALTH":       GameTag.STEALTH,
+    "POISONOUS":     GameTag.POISONOUS,
+    "LIFESTEAL":     GameTag.LIFESTEAL,
+    "SECRET":        GameTag.SECRET,
+    "SPELLPOWER":    GameTag.SPELLPOWER,
+    "COMBO":         GameTag.COMBO,
+}
+
+# Tags that show up on cards but are NOT mechanic keywords —
+# either cosmetic (ELITE), runtime-only (FROZEN), numeric-with-its-own-column
+# (OVERLOAD), effects rather than properties (SILENCE: Ironbeak Owl *casts*
+# silence, the tag itself is on the target), or pure bookkeeping (CARDTYPE,
+# CARD_SET, RARITY, COST, …). Used to filter the dev-only
+# `/api/cards/keyword-candidates` report (design.md §D7).
+KEYWORD_DENY_LIST = {
+    # Static cosmetic / collectible flags
+    "ELITE", "COLLECTIBLE", "PREMIUM", "FACTION", "MINI_SET",
+    "MULTIPLE_CLASSES", "MULTI_CLASS_GROUP", "HAS_SIGNATURE_QUALITY",
+    "DONT_PICK_FROM_SUBSETS", "DEV_STATE", "DevState",
+    # Card-definition fields (every card has these by construction)
+    "CARDTYPE", "CARD_SET", "CLASS", "RARITY", "COST",
+    "ATK", "HEALTH", "DURABILITY", "ARMOR",
+    "CARDRACE", "SPELL_SCHOOL", "TECH_LEVEL", "DBF_ID",
+    "CARDNAME", "CARDTEXT_INHAND", "FLAVORTEXT", "ARTISTNAME",
+    # Aura / runtime-state / control-flow tags
+    "AURA", "IMMUNE", "IMMUNE_WHILE_ATTACKING", "FROZEN",
+    "EXHAUSTED", "CANT_ATTACK", "CANT_BE_TARGETED_BY_SPELLS",
+    "CANT_BE_DAMAGED", "CANNOT_ATTACK_HEROES", "HIDE_STATS",
+    "FORGETFUL", "AFFECTED_BY_SPELL_POWER",
+    "AFFECTED_BY_HEALING_DOES_DAMAGE",
+    # Numeric mechanics with their own column / not chip-suitable
+    "OVERLOAD", "SILENCE", "RECRUIT", "QUEST", "INSPIRE",
+    "JADE_GOLEM", "ADJACENT_BUFF", "SIDE_QUEST",
+    "QUEST_PROGRESS_TOTAL", "QUEST_REWARD_DATABASE_ID",
+    "HEROPOWER_DAMAGE", "HERO_POWER",
+    # Battlegrounds / multi-game-mode noise
+    "BACON_SUBSET_BEAST", "BACON_SUBSET_MECH",
+    "BACON_SUBSET_DEMON", "BACON_SUBSET_MURLOC", "BACON_SUBSET_DRAGON",
+    "BACON_TRIPLE_UPGRADE_MINION_ID",
+    # Visual / client-side / asset hints
+    "TRIGGER_VISUAL", "AttackVisualType", "USE_DISCOVER_VISUALS",
+    "DISPLAY_CARD_ON_MOUSEOVER", "DISCOVER_STUDIES_VISUAL",
+    "TRANSFORMED_FROM_CARD_VISUAL_TYPE",
+    "COLLECTION_RELATED_CARD_DATABASE_ID",
+    "COLLECTIONMANAGER_FILTER_MANA_EVEN",
+    "COLLECTIONMANAGER_FILTER_MANA_ODD",
+    # Card-script / engine internals
+    "TAG_SCRIPT_DATA_NUM_1", "TAG_SCRIPT_DATA_NUM_2",
+    "PLAYER_TAG_THRESHOLD_TAG_ID", "PLAYER_TAG_THRESHOLD_VALUE",
+    "ENTITY_TAG_THRESHOLD_TAG_ID", "ENTITY_TAG_THRESHOLD_VALUE",
+    "CARDTEXT_ENTITY_0", "CARDTEXT_ENTITY_1",
+    "MULTIPLY_BUFF_VALUE", "FAST_BATTLECRY", "NON_KEYWORD_ECHO",
+    "FINISH_ATTACK_SPELL_ON_DAMAGE",
+    "RECEIVES_DOUBLE_SPELLDAMAGE_BONUS",
+    "DECK_RULE_MOD_DECK_SIZE", "DECK_ACTION_COST",
+    # Class-flavor groupings (not keywords, just lore tags)
+    "GRIMY_GOONS", "KABAL", "JADE_LOTUS", "SI_7", "LIBRAM",
+    "RITUALIST_MINION", "VOODOO_LINK", "WHELP", "GEARS",
+    "COST_FROST", "DEATH_KNIGHT",
+    # Cosmetic / engine details masquerading as boolean tags
+    "HAS_DIAMOND_QUALITY", "IMP",
+    "ImmuneToSpellpower", "InvisibleDeathrattle",
+    "ELUSIVE", "ENRAGED",
+    "START_OF_GAME_KEYWORD",
+}
+
+
+def _extract_keywords(card) -> List[str]:
+    """Return the canonical-keyword names whose corresponding GameTag is
+    truthy on the given fireplace CardXML object. Order follows
+    KEYWORD_TAGS declaration order so the result is deterministic.
+    SPELLPOWER is numeric (+1, +2, …) — any nonzero value counts."""
+    tags = getattr(card, "tags", None) or {}
+    return [name for name, tag in KEYWORD_TAGS.items() if tags.get(tag)]
 
 
 # Implemented card expansion prefixes (corresponding to fireplace/cards/ subdirectories)
@@ -117,6 +205,7 @@ def _card_to_dict(card_id: str, card) -> Dict[str, Any]:
         "card_set": card.card_set.name if card.card_set else "INVALID",
         "collectible": True,
         "max_count": max_count,
+        "keywords": _extract_keywords(card),
     }
     if card.type == CardType.MINION:
         out["attack"] = getattr(card, "atk", 0)
@@ -171,6 +260,80 @@ def build_catalog() -> Dict[str, Any]:
 
 def reset_catalog_cache() -> None:
     """Test helper: clear cache so next build_catalog() recalculates"""
-    global _catalog_cache
+    global _catalog_cache, _candidates_cache
     with _catalog_lock:
         _catalog_cache = None
+        _candidates_cache = None
+
+
+# ---------------------------------------------------------------------------
+# Dev-only: histogram of every boolean GameTag observed on at least one
+# implemented collectible card that is NOT in the canonical keyword list and
+# NOT in KEYWORD_DENY_LIST. Helps spot a real keyword that slipped past us
+# when new card XML is dropped in. Surfaced via /api/cards/keyword-candidates
+# behind FLASK_DEBUG/DEBUG_KEYWORDS — never shown in the UI.
+# See openspec/changes/card-keyword-detection/design.md §D7.
+# ---------------------------------------------------------------------------
+
+_candidates_cache: Optional[List[Dict[str, Any]]] = None
+
+
+def _compute_keyword_candidates() -> List[Dict[str, Any]]:
+    """Walk every implemented collectible card, count boolean GameTags
+    that fall outside KEYWORD_TAGS ∪ KEYWORD_DENY_LIST, return a list
+    sorted by descending count (then tag name). Process-cached behind
+    `_catalog_lock`."""
+    global _candidates_cache
+    if _candidates_cache is not None:
+        return _candidates_cache
+
+    with _catalog_lock:
+        if _candidates_cache is not None:
+            return _candidates_cache
+        _ensure_db_initialized()
+
+        recognized = set(KEYWORD_TAGS.keys())
+        counts: Dict[str, int] = {}
+        examples: Dict[str, List[str]] = {}
+
+        for card_id in sorted(_cards_db.keys()):
+            card = _cards_db[card_id]
+            if not getattr(card, "collectible", False):
+                continue
+            if card.type == CardType.HERO:
+                continue
+            if card.type not in {CardType.MINION, CardType.SPELL, CardType.WEAPON}:
+                continue
+            if not is_card_implemented(card_id):
+                continue
+
+            tags = getattr(card, "tags", None) or {}
+            for tag, value in tags.items():
+                if not value:
+                    continue
+                # Only boolean-ish tags. Numeric tags (cost, atk, etc.) are
+                # not GameTag-named keywords; skip anything that's not a
+                # GameTag enum or whose value looks numeric beyond 1.
+                name = getattr(tag, "name", None)
+                if not name:
+                    continue
+                if name in recognized or name in KEYWORD_DENY_LIST:
+                    continue
+                # Filter out tags whose names look numeric/value-like or
+                # are system bookkeeping (lots of GameTags are runtime
+                # state, not card properties — they will never be set on
+                # a card definition, but be defensive).
+                if name.endswith("_VALUE") or name.endswith("_NUM") \
+                        or name == "ZONE" or name == "CONTROLLER":
+                    continue
+                counts[name] = counts.get(name, 0) + 1
+                ex = examples.setdefault(name, [])
+                if len(ex) < 3:
+                    ex.append(card_id)
+
+        result = [
+            {"tag": name, "count": counts[name], "examples": examples[name]}
+            for name in sorted(counts, key=lambda n: (-counts[n], n))
+        ]
+        _candidates_cache = result
+        return result

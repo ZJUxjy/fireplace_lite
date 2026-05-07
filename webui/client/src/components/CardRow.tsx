@@ -1,4 +1,5 @@
 import type { Card } from '../types/deck';
+import { KEYWORD_LABELS } from '../services/cardCatalog';
 import './CardRow.css';
 
 type Props = {
@@ -22,12 +23,6 @@ const RACE_LABEL: Record<string, string> = {
   UNDEAD: '亡灵', NAGA: '娜迦', QUILBOAR: '野猪人',
   ALL: '全部',
 };
-const KEYWORDS = ['嘲讽', '冲锋', '突袭', '亡语', '战吼', '圣盾', '风怒', '潜行', '剧毒', '吸血', '奥秘', '法力浮龙'] as const;
-
-function detectKeyword(text: string): string | null {
-  for (const k of KEYWORDS) if (text.includes(k)) return k;
-  return null;
-}
 
 export default function CardRow({
   card, count, disabled, onClick, onHoverStart, onHoverEnd, onContextMenu,
@@ -46,7 +41,8 @@ export default function CardRow({
   const hp = isWeapon ? (card.durability ?? 0) : (card.health ?? 0);
 
   const tribe = card.race && card.race !== 'INVALID' ? RACE_LABEL[card.race] ?? card.race : null;
-  const keyword = detectKeyword(card.text_zh);
+  const firstKw = card.keywords[0];
+  const keyword = firstKw ? KEYWORD_LABELS[firstKw].zh : null;
 
   const max = card.max_count;
   const showCount = count !== undefined;

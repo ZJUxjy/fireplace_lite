@@ -1,4 +1,8 @@
 import type { Card, CardType, Rarity } from '../types/deck';
+import { KEYWORDS, type Keyword } from '../types/deck';
+
+export { KEYWORDS };
+export type { Keyword };
 
 let _catalog: Card[] | null = null;
 let _byId: Map<string, Card> | null = null;
@@ -38,15 +42,26 @@ export function getCatalogSync(): Card[] {
   return _catalog ?? [];
 }
 
-/** Keyword tokens we recognize in localized card text (text_zh). */
-export const KEYWORD_TOKENS = [
-  '嘲讽', '战吼', '亡语', '圣盾', '风怒', '突袭', '冲锋',
-  '潜行', '剧毒', '吸血', '奥秘', '法力浮龙', '沉默',
-] as const;
-export type Keyword = typeof KEYWORD_TOKENS[number];
+/** Localization map for canonical keywords. Single source of truth for the
+ * UI; the FilterRail chip group and CardRow badge both render via this map. */
+export const KEYWORD_LABELS: Record<Keyword, { zh: string; en: string }> = {
+  TAUNT:         { zh: '嘲讽',     en: 'Taunt' },
+  BATTLECRY:     { zh: '战吼',     en: 'Battlecry' },
+  DEATHRATTLE:   { zh: '亡语',     en: 'Deathrattle' },
+  CHARGE:        { zh: '冲锋',     en: 'Charge' },
+  RUSH:          { zh: '突袭',     en: 'Rush' },
+  DIVINE_SHIELD: { zh: '圣盾',     en: 'Divine Shield' },
+  WINDFURY:      { zh: '风怒',     en: 'Windfury' },
+  STEALTH:       { zh: '潜行',     en: 'Stealth' },
+  POISONOUS:     { zh: '剧毒',     en: 'Poisonous' },
+  LIFESTEAL:     { zh: '吸血',     en: 'Lifesteal' },
+  SECRET:        { zh: '奥秘',     en: 'Secret' },
+  SPELLPOWER:    { zh: '法术伤害', en: 'Spell Damage' },
+  COMBO:         { zh: '连击',     en: 'Combo' },
+};
 
 export function cardHasKeyword(card: Card, kw: Keyword): boolean {
-  return card.text_zh.includes(kw);
+  return card.keywords.includes(kw);
 }
 
 export type CardFilter = {
@@ -90,7 +105,7 @@ export function filterCards(catalog: Card[], filter: CardFilter): Card[] {
     if (filter.keywords && filter.keywords.size > 0) {
       let any = false;
       for (const k of filter.keywords) {
-        if (c.text_zh.includes(k)) { any = true; break; }
+        if (c.keywords.includes(k)) { any = true; break; }
       }
       if (!any) return false;
     }

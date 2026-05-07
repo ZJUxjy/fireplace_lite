@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import type { Card, CardType, Rarity } from '../types/deck';
-import { KEYWORD_TOKENS, type Keyword } from '../services/cardCatalog';
+import { KEYWORDS, KEYWORD_LABELS, type Keyword } from '../services/cardCatalog';
 import './FilterRail.css';
 
 export type FilterRailState = {
@@ -185,13 +185,13 @@ export default function FilterRail({ catalog, state, onChange, lockedHeroClass }
       <div className="panel rail__section">
         <h3 className="rail__title">关键词</h3>
         <div className="kwgrid">
-          {KEYWORD_TOKENS.map(k => (
+          {KEYWORDS.map(k => (
             <span
               key={k}
               className={`tag tag--keyword kwtag ${state.keywords.has(k) ? 'kwtag--active' : ''}`}
               onClick={() => toggle<Keyword>('keywords', k)}
             >
-              {k}
+              {KEYWORD_LABELS[k].zh}
             </span>
           ))}
         </div>
