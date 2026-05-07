@@ -14,3 +14,4 @@ fireplace/cards/CardDefs.xml
 .worktrees/
 .superpowers/
 webui/server/cache/
+.claude/
