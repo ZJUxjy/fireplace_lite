@@ -185,13 +185,26 @@
   text-shadow: 0 1px 0 rgba(255,255,255,0.5);
   min-width: 0;
 }
+/* Legendary name: stay dark and readable against the parchment, but
+ * pick up a soft gold halo so the row still reads as "legendary".
+ * The star + the frame's outer gold ring carry the visual identity. */
 .row__name--legendary {
-  background: linear-gradient(180deg, #6b4715 0%, #b88828 50%, #6b4715 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #2a1a0d;
+  text-shadow:
+    0 1px 0 rgba(255, 240, 200, 0.6),
+    0 0 6px rgba(243, 168, 58, 0.55);
 }
-.row__star { color: #b88828; margin-right: 2px; -webkit-text-fill-color: #b88828; }
+.row__star {
+  display: inline-block;
+  margin-right: 3px;
+  font-size: 12px;
+  color: #ffd97a;
+  -webkit-text-fill-color: #ffd97a;
+  text-shadow:
+    0 0 3px rgba(255, 200, 80, 0.95),
+    0 0 6px rgba(255, 170, 40, 0.7),
+    0 1px 0 rgba(120, 60, 10, 0.85);
+}
 
 .tag {
   display: inline-flex; align-items: center; gap: 3px;
