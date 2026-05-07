@@ -1,24 +1,189 @@
-.deck-editor { display: flex; height: 100vh; background: #1a1a2e; position: relative; }
-.deck-editor__pool { flex: 2; min-width: 0; }
-.deck-editor__panel { width: 320px; flex-shrink: 0; }
-.deck-editor--browse .deck-editor__pool { flex: 1; }
-.deck-editor__back-bar { position: absolute; top: 12px; right: 16px; z-index: 50; }
-.deck-editor__back-bar button {
-  background: #3a3a6a; color: #eee; border: 1px solid #4a4a8a;
-  padding: 6px 14px; border-radius: 3px; cursor: pointer;
+/* Hearthstone-themed deck editor: 3-column grid with dark walnut wood backdrop. */
+
+.deck-editor {
+  --parchment-1: #f6e6c2;
+  --parchment-2: #ead7a8;
+  --parchment-3: #d9bf86;
+
+  --wood-1: #2a1a0d;
+  --wood-2: #3a230f;
+  --wood-3: #4a2d14;
+
+  --gold-1: #f7d77a;
+  --gold-2: #e7b94a;
+  --gold-3: #b88828;
+  --gold-deep: #6b4715;
+  --gold-glow: #ffe9a3;
+
+  --ink: #2b1808;
+  --ink-soft: #5a3a1c;
+  --ink-mute: #8c6a3e;
+
+  font-family: "Noto Serif SC", "Cinzel", serif;
+  color: var(--ink);
+
+  width: 100%;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 260px 1fr 320px;
+  gap: 14px;
+  padding: 14px;
+  box-sizing: border-box;
+  background:
+    radial-gradient(ellipse at top, rgba(120,80,30,0.4), transparent 60%),
+    radial-gradient(ellipse at bottom, rgba(0,0,0,0.6), transparent 70%),
+    repeating-linear-gradient(92deg, #2a1a0d 0px, #311e10 6px, #2a1a0d 12px, #34200f 18px),
+    #1a0e06;
+  background-attachment: fixed;
+  position: relative;
+  overflow-x: hidden;
 }
+
+.deck-editor *,
+.deck-editor *::before,
+.deck-editor *::after {
+  box-sizing: border-box;
+}
+
+.deck-editor__main {
+  min-width: 0;
+  min-height: 0;
+  display: flex; flex-direction: column;
+}
+
+@media (max-width: 1280px) {
+  .deck-editor {
+    grid-template-columns: 220px 1fr 280px;
+    gap: 10px;
+    padding: 10px;
+  }
+}
+@media (max-width: 1024px) {
+  .deck-editor {
+    grid-template-columns: 1fr;
+  }
+  .rail, .deckrail {
+    position: static;
+    max-height: none;
+    height: auto;
+  }
+}
+
+/* Toast */
 .deck-editor__toast {
-  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-  background: rgba(50, 50, 90, 0.95); color: #eee; padding: 10px 20px;
-  border-radius: 4px; z-index: 2000; box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: linear-gradient(180deg, #3a230f, #1a0e06);
+  color: #ffe9a3;
+  font-family: "Noto Serif SC", serif; font-size: 14px;
+  padding: 10px 18px; border-radius: 999px;
+  box-shadow:
+    inset 0 0 0 1px #b88828,
+    inset 0 1px 0 rgba(255,220,150,0.2),
+    0 6px 20px rgba(0,0,0,0.7),
+    0 0 16px rgba(255,200,100,0.4);
+  z-index: 2000;
+  animation: toast-in 0.2s ease-out;
 }
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* Locked preview overlay (right-click / mobile) */
 .deck-editor__locked-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.6);
-  z-index: 1500; display: flex; align-items: center; justify-content: center;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(2px);
+  z-index: 1500;
+  display: flex; align-items: center; justify-content: center;
+  animation: toast-in 0.18s ease-out;
 }
-.deck-editor__locked-content { position: relative; }
-.deck-editor__locked-content button {
-  position: absolute; top: 8px; right: 8px;
-  background: #3a3a6a; color: #eee; border: 1px solid #4a4a8a;
-  padding: 4px 10px; border-radius: 3px; cursor: pointer; z-index: 1600;
+.deck-editor__locked-content {
+  position: relative;
+}
+.deck-editor__locked-close {
+  position: absolute;
+  top: -10px; right: -10px;
+  z-index: 1600;
+  font-size: 11px;
+  padding: 4px 10px;
+}
+
+/* Override global button styles inside deck-editor (index.css gives a generic look) */
+.deck-editor button {
+  font-family: "Cinzel", "Noto Serif SC", serif;
+}
+.deck-editor button:focus,
+.deck-editor button:focus-visible {
+  outline: none;
+  box-shadow:
+    inset 0 0 0 1px #6b4715,
+    inset 0 1px 0 rgba(255,255,255,0.5),
+    0 0 0 2px rgba(255,210,120,0.4),
+    0 2px 0 rgba(0,0,0,0.4);
+}
+
+/* Inline class picker modal (browse → scratch deck flow) */
+.class-picker {
+  position: relative;
+  background: linear-gradient(180deg, #3a230f 0%, #2a1a0d 100%);
+  border-radius: 14px;
+  box-shadow:
+    inset 0 0 0 1px #b88828,
+    inset 0 0 0 4px #1a0e06,
+    inset 0 0 0 6px #d9a64a,
+    inset 0 0 0 8px #6b4715,
+    0 12px 28px rgba(0,0,0,0.7);
+  padding: 24px;
+  width: 420px;
+  max-width: 90vw;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.class-picker__title {
+  font-family: "Cinzel", serif;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #ffe9a3;
+  text-shadow: 0 1px 0 #000, 0 0 8px rgba(255,200,100,0.4);
+  margin: 0;
+  text-align: center;
+}
+.class-picker__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.class-picker__btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "Noto Serif SC", serif;
+  font-size: 14px;
+  color: #2a1a0d;
+  background: linear-gradient(180deg, #ffe39a 0%, #e2b34a 60%, #b6831e 100%);
+  border: none;
+  box-shadow:
+    inset 0 0 0 1px #6b4715,
+    inset 0 1px 0 rgba(255,255,255,0.5),
+    0 2px 0 rgba(0,0,0,0.4);
+  transition: filter 0.12s, transform 0.06s;
+}
+.class-picker__btn:hover { filter: brightness(1.08); }
+.class-picker__btn:active { transform: translateY(1px); }
+.class-picker__crest {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: "Cinzel", serif; font-weight: 800; font-size: 13px;
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.6);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,220,150,0.55);
+  flex-shrink: 0;
+}
+.class-picker__cancel {
+  align-self: center;
+  padding: 6px 18px;
 }

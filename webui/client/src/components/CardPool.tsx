@@ -1,98 +1,186 @@
-import { useMemo, useState } from 'react';
-import type { Card, CardType } from '../types/deck';
-import { filterCards, sortCards } from '../services/cardCatalog';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import type { Card } from '../types/deck';
 import CardRow from './CardRow';
 import './CardPool.css';
 
+export type PoolTopbarFilter = {
+  costs: Set<number>;
+  search: string;
+};
+
 type Props = {
-  catalog: Card[];
-  /** True until /api/cards/all has resolved (distinct from empty filter results). */
+  /** Already filtered + sorted by parent (DeckEditor). */
+  cards: Card[];
+  total: number;
+  filtered: number;
   catalogLoading?: boolean;
-  defaultClass?: string;
-  forceIncludeNeutral?: boolean;
+  topbar: PoolTopbarFilter;
+  onTopbarChange: (next: PoolTopbarFilter) => void;
+  onResetAll: () => void;
+  /** Slot rendered at the very right of the topbar (currently unused; reserved). */
+  trailing?: ReactNode;
   onCardClick?: (card: Card) => void;
   onCardContextMenu?: (card: Card) => void;
   onCardHoverStart?: (card: Card, anchor: HTMLElement) => void;
   onCardHoverEnd?: () => void;
   cardDisabled?: (card: Card) => boolean;
+  cardCount?: (card: Card) => number;
 };
 
-const ALL_CLASSES = ['MAGE','HUNTER','PRIEST','SHAMAN','PALADIN','WARLOCK','WARRIOR','ROGUE','DRUID','DEMONHUNTER','NEUTRAL'] as const;
-const TYPES: CardType[] = ['MINION', 'SPELL', 'WEAPON'];
+const PAGE_SIZE = 20;
 
 export default function CardPool(props: Props) {
-  const catalogLoading = props.catalogLoading ?? false;
-  const [classFilter, setClassFilter] = useState<string | undefined>(props.defaultClass);
-  const [costs, setCosts] = useState<Set<number>>(new Set());
-  const [types, setTypes] = useState<Set<CardType>>(new Set());
-  const [search, setSearch] = useState('');
+  const { topbar, onTopbarChange, total, filtered, catalogLoading } = props;
 
-  const filtered = useMemo(() => sortCards(filterCards(props.catalog, {
-    cardClass: classFilter,
-    includeNeutral: classFilter ? props.forceIncludeNeutral : false,
-    costs,
-    types,
-    search,
-  })), [props.catalog, classFilter, costs, types, search, props.forceIncludeNeutral]);
+  const [page, setPage] = useState(1);
+  const collectionRef = useRef<HTMLDivElement>(null);
+
+  const totalPages = Math.max(1, Math.ceil(props.cards.length / PAGE_SIZE));
+
+  // Reset to page 1 when the filtered card list reference changes (filter / search update).
+  useEffect(() => {
+    setPage(1);
+  }, [props.cards]);
+
+  // Snap to last available page if the current page falls out of range
+  // (e.g. catalog reload).
+  useEffect(() => {
+    if (page > totalPages) setPage(totalPages);
+  }, [page, totalPages]);
+
+  // Scroll the grid to top whenever page changes.
+  useEffect(() => {
+    collectionRef.current?.scrollTo({ top: 0 });
+  }, [page]);
+
+  const pageCards = useMemo(() => {
+    const start = (page - 1) * PAGE_SIZE;
+    return props.cards.slice(start, start + PAGE_SIZE);
+  }, [props.cards, page]);
 
   const toggleCost = (n: number) => {
-    const s = new Set(costs);
+    const s = new Set(topbar.costs);
     s.has(n) ? s.delete(n) : s.add(n);
-    setCosts(s);
-  };
-  const toggleType = (t: CardType) => {
-    const s = new Set(types);
-    s.has(t) ? s.delete(t) : s.add(t);
-    setTypes(s);
+    onTopbarChange({ ...topbar, costs: s });
   };
 
   return (
     <div className="card-pool">
-      <div className="card-pool__filters">
-        <select value={classFilter ?? ''} onChange={(e) => setClassFilter(e.target.value || undefined)}>
-          <option value="">全部职业</option>
-          {ALL_CLASSES.map(c => <option key={c} value={c}>{c}</option>)}
-        </select>
-        <div className="card-pool__cost-bar">
+      <div className="topbar">
+        <div className="topbar__title">卡牌收藏</div>
+        <div className="topbar__sub">{filtered} / {total} 张</div>
+
+        <span className="rivet" />
+
+        <div className="chips">
           {[0,1,2,3,4,5,6,7].map(n => (
-            <button key={n} className={costs.has(n) ? 'on' : ''} onClick={() => toggleCost(n)}>
+            <div
+              key={n}
+              className={`chip ${topbar.costs.has(n) ? 'chip--active' : ''}`}
+              onClick={() => toggleCost(n)}
+            >
               {n === 7 ? '7+' : n}
-            </button>
+            </div>
           ))}
         </div>
-        <div className="card-pool__type-bar">
-          {TYPES.map(t => (
-            <button key={t} className={types.has(t) ? 'on' : ''} onClick={() => toggleType(t)}>
-              {t === 'MINION' ? '随' : t === 'SPELL' ? '法' : '武'}
-            </button>
-          ))}
+
+        <div className="topbar__spacer" />
+
+        <div className="search">
+          <span className="search__icon" aria-hidden>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="7" />
+              <path d="M20 20l-3.5-3.5" />
+            </svg>
+          </span>
+          <input
+            placeholder="搜索卡名…"
+            value={topbar.search}
+            onChange={(e) => onTopbarChange({ ...topbar, search: e.target.value })}
+          />
         </div>
-        <input
-          className="card-pool__search"
-          placeholder="搜索卡名…"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+
+        <button className="btn" onClick={props.onResetAll}>重置</button>
+
+        {props.trailing}
       </div>
-      <div className="card-pool__list">
-        {!catalogLoading && filtered.map(c => (
+
+      <div ref={collectionRef} className="collection">
+        {catalogLoading && (
+          <div className="card-pool__loading">正在加载卡库…</div>
+        )}
+        {!catalogLoading && pageCards.length === 0 && (
+          <div className="card-pool__empty">
+            <div className="card-pool__empty-icon">⚜</div>
+            没有符合条件的卡牌
+          </div>
+        )}
+        {!catalogLoading && pageCards.map(c => (
           <CardRow
             key={c.id}
             card={c}
             disabled={props.cardDisabled?.(c)}
+            count={props.cardCount?.(c) ?? 0}
             onClick={() => props.onCardClick?.(c)}
             onContextMenu={(e) => { e.preventDefault(); props.onCardContextMenu?.(c); }}
             onHoverStart={props.onCardHoverStart}
             onHoverEnd={props.onCardHoverEnd}
           />
         ))}
-        {catalogLoading && (
-          <div className="card-pool__loading">正在加载卡库…</div>
-        )}
-        {!catalogLoading && filtered.length === 0 && (
-          <div className="card-pool__empty">没有匹配的卡牌</div>
-        )}
       </div>
+
+      {!catalogLoading && props.cards.length > 0 && (
+        <Pagination
+          page={page}
+          totalPages={totalPages}
+          onChange={setPage}
+        />
+      )}
+    </div>
+  );
+}
+
+type PaginationProps = {
+  page: number;
+  totalPages: number;
+  onChange: (page: number) => void;
+};
+
+function Pagination({ page, totalPages, onChange }: PaginationProps) {
+  const goPrev = () => onChange(Math.max(1, page - 1));
+  const goNext = () => onChange(Math.min(totalPages, page + 1));
+  const goFirst = () => onChange(1);
+  const goLast = () => onChange(totalPages);
+
+  return (
+    <div className="pagination">
+      <button
+        className="pagination__btn"
+        onClick={goFirst}
+        disabled={page <= 1}
+        title="第一页"
+      >«</button>
+      <button
+        className="pagination__btn"
+        onClick={goPrev}
+        disabled={page <= 1}
+        title="上一页"
+      >‹</button>
+      <span className="pagination__info">
+        第 <span className="pagination__cur">{page}</span> / {totalPages} 页
+      </span>
+      <button
+        className="pagination__btn"
+        onClick={goNext}
+        disabled={page >= totalPages}
+        title="下一页"
+      >›</button>
+      <button
+        className="pagination__btn"
+        onClick={goLast}
+        disabled={page >= totalPages}
+        title="最后一页"
+      >»</button>
     </div>
   );
 }

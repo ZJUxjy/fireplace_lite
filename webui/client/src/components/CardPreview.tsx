@@ -19,11 +19,26 @@ const CLASS_LABEL: Record<string, string> = {
 const TYPE_LABEL: Record<string, string> = {
   MINION: '随从', SPELL: '法术', WEAPON: '武器',
 };
+const RACE_LABEL: Record<string, string> = {
+  DRAGON: '龙', BEAST: '野兽', MURLOC: '鱼人', DEMON: '恶魔',
+  ELEMENTAL: '元素', MECH: '机械', MECHANICAL: '机械',
+  PIRATE: '海盗', TOTEM: '图腾',
+  UNDEAD: '亡灵', NAGA: '娜迦', QUILBOAR: '野猪人',
+  ALL: '全部',
+};
+const SET_LABEL: Record<string, string> = {
+  CORE: '核心', EXPERT1: '经典', NAXX: '纳克萨玛斯', GVG: '哥哥侏儒',
+  BRM: '黑石山', TGT: '冠军赛', LOE: '探险者协会', OG: '上古之神',
+  KARA: '卡拉赞', GANGS: '加基森', UNGORO: '安戈洛',
+  ICECROWN: '冰封王座', LOOTAPALOOZA: '狗头人', GILNEAS: '女巫森林',
+  BOOMSDAY: '砰砰计划', TROLL: '拉斯塔哈', DALARAN: '暗影崛起',
+  ULDUM: '奥丹姆', SCHOLOMANCE: '通灵学院', BLACK_TEMPLE: '外域灰烬',
+  DRAGONS: '巨龙降临',
+};
 const RARITY_LABEL: Record<string, string> = {
   FREE: '免费', COMMON: '普通', RARE: '稀有', EPIC: '史诗', LEGENDARY: '传说',
 };
 
-/** Maximal HTML Blizzard-style card text uses; strip everything else before render. */
 function sanitizeCardHtml(raw: string): string {
   const withBreaks = raw.replace(/\r\n/g, '\n').replace(/\n/g, '<br />');
   return DOMPurify.sanitize(withBreaks, {
@@ -111,29 +126,60 @@ export default function CardPreview({ card, anchor }: Props) {
     visibility: placement.visibility,
   };
 
+  const isMinion = card.type === 'MINION';
+  const isWeapon = card.type === 'WEAPON';
+  const showStats = isMinion || isWeapon;
+  const atk = card.attack ?? 0;
+  const hp = isWeapon ? (card.durability ?? 0) : (card.health ?? 0);
+  const rarity = (card.rarity ?? '').toLowerCase();
+
+  const tribe = card.race && card.race !== 'INVALID' ? RACE_LABEL[card.race] ?? card.race : null;
+  const setLabel = SET_LABEL[card.card_set] ?? card.card_set;
+  const rarityLabel = RARITY_LABEL[card.rarity] ?? card.rarity;
+
   return (
-    <div ref={rootRef} className="card-preview" style={style}>
+    <div ref={rootRef} className={`card-preview card-preview--${rarity}`} style={style}>
       <div className="card-preview__header">
-        <span className="card-preview__cost">{card.cost}</span>
-        <span className="card-preview__name">{card.name_zh}</span>
+        <div className="card-preview__cost">{card.cost}</div>
+        <div className="card-preview__title">
+          <div className="card-preview__name">{card.name_zh}</div>
+          <div className="card-preview__name-en">{card.name_en}</div>
+        </div>
       </div>
+
       <div className="card-preview__meta">
-        {TYPE_LABEL[card.type]} · {CLASS_LABEL[card.card_class] ?? card.card_class}
-        {card.race ? ` · ${card.race}` : ''}
+        <span>{TYPE_LABEL[card.type] ?? card.type}</span>
+        <span className="card-preview__sep">·</span>
+        <span>{CLASS_LABEL[card.card_class] ?? card.card_class}</span>
+        {tribe && <>
+          <span className="card-preview__sep">·</span>
+          <span>{tribe}</span>
+        </>}
       </div>
-      <div className="card-preview__stats">
-        {card.type === 'MINION' && <>{card.attack ?? 0} 攻 / {card.health ?? 0} 血</>}
-        {card.type === 'WEAPON' && <>{card.attack ?? 0} 攻 / {card.durability ?? 0} 耐久</>}
-      </div>
-      {card.text_zh ? (
+
+      {showStats && (
+        <div className="card-preview__stats">
+          <div className="card-preview__atk">{atk}</div>
+          <div className="card-preview__hp">{hp}</div>
+          <div className="card-preview__stat-label">
+            {isMinion ? '攻 / 血' : '攻 / 耐久'}
+          </div>
+        </div>
+      )}
+
+      {card.text_zh && (
         <div
           className="card-preview__text"
           // eslint-disable-next-line react/no-danger -- sanitized via DOMPurify
           dangerouslySetInnerHTML={{ __html: sanitizeCardHtml(card.text_zh) }}
         />
-      ) : null}
+      )}
+
       <div className="card-preview__footer">
-        {RARITY_LABEL[card.rarity] ?? card.rarity} · {card.card_set} · {card.name_en}
+        <span className={`rarity rarity--${rarity} card-preview__rarity-gem`} />
+        <span>{rarityLabel}</span>
+        <span className="card-preview__sep">·</span>
+        <span>{setLabel}</span>
       </div>
     </div>
   );

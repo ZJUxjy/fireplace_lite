@@ -1,41 +1,181 @@
+/* Hearthstone-style hover preview: card details panel (no portrait art).
+ * Dark walnut frame + parchment description box; rarity-tinted accent. */
+
 .card-preview {
   position: fixed;
+  pointer-events: none;
   z-index: 1000;
-  width: 280px;
+  width: 300px;
   max-height: min(85vh, 560px);
   overflow-y: auto;
-  background: #1a1a2e;
-  border: 2px solid #4a4a8a;
-  border-radius: 8px;
-  padding: 12px;
-  color: #eee;
+  padding: 14px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #3a230f 0%, #2a1a0d 100%);
+  color: #f7d77a;
+  font-family: "Noto Serif SC", serif;
   font-size: 13px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-  pointer-events: none;
+  box-shadow:
+    inset 0 0 0 1px #b88828,
+    inset 0 0 0 3px #1a0e06,
+    inset 0 0 0 5px #d9a64a,
+    inset 0 0 0 7px #6b4715,
+    0 12px 28px rgba(0,0,0,0.7),
+    0 0 24px rgba(255,200,100,0.2);
+  animation: card-preview-in 0.12s ease-out;
 }
-.card-preview__header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+@keyframes card-preview-in {
+  from { opacity: 0; transform: scale(0.96) translateY(4px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* rarity-tinted glow on top */
+.card-preview--rare {
+  box-shadow:
+    inset 0 0 0 1px #2b7be4,
+    inset 0 0 0 3px #1a0e06,
+    inset 0 0 0 5px #d9a64a,
+    inset 0 0 0 7px #6b4715,
+    0 12px 28px rgba(0,0,0,0.7),
+    0 0 18px rgba(43,123,228,0.45);
+}
+.card-preview--epic {
+  box-shadow:
+    inset 0 0 0 1px #a755e0,
+    inset 0 0 0 3px #1a0e06,
+    inset 0 0 0 5px #d9a64a,
+    inset 0 0 0 7px #6b4715,
+    0 12px 28px rgba(0,0,0,0.7),
+    0 0 18px rgba(167,85,224,0.45);
+}
+.card-preview--legendary {
+  box-shadow:
+    inset 0 0 0 1px #f3a83a,
+    inset 0 0 0 3px #1a0e06,
+    inset 0 0 0 5px #ffe39a,
+    inset 0 0 0 7px #6b4715,
+    0 12px 28px rgba(0,0,0,0.7),
+    0 0 22px rgba(255,170,60,0.55);
+}
+
+/* header: cost gem + name */
+.card-preview__header {
+  display: flex; align-items: center; gap: 12px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(184,136,40,0.35);
+}
 .card-preview__cost {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 28px; height: 28px; border-radius: 50%;
-  background: #3b6cff; color: #fff; font-weight: bold;
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: "Cinzel", serif; font-weight: 800; font-size: 22px;
+  color: #fff;
+  text-shadow: 0 1px 0 #000, 0 0 6px rgba(0,80,200,0.7);
+  clip-path: polygon(50% 0%, 93% 25%, 100% 50%, 93% 75%, 50% 100%, 7% 75%, 0% 50%, 7% 25%);
+  background: radial-gradient(circle at 32% 28%, #cfe6ff 0%, #5a9ee8 30%, #1d4fa2 70%, #0a2658 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.45),
+    inset 0 -4px 8px rgba(0,0,0,0.4),
+    inset 0 4px 6px rgba(255,255,255,0.4),
+    0 0 0 2px #2a1a0d,
+    0 0 0 4px #d9a64a,
+    0 0 0 5px #6b4715;
+  flex-shrink: 0;
 }
-.card-preview__name { font-size: 16px; font-weight: bold; }
-.card-preview__meta { color: #aaa; font-size: 11px; margin-bottom: 4px; }
-.card-preview__stats { color: #fa6; font-weight: bold; margin-bottom: 8px; }
+.card-preview__title {
+  min-width: 0; flex: 1;
+}
+.card-preview__name {
+  font-family: "Noto Serif SC", serif;
+  font-size: 18px; font-weight: 800;
+  color: #ffe9a3;
+  text-shadow: 0 1px 0 #000, 0 0 6px rgba(255,200,100,0.4);
+  line-height: 1.15;
+  word-break: break-word;
+}
+.card-preview__name-en {
+  font-family: "Cormorant Garamond", "Cinzel", serif;
+  font-style: italic;
+  font-size: 11px;
+  color: rgba(217,191,134,0.75);
+  letter-spacing: 0.02em;
+  margin-top: 2px;
+}
+
+/* meta line: type · class · race */
+.card-preview__meta {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  font-family: "Cinzel", serif;
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: #d9bf86;
+  margin-bottom: 10px;
+}
+.card-preview__sep {
+  color: #8c6a3e;
+  margin: 0 2px;
+}
+
+/* stats: atk + hp/durability badges */
+.card-preview__stats {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 10px;
+  padding: 6px 0;
+}
+.card-preview__atk, .card-preview__hp {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: "Cinzel", serif; font-weight: 800; font-size: 18px;
+  color: #fff; text-shadow: 0 2px 0 #000, 0 0 4px rgba(0,0,0,0.7);
+  flex-shrink: 0;
+}
+.card-preview__atk {
+  background: radial-gradient(circle at 30% 30%, #ffe09a, #e2a13a 50%, #7a4a10);
+  clip-path: polygon(50% 0%, 62% 35%, 100% 38%, 70% 60%, 82% 100%, 50% 78%, 18% 100%, 30% 60%, 0% 38%, 38% 35%);
+  box-shadow: inset 0 -3px 6px rgba(0,0,0,0.35);
+}
+.card-preview__hp {
+  background: radial-gradient(circle at 30% 30%, #ffaa9a, #d83a30 60%, #5a1006);
+  border-radius: 50%;
+  box-shadow:
+    inset 0 -3px 6px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.35),
+    0 0 0 1px #6b4715;
+}
+.card-preview__stat-label {
+  font-family: "Cinzel", serif;
+  font-size: 10px; letter-spacing: 0.16em;
+  color: #8c6a3e;
+}
+
+/* description text on parchment */
 .card-preview__text {
-  line-height: 1.45;
-  border-top: 1px solid #2a2a4a;
-  padding-top: 8px;
-  color: #ddd;
+  font-family: "Noto Serif SC", serif;
+  font-size: 13px; line-height: 1.55;
+  color: #2a1a0d;
+  background: linear-gradient(180deg, #f6e6c2, #ead7a8);
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-shadow: inset 0 0 0 1px #6b4715, inset 0 2px 4px rgba(0,0,0,0.15);
 }
 .card-preview__text :is(b, strong) {
   font-weight: 700;
-  color: #fafafa;
+  color: #6b4715;
 }
 .card-preview__text :is(i, em) {
   font-style: italic;
+  color: #7a4a10;
 }
+
+/* footer: rarity gem · rarity name · set */
 .card-preview__footer {
-  margin-top: 8px; padding-top: 6px; border-top: 1px solid #2a2a4a;
-  color: #888; font-size: 11px;
+  display: flex; align-items: center; gap: 6px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(184,136,40,0.35);
+  font-family: "Cinzel", serif;
+  font-size: 11px; letter-spacing: 0.1em;
+  color: #d9bf86;
+}
+.card-preview__rarity-gem {
+  width: 12px; height: 12px;
+  margin-right: 2px;
 }

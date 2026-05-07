@@ -1,4 +1,4 @@
-import type { Card, CardType } from '../types/deck';
+import type { Card, CardType, Rarity } from '../types/deck';
 
 let _catalog: Card[] | null = null;
 let _byId: Map<string, Card> | null = null;
@@ -38,11 +38,26 @@ export function getCatalogSync(): Card[] {
   return _catalog ?? [];
 }
 
+/** Keyword tokens we recognize in localized card text (text_zh). */
+export const KEYWORD_TOKENS = [
+  '嘲讽', '战吼', '亡语', '圣盾', '风怒', '突袭', '冲锋',
+  '潜行', '剧毒', '吸血', '奥秘', '法力浮龙', '沉默',
+] as const;
+export type Keyword = typeof KEYWORD_TOKENS[number];
+
+export function cardHasKeyword(card: Card, kw: Keyword): boolean {
+  return card.text_zh.includes(kw);
+}
+
 export type CardFilter = {
   cardClass?: string;
   includeNeutral?: boolean;
   costs?: Set<number>;
   types?: Set<CardType>;
+  rarities?: Set<Rarity>;
+  races?: Set<string>;
+  sets?: Set<string>;
+  keywords?: Set<Keyword>;
   search?: string;
 };
 
@@ -62,6 +77,22 @@ export function filterCards(catalog: Card[], filter: CardFilter): Card[] {
     }
     if (filter.types && filter.types.size > 0) {
       if (!filter.types.has(c.type)) return false;
+    }
+    if (filter.rarities && filter.rarities.size > 0) {
+      if (!filter.rarities.has(c.rarity)) return false;
+    }
+    if (filter.races && filter.races.size > 0) {
+      if (!c.race || !filter.races.has(c.race)) return false;
+    }
+    if (filter.sets && filter.sets.size > 0) {
+      if (!filter.sets.has(c.card_set)) return false;
+    }
+    if (filter.keywords && filter.keywords.size > 0) {
+      let any = false;
+      for (const k of filter.keywords) {
+        if (c.text_zh.includes(k)) { any = true; break; }
+      }
+      if (!any) return false;
     }
     if (q) {
       const matchZh = c.name_zh.toLowerCase().includes(q);
