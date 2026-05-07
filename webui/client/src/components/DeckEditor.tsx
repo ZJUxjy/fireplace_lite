@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { Card, CardType, Deck, Rarity } from '../types/deck';
 import {
-  loadCatalog, getCatalogSync, isCatalogLoaded,
+  streamCatalog, getCatalogSync, isCatalogLoaded,
   filterCards, sortCards,
-  type Keyword,
+  type Keyword, type CatalogProgress,
 } from '../services/cardCatalog';
 import {
   getDeck, saveDeck, addCardToDeck, removeCardFromDeck,
@@ -52,6 +52,10 @@ const initialTopbar = (): PoolTopbarFilter => ({
 export default function DeckEditor({ deckId, initialDeck, onBack }: Props) {
   const [catalog, setCatalog] = useState<Card[]>(getCatalogSync());
   const [catalogLoading, setCatalogLoading] = useState(() => !isCatalogLoaded());
+  const [progress, setProgress] = useState<CatalogProgress>(() => {
+    const sync = getCatalogSync();
+    return { loaded: sync.length, total: sync.length };
+  });
   const [deck, setDeck] = useState<Deck | null>(() => {
     if (deckId === null) return null;
     if (deckId === 'new' && initialDeck) return initialDeck;
@@ -64,30 +68,24 @@ export default function DeckEditor({ deckId, initialDeck, onBack }: Props) {
   const [toast, setToast] = useState<string>('');
   const [showClassPicker, setShowClassPicker] = useState(false);
 
-  // Mount-once catalog load with cancellation. 之前的 [catalog.length] 依赖在
-  // 服务端返回空数组时会反复重触发,这里改成 [] 一次性。
+  // Streaming catalog load. The FilterRail mounts immediately with whatever
+  // we have in memory (possibly empty); each onChunk callback grows the
+  // catalog state, repainting the grid as pages arrive.
   useEffect(() => {
-    if (getCatalogSync().length > 0) return;
-    let cancelled = false;
-    if (isCatalogLoaded()) {
-      setCatalog(getCatalogSync());
+    const ctrl = new AbortController();
+    streamCatalog({
+      signal: ctrl.signal,
+      onChunk: (cards, prog) => {
+        setCatalog(cards);
+        setProgress(prog);
+        if (prog.loaded > 0) setCatalogLoading(false);
+      },
+    }).catch((e) => {
+      if ((e as Error).name === 'AbortError') return;
       setCatalogLoading(false);
-      return;
-    }
-    loadCatalog()
-      .then((c) => {
-        if (!cancelled) {
-          setCatalog(c);
-          setCatalogLoading(false);
-        }
-      })
-      .catch((e) => {
-        if (!cancelled) {
-          setCatalogLoading(false);
-          setToast(`加载卡库失败: ${(e as Error).message}`);
-        }
-      });
-    return () => { cancelled = true; };
+      setToast(`加载卡库失败: ${(e as Error).message}`);
+    });
+    return () => ctrl.abort();
   }, []);
 
   const isBrowse = deck === null;
@@ -208,6 +206,7 @@ export default function DeckEditor({ deckId, initialDeck, onBack }: Props) {
           total={catalog.length}
           filtered={filtered.length}
           catalogLoading={catalogLoading}
+          progress={progress}
           topbar={topbar}
           onTopbarChange={setTopbar}
           onResetAll={onResetAll}

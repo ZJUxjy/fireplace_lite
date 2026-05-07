@@ -14,6 +14,8 @@ type Props = {
   total: number;
   filtered: number;
   catalogLoading?: boolean;
+  /** Streaming progress: when loaded < total, more pages are still in flight. */
+  progress?: { loaded: number; total: number };
   topbar: PoolTopbarFilter;
   onTopbarChange: (next: PoolTopbarFilter) => void;
   onResetAll: () => void;
@@ -68,7 +70,12 @@ export default function CardPool(props: Props) {
     <div className="card-pool">
       <div className="topbar">
         <div className="topbar__title">卡牌收藏</div>
-        <div className="topbar__sub">{filtered} / {total} 张</div>
+        <div className="topbar__sub">
+          {filtered} / {total} 张
+          {props.progress && props.progress.loaded < props.progress.total && (
+            <span className="topbar__streaming"> · 正在加载 {props.progress.loaded}/{props.progress.total}</span>
+          )}
+        </div>
 
         <span className="rivet" />
 
@@ -106,8 +113,14 @@ export default function CardPool(props: Props) {
       </div>
 
       <div ref={collectionRef} className="collection">
-        {catalogLoading && (
-          <div className="card-pool__loading">正在加载卡库…</div>
+        {catalogLoading && pageCards.length === 0 && (
+          <div className="card-pool__loading">
+            正在加载卡库
+            {props.progress && props.progress.total > 0 && (
+              <> · {props.progress.loaded}/{props.progress.total}</>
+            )}
+            …
+          </div>
         )}
         {!catalogLoading && pageCards.length === 0 && (
           <div className="card-pool__empty">
@@ -115,7 +128,7 @@ export default function CardPool(props: Props) {
             没有符合条件的卡牌
           </div>
         )}
-        {!catalogLoading && pageCards.map(c => (
+        {pageCards.length > 0 && pageCards.map(c => (
           <CardRow
             key={c.id}
             card={c}
@@ -129,7 +142,7 @@ export default function CardPool(props: Props) {
         ))}
       </div>
 
-      {!catalogLoading && props.cards.length > 0 && (
+      {props.cards.length > 0 && (
         <Pagination
           page={page}
           totalPages={totalPages}

@@ -36,6 +36,16 @@
   white-space: nowrap;
   flex-shrink: 0;
 }
+.topbar__streaming {
+  color: #f0c869;
+  font-size: 12px;
+  margin-left: 4px;
+  animation: streaming-pulse 1.4s ease-in-out infinite;
+}
+@keyframes streaming-pulse {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
+}
 .topbar__spacer { flex: 1 1 8px; min-width: 8px; }
 
 .rivet {

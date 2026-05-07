@@ -7,12 +7,71 @@ deck builder UI (via /api/cards/all) read from here.
 """
 import hashlib
 import json
+import logging
+import os
 import threading
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Set
 
 from fireplace.cards import db as _cards_db
 from hearthstone.enums import CardType, GameTag
+
+logger = logging.getLogger(__name__)
+
+
+# Catalog row schema version. BUMP THIS whenever the row dict shape changes
+# — adds, removes, or changes the meaning of a key. The on-disk cache is
+# keyed by this number (see _cache_path), so a stale cache from an older
+# schema is automatically ignored without explicit migration.
+CATALOG_SCHEMA_VERSION = 1
+
+CACHE_DIR = Path(__file__).parent / "cache"
+
+
+def _cache_path() -> Path:
+    return CACHE_DIR / f"catalog-v{CATALOG_SCHEMA_VERSION}.json"
+
+
+_REQUIRED_CACHE_KEYS = {"cards", "total", "etag", "generated_at"}
+
+
+def _load_persistent_cache() -> Optional[Dict[str, Any]]:
+    """Read the versioned on-disk catalog if present and well-formed.
+    Returns None on any failure (missing file, corrupted JSON, missing
+    keys); the caller falls through to a fresh XML-parse build."""
+    path = _cache_path()
+    if not path.exists():
+        return None
+    try:
+        with path.open("r", encoding="utf-8") as f:
+            payload = json.load(f)
+        if not isinstance(payload, dict):
+            raise ValueError("payload is not a dict")
+        missing = _REQUIRED_CACHE_KEYS - set(payload.keys())
+        if missing:
+            raise ValueError(f"missing keys: {sorted(missing)}")
+        if not isinstance(payload["cards"], list):
+            raise ValueError("cards is not a list")
+        return payload
+    except (OSError, ValueError, json.JSONDecodeError) as e:
+        logger.warning("persistent catalog cache at %s is unusable (%s); rebuilding", path, e)
+        return None
+
+
+def _write_persistent_cache(payload: Dict[str, Any]) -> None:
+    """Atomically write the catalog payload to the versioned cache file.
+    Failure is logged but never propagates — a missing on-disk cache
+    only costs us a slow next start, not correctness."""
+    path = _cache_path()
+    try:
+        CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        tmp = path.with_suffix(path.suffix + ".tmp")
+        with tmp.open("w", encoding="utf-8") as f:
+            json.dump(payload, f, ensure_ascii=False)
+        os.replace(tmp, path)
+    except OSError as e:
+        logger.warning("failed to write persistent catalog cache to %s: %s", path, e)
 
 
 # Canonical mechanic keywords surfaced in the deck-builder filter rail and
@@ -231,6 +290,12 @@ def build_catalog() -> Dict[str, Any]:
         if _catalog_cache is not None:
             return _catalog_cache
 
+        # Try the on-disk persistent cache before paying the 25s XML parse.
+        persisted = _load_persistent_cache()
+        if persisted is not None:
+            _catalog_cache = persisted
+            return _catalog_cache
+
         _ensure_db_initialized()
 
         cards: List[Dict[str, Any]] = []
@@ -255,6 +320,7 @@ def build_catalog() -> Dict[str, Any]:
             "etag": etag,
             "generated_at": datetime.now(timezone.utc).isoformat(),
         }
+        _write_persistent_cache(_catalog_cache)
         return _catalog_cache
 
 
@@ -264,6 +330,38 @@ def reset_catalog_cache() -> None:
     with _catalog_lock:
         _catalog_cache = None
         _candidates_cache = None
+
+
+# ---------------------------------------------------------------------------
+# Paged catalog access — same in-memory list, sliced by cursor. Pages share
+# the catalog's ETag so client revalidation is uniform across endpoints.
+# ---------------------------------------------------------------------------
+
+PAGE_MAX_SIZE = 500
+
+
+def get_page(cursor: int, size: int) -> Dict[str, Any]:
+    """Return one page of the catalog plus pagination metadata.
+    `size` is silently capped at PAGE_MAX_SIZE; negative cursor is clamped to 0."""
+    cat = build_catalog()
+    cards = cat["cards"]
+    total = cat["total"]
+
+    cursor = max(0, int(cursor))
+    size = max(0, min(int(size), PAGE_MAX_SIZE))
+
+    end = cursor + size
+    slice_ = cards[cursor:end] if cursor < total else []
+    next_cursor: Optional[int] = end if end < total else None
+
+    return {
+        "cards": slice_,
+        "cursor": cursor,
+        "size": size,
+        "next_cursor": next_cursor,
+        "total": total,
+        "etag": cat["etag"],
+    }
 
 
 # ---------------------------------------------------------------------------

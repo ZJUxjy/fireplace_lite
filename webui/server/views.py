@@ -64,6 +64,34 @@ def cards_all():
     return response
 
 
+@bp.route('/api/cards/page')
+def cards_page():
+    """Paged catalog access — same data as /api/cards/all, sliced by cursor.
+    Lets the client paint the first 200 rows quickly while the rest stream
+    in. All pages within one catalog snapshot share the same ETag."""
+    from .card_catalog import get_page
+
+    try:
+        cursor = int(request.args.get('cursor', 0))
+        size = int(request.args.get('size', 200))
+    except (TypeError, ValueError):
+        return jsonify({'error': 'cursor and size must be integers'}), 400
+
+    page = get_page(cursor, size)
+    etag = f'"{page["etag"]}"'
+
+    if request.headers.get('If-None-Match') == etag:
+        resp = make_response('', 304)
+        resp.headers['ETag'] = etag
+        resp.headers['Cache-Control'] = 'private, max-age=300'
+        return resp
+
+    response = jsonify(page)
+    response.headers['ETag'] = etag
+    response.headers['Cache-Control'] = 'private, max-age=300'
+    return response
+
+
 # Dev-only: histogram of GameTags that are TRUE on collectible cards but
 # aren't in our canonical keyword list — used to spot keywords we should
 # add when new card XML lands. Gated behind FLASK_DEBUG / DEBUG_KEYWORDS;
