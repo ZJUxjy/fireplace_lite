@@ -57,14 +57,53 @@ const RACE_LABEL: Record<string, string> = {
 };
 
 const SET_LABEL: Record<string, string> = {
-  CORE: '核心', EXPERT1: '经典', NAXX: '纳克萨玛斯', GVG: '哥哥侏儒',
-  BRM: '黑石山', TGT: '冠军赛', LOE: '探险者协会', OG: '上古之神',
-  KARA: '卡拉赞', GANGS: '加基森', UNGORO: '安戈洛',
-  ICECROWN: '冰封王座', LOOTAPALOOZA: '狗头人', GILNEAS: '女巫森林',
-  BOOMSDAY: '砰砰计划', TROLL: '拉斯塔哈', DALARAN: '暗影崛起',
-  ULDUM: '奥丹姆', SCHOLOMANCE: '通灵学院', BLACK_TEMPLE: '外域灰烬',
+  // Always-available (in both Standard and Wild)
+  CORE: '核心',
+  // "Free / Legacy" sets — formerly Basic + Classic, always Wild now
+  EXPERT1: '经典',
+  LEGACY: '传统',
+  // Wild — chronological by HS release
+  NAXX: '纳克萨玛斯的诅咒',
+  GVG: '地精大战侏儒',
+  BRM: '黑石山的火焰',
+  TGT: '冠军的试炼',
+  LOE: '探险者协会',
+  OG: '上古之神的低语',
+  KARA: '卡拉赞之夜',
+  GANGS: '龙争虎斗加基森',
+  UNGORO: '勇闯安戈洛',
+  ICECROWN: '冰封王座的骑士',
+  LOOTAPALOOZA: '狗头人与地下世界',
+  GILNEAS: '女巫森林',
+  BOOMSDAY: '砰砰计划',
+  TROLL: '拉斯塔哈的大乱斗',
+  DALARAN: '暗影崛起',
+  ULDUM: '奥丹姆奇兵',
   DRAGONS: '巨龙降临',
+  BLACK_TEMPLE: '外域的灰烬',
+  DEMON_HUNTER_INITIATE: '恶魔猎手新兵',
+  SCHOLOMANCE: '通灵学园',
+  // 2024 — Year of the Pegasus (now Wild as of 2026)
+  WHIZBANGS_WORKSHOP: '威兹班的工坊',
+  RETURN_OF_THE_LICH_KING: '巫妖王的进军',
+  // Standard (2025 + 2026) — see STANDARD_SETS below
+  EMERALD_DREAM: '漫游翡翠梦境',
+  THE_LOST_CITY: '安戈洛龟途',
+  TIME_TRAVEL: '穿越时间流',
+  CATACLYSM: '大地的裂变',
+  // Misc bookkeeping
+  EVENT: '活动',
+  PLACEHOLDER_202204: '占位',
 };
+
+/** Sets currently in Standard format (2025 + 2026 expansions per the
+ * user's definition). Renders as a separate group above the Wild list. */
+const STANDARD_SETS: Set<string> = new Set([
+  'EMERALD_DREAM',     // Into the Emerald Dream — 漫游翡翠梦境 (2025-03)
+  'THE_LOST_CITY',     // The Lost City of Un'Goro — 安戈洛龟途 (2025-07)
+  'TIME_TRAVEL',       // Across the Timeways — 穿越时间流 (2025-11)
+  'CATACLYSM',         // CATACLYSM — 大地的裂变 (2026-03)
+]);
 
 export default function FilterRail({ catalog, state, onChange, lockedHeroClass }: Props) {
   const counts = useMemo(() => {
@@ -90,9 +129,12 @@ export default function FilterRail({ catalog, state, onChange, lockedHeroClass }
   }, [counts.races]);
 
   const setsSorted = useMemo(() => {
-    return Object.entries(counts.sets)
+    const all = Object.entries(counts.sets)
       .sort((a, b) => b[1] - a[1])
       .map(([id, n]) => ({ id, n }));
+    const standard = all.filter(({ id }) => STANDARD_SETS.has(id));
+    const wild = all.filter(({ id }) => !STANDARD_SETS.has(id));
+    return { standard, wild };
   }, [counts.sets]);
 
   const toggle = <T,>(key: keyof FilterRailState, value: T) => {
@@ -197,19 +239,47 @@ export default function FilterRail({ catalog, state, onChange, lockedHeroClass }
         </div>
       </div>
 
-      {setsSorted.length > 0 && (
+      {(setsSorted.standard.length > 0 || setsSorted.wild.length > 0) && (
         <div className="panel rail__section">
           <h3 className="rail__title">扩展包</h3>
-          {setsSorted.map(({ id, n }) => (
-            <FilterRow
-              key={id}
-              active={state.sets.has(id)}
-              onClick={() => toggle<string>('sets', id)}
-              leading={<span className="swatch" style={{ background: 'linear-gradient(135deg,#3a230f,#b88828)' }} />}
-              label={SET_LABEL[id] ?? id}
-              count={n}
-            />
-          ))}
+
+          {setsSorted.standard.length > 0 && (
+            <>
+              <div className="rail__subhead rail__subhead--standard">
+                <span className="rail__subhead-dot rail__subhead-dot--standard" />
+                标准
+              </div>
+              {setsSorted.standard.map(({ id, n }) => (
+                <FilterRow
+                  key={id}
+                  active={state.sets.has(id)}
+                  onClick={() => toggle<string>('sets', id)}
+                  leading={<span className="swatch swatch--standard" />}
+                  label={SET_LABEL[id] ?? id}
+                  count={n}
+                />
+              ))}
+            </>
+          )}
+
+          {setsSorted.wild.length > 0 && (
+            <>
+              <div className="rail__subhead rail__subhead--wild">
+                <span className="rail__subhead-dot rail__subhead-dot--wild" />
+                狂野
+              </div>
+              {setsSorted.wild.map(({ id, n }) => (
+                <FilterRow
+                  key={id}
+                  active={state.sets.has(id)}
+                  onClick={() => toggle<string>('sets', id)}
+                  leading={<span className="swatch" style={{ background: 'linear-gradient(135deg,#3a230f,#b88828)' }} />}
+                  label={SET_LABEL[id] ?? id}
+                  count={n}
+                />
+              ))}
+            </>
+          )}
         </div>
       )}
     </aside>
