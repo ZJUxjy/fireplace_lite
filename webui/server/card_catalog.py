@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 # without having to clear browser/IDB cache manually). The on-disk cache is
 # keyed by this number (see _cache_path), so a stale cache from an older
 # schema is automatically ignored without explicit migration.
-CATALOG_SCHEMA_VERSION = 2
+CATALOG_SCHEMA_VERSION = 3
 
 CACHE_DIR = Path(__file__).parent / "cache"
 
@@ -94,6 +94,7 @@ KEYWORD_TAGS = {
     "SECRET":        GameTag.SECRET,
     "SPELLPOWER":    GameTag.SPELLPOWER,
     "COMBO":         GameTag.COMBO,
+    "COLOSSAL":      GameTag.COLOSSAL,
 }
 
 # Tags that show up on cards but are NOT mechanic keywords —

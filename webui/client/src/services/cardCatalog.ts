@@ -136,6 +136,7 @@ export const KEYWORD_LABELS: Record<Keyword, { zh: string; en: string }> = {
   SECRET:        { zh: '奥秘',     en: 'Secret' },
   SPELLPOWER:    { zh: '法术伤害', en: 'Spell Damage' },
   COMBO:         { zh: '连击',     en: 'Combo' },
+  COLOSSAL:      { zh: '巨型',     en: 'Colossal' },
 };
 
 export function cardHasKeyword(card: Card, kw: Keyword): boolean {

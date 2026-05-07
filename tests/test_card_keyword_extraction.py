@@ -13,7 +13,7 @@ import pytest
 CANONICAL_KEYWORDS = {
     "TAUNT", "BATTLECRY", "DEATHRATTLE", "CHARGE", "RUSH",
     "DIVINE_SHIELD", "WINDFURY", "STEALTH", "POISONOUS",
-    "LIFESTEAL", "SECRET", "SPELLPOWER", "COMBO",
+    "LIFESTEAL", "SECRET", "SPELLPOWER", "COMBO", "COLOSSAL",
 }
 
 
@@ -45,6 +45,7 @@ def catalog_by_id():
     ("EX1_287", "SECRET"),         # Counterspell
     ("CS2_142", "SPELLPOWER"),     # Kobold Geomancer
     ("CS2_073", "COMBO"),          # Cold Blood
+    ("CATA_150", "COLOSSAL"),      # Ragnaros, the Great Fire
 ])
 def test_card_carries_expected_keyword(catalog_by_id, card_id, keyword):
     card = catalog_by_id.get(card_id)

@@ -9,7 +9,7 @@ export type Rarity = 'FREE' | 'COMMON' | 'RARE' | 'EPIC' | 'LEGENDARY';
 export const KEYWORDS = [
   'TAUNT', 'BATTLECRY', 'DEATHRATTLE', 'CHARGE', 'RUSH',
   'DIVINE_SHIELD', 'WINDFURY', 'STEALTH', 'POISONOUS',
-  'LIFESTEAL', 'SECRET', 'SPELLPOWER', 'COMBO',
+  'LIFESTEAL', 'SECRET', 'SPELLPOWER', 'COMBO', 'COLOSSAL',
 ] as const;
 export type Keyword = typeof KEYWORDS[number];
 
