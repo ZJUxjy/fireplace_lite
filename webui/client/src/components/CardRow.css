@@ -38,26 +38,26 @@
 
 .row {
   position: relative;
-  height: 56px;
+  height: 28px;
   display: grid;
-  grid-template-columns: 56px 1fr auto;
+  grid-template-columns: 28px 1fr auto;
   align-items: center;
   gap: 0;
   cursor: pointer;
   transition: transform 0.12s ease, filter 0.15s ease, box-shadow 0.15s ease;
-  padding: 0 0 0 28px;
+  padding: 0 0 0 14px;
   background:
     radial-gradient(ellipse at 50% -20%, rgba(255,235,180,0.9), transparent 70%),
     linear-gradient(180deg, #f3dfb0 0%, #d9bf86 60%, #b89764 100%);
-  border-radius: 8px 28px 28px 8px;
+  border-radius: 4px 14px 14px 4px;
   box-shadow:
     inset 0 0 0 1px #6b4715,
     inset 0 1px 0 rgba(255,255,255,0.55),
-    inset 0 -8px 18px rgba(120,80,30,0.35),
-    0 0 0 3px #d9a64a,
-    0 0 0 5px #1a0e06,
-    0 0 0 6px #b88828,
-    0 4px 12px rgba(0,0,0,0.5);
+    inset 0 -4px 9px rgba(120,80,30,0.35),
+    0 0 0 2px #d9a64a,
+    0 0 0 3px #1a0e06,
+    0 0 0 4px #b88828,
+    0 2px 6px rgba(0,0,0,0.5);
 }
 .row::after {
   content: "";
@@ -78,12 +78,12 @@
   box-shadow:
     inset 0 0 0 1px #6b4715,
     inset 0 1px 0 rgba(255,255,255,0.6),
-    inset 0 -8px 18px rgba(120,80,30,0.35),
-    0 0 0 3px #ffd97a,
-    0 0 0 5px #1a0e06,
-    0 0 0 6px #ffe39a,
-    0 0 18px rgba(255,200,100,0.55),
-    0 6px 16px rgba(0,0,0,0.55);
+    inset 0 -4px 9px rgba(120,80,30,0.35),
+    0 0 0 2px #ffd97a,
+    0 0 0 3px #1a0e06,
+    0 0 0 4px #ffe39a,
+    0 0 10px rgba(255,200,100,0.55),
+    0 3px 8px rgba(0,0,0,0.55);
 }
 
 .row--disabled {
@@ -96,11 +96,11 @@
   box-shadow:
     inset 0 0 0 1px #6b4715,
     inset 0 1px 0 rgba(255,255,255,0.55),
-    inset 0 -8px 18px rgba(120,80,30,0.35),
-    0 0 0 3px #d9a64a,
-    0 0 0 5px #1a0e06,
-    0 0 0 6px #b88828,
-    0 4px 12px rgba(0,0,0,0.5);
+    inset 0 -4px 9px rgba(120,80,30,0.35),
+    0 0 0 2px #d9a64a,
+    0 0 0 3px #1a0e06,
+    0 0 0 4px #b88828,
+    0 2px 6px rgba(0,0,0,0.5);
 }
 
 /* rarity-tinted outer frames */
@@ -108,62 +108,62 @@
   box-shadow:
     inset 0 0 0 1px #6b4715,
     inset 0 1px 0 rgba(255,255,255,0.55),
-    inset 0 -8px 18px rgba(120,80,30,0.35),
-    0 0 0 3px #f3a83a,
-    0 0 0 5px #1a0e06,
-    0 0 0 6px #ffe39a,
-    0 0 14px rgba(255,170,60,0.45),
-    0 4px 12px rgba(0,0,0,0.5);
+    inset 0 -4px 9px rgba(120,80,30,0.35),
+    0 0 0 2px #f3a83a,
+    0 0 0 3px #1a0e06,
+    0 0 0 4px #ffe39a,
+    0 0 8px rgba(255,170,60,0.45),
+    0 2px 6px rgba(0,0,0,0.5);
 }
 .row--epic {
   box-shadow:
     inset 0 0 0 1px #6b4715,
     inset 0 1px 0 rgba(255,255,255,0.55),
-    inset 0 -8px 18px rgba(120,80,30,0.35),
-    0 0 0 3px #a755e0,
-    0 0 0 5px #1a0e06,
-    0 0 0 6px #d6a8ff,
-    0 0 10px rgba(167,85,224,0.35),
-    0 4px 12px rgba(0,0,0,0.5);
+    inset 0 -4px 9px rgba(120,80,30,0.35),
+    0 0 0 2px #a755e0,
+    0 0 0 3px #1a0e06,
+    0 0 0 4px #d6a8ff,
+    0 0 6px rgba(167,85,224,0.35),
+    0 2px 6px rgba(0,0,0,0.5);
 }
 .row--rare {
   box-shadow:
     inset 0 0 0 1px #6b4715,
     inset 0 1px 0 rgba(255,255,255,0.55),
-    inset 0 -8px 18px rgba(120,80,30,0.35),
-    0 0 0 3px #2b7be4,
-    0 0 0 5px #1a0e06,
-    0 0 0 6px #9bc3ff,
-    0 0 10px rgba(43,123,228,0.3),
-    0 4px 12px rgba(0,0,0,0.5);
+    inset 0 -4px 9px rgba(120,80,30,0.35),
+    0 0 0 2px #2b7be4,
+    0 0 0 3px #1a0e06,
+    0 0 0 4px #9bc3ff,
+    0 0 6px rgba(43,123,228,0.3),
+    0 2px 6px rgba(0,0,0,0.5);
 }
 
-/* mana gem — oversized blue octagon, breaks out of left edge */
+/* mana gem — blue octagon, breaks out of left edge */
 .mana {
   position: relative;
   z-index: 2;
-  width: 50px; height: 50px;
-  margin-left: -22px;
+  width: 26px; height: 26px;
+  margin-left: -10px;
   display: flex; align-items: center; justify-content: center;
-  font-family: "Cinzel", serif; font-weight: 800; font-size: 24px;
+  font-family: "Cinzel", serif; font-weight: 800; font-size: 13px;
   color: #fff;
-  text-shadow: 0 2px 0 #000, 0 0 6px rgba(0,80,200,0.85);
+  text-shadow: 0 1px 0 #000, 0 0 4px rgba(0,80,200,0.85);
   clip-path: polygon(50% 0%, 93% 25%, 100% 50%, 93% 75%, 50% 100%, 7% 75%, 0% 50%, 7% 25%);
   background: radial-gradient(circle at 32% 28%, #cfe6ff 0%, #5a9ee8 30%, #1d4fa2 70%, #0a2658 100%);
   box-shadow:
     inset 0 0 0 1px rgba(255,255,255,0.45),
-    inset 0 -5px 10px rgba(0,0,0,0.45),
-    inset 0 5px 8px rgba(255,255,255,0.4),
-    0 0 0 2px #2a1a0d,
-    0 0 0 4px #d9a64a,
-    0 0 0 5px #6b4715,
-    0 4px 10px rgba(0,0,0,0.5);
+    inset 0 -3px 5px rgba(0,0,0,0.45),
+    inset 0 3px 4px rgba(255,255,255,0.4),
+    0 0 0 1px #2a1a0d,
+    0 0 0 2px #d9a64a,
+    0 0 0 3px #6b4715,
+    0 2px 5px rgba(0,0,0,0.5);
 }
 .mana::after {
   content: "";
   position: absolute;
-  top: 7px; left: 11px;
-  width: 18px; height: 9px;
+  top: 4px; left: 6px;
+  width: 10px; height: 5px;
   border-radius: 50%;
   background: radial-gradient(ellipse, rgba(255,255,255,0.85), transparent 70%);
   pointer-events: none;
@@ -172,13 +172,13 @@
 /* main: name + tags */
 .row__main {
   position: relative; z-index: 1;
-  display: flex; align-items: center; gap: 8px;
+  display: flex; align-items: center; gap: 5px;
   min-width: 0;
-  padding: 0 10px 0 18px;
+  padding: 0 6px 0 10px;
 }
 .row__name {
   font-family: "Noto Serif SC", serif;
-  font-weight: 700; font-size: 16px;
+  font-weight: 700; font-size: 13px;
   color: #2a1a0d;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   letter-spacing: 0.02em;
@@ -194,11 +194,11 @@
 .row__star { color: #b88828; margin-right: 2px; -webkit-text-fill-color: #b88828; }
 
 .tag {
-  display: inline-flex; align-items: center; gap: 4px;
+  display: inline-flex; align-items: center; gap: 3px;
   font-family: "Noto Serif SC", serif;
-  font-size: 11px; font-weight: 600;
-  padding: 2px 7px;
-  border-radius: 4px;
+  font-size: 9px; font-weight: 600;
+  padding: 1px 5px;
+  border-radius: 3px;
   color: #3a230f;
   background: rgba(107,71,21,0.15);
   box-shadow: inset 0 0 0 1px rgba(107,71,21,0.45);
@@ -214,24 +214,24 @@
 /* right cluster: stats + owned + rarity */
 .row__right {
   position: relative; z-index: 1;
-  display: flex; align-items: center; gap: 8px;
-  padding-right: 14px;
+  display: flex; align-items: center; gap: 5px;
+  padding-right: 8px;
   flex-shrink: 0;
 }
 
 /* type sigil (used for spells) */
 .row__type {
-  width: 28px; height: 28px;
+  width: 18px; height: 18px;
   border-radius: 50%;
   display: inline-flex; align-items: center; justify-content: center;
-  font-family: "Cinzel", serif; font-weight: 800; font-size: 13px;
+  font-family: "Cinzel", serif; font-weight: 800; font-size: 10px;
   color: #fff;
   text-shadow: 0 1px 0 rgba(0,0,0,0.6);
   flex-shrink: 0;
   box-shadow:
     inset 0 0 0 1px rgba(0,0,0,0.4),
     0 0 0 1px rgba(255,220,150,0.6),
-    inset 0 -3px 6px rgba(0,0,0,0.4);
+    inset 0 -2px 4px rgba(0,0,0,0.4);
 }
 .row__type--spell { background: radial-gradient(circle at 30% 30%, #f3c47a, #c47a2b 55%, #6b3b15); }
 .row__type--minion { background: radial-gradient(circle at 30% 30%, #d9bf86, #6b4715 55%, #2a1a0d); }
@@ -239,14 +239,14 @@
 
 /* attack/health badges */
 .stats {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-family: "Cinzel", serif; font-weight: 800; font-size: 15px;
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: "Cinzel", serif; font-weight: 800; font-size: 11px;
   color: #fff;
 }
 .stats__atk, .stats__hp {
-  width: 30px; height: 30px;
+  width: 20px; height: 20px;
   display: inline-flex; align-items: center; justify-content: center;
-  text-shadow: 0 1px 0 #000, 0 0 4px rgba(0,0,0,0.6);
+  text-shadow: 0 1px 0 #000, 0 0 3px rgba(0,0,0,0.6);
   flex-shrink: 0;
 }
 .stats__atk {
@@ -265,9 +265,9 @@
 
 /* count pill (count of this card already in the active deck) */
 .owned {
-  font-family: "Cinzel", serif; font-weight: 700; font-size: 12px;
+  font-family: "Cinzel", serif; font-weight: 700; font-size: 10px;
   color: #f7d77a;
-  padding: 3px 9px;
+  padding: 1px 6px;
   border-radius: 999px;
   background: linear-gradient(180deg, #3a230f, #1a0e06);
   box-shadow:
@@ -290,7 +290,7 @@
 
 /* rarity gem (rotated diamond) */
 .rarity {
-  width: 14px; height: 14px;
+  width: 9px; height: 9px;
   transform: rotate(45deg);
   flex-shrink: 0;
   box-shadow:
