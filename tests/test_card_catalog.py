@@ -9,9 +9,10 @@ def test_is_card_implemented_known_card():
 
 
 def test_is_card_implemented_unknown_prefix():
-    """Unlisted expansion prefixes should not be implemented"""
+    """Unlisted expansion prefixes should not be implemented.
+    XYZZY is a sentinel — no real Hearthstone expansion uses it."""
     from webui.server.card_catalog import is_card_implemented
-    assert is_card_implemented("DINO_400") is False
+    assert is_card_implemented("XYZZY_400") is False
 
 
 def test_is_card_implemented_blacklist():

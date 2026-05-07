@@ -21,10 +21,12 @@ logger = logging.getLogger(__name__)
 
 
 # Catalog row schema version. BUMP THIS whenever the row dict shape changes
-# — adds, removes, or changes the meaning of a key. The on-disk cache is
+# — adds, removes, or changes the meaning of a key. Also bump when the set
+# of implemented expansions changes (so users get fresh data on next load
+# without having to clear browser/IDB cache manually). The on-disk cache is
 # keyed by this number (see _cache_path), so a stale cache from an older
 # schema is automatically ignored without explicit migration.
-CATALOG_SCHEMA_VERSION = 1
+CATALOG_SCHEMA_VERSION = 2
 
 CACHE_DIR = Path(__file__).parent / "cache"
 
@@ -204,6 +206,21 @@ IMPLEMENTED_CARD_PREFIXES: Set[str] = {
     'BT',
     # Descent of Dragons
     'DRG',
+    # ---------------------------------------------------------------
+    # Modern sets (2024-2026). Only prefixes with ≥ 85% fireplace
+    # script coverage are enabled here — partial sets like RLK / WW /
+    # TTN need per-card whitelisting before they can be exposed.
+    # ---------------------------------------------------------------
+    # Whizbang's Workshop (2024) — MIS 36/37, TOY 139/144
+    'MIS', 'TOY',
+    # Cataclysm — CATA 131/132
+    'CATA',
+    # Whispers of the Emerald Dream — EDR 141/144, FIR 37/37
+    'EDR', 'FIR',
+    # The Lost City — TLC 141/146, DINO 38/38
+    'TLC', 'DINO',
+    # Time Travel set — TIME 146/146
+    'TIME',
 }
 
 # Blacklist: cards with issues even if their prefix is implemented
