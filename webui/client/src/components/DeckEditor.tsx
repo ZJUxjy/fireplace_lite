@@ -109,18 +109,30 @@ export default function DeckEditor({ deckId, initialDeck, onBack }: Props) {
     }));
   }, [catalog, lockedHeroClass, rail, topbar]);
 
+  const tryAddCard = (card: Card) => {
+    if (!deck) return;
+    if (cardDisabled(card)) {
+      // Surface the same toast UX as a click on a maxed/illegal card.
+      if (card.card_class !== deck.hero_class && card.card_class !== 'NEUTRAL') {
+        setToast('该职业不能加入此卡组'); return;
+      }
+      if (deckCardCount(deck) >= 30) { setToast('卡组已满 30 张'); return; }
+      setToast(`已达 ${card.max_count} 张上限`);
+      return;
+    }
+    const ok = addCardToDeck(deck, card.id, card.max_count);
+    if (ok) setDeck({ ...deck });
+  };
+
   const onCardClick = (card: Card) => {
     if (isBrowse) { setPreviewLockedCard(card); return; }
-    if (!deck) return;
-    const max = card.max_count;
-    const ok = addCardToDeck(deck, card.id, max);
-    if (ok) {
-      setDeck({ ...deck });
-    } else if (deckCardCount(deck) >= 30) {
-      setToast('卡组已满 30 张');
-    } else {
-      setToast(`已达 ${max} 张上限`);
-    }
+    tryAddCard(card);
+  };
+
+  const onAddCardById = (cardId: string) => {
+    if (isBrowse) return;
+    const card = catalog.find(c => c.id === cardId);
+    if (card) tryAddCard(card);
   };
 
   const cardDisabled = (c: Card): boolean => {
@@ -215,6 +227,7 @@ export default function DeckEditor({ deckId, initialDeck, onBack }: Props) {
         onExport={onExport}
         onBack={onBack}
         onRemoveCard={onRemove}
+        onAddCardById={onAddCardById}
         onCreateNewDeck={() => setShowClassPicker(true)}
         onCardHoverStart={(card, anchor) => setHoverCard({ card, anchor })}
         onCardHoverEnd={() => setHoverCard(null)}

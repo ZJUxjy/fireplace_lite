@@ -3,6 +3,39 @@
  * Left: oversized blue mana gem (octagonal). Right: stats / type sigil + count + rarity gem.
  * Rarity-tinted outer frames for rare/epic/legendary. */
 
+/* Small drag ghost shown while dragging a card from the pool. */
+.drag-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 4px;
+  background: linear-gradient(180deg, #2a1f12 0%, #1a120a 100%);
+  border: 1px solid #c9a05a;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55), 0 0 0 1px #1a120a inset;
+  color: #f3e3b9;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.drag-ghost__mana {
+  width: 22px; height: 22px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 35% 30%, #6cb0ff, #1a4a8b 80%);
+  border: 1px solid #f0c869;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 12px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+.drag-ghost__name {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .row {
   position: relative;
   height: 56px;

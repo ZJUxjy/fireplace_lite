@@ -58,6 +58,24 @@ export default function CardRow({
   return (
     <div
       className={`row ${rarityClass} ${disabled ? 'row--disabled' : ''}`}
+      draggable={!disabled}
+      onDragStart={(e) => {
+        e.dataTransfer.setData('text/card-id', card.id);
+        e.dataTransfer.effectAllowed = 'copy';
+        onHoverEnd?.();
+        // Custom small drag ghost: mana orb + name pill (instead of the full row).
+        const ghost = document.createElement('div');
+        ghost.className = 'drag-ghost';
+        ghost.innerHTML = `<span class="drag-ghost__mana">${card.cost}</span><span class="drag-ghost__name">${card.name_zh.replace(/[<>&]/g, '')}</span>`;
+        // Off-screen so it doesn't flash before the browser snapshots it.
+        ghost.style.position = 'absolute';
+        ghost.style.top = '-1000px';
+        ghost.style.left = '-1000px';
+        document.body.appendChild(ghost);
+        e.dataTransfer.setDragImage(ghost, 14, 14);
+        // Remove after the browser has snapshotted the image.
+        setTimeout(() => ghost.remove(), 0);
+      }}
       onClick={disabled ? undefined : onClick}
       onMouseEnter={(e) => onHoverStart?.(card, e.currentTarget)}
       onMouseLeave={onHoverEnd}

@@ -6,6 +6,17 @@
   position: sticky; top: 0; align-self: start;
   height: 100vh;
   min-height: 0;
+  border-radius: 6px;
+  outline: 2px dashed transparent;
+  outline-offset: -6px;
+  transition: outline-color 120ms ease, box-shadow 120ms ease;
+}
+.deckrail--dragover {
+  outline-color: #f0c869;
+  box-shadow: 0 0 0 1px rgba(240, 200, 105, 0.35), 0 0 22px rgba(240, 200, 105, 0.25);
+}
+.deckrail--dragover .deck-list {
+  background: linear-gradient(180deg, rgba(240, 200, 105, 0.08), transparent 60%);
 }
 
 /* deck header (panel--dark inherited from FilterRail.css) */

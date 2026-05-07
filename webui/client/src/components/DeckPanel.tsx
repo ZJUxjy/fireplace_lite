@@ -17,6 +17,8 @@ type Props = {
   /** Show preview when hovering a deck row card. */
   onCardHoverStart?: (card: Card, anchor: HTMLElement) => void;
   onCardHoverEnd?: () => void;
+  /** Drop target: add a card by id when dragged from the pool. */
+  onAddCardById?: (cardId: string) => void;
 };
 
 const FORMATS: Format[] = ['STANDARD', 'WILD', 'CLASSIC'];
@@ -37,6 +39,25 @@ export default function DeckPanel(props: Props) {
   const { deck } = props;
   const [editingName, setEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState(deck?.name ?? '');
+  const [dragOver, setDragOver] = useState(false);
+
+  const onDragOver = (e: React.DragEvent) => {
+    if (!deck || !props.onAddCardById) return;
+    if (!e.dataTransfer.types.includes('text/card-id')) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+    if (!dragOver) setDragOver(true);
+  };
+  const onDragLeave = (e: React.DragEvent) => {
+    // Only clear when leaving the aside itself, not its children.
+    if (e.currentTarget === e.target) setDragOver(false);
+  };
+  const onDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+    const cardId = e.dataTransfer.getData('text/card-id');
+    if (cardId) props.onAddCardById?.(cardId);
+  };
 
   const sorted = useMemo(() => {
     if (!deck) return [];
@@ -59,7 +80,7 @@ export default function DeckPanel(props: Props) {
 
   if (!deck) {
     return (
-      <aside className="deckrail">
+      <aside className="deckrail" onDragOver={onDragOver} onDragLeave={onDragLeave} onDrop={onDrop}>
         <div className="panel panel--dark deck-header">
           <h2>卡牌收藏</h2>
           <div className="deck-header__sub">浏览全卡库</div>
@@ -97,7 +118,12 @@ export default function DeckPanel(props: Props) {
   };
 
   return (
-    <aside className="deckrail">
+    <aside
+      className={`deckrail ${dragOver ? 'deckrail--dragover' : ''}`}
+      onDragOver={onDragOver}
+      onDragLeave={onDragLeave}
+      onDrop={onDrop}
+    >
       <div className="panel panel--dark deck-header">
         <div className="deck-header__hero">
           <span
